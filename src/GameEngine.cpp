@@ -8,7 +8,8 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
-  _win.start(800, 600, "Bomberman");
+  if (!_win.start(800, 600, "Bomberman"))
+    throw(Exception("Cannot open window"));
   return (true);
 }
 
@@ -28,5 +29,5 @@ bool GameEngine::update()
 
 void GameEngine::draw()
 {
-
+  // _win.flush();
 }

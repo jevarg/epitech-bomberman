@@ -3,9 +3,8 @@
 #include "Exception.hpp"
 
 
-int	main(int ac, char **av)
+int	main(int, char **)
 {
-
   try
     {
       GameEngine eng;
@@ -19,5 +18,7 @@ int	main(int ac, char **av)
   catch (Exception &e)
     {
       std::cerr << e.what() << std::endl;
+      return (1);
     }
+  return (0);
 }

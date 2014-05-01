@@ -6,6 +6,7 @@
 # include <SdlContext.hh>
 # include <Clock.hh>
 # include <Input.hh>
+# include "Exception.hpp"
 
 # define FPS 60
 
