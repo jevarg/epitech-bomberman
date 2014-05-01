@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May  1 00:42:58 2014 
+## Last update Thu May  1 11:40:24 2014 
 ##
 
 
@@ -19,7 +19,9 @@ LIBGDLDIR	+=	./libGDL
 
 INCDIR		=	-I../Includes/ -I$(LIBGDLDIR)/includes/
 SRCDIR		=	./
-SRC		=	main.cpp
+SRC		=	main.cpp \
+			GameEngine.cpp \
+			Exception.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

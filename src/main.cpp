@@ -1,29 +1,23 @@
-#include <Clock.hh>
-#include <unistd.h>
 #include <iostream>
-#include "SdlContext.hh"
-#include "Input.hh"
+#include "GameEngine.hpp"
+#include "Exception.hpp"
 
-# define FPS 60
 
-int main(int ac, char **av)
+int	main(int ac, char **av)
 {
-  gdl::SdlContext win;
-  gdl::Clock	  clock;
-  gdl::Input	  input;
 
-  win.start(800, 600, "Bomberman");
-  for(;;)
+  try
     {
-      int time;
+      GameEngine eng;
 
-      if (input.getInput(SDL_QUIT))
-	break;
-      if ((time = clock.getElapsed()) < (FPS / 1000))
-  	usleep(((FPS / 1000) - time) * 1000);
-      win.updateClock(clock);
-      win.updateInputs(input);
+      if (!eng.initialize())
+	return (1);
+      while (eng.update())
+	eng.draw();
+      return (0);
     }
-  win.stop();
-  return 0;
+  catch (Exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+    }
 }
