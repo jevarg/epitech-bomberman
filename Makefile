@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May  1 16:25:45 2014 
+## Last update Fri May  2 19:12:47 2014 Harold Fritsch
 ##
 
 
@@ -29,7 +29,7 @@ SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
 CXXFLAGS	+=	-Wextra -Wall -W -g
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -Wl,-whole-archive -lgdl_gl -Wl,-no-whole-archive -lGL -lGLEW -ldl -lrt -lfbxsdk -lSDL2 -lpthread
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -Wl,-whole-archive -lgdl_gl -Wl,-no-whole-archive -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))
@@ -38,7 +38,7 @@ $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	$(CC) $(CXXFLAGS) $(INCDIR) -o $@ -c $<
 
 $(NAME): $(OBJS)
-	$(CC) -o $(NAME) $(LDFLAGS) $(OBJS) $(LOBJS)
+	$(CC) -o $(NAME) $(OBJS) $(LOBJS) $(LDFLAGS)
 
 all: $(NAME)
 
