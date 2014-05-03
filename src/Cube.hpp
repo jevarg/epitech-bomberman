@@ -11,8 +11,6 @@
 # include <iostream>
 # include "AObject.hpp"
 
-// Nous allons donc faire à présent notre classe Cube héritant de AObject :
-
 class Cube : public AObject
 {
 public:
