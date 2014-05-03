@@ -2,7 +2,6 @@
 #include "GameEngine.hpp"
 #include "Exception.hpp"
 
-
 int	main(int, char **)
 {
   try
