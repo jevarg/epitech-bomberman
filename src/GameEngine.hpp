@@ -13,11 +13,13 @@
 # include "Cube.hpp"
 # include "Exception.hpp"
 # include "Camera.hpp"
+# include "Container.hpp"
 
 # define FPS 60.0f
 # define FOV 60.0f
 # define DEF_SIZE_X 800.0f
 # define DEF_SIZE_Y 600.0f
+# define SQUARESIZE 10
 
 class GameEngine : public gdl::Game
 {
@@ -30,11 +32,12 @@ public:
   virtual void draw();
 
 private:
-  gdl::SdlContext _win;
-  gdl::Input	  _input;
-  gdl::Clock	  _clock;
-  gdl::BasicShader _shader;
-  std::vector<AObject *> _obj;
+  gdl::SdlContext	_win;
+  gdl::Input		_input;
+  gdl::Clock		_clock;
+  gdl::BasicShader		_shader;
+  std::vector<AObject *>	_obj;
+  std::vector<Container *>	_cont;
   Camera		_cam;
 };
 
