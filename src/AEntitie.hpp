@@ -10,6 +10,7 @@ class AEntitie
 {
 public:
   AEntitie();
+  AEntitie(int x, int y, eType type);
   virtual ~AEntitie();
 
   int	getXPos() const;
