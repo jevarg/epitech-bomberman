@@ -13,6 +13,7 @@
 # include "Cube.hpp"
 # include "Exception.hpp"
 # include "Camera.hpp"
+# include "IObject.hpp"
 
 # define FPS 60.0f
 # define FOV 60.0f
@@ -34,7 +35,7 @@ private:
   gdl::Input	  _input;
   gdl::Clock	  _clock;
   gdl::BasicShader _shader;
-  std::vector<AObject *> _obj;
+  std::vector<IObject *> _obj;
   Camera		_cam;
 };
 

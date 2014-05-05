@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat May  3 16:13:06 2014 
+## Last update Mon May  5 11:53:05 2014 
 ##
 
 
@@ -25,7 +25,7 @@ SRC		=	main.cpp \
 			Player.cpp \
 			Cube.cpp \
 			Camera.cpp \
-			AObject.cpp
+			ATransformation.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

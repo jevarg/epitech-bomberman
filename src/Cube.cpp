@@ -1,6 +1,6 @@
 #include "Cube.hpp"
 
-Cube::Cube()
+Cube::Cube(): IObject()
 {
 
 }
@@ -108,10 +108,6 @@ bool Cube::initialize()
 
 void Cube::update(gdl::Clock const &clock, gdl::Input &input)
 {
-  if (input.getKey(SDLK_z))
-    translate(glm::vec3(0, 1, 0) * static_cast<float>(clock.getElapsed()) * _speed);
-  if (input.getKey(SDLK_s))
-    translate(glm::vec3(0, -1, 0) * static_cast<float>(clock.getElapsed()) * _speed);
   if (input.getKey(SDLK_UP))
     translate(glm::vec3(0, 0, -1) * static_cast<float>(clock.getElapsed()) * _speed);
   if (input.getKey(SDLK_DOWN))

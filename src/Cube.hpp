@@ -9,9 +9,9 @@
 # include <Input.hh>
 # include <SDL_keycode.h>
 # include <iostream>
-# include "AObject.hpp"
+# include "IObject.hpp"
 
-class Cube : public AObject
+class Cube : public IObject
 {
 public:
   Cube();
