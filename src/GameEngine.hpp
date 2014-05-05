@@ -37,6 +37,9 @@ private:
   gdl::BasicShader _shader;
   std::vector<IObject *> _obj;
   Camera		_cam;
+  int			_mapX;
+  int			_mapY;
+  Cube			_cube;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

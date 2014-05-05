@@ -1,7 +1,7 @@
 #include <iostream>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(): _cam()
+GameEngine::GameEngine(): _cam(), _cube()
 {
 
 }
@@ -13,20 +13,27 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
+  _mapX = 20;
+  _mapY = 20;
   if (!_win.start(800, 600, "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
    || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
     return (false);
-  _cam.initialize();// glm::vec3(0, 10, -30), glm::vec3(0, 0, 0), glm::vec3(0, 1, 0)
+  _cam.initialize();
   _cam.translate(glm::vec3(0, 10, -30));
   _shader.bind();
 
-  IObject *cube = new Cube();
-  if (cube->initialize() == false)
+  if (_cube.initialize() == false)
     return (false);
-  _obj.push_back(cube);
+  for (int y = 0;y < _mapY;y++)
+    for (int x = 0;x < _mapX;x++)
+      {
+	IObject *obj = new Cube(_cube);
+	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
+	_obj.push_back(obj);
+      }
   return (true);
 }
 
