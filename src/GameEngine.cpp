@@ -13,8 +13,8 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
-  _mapX = 20;
-  _mapY = 20;
+  _mapX = 100;
+  _mapY = 100;
   if (!_win.start(800, 600, "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
@@ -39,7 +39,7 @@ bool GameEngine::initialize()
 
 bool GameEngine::update()
 {
-  int time;
+  double time;
   double fps = (1000 / FPS);
 
   if (_input.getInput(SDL_QUIT) || _input.getKey(SDLK_ESCAPE))
@@ -61,7 +61,7 @@ void GameEngine::draw()
   _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
   _shader.bind();
-  for (size_t i = 0; i < _obj.size(); ++i)
-    _obj[i]->draw(_shader, _clock);
+  for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
+    (*it)->draw(_shader, _clock);
   _win.flush();
 }
