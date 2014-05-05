@@ -1,0 +1,17 @@
+<map id="GTC Extensions (Stable)" name="GTC Extensions (Stable)">
+<area shape="rect" id="node1" href="$d4/d38/group__gtc__noise.html" title="GLM_GTC_noise" alt="" coords="268,5,391,32"/>
+<area shape="rect" id="node3" href="$d1/dbf/group__gtc__reciprocal.html" title="Define secant, cosecant and cotangent functions. " alt="" coords="254,56,405,83"/>
+<area shape="rect" id="node4" href="$dc/dfb/group__gtc__epsilon.html" title="Comparison functions for a user defined epsilon values. " alt="" coords="262,107,397,133"/>
+<area shape="rect" id="node5" href="$de/d0b/group__gtc__random.html" title="Generate random number from various distribution methods. " alt="" coords="260,157,399,184"/>
+<area shape="rect" id="node6" href="$d9/d5d/group__gtc__matrix__inverse.html" title="GLM_GTC_matrix_inverse" alt="" coords="238,208,421,235"/>
+<area shape="rect" id="node7" href="$d2/d02/group__gtc__ulp.html" title="Allow the measurement of the accuracy of a function against a reference implementation. This extension works on floating&#45;point data and provide results in ULP. &lt;glm/gtc/ulp.hpp&gt; need to be included to use these features. " alt="" coords="275,259,383,285"/>
+<area shape="rect" id="node8" href="$dd/dd3/group__gtc__matrix__integer.html" title="GLM_GTC_matrix_integer" alt="" coords="238,309,421,336"/>
+<area shape="rect" id="node9" href="$d7/d6f/group__gtc__constants.html" title="Allow to perform bit operations on integer values. " alt="" coords="253,360,405,387"/>
+<area shape="rect" id="node10" href="$d1/d6c/group__gtc__type__ptr.html" title="Handles the interaction between pointers and vector, matrix types. " alt="" coords="258,411,401,437"/>
+<area shape="rect" id="node11" href="$dc/d1c/group__gtc__matrix__transform.html" title="Defines functions that generate common transformation matrices. " alt="" coords="229,461,429,488"/>
+<area shape="rect" id="node12" href="$da/da6/group__gtc__matrix__access.html" title="GLM_GTC_matrix_access" alt="" coords="239,512,420,539"/>
+<area shape="rect" id="node13" href="$d5/d66/group__gtc__quaternion.html" title="Defines a templated quaternion type and several quaternion operations. " alt="" coords="250,563,409,589"/>
+<area shape="rect" id="node14" href="$dd/d22/group__gtc__half__float.html" title="GLM_GTC_half_float" alt="" coords="256,613,403,640"/>
+<area shape="rect" id="node15" href="$dc/da5/group__gtc__swizzle.html" title="Provide functions to emulate GLSL swizzle operator fonctionalities. " alt="" coords="263,664,396,691"/>
+<area shape="rect" id="node16" href="$d3/d2d/group__gtc__type__precision.html" title="Defines specific C++&#45;based precision types. " alt="" coords="239,715,420,741"/>
+</map>

@@ -1,0 +1,27 @@
+<map id="SDL_Event" name="SDL_Event">
+<area shape="rect" id="node2" href="$d7/d5b/struct_s_d_l___joy_device_event.html" title="Joystick device event structure (event.jdevice.*) " alt="" coords="257,9,409,36"/>
+<area shape="rect" id="node3" href="$d8/d59/struct_s_d_l___joy_hat_event.html" title="Joystick hat position change event structure (event.jhat.*) " alt="" coords="267,60,399,87"/>
+<area shape="rect" id="node4" href="$d9/d58/struct_s_d_l___text_editing_event.html" title="Keyboard text editing event structure (event.edit.*) " alt="" coords="254,111,413,137"/>
+<area shape="rect" id="node5" href="$d7/d64/struct_s_d_l___multi_gesture_event.html" title="Multiple Finger Gesture Event (event.mgesture.*) " alt="" coords="247,161,419,188"/>
+<area shape="rect" id="node6" href="$d7/d78/struct_s_d_l___user_event.html" title="A user&#45;defined event type (event.user.*) " alt="" coords="273,212,394,239"/>
+<area shape="rect" id="node7" href="$dd/d06/struct_s_d_l___common_event.html" title="Fields shared by every event. " alt="" coords="258,263,409,289"/>
+<area shape="rect" id="node8" href="$d2/d18/struct_s_d_l___mouse_motion_event.html" title="Mouse motion event structure (event.motion.*) " alt="" coords="245,313,421,340"/>
+<area shape="rect" id="node9" href="$d8/d47/struct_s_d_l___text_input_event.html" title="Keyboard text input event structure (event.text.*) " alt="" coords="259,364,407,391"/>
+<area shape="rect" id="node10" href="$d8/db8/struct_s_d_l___keyboard_event.html" title="Keyboard button event structure (event.key.*) " alt="" coords="258,415,409,441"/>
+<area shape="rect" id="node11" href="$d4/de7/struct_s_d_l___keysym.html" title="The SDL keysym structure, used in key events. " alt="" coords="17,415,121,441"/>
+<area shape="rect" id="node12" href="$d7/de3/struct_s_d_l___joy_button_event.html" title="Joystick button event structure (event.jbutton.*) " alt="" coords="257,465,409,492"/>
+<area shape="rect" id="node13" href="$d8/d14/struct_s_d_l___sys_w_m_event.html" title="A video driver dependent system event (event.syswm.*) This event is disabled by default, you can enable it with SDL_EventState() " alt="" coords="265,516,401,543"/>
+<area shape="rect" id="node14" href="$de/deb/struct_s_d_l___sys_w_mmsg.html" title="SDL_SysWMmsg" alt="" coords="5,516,133,543"/>
+<area shape="rect" id="node15" href="$d6/d71/struct_s_d_l___quit_event.html" title="The &quot;quit requested&quot; event. " alt="" coords="275,567,392,593"/>
+<area shape="rect" id="node16" href="$da/d81/struct_s_d_l___controller_device_event.html" title="Controller device event structure (event.cdevice.*) " alt="" coords="235,617,431,644"/>
+<area shape="rect" id="node17" href="$df/d8b/struct_s_d_l___joy_ball_event.html" title="Joystick trackball motion event structure (event.jball.*) " alt="" coords="267,668,399,695"/>
+<area shape="rect" id="node18" href="$d8/d9b/struct_s_d_l___mouse_wheel_event.html" title="Mouse wheel event structure (event.wheel.*) " alt="" coords="248,719,419,745"/>
+<area shape="rect" id="node19" href="$d7/dec/struct_s_d_l___dollar_gesture_event.html" title="Dollar Gesture Event (event.dgesture.*) " alt="" coords="244,769,423,796"/>
+<area shape="rect" id="node20" href="$d8/d17/struct_s_d_l___touch_finger_event.html" title="Touch finger event structure (event.tfinger.*) " alt="" coords="251,820,416,847"/>
+<area shape="rect" id="node21" href="$d9/d15/struct_s_d_l___controller_button_event.html" title="Game controller button event structure (event.cbutton.*) " alt="" coords="235,871,431,897"/>
+<area shape="rect" id="node22" href="$d9/d8f/struct_s_d_l___mouse_button_event.html" title="Mouse button event structure (event.button.*) " alt="" coords="245,921,421,948"/>
+<area shape="rect" id="node23" href="$d1/d00/struct_s_d_l___window_event.html" title="Window state change event data (event.window.*) " alt="" coords="264,972,403,999"/>
+<area shape="rect" id="node24" href="$da/d9e/struct_s_d_l___controller_axis_event.html" title="Game controller axis motion event structure (event.caxis.*) " alt="" coords="244,1023,423,1049"/>
+<area shape="rect" id="node25" href="$d3/d15/struct_s_d_l___joy_axis_event.html" title="Joystick axis motion event structure (event.jaxis.*) " alt="" coords="266,1073,401,1100"/>
+<area shape="rect" id="node26" href="$df/d97/struct_s_d_l___drop_event.html" title="An event used to request a file open by the system (event.drop.*) This event is disabled by default..." alt="" coords="272,1124,395,1151"/>
+</map>

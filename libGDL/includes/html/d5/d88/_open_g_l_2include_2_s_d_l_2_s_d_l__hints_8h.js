@@ -1,0 +1,35 @@
+var _open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h =
+[
+    [ "SDL_HINT_ALLOW_TOPMOST", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ac0deec953ae4635131cbe321192236ff", null ],
+    [ "SDL_HINT_FRAMEBUFFER_ACCELERATION", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a4f14744afc8f84bf52e3bfaec2667824", null ],
+    [ "SDL_HINT_GAMECONTROLLERCONFIG", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ae6733a084fded26033d0b3a1ab1480a4", null ],
+    [ "SDL_HINT_GRAB_KEYBOARD", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a5295df139727cd78a0663afb0b91010b", null ],
+    [ "SDL_HINT_IDLE_TIMER_DISABLED", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#abe9410e8b6809c9fdcb1f69e6894a2e8", null ],
+    [ "SDL_HINT_JOYSTICK_ALLOW_BACKGROUND_EVENTS", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ab343c91586c6b4789763e4a82b35de0b", null ],
+    [ "SDL_HINT_ORIENTATIONS", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a1e2eef18b43aa15121d8250a408421ce", null ],
+    [ "SDL_HINT_RENDER_DRIVER", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a1ecf7a77582e3af7938b2f7c8d900aee", null ],
+    [ "SDL_HINT_RENDER_OPENGL_SHADERS", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a156051f550fba6a1d8dfafd8bc90b1b2", null ],
+    [ "SDL_HINT_RENDER_SCALE_QUALITY", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a10b6e40601439f51131d8a264070ab2e", null ],
+    [ "SDL_HINT_RENDER_VSYNC", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ab512fdde4a91d3a271df7b59297fcf98", null ],
+    [ "SDL_HINT_TIMER_RESOLUTION", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#afbc6ba9f809e07557eb369f763299174", null ],
+    [ "SDL_HINT_VIDEO_MINIMIZE_ON_FOCUS_LOSS", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a85488274590bff72c3d1dba5829443f6", null ],
+    [ "SDL_HINT_VIDEO_X11_XINERAMA", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ad40f9ea3808d57729baf6d69c019af4b", null ],
+    [ "SDL_HINT_VIDEO_X11_XRANDR", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ab78bba735481c64f25a01799c0266058", null ],
+    [ "SDL_HINT_VIDEO_X11_XVIDMODE", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a866aaf8bf196921021eb7bda46b7a781", null ],
+    [ "SDL_HINT_XINPUT_ENABLED", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a74031ed3b17889222462108800b91c3c", null ],
+    [ "SDL_HintCallback", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a9466a87e203a4942eb769057196696c3", null ],
+    [ "SDL_HintPriority", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ab85f3099d9bb0445b0c6b5002cfaa7ed", [
+      [ "SDL_HINT_DEFAULT", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ab85f3099d9bb0445b0c6b5002cfaa7eda3dd1382c2b23c690411c1aacfac9b634", null ],
+      [ "SDL_HINT_NORMAL", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ab85f3099d9bb0445b0c6b5002cfaa7edaef363821cdc9c74e84d79cfea42e32b9", null ],
+      [ "SDL_HINT_OVERRIDE", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ab85f3099d9bb0445b0c6b5002cfaa7edac85d90168e4a0cd4cd52ba38a68bcebf", null ],
+      [ "SDL_HINT_DEFAULT", "dd/dd3/_s_d_l__hints_8h.html#ab85f3099d9bb0445b0c6b5002cfaa7eda3dd1382c2b23c690411c1aacfac9b634", null ],
+      [ "SDL_HINT_NORMAL", "dd/dd3/_s_d_l__hints_8h.html#ab85f3099d9bb0445b0c6b5002cfaa7edaef363821cdc9c74e84d79cfea42e32b9", null ],
+      [ "SDL_HINT_OVERRIDE", "dd/dd3/_s_d_l__hints_8h.html#ab85f3099d9bb0445b0c6b5002cfaa7edac85d90168e4a0cd4cd52ba38a68bcebf", null ]
+    ] ],
+    [ "SDL_AddHintCallback", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ae4b66087f430c92b8a007e671d1ce136", null ],
+    [ "SDL_ClearHints", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a499d49700e58d8d6bd50bc257a62aa4a", null ],
+    [ "SDL_DelHintCallback", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a337f3e6ef10b34f3d515140e28323633", null ],
+    [ "SDL_GetHint", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#ac9e44e0abeb444439a39ee81ef03bb0e", null ],
+    [ "SDL_SetHint", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a7d312947d367b376b6d31064e51aa04d", null ],
+    [ "SDL_SetHintWithPriority", "d5/d88/_open_g_l_2include_2_s_d_l_2_s_d_l__hints_8h.html#a63c5fb85e7e591a9d77e3df6aefd4430", null ]
+];

@@ -1,0 +1,35 @@
+<map id="SdlContext.hh" name="SdlContext.hh">
+<area shape="rect" id="node2" href="$de/ddc/_s_d_l_8h.html" title="SDL.h" alt="" coords="1909,80,1968,107"/>
+<area shape="rect" id="node32" href="$da/dc8/_i_render_context_8hh.html" title="IRenderContext.hh" alt="" coords="3777,80,3916,107"/>
+<area shape="rect" id="node3" href="$d7/d70/_s_d_l__main_8h.html" title="SDL_main.h" alt="" coords="1259,379,1357,405"/>
+<area shape="rect" id="node4" href="$d9/d24/_s_d_l__stdinc_8h.html" title="SDL_stdinc.h" alt="" coords="1958,453,2063,480"/>
+<area shape="rect" id="node5" href="$d1/d90/begin__code_8h.html" title="begin_code.h" alt="" coords="815,528,921,555"/>
+<area shape="rect" id="node6" href="$d0/d2e/close__code_8h.html" title="close_code.h" alt="" coords="2581,528,2685,555"/>
+<area shape="rect" id="node7" href="$d9/d30/_s_d_l__assert_8h.html" title="SDL_assert.h" alt="" coords="931,453,1037,480"/>
+<area shape="rect" id="node8" href="$d6/d97/_s_d_l__atomic_8h.html" title="SDL_atomic.h" alt="" coords="2553,379,2663,405"/>
+<area shape="rect" id="node9" href="$d3/d78/_s_d_l__audio_8h.html" title="SDL_audio.h" alt="" coords="1837,155,1939,181"/>
+<area shape="rect" id="node10" href="$df/d2d/_s_d_l__error_8h.html" title="SDL_error.h" alt="" coords="2126,379,2223,405"/>
+<area shape="rect" id="node11" href="$d0/d2b/_s_d_l__endian_8h.html" title="SDL_endian.h" alt="" coords="2790,379,2900,405"/>
+<area shape="rect" id="node12" href="$d2/d09/_s_d_l__mutex_8h.html" title="SDL_mutex.h" alt="" coords="1617,304,1724,331"/>
+<area shape="rect" id="node13" href="$d8/ded/_s_d_l__thread_8h.html" title="SDL_thread.h" alt="" coords="1741,229,1851,256"/>
+<area shape="rect" id="node14" href="$d6/d73/_s_d_l__rwops_8h.html" title="SDL_rwops.h" alt="" coords="1901,304,2005,331"/>
+<area shape="rect" id="node15" href="$d8/dee/_s_d_l__clipboard_8h.html" title="SDL_clipboard.h" alt="" coords="1381,379,1507,405"/>
+<area shape="rect" id="node16" href="$d6/d62/_s_d_l__cpuinfo_8h.html" title="SDL_cpuinfo.h" alt="" coords="1531,379,1644,405"/>
+<area shape="rect" id="node17" href="$d9/d42/_s_d_l__events_8h.html" title="SDL_events.h" alt="" coords="2561,155,2671,181"/>
+<area shape="rect" id="node18" href="$dc/d64/_s_d_l__video_8h.html" title="SDL_video.h" alt="" coords="3128,379,3229,405"/>
+<area shape="rect" id="node19" href="$dd/d00/_s_d_l__joystick_8h.html" title="SDL_joystick.h" alt="" coords="2459,304,2573,331"/>
+<area shape="rect" id="node20" href="$d0/d47/_s_d_l__gamecontroller_8h.html" title="SDL_gamecontroller.h" alt="" coords="2137,229,2300,256"/>
+<area shape="rect" id="node21" href="$d4/da4/_s_d_l__filesystem_8h.html" title="Include file for filesystem SDL API functions. " alt="" coords="601,379,732,405"/>
+<area shape="rect" id="node22" href="$dc/d3c/_s_d_l__haptic_8h.html" title="SDL_haptic.h" alt="" coords="2324,229,2431,256"/>
+<area shape="rect" id="node23" href="$dd/dd3/_s_d_l__hints_8h.html" title="SDL_hints.h" alt="" coords="757,379,856,405"/>
+<area shape="rect" id="node24" href="$d6/dd4/_s_d_l__loadso_8h.html" title="SDL_loadso.h" alt="" coords="1432,304,1541,331"/>
+<area shape="rect" id="node25" href="$db/dce/_s_d_l__log_8h.html" title="SDL_log.h" alt="" coords="881,379,967,405"/>
+<area shape="rect" id="node26" href="$da/d36/_s_d_l__messagebox_8h.html" title="SDL_messagebox.h" alt="" coords="3232,304,3380,331"/>
+<area shape="rect" id="node27" href="$d7/d6e/_s_d_l__power_8h.html" title="SDL_power.h" alt="" coords="992,379,1096,405"/>
+<area shape="rect" id="node28" href="$d6/d30/_s_d_l__render_8h.html" title="SDL_render.h" alt="" coords="2902,304,3009,331"/>
+<area shape="rect" id="node29" href="$d9/d7c/_s_d_l__system_8h.html" title="SDL_system.h" alt="" coords="2892,229,3007,256"/>
+<area shape="rect" id="node30" href="$de/d46/_s_d_l__timer_8h.html" title="SDL_timer.h" alt="" coords="2030,304,2129,331"/>
+<area shape="rect" id="node31" href="$d7/dd5/_s_d_l__version_8h.html" title="SDL_version.h" alt="" coords="1121,379,1233,405"/>
+<area shape="rect" id="node33" href="$dc/d18/_input_8hh.html" title="Input.hh" alt="" coords="3760,155,3833,181"/>
+<area shape="rect" id="node34" href="$dc/d55/_clock_8hh.html" title="Clock.hh" alt="" coords="3859,155,3935,181"/>
+</map>
