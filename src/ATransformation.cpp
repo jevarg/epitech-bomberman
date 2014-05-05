@@ -1,32 +1,26 @@
-#include "AObject.hpp"
+#include "ATransformation.hpp"
 
-AObject::AObject() : _position(0, 0, 0), _rotation(0, 0, 0), _scale(1, 1, 1)
+ATransformation::ATransformation(): _position(0, 0, 0), _rotation(0, 0, 0), _scale(1, 1, 1)
 {
 
 }
 
-AObject::~AObject()
-{
-
-}
-
-
-void AObject::translate(glm::vec3 const &v)
+void ATransformation::translate(glm::vec3 const &v)
 {
   _position += v;
 }
 
-void AObject::rotate(glm::vec3 const& axis, float angle)
+void ATransformation::rotate(glm::vec3 const& axis, float angle)
 {
   _rotation += axis * angle;
 }
 
-void AObject::scale(glm::vec3 const& scale)
+void ATransformation::scale(glm::vec3 const& scale)
 {
   _scale *= scale;
 }
 
-const glm::mat4 AObject::getTransformation() const
+const glm::mat4 ATransformation::getTransformation() const
 {
   glm::mat4 transform(1);
 
