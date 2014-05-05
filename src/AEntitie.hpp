@@ -9,8 +9,12 @@ enum	eType
 class AEntitie
 {
 public:
-  AEntitie() {}
-  virtual ~AEntitie() {}
+  AEntitie();
+  virtual ~AEntitie();
+
+  int	getXPos() const;
+  int	getYPos() const;
+  eType	getType() const;
 
 protected:
   int		_x;

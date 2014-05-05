@@ -14,6 +14,7 @@
 # include "Exception.hpp"
 # include "Camera.hpp"
 # include "Container.hpp"
+# include "AEntitie.hpp"
 
 # define FPS 60.0f
 # define FOV 60.0f
@@ -27,10 +28,10 @@ public:
   GameEngine();
   ~GameEngine();
 
-  virtual bool initialize();
-  virtual bool update();
-  virtual void draw();
-
+  virtual bool	initialize();
+  virtual bool	update();
+  virtual void	draw();
+  void		addEntitie(AEntitie *ent);
 private:
   gdl::SdlContext	_win;
   gdl::Input		_input;
@@ -39,6 +40,8 @@ private:
   std::vector<AObject *>	_obj;
   std::vector<Container *>	_cont;
   Camera		_cam;
+  int			_mapX;
+  int			_mapY;
 };
 
 #endif /* _GAMEENGINE_HPP_ */
