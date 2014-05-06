@@ -1,13 +1,14 @@
 #ifndef _MAP_H_
 # define _MAP_H_
 
-# include <list>
+# include <vector>
 # include "AEntitie.hpp"
 
 enum	e_path
   {
     FREE = 0,
-    USED
+    USED,
+    BOX
   };
 
 enum	e_dir
@@ -27,11 +28,16 @@ public:
   int	getWidth() const;
   int	getHeight() const;
   void	createMap();
-  void	generateMaze(int x, int y);
+
 private:
+  void	generateMaze(int x, int y);
+  bool	checkValidPath(int x, int y) const;
+  void	display();
+
   int	_mapX;
   int	_mapY;
-  std::list<e_path> _map;
+  int	_density;
+  std::vector<e_path> _map;
 };
 
 #endif /* _MAP_H_ */
