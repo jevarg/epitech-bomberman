@@ -32,11 +32,13 @@ public:
 private:
   void	generateMaze(short x, short y, short pos);
   bool	checkValidPath(short x, short y) const;
+  short	getDir(bool *tab, short oldDir) const;
   void	display();
 
   short	_mapX;
   short	_mapY;
   short	_density;
+  short	_linear;
   std::vector<e_path> _map;
 };
 

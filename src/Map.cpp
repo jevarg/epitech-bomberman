@@ -8,9 +8,10 @@
 
 Map::Map()
 {
-  _mapX = 1000;
-  _mapY = 1000;
+  _mapX = 30;
+  _mapY = 30;
   _density = 10;	// expressed in %
+  _linear = 25;
 }
 
 Map::~Map()
@@ -33,6 +34,26 @@ bool	Map::checkValidPath(short x, short y) const
   return (counter == 2 ? false : true);
 }
 
+short	Map::getDir(bool *tab, short cuBlock) const
+{
+  short		dir;
+  short		oldDir;
+  short		last = -1;
+  unsigned short	randnum;
+
+  oldDir = (cuBlock + 2) % 4;
+  randnum = std::rand() & 0xFFFF;
+  if (!tab[oldDir] && randnum % 100 < _linear)
+    return (oldDir);
+  dir = randnum % 4;
+  for (randnum = 0; randnum < 4 && last < dir; ++randnum)
+    {
+      if (!tab[randnum] && randnum != oldDir)
+	last = randnum;
+    }
+  return (last == -1 ? oldDir : last);
+}
+
 void	Map::generateMaze(short x, short y, short pos)
 {
   short		dir;
@@ -47,9 +68,7 @@ void	Map::generateMaze(short x, short y, short pos)
     {
       tx = x;
       ty = y;
-      do
-	dir = std::rand() % 4;
-      while (tabdir[dir]);
+      dir = getDir(tabdir, pos);
       tabdir[dir] = true;
       tx += (dir == WEST) ? -1 : (dir == EAST) ? 1 : 0;
       ty += (dir == SOUTH) ? 1 : (dir == NORTH) ? -1 : 0;
