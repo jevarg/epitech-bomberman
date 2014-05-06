@@ -14,9 +14,9 @@ enum	e_path
 enum	e_dir
   {
     NORTH = 0,
-    EAST,
-    SOUTH,
-    WEST
+    EAST = 1,
+    SOUTH = 2,
+    WEST = 3
   };
 
 class Map
@@ -30,13 +30,13 @@ public:
   void	createMap();
 
 private:
-  void	generateMaze(int x, int y);
-  bool	checkValidPath(int x, int y) const;
+  void	generateMaze(short x, short y, short pos);
+  bool	checkValidPath(short x, short y) const;
   void	display();
 
-  int	_mapX;
-  int	_mapY;
-  int	_density;
+  short	_mapX;
+  short	_mapY;
+  short	_density;
   std::vector<e_path> _map;
 };
 
