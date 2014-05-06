@@ -1,5 +1,0 @@
-<map id="glm::detail::swizzle&lt; N, ValueType, VecType, E0, E1, E2, E3 &gt;" name="glm::detail::swizzle&lt; N, ValueType, VecType, E0, E1, E2, E3 &gt;">
-<area shape="rect" id="node2" href="$dd/d3d/structglm_1_1detail_1_1__swizzle__base2.html" title="glm::detail::_swizzle\l_base2\&lt; ValueType, VecType,\l N, E0, E1, E2, E3,(E0==E1\|\l\|E0==E2\|\|E0==E3\|\|E1==E2\|\|E1\l==E3\|\|E2==E3)\&gt;" alt="" coords="713,5,941,91"/>
-<area shape="rect" id="node3" href="$d7/d42/structglm_1_1detail_1_1__swizzle__base1.html" title="glm::detail::_swizzle\l_base1\&lt; ValueType, VecType,\l E0, E1, E2, E3, N \&gt;" alt="" coords="6,8,215,64"/>
-<area shape="rect" id="node4" href="$dd/d3d/structglm_1_1detail_1_1__swizzle__base2.html" title="glm::detail::_swizzle\l_base2\&lt; ValueType, VecType,\l N, E0, E1, E2, E3, DUPLICATE\l_ELEMENTS \&gt;" alt="" coords="267,49,477,119"/>
-</map>
