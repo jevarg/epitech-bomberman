@@ -33,15 +33,15 @@ public:
   virtual void	draw();
   void		addEntitie(AEntitie *ent);
 private:
-  gdl::SdlContext	_win;
-  gdl::Input		_input;
-  gdl::Clock		_clock;
+  gdl::SdlContext		_win;
+  gdl::Input			_input;
+  gdl::Clock			_clock;
   gdl::BasicShader		_shader;
   std::vector<AObject *>	_obj;
   std::vector<Container *>	_cont;
-  Camera		_cam;
-  int			_mapX;
-  int			_mapY;
+  Camera			_cam;
+  int				_mapX;
+  int				_mapY;
 };
 
 #endif /* _GAMEENGINE_HPP_ */
