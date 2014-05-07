@@ -4,6 +4,10 @@ AEntitie::AEntitie()
 {
 }
 
+AEntitie::AEntitie(int x, int y, eType type) : _x(x), _y(y), _type(type)
+{
+}
+
 AEntitie::~AEntitie()
 {
 }

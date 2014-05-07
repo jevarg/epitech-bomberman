@@ -1,13 +1,17 @@
 #include <iostream>
 #include "GameEngine.hpp"
 #include "Exception.hpp"
+#include "Map.hpp"
 
 int	main(int, char **)
 {
   try
     {
       GameEngine eng;
+      Map	 map;
 
+      map.createMap();
+      getchar();
       if (!eng.initialize())
 	return (1);
       while (eng.update())
