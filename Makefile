@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Wed May  7 20:57:50 2014 enzo de gregorio
+## Last update Wed May  7 22:38:08 2014 enzo de gregorio
 ##
 
 
@@ -28,7 +28,10 @@ SRC		=	main.cpp \
 			AObject.cpp \
 			Container.cpp \
 			AEntitie.cpp \
-			StaticEntitie.cpp
+			StaticEntitie.cpp \
+			ACharacter.cpp \
+			Bomb.cpp \
+			Model.cpp \
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

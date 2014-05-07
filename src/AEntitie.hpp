@@ -1,5 +1,7 @@
-#ifndef _AENTITIE_H_
-# define _AENTITIE_H_
+#ifndef _AENTITIE_HPP_
+# define _AENTITIE_HPP_
+
+# include "AObject.hpp"
 
 enum	eType
   {
@@ -7,10 +9,10 @@ enum	eType
     BOMB,
     WALL,
     BOX,
-    BONUS
+    BONUSOBJECT // OR BONUSBOX
   };
 
-class AEntitie
+class	AEntitie : public AObject
 {
 public:
   AEntitie();
@@ -26,4 +28,4 @@ protected:
   eType		_type;
 };
 
-#endif /* _AENTITIE_H_ */
+#endif /* !_AENTITIE_HPP_ */
