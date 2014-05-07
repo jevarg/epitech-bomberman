@@ -14,6 +14,7 @@
 # include "Exception.hpp"
 # include "Camera.hpp"
 # include "IObject.hpp"
+# include "Model.hpp"
 
 # define FPS 60.0f
 # define FOV 60.0f
@@ -40,6 +41,7 @@ private:
   int			_mapX;
   int			_mapY;
   Cube			_cube;
+  Model			_model;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

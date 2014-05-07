@@ -13,8 +13,8 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
-  _mapX = 100;
-  _mapY = 100;
+  _mapX = 10;
+  _mapY = 10;
   if (!_win.start(800, 600, "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
@@ -25,15 +25,21 @@ bool GameEngine::initialize()
   _cam.translate(glm::vec3(0, 10, -30));
   _shader.bind();
 
-  if (_cube.initialize() == false)
-    return (false);
-  for (int y = 0;y < _mapY;y++)
-    for (int x = 0;x < _mapX;x++)
-      {
-	IObject *obj = new Cube(_cube);
-	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
-	_obj.push_back(obj);
-      }
+  if (!_model.load("assets/marvin.fbx"))
+    {
+      std::cerr << "ERREUR" << std::endl;
+      return (false);
+    }
+
+  // if (_cube.initialize() == false)
+  //   return (false);
+  // for (int y = 0;y < _mapY;y++)
+  //   for (int x = 0;x < _mapX;x++)
+  //     {
+  // 	IObject *obj = new Cube(_cube);
+  // 	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
+  // 	_obj.push_back(obj);
+  //     }
   return (true);
 }
 
@@ -61,7 +67,8 @@ void GameEngine::draw()
   _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
   _shader.bind();
-  for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
-    (*it)->draw(_shader, _clock);
+  // _model.draw(_shader, _clock);
+  // for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
+  //   (*it)->draw(_shader, _clock);
   _win.flush();
 }
