@@ -1,9 +1,13 @@
-#ifndef _IENTITIE_H_
-# define _IENTITIE_H_
+#ifndef _AENTITIE_H_
+# define _AENTITIE_H_
 
 enum	eType
   {
-    WALL = 0
+    PLAYER,
+    BOMB,
+    WALL,
+    BOX,
+    BONUS
   };
 
 class AEntitie
@@ -22,4 +26,4 @@ protected:
   eType		_type;
 };
 
-#endif /* _IENTITIE_H_ */
+#endif /* _AENTITIE_H_ */
