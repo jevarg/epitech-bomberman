@@ -2,10 +2,10 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine()
-  : _cam(), _cube("./assets/texture.tga"), _skybox("./assets/skybox.tga")
+  : _cam(), _skybox("./assets/skybox.tga"), _type()
 {
-
 }
+
 
 GameEngine::~GameEngine()
 {
@@ -14,8 +14,8 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
-  _mapX = 1;
-  _mapY = 1;
+  _mapX = 10;
+  _mapY = 10;
   if (!_win.start(800, 600, "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
@@ -28,23 +28,14 @@ bool GameEngine::initialize()
   _skybox.initialize();
   _skybox.scale(glm::vec3(500, 500, 500));
 
-  _model.load("assets/marvin.fbx");
+  _type[WALL] = new Cube("./assets/skybox.tga");
+  _type[BOX] = new Cube("./assets/texture.tga");
 
-  IObject *obj = new Model(_model);
-  obj->translate(glm::vec3(2.0, -1.0, 0));
-  obj->scale(glm::vec3(0.005, 0.005, 0.005));
-  _obj.push_back(obj);
+  _type[WALL]->initialize();
+  _type[BOX]->initialize();
 
-  if (_cube.initialize() == false)
-    return (false);
-  for (int y = 0;y < _mapY;y++)
-    for (int x = 0;x < _mapX;x++)
-      {
-  	IObject *obj = new Cube(_cube);
-  	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
-  	_obj.push_back(obj);
-      }
-  // _map.createMap();
+  _map.createMap();
+  createDisplayMap();
   return (true);
 }
 
@@ -76,4 +67,27 @@ void GameEngine::draw()
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _clock);
   _win.flush();
+}
+
+void GameEngine::createDisplayMap()
+{
+  v_Contcit	end = _map.ContEnd();
+
+  for (v_Contcit it = _map.ContBegin();it != end;++it)
+    {
+      l_Entcit endList = (*it)->listEnd();
+      for (l_Entcit it1 = (*it)->listBegin();it1 != endList;++it1)
+	if (_type[(*it1)->_type])
+	  {
+	    _obj.push_back(_type[(*it1)->_type]->clone());
+	    _obj.back()->translate(glm::vec3(2 * (*it1)->_x, 0.0, 2 * (*it1)->_y));
+	  }
+      v_Entcit endVec = (*it)->vecEnd();
+      for (v_Entcit it1 = (*it)->vecBegin();it1 != endVec;++it1)
+	if (_type[(*it1)->_type])
+	  {
+	    _obj.push_back(_type[(*it1)->_type]->clone());
+	    _obj.back()->translate(glm::vec3(2 * (*it1)->_x, 0.0, 2 * (*it1)->_y));
+	  }
+    }
 }

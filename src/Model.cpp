@@ -22,6 +22,11 @@ Model::~Model()
     delete _texture;
 }
 
+IObject *Model::clone()
+{
+  return (new Model(*this));
+}
+
 bool		Model::initialize()
 {
   return (true);
@@ -46,7 +51,7 @@ bool		Model::load(std::string const& path)
   _obj = new gdl::Model();
   if (!_obj->load(path))
     return (false);
-  _obj->setCurrentAnim(0);
+  _obj->setCurrentAnim(0, false);
   return (true);
 }
 

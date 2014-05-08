@@ -16,6 +16,7 @@
 # include "IObject.hpp"
 # include "Model.hpp"
 # include "AEntitie.hpp"
+# include "Container.hpp"
 # include "Map.hpp"
 
 # define FPS 60.0f
@@ -32,7 +33,10 @@ public:
   virtual bool	initialize();
   virtual bool	update();
   virtual void	draw();
+
 private:
+  void	createDisplayMap();
+
   gdl::SdlContext _win;
   gdl::Input	  _input;
   gdl::Clock	  _clock;
@@ -45,6 +49,7 @@ private:
   Cube			_skybox;
   Model			_model;
   Map			_map;
+  std::map<eType, IObject *>		_type;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

@@ -22,6 +22,7 @@ public:
   virtual bool initialize();
   virtual void update(gdl::Clock const &clock, gdl::Input &input);
   virtual void draw(gdl::AShader &shader, gdl::Clock const &);
+  virtual IObject *clone();
 
 private:
   gdl::Texture *_texture;

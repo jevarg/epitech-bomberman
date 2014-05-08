@@ -1,6 +1,6 @@
 #include "Cube.hpp"
 
-Cube::Cube(): IObject()
+Cube::Cube(): IObject(), _texture(NULL), _geometry(NULL)
 {
 
 }
@@ -24,13 +24,21 @@ Cube::~Cube()
     delete _geometry;
 }
 
+IObject *Cube::clone()
+{
+  return (new Cube(*this));
+}
+
 bool Cube::initialize()
 {
   _geometry = new gdl::Geometry();
   _texture = new gdl::Texture();
 
   if (!_texture->load(_file))
-    throw(Exception("Cannot load the texture"));
+    {
+      std::cerr << _file << std::endl;
+      throw(Exception("Cannot load the texture"));
+    }
 
   _geometry->pushVertex(glm::vec3(-1.0, -1.0, -1.0));
   _geometry->pushVertex(glm::vec3(1.0, -1.0, -1.0));

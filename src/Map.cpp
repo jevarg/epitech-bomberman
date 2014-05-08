@@ -11,7 +11,7 @@ Map::Map()
   _mapX = 20;
   _mapY = 20;
   _density = 30;	// expressed in %
-  _linear = 40;
+  _linear = 100;
 }
 
 Map::~Map()

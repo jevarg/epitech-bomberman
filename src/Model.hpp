@@ -19,6 +19,7 @@ public:
   void		draw(gdl::AShader &, gdl::Clock const&);
   bool		load(std::string const&);
   bool		loadTexture(std::string const&);
+  IObject	*clone();
 
 private:
   gdl::Model	*_obj;
