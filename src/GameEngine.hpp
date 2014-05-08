@@ -15,6 +15,7 @@
 # include "Camera.hpp"
 # include "AEntitie.hpp"
 # include "Save.hpp"
+# include "Map.hpp"
 
 # define FPS 60.0f
 # define FOV 60.0f
@@ -30,6 +31,7 @@ public:
   virtual bool	initialize();
   virtual bool	update();
   virtual void	draw();
+
 private:
   gdl::SdlContext		_win;
   gdl::Input			_input;
