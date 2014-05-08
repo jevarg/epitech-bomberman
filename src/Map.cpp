@@ -8,8 +8,8 @@
 
 Map::Map()
 {
-  _mapX = 30;
-  _mapY = 30;
+  _mapX = 800;
+  _mapY = 800;
   _density = 10;	// expressed in %
   _linear = 25;
 }
@@ -34,37 +34,40 @@ bool	Map::checkValidPath(short x, short y) const
   return (counter == 2 ? false : true);
 }
 
-short	Map::getDir(bool *tab, short cuBlock) const
+short	Map::getDir(bool *rtab, short cuBlock) const
 {
-  short		dir;
-  short		oldDir;
-  short		last = -1;
-  unsigned short	randnum;
+  short		dir = 0;
+  bool		tab[4] = {rtab[0], rtab[1], rtab[2], rtab[3]};
 
-  oldDir = (cuBlock + 2) % 4;
-  randnum = std::rand() & 0xFFFF;
-  if (!tab[oldDir] && randnum % 100 < _linear)
-    return (oldDir);
-  dir = randnum % 4;
-  for (randnum = 0; randnum < 4 && last < dir; ++randnum)
+  if (!tab[(cuBlock + 2) % 4] && ((std::rand() & 0xFFFF) % 100) < _linear)
+    return ((cuBlock + 2) % 4);
+  for (short i = 0; i < 4; ++i)
+    if (!tab[i])
+      ++dir;
+  if (dir > 1)
+    tab[(cuBlock + 2) % 4] = true;
+  dir = std::rand() % dir;
+  for (short i = 0; i < 4 && dir >= 0; ++i)
     {
-      if (!tab[randnum] && randnum != oldDir)
-	last = randnum;
+      if (!tab[i] && dir == 0)
+	return (i);
+      else if (!tab[i])
+	--dir;
     }
-  return (last == -1 ? oldDir : last);
+  return (0);
 }
 
-void	Map::generateMaze(short x, short y, short pos)
+void	Map::genSmallMaze(short x, short y, short pos)
 {
-  short		dir;
-  short		tx;
-  short		ty;
-  bool		tabdir[4] = {false, false, false, false};
+  short	dir;
+  short	tx;
+  short	ty;
+  bool 	tabdir[4] = {false, false, false, false};
 
   _map[y * _mapX + x] = USED;
   if (pos < 4)
     tabdir[pos] = true;
-  for (int i = (pos < 4); i < 4; ++i)
+  while (!tabdir[0] || !tabdir[1] || !tabdir[2] || !tabdir[3])
     {
       tx = x;
       ty = y;
@@ -73,13 +76,7 @@ void	Map::generateMaze(short x, short y, short pos)
       tx += (dir == WEST) ? -1 : (dir == EAST) ? 1 : 0;
       ty += (dir == SOUTH) ? 1 : (dir == NORTH) ? -1 : 0;
       if (checkValidPath(tx, ty) == true)
-	{
-	  /*
-	  display();
-	  getchar();
-	  */
-	  generateMaze(tx, ty, (dir + 2) % 4);
-	}
+	genSmallMaze(tx, ty, (dir + 2) % 4);
     }
 }
 
@@ -105,10 +102,10 @@ void	Map::createMap()
   std::srand(std::time(NULL));
   for (int i = 0; i < totalsize; ++i)
     _map.push_back(FREE);
-  posx = std::rand() % (_mapX - 2) + 1;
-  posy = std::rand() % (_mapY - 2) + 1;
+  posx = 2 + std::rand() % (_mapX - 3);
+  posy = 2 + std::rand() % (_mapY - 3);
   std::cout << "Starting at " << posx << " " << posy << std::endl;
-  generateMaze(posx, posy, 4);
+  genSmallMaze(posx, posy, 4);
   display();
 }
 

@@ -30,7 +30,7 @@ public:
   void	createMap();
 
 private:
-  void	generateMaze(short x, short y, short pos);
+  void	genSmallMaze(short x, short y, short pos);
   bool	checkValidPath(short x, short y) const;
   short	getDir(bool *tab, short oldDir) const;
   void	display();
