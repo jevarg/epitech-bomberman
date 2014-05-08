@@ -8,8 +8,8 @@
 
 Map::Map()
 {
-  _mapX = 50;
-  _mapY = 50;
+  _mapX = 20;
+  _mapY = 20;
   _density = 30;	// expressed in %
   _linear = 40;
 }
@@ -127,23 +127,6 @@ void	Map::fillBox()
     }
 }
 
-void	Map::createMap()
-{
-  int	posx;
-  int	posy;
-  int	totalsize = _mapX * _mapY;
-
-  std::srand(std::time(NULL));
-  for (int i = 0; i < totalsize; ++i)
-    _map.push_back(WALL);
-  posx = 2 + std::rand() % (_mapX - 3);
-  posy = 2 + std::rand() % (_mapY - 3);
-  std::cout << "Starting at " << posx << " " << posy << std::endl;
-  genSmallMaze(posx, posy, 4);
-  fillBox();
-  display();
-}
-
 unsigned int	Map::getContPos(int x, int y) const
 {
   unsigned int	ratiox;
@@ -183,6 +166,24 @@ void	Map::fillContainers()
 	}
     }
   _map.clear();	// erase the temps vector
+}
+
+void	Map::createMap()
+{
+  int	posx;
+  int	posy;
+  int	totalsize = _mapX * _mapY;
+
+  std::srand(std::time(NULL));
+  for (int i = 0; i < totalsize; ++i)
+    _map.push_back(WALL);
+  posx = 2 + std::rand() % (_mapX - 3);
+  posy = 2 + std::rand() % (_mapY - 3);
+  std::cout << "Starting at " << posx << " " << posy << std::endl;
+  genSmallMaze(posx, posy, 4);
+  fillBox();
+  fillContainers();
+  display();
 }
 
 eType	Map::checkMapColision(int x, int y) const
