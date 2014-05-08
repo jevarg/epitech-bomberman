@@ -28,22 +28,24 @@ bool GameEngine::initialize()
   _skybox.initialize();
   _skybox.scale(glm::vec3(500, 500, 500));
 
-  _model.load("assets/marvin.fbx");
+  if (!_model.load("assets/marvin.fbx"))
+    return (false);
 
   IObject *obj = new Model(_model);
-  obj->translate(glm::vec3(2.0, -1.0, 0));
+  obj->translate(glm::vec3(0.0, -1.0, 0));
+  obj->rotate(glm::vec3(0, 1.0, 0), 180.0);
   obj->scale(glm::vec3(0.005, 0.005, 0.005));
   _obj.push_back(obj);
 
-  if (_cube.initialize() == false)
-    return (false);
-  for (int y = 0;y < _mapY;y++)
-    for (int x = 0;x < _mapX;x++)
-      {
-  	IObject *obj = new Cube(_cube);
-  	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
-  	_obj.push_back(obj);
-      }
+  // if (_cube.initialize() == false)
+  //   return (false);
+  // for (int y = 0;y < _mapY;y++)
+  //   for (int x = 0;x < _mapX;x++)
+  //     {
+  // 	IObject *obj = new Cube(_cube);
+  // 	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
+  // 	_obj.push_back(obj);
+  //     }
   return (true);
 }
 
