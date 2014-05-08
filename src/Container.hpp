@@ -8,8 +8,8 @@
 
 class Container;
 
-typedef std::vector<AEntitie *>::const_iterator v_Entcit;
-typedef std::list<AEntitie *>::const_iterator l_Entcit;
+typedef std::vector<t_entity *>::const_iterator v_Entcit;
+typedef std::list<t_entity *>::const_iterator l_Entcit;
 
 class Container
 {
@@ -18,15 +18,15 @@ public:
   ~Container();
 
   bool	checkColision();
-  void	stockEntitie(AEntitie *);
+  void	stockEntitie(t_entity *);
   v_Entcit	vecBegin() const;
   v_Entcit	vecEnd() const;
   l_Entcit	listBegin() const;
   l_Entcit	listEnd() const;
 
 private:
-  std::vector<AEntitie *>	_staticEnt;
-  std::list<AEntitie *>		_mobileEnt;
+  std::vector<t_entity *>	_staticEnt;
+  std::list<t_entity *>		_mobileEnt;
 };
 
 #endif /* _ENTITIE_H_ */

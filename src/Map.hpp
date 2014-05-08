@@ -26,7 +26,7 @@ public:
   int	getWidth() const;
   int	getHeight() const;
   void	createMap();
-  void	addEntitie(AEntitie *ent);
+  void	addEntitie(t_entity *ent);
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 

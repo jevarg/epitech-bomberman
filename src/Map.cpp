@@ -144,15 +144,15 @@ void	Map::createMap()
   display();
 }
 
-void	Map::addEntitie(AEntitie *ent)
+void	Map::addEntitie(t_entity *ent)
 {
   int	ratiox;
   int	ratioy;
   unsigned int	pos;
   Container	*cont;
 
-  ratiox = ent->getXPos() / SQUARESIZE;
-  ratioy = ent->getYPos() / SQUARESIZE;
+  ratiox = ent->_x / SQUARESIZE;
+  ratioy = ent->_y / SQUARESIZE;
   pos = ratioy * (_mapX / SQUARESIZE) + ratiox;
   while (_cont.size() <= pos)
     {
@@ -165,14 +165,14 @@ void	Map::addEntitie(AEntitie *ent)
 void	Map::fillContainers()
 {
   unsigned int	i;
-  AEntitie	*ent;
+  t_entity	*ent;
   unsigned int 	totalsize = _mapX * _mapY;
 
   for (i = 0; i < totalsize; ++i)
     {
       if (_map[i] != FREE) // means there is no block
 	{
-	  ent = new AEntitie(i % _mapX, i /_mapX, _map[i]);
+	  ent = new t_entity(i % _mapX, i /_mapX, _map[i]);
 	  addEntitie(ent);
 	}
     }
