@@ -21,12 +21,12 @@ bool	Camera::initialize()
 
 void Camera::update(gdl::Clock const &clock, gdl::Input &in)
 {
-  if (in.getKey(SDLK_d))
+  if (in.getKey(SDLK_q))
     {
       _position += (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
       _pos_view += (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
     }
-  if (in.getKey(SDLK_q))
+  if (in.getKey(SDLK_d))
     {
       _position -= (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
       _pos_view -= (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
