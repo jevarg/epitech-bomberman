@@ -32,7 +32,9 @@ public:
 private:
   void	genSmallMaze(short x, short y, short pos);
   bool	checkValidPath(short x, short y) const;
+  bool	checkAccess(short x, short y) const;
   short	getDir(bool *tab, short oldDir) const;
+  void	fillBox();
   void	display();
 
   short	_mapX;

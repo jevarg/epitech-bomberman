@@ -8,10 +8,10 @@
 
 Map::Map()
 {
-  _mapX = 800;
-  _mapY = 800;
-  _density = 10;	// expressed in %
-  _linear = 25;
+  _mapX = 500;
+  _mapY = 500;
+  _density = 30;	// expressed in %
+  _linear = 40;
 }
 
 Map::~Map()
@@ -88,9 +88,43 @@ void	Map::display()
     {
       if (i != 0 && i % (_mapX ) == 0)
 	std::cout << std::endl;
-      std::cout << (_map[i] == FREE ? "x" : " ");
+      std::cout << (_map[i] == FREE ? "x" : (_map[i] == BOX) ? "B" : " ");
     }
   std::cout << std::endl;
+}
+
+bool	Map::checkAccess(short x, short y) const
+{
+  char	sumX[4] = {0,0,1,-1};
+  char	sumY[4] = {1,-1,0,0};
+  e_path tmp;
+  short	counter = 0;
+
+  for (unsigned short i = 0; i < 4; ++i)
+    {
+      tmp = _map[(y + sumY[i]) * _mapX + (x + sumX[i])];
+      if (tmp == USED || tmp == BOX)
+	++counter;
+    }
+  return (counter >= 1 ? true : false);
+}
+
+void	Map::fillBox()
+{
+  unsigned int	totalsize = _mapX * _mapY;
+  short	x;
+  short	y;
+
+  for (unsigned int i = 0; i < totalsize; ++i)
+    {
+      y = i / _mapX;
+      x = i % _mapX;
+      if (y == _mapY - 1 || y == 0 || x == 0 || x == _mapX - 1)
+	continue ;
+      if (_map[i] == FREE && checkAccess(x, y) &&
+	  std::rand() % 100 < _density)
+	_map[i] = BOX;
+    }
 }
 
 void	Map::createMap()
@@ -106,6 +140,7 @@ void	Map::createMap()
   posy = 2 + std::rand() % (_mapY - 3);
   std::cout << "Starting at " << posx << " " << posy << std::endl;
   genSmallMaze(posx, posy, 4);
+  fillBox();
   display();
 }
 
