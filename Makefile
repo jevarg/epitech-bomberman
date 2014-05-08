@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Wed May  7 18:54:07 2014 Jean Gravier
+## Last update Thu May  8 19:11:49 2014 
 ##
 
 
@@ -26,7 +26,11 @@ SRC		=	main.cpp \
 			Cube.cpp \
 			Camera.cpp \
 			ATransformation.cpp \
-			Model.cpp
+			Model.cpp \
+			Container.cpp \
+			AEntitie.cpp \
+			Entitie.cpp \
+			Map.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

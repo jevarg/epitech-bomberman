@@ -41,6 +41,7 @@ bool GameEngine::initialize()
   	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
   	_obj.push_back(obj);
       }
+  // _map.createMap();
   return (true);
 }
 
