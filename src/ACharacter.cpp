@@ -1,8 +1,8 @@
 #include "ACharacter.hpp"
 
 ACharacter::ACharacter(glm::vec4 color, Model model)
-  : AEntitie(0, 0, CHARACTER), _color(color), _model(model), _bombStock(1),
-    _score(0), _speed(5), _range(5), _bombType(NORMAL)
+  : AEntitie(0, 0, CHARACTER), _color(color), _model(model), _health(1), _isAlive(true),
+    _bombStock(1), _bombType(NORMAL), _speed(5), _range(5), _score(0)
 {
 }
 
@@ -30,6 +30,13 @@ void	ACharacter::moveRight()
 
 }
 
+void	ACharacter::hit()
+{
+  --_health;
+  if (_health == 0)
+    _isAlive = false;
+}
+
 bool	ACharacter::initialize()
 {
   return (true);
@@ -46,7 +53,12 @@ void	ACharacter::draw(gdl::AShader &shader, gdl::Clock const &clock)
   (void) clock;
 }
 
-int	ACharacter::getScore()
+int	ACharacter::getScore() const
 {
   return (_score);
+}
+
+bool	ACharacter::isAlive() const
+{
+  return (_isAlive);
 }

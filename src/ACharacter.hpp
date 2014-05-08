@@ -12,11 +12,13 @@ class	ACharacter : public AEntitie
 protected:
   glm::vec4	_color;
   Model		_model;
+  int		_health;
+  bool		_isAlive;
   int		_bombStock;
-  int		_score;
+  eBombType	_bombType;
   int		_speed;
   int		_range;
-  eBombType	_bombType;
+  int		_score;
 
 public:
   ACharacter(glm::vec4 color, Model model);
@@ -25,13 +27,14 @@ public:
   void		moveDown();
   void		moveLeft();
   void		moveRight();
+  void		hit();
   bool		initialize();
   virtual void	update(gdl::Clock const &, gdl::Input &);
   void		draw(gdl::AShader &shader, gdl::Clock const &clock);
-
+  
 public:
-  int		getScore();
-
+  int		getScore() const;
+  bool		isAlive() const;
 };
 
 #endif /* ! ACHARACTER_HPP_ */

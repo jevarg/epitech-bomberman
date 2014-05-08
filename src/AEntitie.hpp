@@ -8,6 +8,7 @@ enum	eType
     WALL = 0,
     BOX,
     FREE,
+    FLAME,
     CHARACTER
   };
 
