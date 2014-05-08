@@ -3,7 +3,9 @@
 
 enum	eType
   {
-    WALL = 0
+    WALL = 0,
+    BOX,
+    FREE
   };
 
 class AEntitie

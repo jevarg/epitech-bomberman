@@ -25,10 +25,10 @@ bool	Map::checkValidPath(short x, short y) const
 
   if (y == _mapY - 1 || y == 0 || x == 0 || x == _mapX - 1)
     return (false);
-  equa[0] = (_map[(y + 1) * _mapX + x] == USED);
-  equa[1] = (_map[(y - 1) * _mapX + x] == USED);
-  equa[2] = (_map[y * _mapX + (x + 1)] == USED);
-  equa[3] = (_map[y * _mapX + (x - 1)] == USED);
+  equa[0] = (_map[(y + 1) * _mapX + x] == FREE);
+  equa[1] = (_map[(y - 1) * _mapX + x] == FREE);
+  equa[2] = (_map[y * _mapX + (x + 1)] == FREE);
+  equa[3] = (_map[y * _mapX + (x - 1)] == FREE);
   for (int i = 0; i < 4 && counter < 2; ++i)
     counter += equa[i];
   return (counter == 2 ? false : true);
@@ -64,7 +64,7 @@ void	Map::genSmallMaze(short x, short y, short pos)
   short	ty;
   bool 	tabdir[4] = {false, false, false, false};
 
-  _map[y * _mapX + x] = USED;
+  _map[y * _mapX + x] = FREE;
   if (pos < 4)
     tabdir[pos] = true;
   while (!tabdir[0] || !tabdir[1] || !tabdir[2] || !tabdir[3])
@@ -88,7 +88,7 @@ void	Map::display()
     {
       if (i != 0 && i % (_mapX ) == 0)
 	std::cout << std::endl;
-      std::cout << (_map[i] == FREE ? "x" : (_map[i] == BOX) ? "B" : " ");
+      std::cout << (_map[i] == WALL ? "x" : (_map[i] == BOX) ? "B" : " ");
     }
   std::cout << std::endl;
 }
@@ -97,13 +97,13 @@ bool	Map::checkAccess(short x, short y) const
 {
   char	sumX[4] = {0,0,1,-1};
   char	sumY[4] = {1,-1,0,0};
-  e_path tmp;
+  eType	tmp;
   short	counter = 0;
 
   for (unsigned short i = 0; i < 4; ++i)
     {
       tmp = _map[(y + sumY[i]) * _mapX + (x + sumX[i])];
-      if (tmp == USED || tmp == BOX)
+      if (tmp == FREE || tmp == BOX)
 	++counter;
     }
   return (counter >= 1 ? true : false);
@@ -121,7 +121,7 @@ void	Map::fillBox()
       x = i % _mapX;
       if (y == _mapY - 1 || y == 0 || x == 0 || x == _mapX - 1)
 	continue ;
-      if (_map[i] == FREE && checkAccess(x, y) &&
+      if (_map[i] == WALL && checkAccess(x, y) &&
 	  std::rand() % 100 < _density)
 	_map[i] = BOX;
     }
@@ -135,13 +135,48 @@ void	Map::createMap()
 
   std::srand(std::time(NULL));
   for (int i = 0; i < totalsize; ++i)
-    _map.push_back(FREE);
+    _map.push_back(WALL);
   posx = 2 + std::rand() % (_mapX - 3);
   posy = 2 + std::rand() % (_mapY - 3);
   std::cout << "Starting at " << posx << " " << posy << std::endl;
   genSmallMaze(posx, posy, 4);
   fillBox();
   display();
+}
+
+void	Map::addEntitie(AEntitie *ent)
+{
+  int	ratiox;
+  int	ratioy;
+  unsigned int	pos;
+  Container	*cont;
+
+  ratiox = ent->getXPos() / SQUARESIZE;
+  ratioy = ent->getYPos() / SQUARESIZE;
+  pos = ratioy * (_mapX / SQUARESIZE) + ratiox;
+  while (_cont.size() <= pos)
+    {
+      cont = new Container;
+      _cont.push_back(cont);
+    }
+  _cont[pos]->stockEntitie(ent);
+}
+
+void	Map::fillContainers()
+{
+  unsigned int	i;
+  AEntitie	*ent;
+  unsigned int 	totalsize = _mapX * _mapY;
+
+  for (i = 0; i < totalsize; ++i)
+    {
+      if (_map[i] != FREE) // means there is no block
+	{
+	  ent = new AEntitie(i % _mapX, i /_mapX, _map[i]);
+	  addEntitie(ent);
+	}
+    }
+  _map.clear();	// erase the temps vector
 }
 
 int	Map::getWidth() const

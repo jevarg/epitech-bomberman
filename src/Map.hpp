@@ -2,14 +2,10 @@
 # define _MAP_H_
 
 # include <vector>
+# include "Container.hpp"
 # include "AEntitie.hpp"
 
-enum	e_path
-  {
-    FREE = 0,
-    USED,
-    BOX
-  };
+# define SQUARESIZE 10
 
 enum	e_dir
   {
@@ -28,6 +24,7 @@ public:
   int	getWidth() const;
   int	getHeight() const;
   void	createMap();
+  void	addEntitie(AEntitie *ent);
 
 private:
   void	genSmallMaze(short x, short y, short pos);
@@ -35,13 +32,15 @@ private:
   bool	checkAccess(short x, short y) const;
   short	getDir(bool *tab, short oldDir) const;
   void	fillBox();
+  void	fillContainers();
   void	display();
 
   unsigned short	_mapX;
   unsigned short	_mapY;
   unsigned short	_density;
   unsigned short	_linear;
-  std::vector<e_path>	_map;
+  std::vector<eType>	_map;
+  std::vector<Container *>	_cont;
 };
 
 #endif /* _MAP_H_ */
