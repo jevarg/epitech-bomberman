@@ -1,2 +1,7 @@
+X = 0
+Y = 0
+
 MAP_XMAX = 10
 MAP_YMAX = 10
+
+AGGRO = 10
