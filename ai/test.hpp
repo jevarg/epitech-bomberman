@@ -5,7 +5,7 @@
 // Login   <collin_b@epitech.net>
 // 
 // Started on  Thu May  8 19:42:10 2014 jonathan.collinet
-// Last update Thu May  8 20:05:37 2014 jonathan.collinet
+// Last update Thu May  8 22:13:10 2014 jonathan.collinet
 //
 
 #ifndef TEST_HPP
@@ -25,7 +25,7 @@ public:
   void setX(int);
   void setY(int);
 
-  int add(lua_State *l);
+  static int add(lua_State *l);
 
 private:
   int	_x;
