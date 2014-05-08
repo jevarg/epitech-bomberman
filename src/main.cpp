@@ -1,6 +1,7 @@
 #include <iostream>
 #include "GameEngine.hpp"
 #include "Exception.hpp"
+#include "Player.hpp"
 
 int	main(int, char **)
 {

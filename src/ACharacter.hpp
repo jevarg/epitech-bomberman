@@ -1,10 +1,11 @@
 #ifndef ACHARACTER_HPP_
 # define ACHARACTER_HPP_
 
-#include <glm/glm.hpp>
-#include "AEntitie.hpp"
-#include "Model.hpp"
-#include "Bomb.hpp"
+# include <glm/glm.hpp>
+
+# include "AEntitie.hpp"
+# include "Model.hpp"
+# include "Bomb.hpp"
 
 class	ACharacter : public AEntitie
 {
@@ -25,10 +26,8 @@ public:
   void		moveLeft();
   void		moveRight();
   bool		initialize();
-  void		draw();
-
-public:
-  virtual bool	update() const = 0;
+  virtual void	update(gdl::Clock const &, gdl::Input &);
+  void		draw(gdl::AShader &shader, gdl::Clock const &clock);
 
 public:
   int		getScore();

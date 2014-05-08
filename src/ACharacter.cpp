@@ -1,3 +1,4 @@
+#include <iostream>
 #include "ACharacter.hpp"
 
 ACharacter::ACharacter()
@@ -33,9 +34,15 @@ bool	ACharacter::initialize()
   return (true);
 }
 
-void	ACharacter::draw()
+void	ACharacter::update(gdl::Clock const &, gdl::Input &)
 {
 
+}
+
+void	ACharacter::draw(gdl::AShader &shader, gdl::Clock const &clock)
+{
+  (void) shader;
+  (void) clock;
 }
 
 int	ACharacter::getScore()
