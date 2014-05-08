@@ -188,3 +188,13 @@ int	Map::getHeight() const
 {
   return (_mapY);
 }
+
+v_Contcit	Map::ContBegin() const
+{
+  return (_cont.begin());
+}
+
+v_Contcit	Map::ContEnd() const
+{
+  return (_cont.end());
+}

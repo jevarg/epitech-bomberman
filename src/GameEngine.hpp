@@ -14,6 +14,7 @@
 # include "Exception.hpp"
 # include "Camera.hpp"
 # include "AEntitie.hpp"
+# include "Map.hpp"
 
 # define FPS 60.0f
 # define FOV 60.0f
@@ -35,6 +36,7 @@ private:
   gdl::Clock		_clock;
   gdl::BasicShader		_shader;
   std::vector<AObject *>	_obj;
+  Map			_map;
   Camera		_cam;
   int			_mapX;
   int			_mapY;

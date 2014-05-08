@@ -28,6 +28,7 @@ bool GameEngine::initialize()
   if (cube->initialize() == false)
     return (false);
   _obj.push_back(cube);
+  _map.createMap();
   return (true);
 }
 

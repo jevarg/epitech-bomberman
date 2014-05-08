@@ -15,6 +15,8 @@ enum	e_dir
     WEST = 3
   };
 
+typedef std::vector<Container *>::const_iterator v_Contcit;
+
 class Map
 {
 public:
@@ -25,6 +27,8 @@ public:
   int	getHeight() const;
   void	createMap();
   void	addEntitie(AEntitie *ent);
+  v_Contcit	ContBegin() const;
+  v_Contcit	ContEnd() const;
 
 private:
   void	genSmallMaze(short x, short y, short pos);
