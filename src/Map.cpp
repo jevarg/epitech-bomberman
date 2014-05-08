@@ -8,8 +8,8 @@
 
 Map::Map()
 {
-  _mapX = 500;
-  _mapY = 500;
+  _mapX = 50;
+  _mapY = 50;
   _density = 30;	// expressed in %
   _linear = 40;
 }

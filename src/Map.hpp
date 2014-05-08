@@ -37,11 +37,11 @@ private:
   void	fillBox();
   void	display();
 
-  short	_mapX;
-  short	_mapY;
-  short	_density;
-  short	_linear;
-  std::vector<e_path> _map;
+  unsigned short	_mapX;
+  unsigned short	_mapY;
+  unsigned short	_density;
+  unsigned short	_linear;
+  std::vector<e_path>	_map;
 };
 
 #endif /* _MAP_H_ */
