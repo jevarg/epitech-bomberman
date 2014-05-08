@@ -1,4 +1,5 @@
 
+#include <iostream>
 #include "Model.hpp"
 
 Model::Model()
@@ -35,7 +36,10 @@ void		Model::update(gdl::Clock const& clock, gdl::Input &input)
 void		Model::draw(gdl::AShader &shader, gdl::Clock const& clock)
 {
   if (_texture != NULL)
-    _texture->bind();
+    {
+      _texture->bind();
+      std::cout << "TEXTURE" << std::endl;
+    }
   _obj->draw(shader, getTransformation(), clock.getElapsed());
 }
 
@@ -46,7 +50,7 @@ bool		Model::load(std::string const& path)
   _obj = new gdl::Model();
   if (!_obj->load(path))
     return (false);
-  _obj->setCurrentAnim(0);
+  _obj->setCurrentAnim(0, false);
   return (true);
 }
 
