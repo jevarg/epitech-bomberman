@@ -8,8 +8,8 @@
 
 Map::Map()
 {
-  _mapX = 20;
-  _mapY = 20;
+  _mapX = 50;
+  _mapY = 50;
   _density = 30;	// expressed in %
   _linear = 40;
 }
@@ -18,7 +18,7 @@ Map::~Map()
 {
 }
 
-bool	Map::checkValidPath(short x, short y) const
+bool	Map::checkValidPath(int x, int y) const
 {
   int	counter = 0;
   bool	equa[4];
@@ -45,17 +45,28 @@ short	Map::getDir(bool *rtab, short cuBlock) const
     if (!tab[i])
       ++dir;
   if (dir > 1)
-    tab[(cuBlock + 2) % 4] = true;
-  dir = std::rand() % dir;
-  for (short i = 0; i < 4 && dir >= 0; ++i)
     {
-      if (!tab[i] && dir == 0)
+      tab[(cuBlock + 2) % 4] = true;
+      --dir;
+    }
+  else if (dir == 0)
+    return (-1);
+  dir = std::rand() % dir;
+  for (short i = 0; i < 4; ++i)
+    {
+      if (!tab[i] && dir <= 0)
 	return (i);
-      else if (!tab[i])
+      else if (!tab[i] && dir > 0)
 	--dir;
     }
-  return (0);
+  return (-1);
 }
+
+/*
+**
+** Recursive Backtracker
+**
+*/
 
 void	Map::genSmallMaze(short x, short y, short pos)
 {
@@ -71,12 +82,40 @@ void	Map::genSmallMaze(short x, short y, short pos)
     {
       tx = x;
       ty = y;
-      dir = getDir(tabdir, pos);
+      if ((dir = getDir(tabdir, pos)) == -1)
+	return ;
       tabdir[dir] = true;
       tx += (dir == WEST) ? -1 : (dir == EAST) ? 1 : 0;
       ty += (dir == SOUTH) ? 1 : (dir == NORTH) ? -1 : 0;
       if (checkValidPath(tx, ty) == true)
 	genSmallMaze(tx, ty, (dir + 2) % 4);
+    }
+}
+
+/*
+**
+** Hunt & Kill
+**
+*/
+
+void	Map::genBigMaze()
+{
+  unsigned int	i;
+  unsigned int	max = (_mapY - 1) * _mapX;
+
+  for (i = _mapX; i < max; ++i)
+    {
+      if (i % _mapX == 0 || (i + 1) % _mapX == 0)
+	continue ;
+      if ((i / _mapX) % 2 != 0)
+	{
+	  if (std::rand() % 100 < _density / 4)
+	    _map[i] = BOX;
+	  else
+	    _map[i] = FREE;
+	}
+      else if (i % 2 != 0)
+	_map[i] = FREE;
     }
 }
 
@@ -127,30 +166,6 @@ void	Map::fillBox()
     }
 }
 
-unsigned int	Map::getContPos(int x, int y) const
-{
-  unsigned int	ratiox;
-  unsigned int	ratioy;
-
-  ratiox = x / SQUARESIZE;
-  ratioy = y / SQUARESIZE;
-  return (ratioy * (_mapX / SQUARESIZE) + ratiox);
-}
-
-void	Map::addEntitie(t_entity *ent)
-{
-  unsigned int	pos;
-  Container	*cont;
-
-  pos = getContPos(ent->_x, ent->_y);
-  while (_cont.size() <= pos)
-    {
-      cont = new Container;
-      _cont.push_back(cont);
-    }
-  _cont[pos]->stockEntitie(ent);
-}
-
 void	Map::fillContainers()
 {
   unsigned int	i;
@@ -187,10 +202,38 @@ void	Map::createMap()
   posx = 2 + std::rand() % (_mapX - 3);
   posy = 2 + std::rand() % (_mapY - 3);
   std::cout << "Starting at " << posx << " " << posy << std::endl;
-  genSmallMaze(posx, posy, 4);
+  if (_mapX * _mapY > MAXSIZE)
+    genBigMaze();
+  else
+    genSmallMaze(posx, posy, 4);
   fillBox();
   fillContainers();
   display();
+  exit(0);
+}
+
+unsigned int	Map::getContPos(int x, int y) const
+{
+  unsigned int	ratiox;
+  unsigned int	ratioy;
+
+  ratiox = x / SQUARESIZE;
+  ratioy = y / SQUARESIZE;
+  return (ratioy * (_mapX / SQUARESIZE) + ratiox);
+}
+
+void	Map::addEntitie(t_entity *ent)
+{
+  unsigned int	pos;
+  Container	*cont;
+
+  pos = getContPos(ent->_x, ent->_y);
+  while (_cont.size() <= pos)
+    {
+      cont = new Container;
+      _cont.push_back(cont);
+    }
+  _cont[pos]->stockEntitie(ent);
 }
 
 eType	Map::checkMapColision(int x, int y) const
