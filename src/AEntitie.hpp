@@ -3,7 +3,7 @@
 
 # include "AObject.hpp"
 
-enum	eType
+enum	eEntitieType
   {
     PLAYER,
     BOMB,
@@ -12,20 +12,23 @@ enum	eType
     BONUSOBJECT // OR BONUSBOX
   };
 
-class	AEntitie : public AObject
+class		AEntitie : public AObject
 {
 public:
   AEntitie();
   virtual ~AEntitie();
 
-  int	getXPos() const;
-  int	getYPos() const;
-  eType	getType() const;
+  int		getXPos() const;
+  int		getYPos() const;
+  eEntitieType	getType() const;
+  void		setXPos(const int &x);
+  void		setYPos(const int &y);
+  void		setType(const eEntitieType &type);
 
 protected:
   int		_x;
   int		_y;
-  eType		_type;
+  eEntitieType	_type;
 };
 
 #endif /* !_AENTITIE_HPP_ */

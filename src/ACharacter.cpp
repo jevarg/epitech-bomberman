@@ -1,7 +1,8 @@
-#include <iostream>
 #include "ACharacter.hpp"
 
-ACharacter::ACharacter()
+ACharacter::ACharacter(glm::vec4 color, Model model)
+  : _color(color), _model(model), _x(0), _y(0),
+    _bombStock(1), _score(0), _speed(5), _range(5), _bombType(NORMAL)
 {
 }
 
@@ -9,12 +10,12 @@ ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::moveForward()
+void	ACharacter::moveUp()
 {
 
 }
 
-void	ACharacter::moveBackward()
+void	ACharacter::moveDown()
 {
 
 }
@@ -47,5 +48,5 @@ void	ACharacter::draw(gdl::AShader &shader, gdl::Clock const &clock)
 
 int	ACharacter::getScore()
 {
-  return (0);
+  return (_score);
 }

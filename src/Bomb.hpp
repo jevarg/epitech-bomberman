@@ -15,6 +15,7 @@ public:
 
 private:
   eBombType	_type;
+  int		_range;
 };
 
 #endif /* ! BOMB_HPP_ */

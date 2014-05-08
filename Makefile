@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May  8 15:54:30 2014 enzo de gregorio
+## Last update Thu May  8 21:04:27 2014 enzo de gregorio
 ##
 
 
@@ -25,14 +25,13 @@ SRC		=	main.cpp \
 			Cube.cpp \
 			Model.cpp \
 			Camera.cpp \
-			AObject.cpp \
 			Container.cpp \
+			AObject.cpp \
 			AEntitie.cpp \
-			StaticEntitie.cpp \
+			Bomb.cpp \
+			Item.cpp \
 			ACharacter.cpp \
-			Player.cpp \
-			Bomb.cpp
-
+			Player.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

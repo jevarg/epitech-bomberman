@@ -12,17 +12,17 @@ class	ACharacter : public AEntitie
 protected:
   glm::vec4	_color;
   Model		_model;
-  int		_bombNb;
+  int		_bombStock;
   int		_score;
   int		_speed;
   int		_range;
   eBombType	_bombType;
 
 public:
-  ACharacter();
+  ACharacter(glm::vec4 color, Model model);
   ~ACharacter();
-  void		moveForward();
-  void		moveBackward();
+  void		moveUp();
+  void		moveDown();
   void		moveLeft();
   void		moveRight();
   bool		initialize();

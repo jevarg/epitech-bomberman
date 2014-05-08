@@ -18,7 +18,22 @@ int	AEntitie::getYPos() const
   return (_y);
 }
 
-eType	AEntitie::getType() const
+eEntitieType	AEntitie::getType() const
 {
   return (_type);
+}
+
+void	AEntitie::setXPos(const int &x)
+{
+  _x = x;
+}
+
+void	AEntitie::setYPos(const int &y)
+{
+  _y = y;
+}
+
+void	AEntitie::setType(const eEntitieType &type)
+{
+  _type = type;
 }

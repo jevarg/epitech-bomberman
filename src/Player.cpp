@@ -1,9 +1,9 @@
-#include <iostream>
 #include "Player.hpp"
 
-Player::Player()
-  : ACharacter()
+Player::Player(Camera camera, glm::vec4 color, Model model)
+  : ACharacter(color, model)
 {
+  (void) camera;
 }
 
 Player::~Player()
