@@ -1,13 +1,3 @@
-//
-// cppLua.cpp for head in /home/collin_b/project/c++/bomberman/bomberman/ai
-// 
-// Made by jonathan.collinet
-// Login   <collin_b@epitech.net>
-// 
-// Started on  Thu May  8 19:16:54 2014 jonathan.collinet
-// Last update Thu May  8 19:18:32 2014 jonathan.collinet
-//
-
 #include "cppLua.hpp"
 
 cppLua::cppLua()
@@ -64,4 +54,9 @@ void	cppLua::executeLua(const char *name)
 {
   if ((_status = luaL_loadfile(_luaState, name)) == LUA_OK)
     lua_pcall(_luaState, 0, LUA_MULTRET, 0);
+}
+
+lua_State* cppLua::getState() const
+{
+  return (_luaState);
 }

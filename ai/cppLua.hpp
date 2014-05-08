@@ -5,7 +5,7 @@
 // Login   <collin_b@epitech.net>
 // 
 // Started on  Thu May  8 17:17:14 2014 jonathan.collinet
-// Last update Thu May  8 19:19:01 2014 jonathan.collinet
+// Last update Thu May  8 20:02:25 2014 jonathan.collinet
 //
 
 #ifndef CPPLUA_
@@ -25,6 +25,8 @@ public:
   void	pushIntS(const int index, const int val) const;
   void	pushSetGlobal(const char *name) const;
   void	executeLua(const char *name);
+
+  lua_State* getState() const;
 
 private:
   lua_State*	_luaState;

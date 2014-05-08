@@ -51,3 +51,6 @@ function pathfinding()
 end
 
 pathfinding()
+
+a = add(12, 12)
+print(a)
