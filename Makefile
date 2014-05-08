@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May  8 21:04:27 2014 enzo de gregorio
+## Last update Thu May  8 21:33:06 2014 enzo de gregorio
 ##
 
 
@@ -31,7 +31,8 @@ SRC		=	main.cpp \
 			Bomb.cpp \
 			Item.cpp \
 			ACharacter.cpp \
-			Player.cpp
+			Player.cpp \
+			Map.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

@@ -2,6 +2,7 @@
 #include "GameEngine.hpp"
 #include "Exception.hpp"
 #include "Player.hpp"
+#include "Map.hpp"
 
 int	main(int, char **)
 {

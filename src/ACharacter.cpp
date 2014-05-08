@@ -1,8 +1,8 @@
 #include "ACharacter.hpp"
 
 ACharacter::ACharacter(glm::vec4 color, Model model)
-  : _color(color), _model(model), _x(0), _y(0),
-    _bombStock(1), _score(0), _speed(5), _range(5), _bombType(NORMAL)
+  : AEntitie(0, 0, CHARACTER), _color(color), _model(model), _bombStock(1),
+    _score(0), _speed(5), _range(5), _bombType(NORMAL)
 {
 }
 
