@@ -1,0 +1,2 @@
+MAP_XMAX = 10
+MAP_YMAX = 10
