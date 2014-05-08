@@ -55,7 +55,4 @@ void GameEngine::draw()
   for (size_t i = 0; i < _obj.size(); ++i)
     _obj[i]->draw(_shader, _clock);
   _win.flush();
-  _save.saveGame(_map, std::string("toto"));
-  _save.loadGame(_map, std::string("toto"));
-  exit(0);
 }

@@ -24,11 +24,11 @@ bool		Save::encrypt(std::string &to_encrypt)
 {
   for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
     {
-      if ((*it < '9' && *it > '0') || *it == ' ')
+      if ((*it <= '9' && *it >= '0') || *it == ' ')
 	*it -= 25;
       else
 	{
-	  std::cerr << "Error : incorrect savegame file" << std::endl;
+	  std::cerr << "Encrypt error : incorrect savegame file" << std::endl;
 	  return (false);
 	}
     }
@@ -42,7 +42,7 @@ bool		Save::decrypt(std::string &to_encrypt)
       *it += 25;
       if ((*it > '9' || *it < '0') && *it != ' ')
       	{
-      	  std::cerr << "Error : incorrect savegame file" << std::endl;
+      	  std::cerr << "Decrypt error : incorrect savegame file" << std::endl;
       	  return (false);
       	}
     }
@@ -51,14 +51,42 @@ bool		Save::decrypt(std::string &to_encrypt)
 
 bool		Save::saveGame(Map &map, const std::string &name)
 {
-  std::ofstream	file(name.c_str());
-  std::string	buf;
+  std::vector<Container *>::const_iterator	it = map.ContBegin();
+  std::vector<Container *>::const_iterator	end = map.ContEnd();
+  std::vector<t_entity *>::const_iterator	vit;
+  std::vector<t_entity *>::const_iterator	vit_end;
+  std::list<t_entity *>::const_iterator		lit;
+  std::list<t_entity *>::const_iterator		lit_end;
+  std::ofstream					file(name.c_str());
+  std::string					buf;
 
-  buf = "42 12 1337";
-  this->encrypt(buf);
-  for (int it = 0; it < 1000; ++it)
+  while (it != end)
     {
-      file << buf << "\n";
+      vit = (*it)->vecBegin();
+      vit_end = (*it)->vecEnd();
+      while (vit != vit_end)
+	{
+	  std::ostringstream	oss;
+	  oss << (*vit)->_x << " " << (*vit)->_y << " " << static_cast<int>((*vit)->_type);
+	  buf = oss.str();
+	  this->encrypt(buf);
+	  file << buf << "\n";
+	  ++vit;
+	  buf = "";
+	}
+      lit = (*it)->listBegin();
+      lit_end = (*it)->listEnd();
+      while (lit != lit_end)
+	{
+	  std::ostringstream	oss;
+	  oss << (*lit)->_x << " " << (*lit)->_y << " " << static_cast<int>((*lit)->_type);
+	  buf = oss.str();
+	  this->encrypt(buf);
+	  file << buf << "\n";
+	  ++lit;
+	  buf = "";
+	}
+      ++it;
     }
   file.close();
   return (true);
@@ -79,7 +107,8 @@ bool		Save::loadGame(Map &map, const std::string &name)
     }
   while (std::getline(file, buf))
     {
-      this->decrypt(buf);
+      if (this->decrypt(buf) == false)
+	return (false);
       if (std::count(buf.begin(), buf.end(), ' ') != 2)
 	{
 	  std::cerr << "Error : invalid savegame file" << std::endl;
@@ -91,7 +120,6 @@ bool		Save::loadGame(Map &map, const std::string &name)
       buf.erase(0, buf.find_first_of(' ', 0) + 1);
       std::istringstream (buf) >> type;
       map.addEntitie(new t_entity(x, y, static_cast<eType>(type)));
-      std::cout << "x : " << x << " y : " << y << " type : " << type << std::endl;
     }
   file.close();
   return (true);
