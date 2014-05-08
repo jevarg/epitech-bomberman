@@ -28,8 +28,11 @@ bool GameEngine::initialize()
   _skybox.initialize();
   _skybox.scale(glm::vec3(500, 500, 500));
 
+  _model.load("assets/marvin.fbx");
+
   IObject *obj = new Model(_model);
-  obj->translate(glm::vec3(0, 0, 20.0));
+  obj->translate(glm::vec3(2.0, -1.0, 0));
+  obj->scale(glm::vec3(0.005, 0.005, 0.005));
   _obj.push_back(obj);
 
   if (_cube.initialize() == false)
