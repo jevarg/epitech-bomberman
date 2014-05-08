@@ -8,6 +8,16 @@ enum	eType
     FREE
   };
 
+typedef struct	s_entity
+{
+  s_entity(int x, int y, eType type) : _x(x), _y(y), _type(type)
+  {
+  }
+  int		_x;
+  int		_y;
+  eType		_type;
+}		t_entity;
+
 class AEntitie
 {
 public:

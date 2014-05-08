@@ -8,8 +8,8 @@
 
 Map::Map()
 {
-  _mapX = 50;
-  _mapY = 50;
+  _mapX = 20;
+  _mapY = 20;
   _density = 30;	// expressed in %
   _linear = 40;
 }
@@ -127,6 +127,47 @@ void	Map::fillBox()
     }
 }
 
+unsigned int	Map::getContPos(int x, int y) const
+{
+  unsigned int	ratiox;
+  unsigned int	ratioy;
+
+  ratiox = x / SQUARESIZE;
+  ratioy = y / SQUARESIZE;
+  return (ratioy * (_mapX / SQUARESIZE) + ratiox);
+}
+
+void	Map::addEntitie(t_entity *ent)
+{
+  unsigned int	pos;
+  Container	*cont;
+
+  pos = getContPos(ent->_x, ent->_y);
+  while (_cont.size() <= pos)
+    {
+      cont = new Container;
+      _cont.push_back(cont);
+    }
+  _cont[pos]->stockEntitie(ent);
+}
+
+void	Map::fillContainers()
+{
+  unsigned int	i;
+  t_entity	*ent;
+  unsigned int 	totalsize = _mapX * _mapY;
+
+  for (i = 0; i < totalsize; ++i)
+    {
+      if (_map[i] != FREE) // means there is no block
+	{
+	  ent = new t_entity(i % _mapX, i /_mapX, _map[i]);
+	  addEntitie(ent);
+	}
+    }
+  _map.clear();	// erase the temps vector
+}
+
 void	Map::createMap()
 {
   int	posx;
@@ -141,42 +182,15 @@ void	Map::createMap()
   std::cout << "Starting at " << posx << " " << posy << std::endl;
   genSmallMaze(posx, posy, 4);
   fillBox();
+  fillContainers();
   display();
 }
 
-void	Map::addEntitie(AEntitie *ent)
+eType	Map::checkMapColision(int x, int y) const
 {
-  int	ratiox;
-  int	ratioy;
-  unsigned int	pos;
-  Container	*cont;
+  unsigned int	pos = getContPos(x, y);
 
-  ratiox = ent->getXPos() / SQUARESIZE;
-  ratioy = ent->getYPos() / SQUARESIZE;
-  pos = ratioy * (_mapX / SQUARESIZE) + ratiox;
-  while (_cont.size() <= pos)
-    {
-      cont = new Container;
-      _cont.push_back(cont);
-    }
-  _cont[pos]->stockEntitie(ent);
-}
-
-void	Map::fillContainers()
-{
-  unsigned int	i;
-  AEntitie	*ent;
-  unsigned int 	totalsize = _mapX * _mapY;
-
-  for (i = 0; i < totalsize; ++i)
-    {
-      if (_map[i] != FREE) // means there is no block
-	{
-	  ent = new AEntitie(i % _mapX, i /_mapX, _map[i]);
-	  addEntitie(ent);
-	}
-    }
-  _map.clear();	// erase the temps vector
+  return (_cont[pos]->checkContColision(x, y));
 }
 
 int	Map::getWidth() const
@@ -187,4 +201,14 @@ int	Map::getWidth() const
 int	Map::getHeight() const
 {
   return (_mapY);
+}
+
+v_Contcit	Map::ContBegin() const
+{
+  return (_cont.begin());
+}
+
+v_Contcit	Map::ContEnd() const
+{
+  return (_cont.end());
 }
