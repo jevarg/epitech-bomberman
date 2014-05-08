@@ -23,7 +23,7 @@ bool GameEngine::initialize()
    || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
     return (false);
   _cam.initialize();
-  _cam.translate(glm::vec3(0, 10, -30));
+  _cam.translate(glm::vec3(0, 5, -10));
 
   _skybox.initialize();
   _skybox.scale(glm::vec3(500, 500, 500));
@@ -34,8 +34,13 @@ bool GameEngine::initialize()
   _type[WALL]->initialize();
   _type[BOX]->initialize();
 
+  if (!_model.load("./assets/marvin.fbx"))
+    return (false);
+  _model.scale(glm::vec3(0.005, 0.005, 0.005));
+
   _map.createMap();
   createDisplayMap();
+  _obj.push_back(&_model);
   return (true);
 }
 
