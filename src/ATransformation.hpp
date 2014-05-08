@@ -7,7 +7,7 @@
 class ATransformation
 {
 public:
-ATransformation();
+  ATransformation();
   void translate(glm::vec3 const &v);
   void rotate(glm::vec3 const& axis, float angle);
   void scale(glm::vec3 const& scale);
