@@ -30,6 +30,20 @@ void	Container::stockEntitie(t_entity *ent)
     _mobileEnt.push_back(ent);
 }
 
+void	Container::removeContBlock(int x, int y)
+{
+  l_Entit	lit = _mobileEnt.begin();
+
+  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
+    {
+      if ((*lit)->_x == x && (*lit)->_y == y)
+	{
+	  _mobileEnt.erase(lit);
+	  return ;	       	// Here i consider one object get erased by case.
+	}
+    }
+}
+
 v_Entcit	Container::vecBegin() const
 {
   return (_staticEnt.begin());

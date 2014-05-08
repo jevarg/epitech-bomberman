@@ -10,6 +10,7 @@ class Container;
 
 typedef std::vector<t_entity *>::const_iterator v_Entcit;
 typedef std::list<t_entity *>::const_iterator l_Entcit;
+typedef std::list<t_entity *>::iterator l_Entit;
 
 class Container
 {
@@ -19,6 +20,8 @@ public:
 
   eType	checkContColision(int x, int y) const;
   void	stockEntitie(t_entity *);
+  void	removeContBlock(int x, int y);
+
   v_Entcit	vecBegin() const;
   v_Entcit	vecEnd() const;
   l_Entcit	listBegin() const;

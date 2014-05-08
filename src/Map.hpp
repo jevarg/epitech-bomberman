@@ -27,6 +27,7 @@ public:
   int	getHeight() const;
   void	createMap();
   void	addEntitie(t_entity *ent);
+  void	removeEntity(int x, int y);
   eType	checkMapColision(int x, int y) const;
 
   v_Contcit	ContBegin() const;

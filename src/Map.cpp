@@ -168,6 +168,13 @@ void	Map::fillContainers()
   _map.clear();	// erase the temps vector
 }
 
+void	Map::removeEntity(int x, int y)
+{
+  unsigned int	pos = getContPos(x, y);
+
+  _cont[pos]->removeContBlock(x, y);
+}
+
 void	Map::createMap()
 {
   int	posx;
