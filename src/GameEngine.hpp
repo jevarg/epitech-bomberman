@@ -15,6 +15,7 @@
 # include "Camera.hpp"
 # include "Container.hpp"
 # include "AEntitie.hpp"
+# include "Save.hpp"
 
 # define FPS 60.0f
 # define FOV 60.0f
@@ -39,6 +40,7 @@ private:
   gdl::BasicShader		_shader;
   std::vector<AObject *>	_obj;
   std::vector<Container *>	_cont;
+  Save				_save;
   Camera			_cam;
   int				_mapX;
   int				_mapY;

@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Wed May  7 18:40:26 2014 Harold Fritsch
+## Last update Wed May  7 19:04:03 2014 Harold Fritsch
 ##
 
 
@@ -29,7 +29,7 @@ SRC		=	main.cpp \
 			Container.cpp \
 			AEntitie.cpp \
 			Entitie.cpp \
-			Save.cpp
+			Save.cpp \
 			Map.cpp
 
 OBJDIR		=	obj/

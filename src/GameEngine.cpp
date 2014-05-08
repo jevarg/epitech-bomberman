@@ -1,7 +1,7 @@
 #include <iostream>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(): _cam()
+GameEngine::GameEngine(): _save(), _cam()
 {
 
 }
@@ -54,6 +54,11 @@ void GameEngine::draw()
   for (size_t i = 0; i < _obj.size(); ++i)
     _obj[i]->draw(_shader, _clock);
   _win.flush();
+  std::vector<Container *>::const_iterator toto;
+
+  _save.saveGame(toto, "toto");
+  _save.loadGame(this, "toto");
+  exit(0);
 }
 
 void	GameEngine::addEntitie(AEntitie *ent)

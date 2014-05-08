@@ -5,17 +5,25 @@
 // Login   <fritsc_h@epitech.net>
 // 
 // Started on  Tue May  6 21:55:22 2014 Harold Fritsch
-// Last update Tue May  6 23:09:15 2014 Harold Fritsch
+// Last update Wed May  7 22:50:52 2014 Harold Fritsch
 //
 
-#ifndef SAVE_HPP__
+#ifndef SAVE_HPP_
 # define SAVE_HPP_
+
+#include <vector>
+#include <string>
+#include "Container.hpp"
+
+class	GameEngine;
 
 class	Save
 {
 public:
   Save();
   ~Save();
+  bool	saveGame(std::vector<Container *>::const_iterator, const std::string &);
+  bool	loadGame(GameEngine *, const std::string &);
 private:
   ;
 };
