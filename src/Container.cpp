@@ -8,9 +8,18 @@ Container::~Container()
 {
 }
 
-bool	Container::checkColision()
+eType	Container::checkContColision(int x, int y) const
 {
-  return (false);
+  v_Entcit	it = _staticEnt.begin();
+  l_Entcit	lit = _mobileEnt.begin();
+
+  for (v_Entcit end = _staticEnt.end(); it != end; ++it)
+    if ((*it)->_x == x && (*it)->_y == y)
+      return ((*it)->_type);
+  for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
+    if ((*lit)->_x == x && (*lit)->_y == y)
+      return ((*lit)->_type);
+  return (FREE);
 }
 
 void	Container::stockEntitie(t_entity *ent)

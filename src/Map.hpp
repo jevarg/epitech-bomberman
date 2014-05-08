@@ -27,6 +27,8 @@ public:
   int	getHeight() const;
   void	createMap();
   void	addEntitie(t_entity *ent);
+  eType	checkMapColision(int x, int y) const;
+
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
@@ -35,6 +37,7 @@ private:
   bool	checkValidPath(short x, short y) const;
   bool	checkAccess(short x, short y) const;
   short	getDir(bool *tab, short oldDir) const;
+  unsigned int	getContPos(int x, int y) const;
   void	fillBox();
   void	fillContainers();
   void	display();

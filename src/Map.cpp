@@ -144,16 +144,22 @@ void	Map::createMap()
   display();
 }
 
+unsigned int	Map::getContPos(int x, int y) const
+{
+  unsigned int	ratiox;
+  unsigned int	ratioy;
+
+  ratiox = x / SQUARESIZE;
+  ratioy = y / SQUARESIZE;
+  return (ratioy * (_mapX / SQUARESIZE) + ratiox);
+}
+
 void	Map::addEntitie(t_entity *ent)
 {
-  int	ratiox;
-  int	ratioy;
   unsigned int	pos;
   Container	*cont;
 
-  ratiox = ent->_x / SQUARESIZE;
-  ratioy = ent->_y / SQUARESIZE;
-  pos = ratioy * (_mapX / SQUARESIZE) + ratiox;
+  pos = getContPos(ent->_x, ent->_y);
   while (_cont.size() <= pos)
     {
       cont = new Container;
@@ -177,6 +183,13 @@ void	Map::fillContainers()
 	}
     }
   _map.clear();	// erase the temps vector
+}
+
+eType	Map::checkMapColision(int x, int y) const
+{
+  unsigned int	pos = getContPos(x, y);
+
+  return (_cont[pos]->checkContColision(x, y));
 }
 
 int	Map::getWidth() const

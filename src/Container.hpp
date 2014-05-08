@@ -17,7 +17,7 @@ public:
   Container();
   ~Container();
 
-  bool	checkColision();
+  eType	checkContColision(int x, int y) const;
   void	stockEntitie(t_entity *);
   v_Entcit	vecBegin() const;
   v_Entcit	vecEnd() const;
