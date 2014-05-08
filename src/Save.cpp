@@ -90,7 +90,7 @@ bool		Save::loadGame(Map &map, const std::string &name)
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
       buf.erase(0, buf.find_first_of(' ', 0) + 1);
       std::istringstream (buf) >> type;
-      map.addEntitie(new AEntitie(x, y, static_cast<eType>(type)));
+      map.addEntitie(new t_entity(x, y, static_cast<eType>(type)));
       std::cout << "x : " << x << " y : " << y << " type : " << type << std::endl;
     }
   file.close();
