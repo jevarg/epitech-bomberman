@@ -1,7 +1,8 @@
 #include <iostream>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(): _cam(), _cube(), _model()
+GameEngine::GameEngine()
+  : _cam(), _cube("./assets/texture.tga"), _skybox("./assets/skybox.tga")
 {
 
 }
@@ -13,8 +14,8 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
-  _mapX = 10;
-  _mapY = 10;
+  _mapX = 1;
+  _mapY = 1;
   if (!_win.start(800, 600, "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
@@ -24,11 +25,8 @@ bool GameEngine::initialize()
   _cam.initialize();
   _cam.translate(glm::vec3(0, 10, -30));
 
-  if (!_model.load("assets/marvin.fbx"))
-    {
-      std::cerr << "ERREUR" << std::endl;
-      return (false);
-    }
+  _skybox.initialize();
+  _skybox.scale(glm::vec3(500, 500, 500));
 
   IObject *obj = new Model(_model);
   obj->translate(glm::vec3(0, 0, 20.0));
@@ -70,6 +68,7 @@ void GameEngine::draw()
   _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
   _shader.bind();
+  _skybox.draw(_shader, _clock);
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _clock);
   _win.flush();

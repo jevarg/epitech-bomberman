@@ -10,11 +10,13 @@
 # include <SDL_keycode.h>
 # include <iostream>
 # include "IObject.hpp"
+# include "Exception.hpp"
 
 class Cube : public IObject
 {
 public:
   Cube();
+  Cube(const std::string &);
   Cube(const Cube &);
   virtual ~Cube();
   virtual bool initialize();
@@ -24,6 +26,7 @@ public:
 private:
   gdl::Texture *_texture;
   gdl::Geometry *_geometry;
+  std::string _file;
   float _speed;
 };
 
