@@ -60,21 +60,3 @@ void GameEngine::draw()
   _save.loadGame(this, "toto");
   exit(0);
 }
-
-void	GameEngine::addEntitie(AEntitie *ent)
-{
-  int	ratiox;
-  int	ratioy;
-  unsigned int	pos;
-  Container	*cont;
-
-  ratiox = ent->getXPos() / SQUARESIZE;
-  ratioy = ent->getYPos() / SQUARESIZE;
-  pos = ratioy * (_mapX / SQUARESIZE) + ratiox;
-  while (_cont.size() <= pos)
-    {
-      cont = new Container;
-      _cont.push_back(cont);
-    }
-  _cont[pos]->stockEntitie(ent);
-}
