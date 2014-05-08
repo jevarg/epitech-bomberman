@@ -1,7 +1,7 @@
 #include <iostream>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(): _cam(), _cube()
+GameEngine::GameEngine(): _cam(), _cube(), _model()
 {
 
 }
@@ -23,7 +23,6 @@ bool GameEngine::initialize()
     return (false);
   _cam.initialize();
   _cam.translate(glm::vec3(0, 10, -30));
-  _shader.bind();
 
   if (!_model.load("assets/marvin.fbx"))
     {
@@ -31,15 +30,19 @@ bool GameEngine::initialize()
       return (false);
     }
 
-  // if (_cube.initialize() == false)
-  //   return (false);
-  // for (int y = 0;y < _mapY;y++)
-  //   for (int x = 0;x < _mapX;x++)
-  //     {
-  // 	IObject *obj = new Cube(_cube);
-  // 	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
-  // 	_obj.push_back(obj);
-  //     }
+  IObject *obj = new Model(_model);
+  obj->translate(glm::vec3(0, 0, 20.0));
+  _obj.push_back(obj);
+
+  if (_cube.initialize() == false)
+    return (false);
+  for (int y = 0;y < _mapY;y++)
+    for (int x = 0;x < _mapX;x++)
+      {
+  	IObject *obj = new Cube(_cube);
+  	obj->translate(glm::vec3(y * 2, 0.0, x * 2));
+  	_obj.push_back(obj);
+      }
   return (true);
 }
 
@@ -55,8 +58,8 @@ bool GameEngine::update()
   _win.updateClock(_clock);
   _win.updateInputs(_input);
   _cam.update(_clock, _input);
-  for (size_t i = 0; i < _obj.size(); ++i)
-    _obj[i]->update(_clock, _input);
+  // for (size_t i = 0; i < _obj.size(); ++i)
+  //   _obj[i]->update(_clock, _input);
   return (true);
 }
 
@@ -67,8 +70,7 @@ void GameEngine::draw()
   _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
   _shader.bind();
-  // _model.draw(_shader, _clock);
-  // for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
-  //   (*it)->draw(_shader, _clock);
+  for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
+    (*it)->draw(_shader, _clock);
   _win.flush();
 }

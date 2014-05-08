@@ -5,7 +5,7 @@ Cube::Cube(): IObject()
 
 }
 
-Cube::Cube(const Cube &cpy): _texture(cpy._texture), _geometry(cpy._geometry)
+Cube::Cube(const Cube &cpy): IObject(), _texture(cpy._texture), _geometry(cpy._geometry)
 {
 
 }

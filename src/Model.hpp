@@ -11,6 +11,7 @@ class		Model: public IObject
 {
 public:
   Model();
+  Model(Model const&);
   virtual ~Model();
 
   bool		initialize();
