@@ -12,8 +12,8 @@ FBXHeaderExtension:  {
 		Month: 05
 		Day: 09
 		Hour: 18
-		Minute: 08
-		Second: 32
+		Minute: 12
+		Second: 52
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2014-05-09 18:08:32:000"
+CreationTime: "2014-05-09 18:12:52:000"
 Creator: "Blender version 2.70 (sub 0)"
 
 ; Object definitions
@@ -139,7 +139,7 @@ Objects:  {
 		CameraName: 100
 		CameraIndexName:
 	}
-	Model: "Model::PlayerArmature", "Limb" {
+	Model: "Model::PlayerArmature_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -220,7 +220,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::Camera", "Camera" {
+	Model: "Model::Camera_0", "Camera" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -375,7 +375,7 @@ Objects:  {
 		AudioColor: 0,1,0
 		CameraOrthoZoom: 1
 	}
-	Model: "Model::Sun", "Light" {
+	Model: "Model::Sun_0", "Light" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -476,7 +476,7 @@ Objects:  {
 		TypeFlags: "Light"
 		GeometryVersion: 124
 	}
-	Model: "Model::Player", "Mesh" {
+	Model: "Model::Player_0", "Mesh" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -716,7 +716,7 @@ Objects:  {
 			}
 		}
 	}
-	Model: "Model::root", "Limb" {
+	Model: "Model::root_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -798,7 +798,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::uleg_L", "Limb" {
+	Model: "Model::uleg_L_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -880,7 +880,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::lleg_L", "Limb" {
+	Model: "Model::lleg_L_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -962,7 +962,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::uleg_R", "Limb" {
+	Model: "Model::uleg_R_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -1044,7 +1044,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::lleg_R", "Limb" {
+	Model: "Model::lleg_R_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -1126,7 +1126,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::body", "Limb" {
+	Model: "Model::body_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -1208,7 +1208,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::uarm_L", "Limb" {
+	Model: "Model::uarm_L_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -1290,7 +1290,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::larm_L", "Limb" {
+	Model: "Model::larm_L_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -1372,7 +1372,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::uarm_R", "Limb" {
+	Model: "Model::uarm_R_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -1454,7 +1454,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::larm_R", "Limb" {
+	Model: "Model::larm_R_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -1536,7 +1536,7 @@ Objects:  {
 		Culling: "CullingOff"
 		TypeFlags: "Skeleton"
 	}
-	Model: "Model::top", "Limb" {
+	Model: "Model::top_0", "Limb" {
 		Version: 232
 		Properties60:  {
 			Property: "QuaternionInterpolate", "bool", "",0
@@ -2696,7 +2696,7 @@ Objects:  {
 		AudioColor: 0,1,0
 		CameraOrthoZoom: 1
 	}
-	Material: "Material::Player", "" {
+	Material: "Material::Player_0", "" {
 		Version: 102
 		ShadingModel: "lambert"
 		MultiLayer: 0
@@ -2726,7 +2726,7 @@ Objects:  {
 			Property: "Reflectivity", "double", "",0
 		}
 	}
-	Deformer: "Deformer::Skin Player", "Skin" {
+	Deformer: "Deformer::Skin Player_0", "Skin" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Skin"
@@ -2734,7 +2734,7 @@ Objects:  {
 		}
 		Link_DeformAcuracy: 50
 	}
-	Deformer: "SubDeformer::Cluster Player root", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 root_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2748,7 +2748,7 @@ Objects:  {
 		Transform: 0.000000075497901,-1.000000000000000,0.000000000000000,0.000000000000000,-0.000000043711388,-0.000000000000003,-1.000000000000000,0.000000000000000,1.000000000000000,0.000000075497901,-0.000000043711388,0.000000000000000,-1.701797604560852,-0.000000128482142,0.000000074387934,1.000000000000000
 		TransformLink: 0.000000037748951,0.500000000000000,0.000000021855694,0.000000000000000,-0.500000000000000,0.000000037748951,0.000000000000002,0.000000000000000,0.000000000000000,-0.000000021855694,0.500000000000000,0.000000000000000,0.000000000000000,0.850898802280426,0.000000000000000,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player uleg_L", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 uleg_L_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2762,7 +2762,7 @@ Objects:  {
 		Transform: -0.000000075497894,1.000000000000000,-0.000000087422777,0.000000000000000,0.000000043711395,-0.000000087422777,-1.000000000000000,0.000000000000000,-1.000000000000000,-0.000000075497901,-0.000000043711388,0.000000000000000,1.917039394378662,-0.338408231735229,0.000000098434576,1.000000000000000
 		TransformLink: -0.000000037748947,-0.500000000000000,-0.000000021855698,0.000000000000000,0.500000000000000,-0.000000037748951,0.000000043711388,0.000000000000000,-0.000000043711388,-0.000000021855694,0.500000000000000,0.000000000000000,0.169204190373421,0.958519697189331,0.000000007473238,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player lleg_L", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 lleg_L_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2776,7 +2776,7 @@ Objects:  {
 		Transform: -0.000000075497894,1.000000000000000,-0.000000087422777,0.000000000000000,0.000000043711395,-0.000000087422777,-1.000000000000000,0.000000000000000,-1.000000000000000,-0.000000075497901,-0.000000043711388,0.000000000000000,1.062779784202576,-0.338408291339874,0.000000098434583,1.000000000000000
 		TransformLink: -0.000000037748947,-0.500000000000000,-0.000000021855698,0.000000000000000,0.500000000000000,-0.000000037748951,0.000000043711388,0.000000000000000,-0.000000043711388,-0.000000021855694,0.500000000000000,0.000000000000000,0.169204190373421,0.531389892101288,-0.000000011197200,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player uleg_R", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 uleg_R_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2790,7 +2790,7 @@ Objects:  {
 		Transform: -0.000000075497908,1.000000000000000,0.000000087422777,0.000000000000000,0.000000043711381,0.000000087422777,-1.000000000000000,0.000000000000000,-1.000000000000000,-0.000000075497901,-0.000000043711388,0.000000000000000,1.917039394378662,0.338408529758453,0.000000098434569,1.000000000000000
 		TransformLink: -0.000000037748954,-0.500000000000000,-0.000000021855691,0.000000000000000,0.500000000000000,-0.000000037748951,-0.000000043711388,0.000000000000000,0.000000043711388,-0.000000021855694,0.500000000000000,0.000000000000000,-0.169204190373421,0.958519697189331,0.000000007473238,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player lleg_R", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 lleg_R_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2804,7 +2804,7 @@ Objects:  {
 		Transform: -0.000000075497908,1.000000000000000,0.000000087422777,0.000000000000000,0.000000043711381,0.000000087422777,-1.000000000000000,0.000000000000000,-1.000000000000000,-0.000000075497901,-0.000000043711388,0.000000000000000,1.062779784202576,0.338408470153809,0.000000098434583,1.000000000000000
 		TransformLink: -0.000000037748954,-0.500000000000000,-0.000000021855691,0.000000000000000,0.500000000000000,-0.000000037748951,-0.000000043711388,0.000000000000000,0.000000043711388,-0.000000021855694,0.500000000000000,0.000000000000000,-0.169204190373421,0.531389892101288,-0.000000011197200,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player body", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 body_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2818,7 +2818,7 @@ Objects:  {
 		Transform: 0.000000075497901,-1.000000000000000,0.000000000000000,0.000000000000000,-0.000000043711388,-0.000000000000003,-1.000000000000000,0.000000000000000,1.000000000000000,0.000000075497901,-0.000000043711388,0.000000000000000,-2.043733119964600,-0.000000154297567,0.000000074387941,1.000000000000000
 		TransformLink: 0.000000037748951,0.500000000000000,0.000000021855694,0.000000000000000,-0.500000000000000,0.000000037748951,0.000000000000002,0.000000000000000,0.000000000000000,-0.000000021855694,0.500000000000000,0.000000000000000,0.000000000000000,1.021866559982300,0.000000007473238,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player uarm_L", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 uarm_L_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2832,7 +2832,7 @@ Objects:  {
 		Transform: 0.151982158422470,0.988383233547211,-0.000000337707348,0.000000000000000,0.000000000000036,-0.000000341676497,-1.000000000000000,0.000000000000000,-0.988383233547211,0.151982158422470,-0.000000051928772,0.000000000000000,3.518282890319824,-1.457332611083984,0.000000397478914,1.000000000000000
 		TransformLink: 0.075991079211235,-0.494191616773605,-0.000000000000018,0.000000000000000,0.494191616773605,0.075991079211235,0.000000170838263,0.000000000000000,-0.000000168853660,-0.000000025964383,0.500000000000000,0.000000000000000,0.452843427658081,1.849450230598450,0.000000050228770,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player larm_L", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 larm_L_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2846,7 +2846,7 @@ Objects:  {
 		Transform: -0.000000209608345,1.000000000000000,-0.000000087422784,0.000000000000000,-0.000000042926455,-0.000000087422769,-1.000000000000000,0.000000000000000,-1.000000000000000,-0.000000209608373,0.000000042926466,0.000000000000000,3.051568508148193,-1.005225539207458,-0.000000143570915,1.000000000000000
 		TransformLink: -0.000000104804187,-0.500000000000000,0.000000021463224,0.000000000000000,0.500000000000000,-0.000000104804172,0.000000043711395,0.000000000000000,-0.000000043711381,0.000000021463237,0.500000000000000,0.000000000000000,0.502613067626953,1.525784134864807,0.000000050228767,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player uarm_R", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 uarm_R_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2860,7 +2860,7 @@ Objects:  {
 		Transform: -0.151982307434082,0.988383233547211,0.000000113756961,0.000000000000000,-0.000000000000032,0.000000115093975,-1.000000000000000,0.000000000000000,-0.988383233547211,-0.151982307434082,-0.000000017492217,0.000000000000000,3.518282890319824,1.457333087921143,0.000000067272609,1.000000000000000
 		TransformLink: -0.075991153717041,-0.494191616773605,0.000000000000015,0.000000000000000,0.494191616773605,-0.075991153717041,-0.000000057546988,0.000000000000000,0.000000056878477,-0.000000008746108,0.500000000000000,0.000000000000000,-0.452843427658081,1.849450230598450,0.000000050228770,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player larm_R", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 larm_R_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2874,7 +2874,7 @@ Objects:  {
 		Transform: 0.000000073513704,1.000000000000000,-0.000000087422791,0.000000000000000,-0.000000043960387,-0.000000087422762,-1.000000000000000,0.000000000000000,-1.000000000000000,0.000000073513718,0.000000043960377,0.000000000000000,3.051568269729614,1.005225896835327,-0.000000322485334,1.000000000000000
 		TransformLink: 0.000000036756855,-0.500000000000000,0.000000021980192,0.000000000000000,0.500000000000000,0.000000036756855,0.000000043711395,0.000000000000000,-0.000000043711381,0.000000021980190,0.500000000000000,0.000000000000000,-0.502613067626953,1.525784134864807,0.000000050228778,1.000000000000000
 	}
-	Deformer: "SubDeformer::Cluster Player top", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 top_0", "Cluster" {
 		Version: 100
 		MultiLayer: 0
 		Type: "Cluster"
@@ -2895,55 +2895,55 @@ Objects:  {
 		}
 		NbPoseNodes: 13
 		PoseNode:  {
-			Node: "Model::PlayerArmature"
+			Node: "Model::PlayerArmature_0"
 			Matrix: 0.500000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,-0.500000000000000,0.000000000000000,0.000000000000000,0.500000000000000,0.000000000000000,0.000000000000000,0.000000000000000,1.062779664993286,0.000000000000000,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::Player"
+			Node: "Model::Player_0"
 			Matrix: 0.000000037748951,0.000000000000000,-0.500000000000000,0.000000000000000,-0.500000000000000,0.000000000000000,-0.000000037748951,0.000000000000000,0.000000000000000,0.500000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,0.000000000000000,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::root"
+			Node: "Model::root_0"
 			Matrix: 0.000000037748951,0.500000000000000,0.000000021855694,0.000000000000000,-0.500000000000000,0.000000037748951,0.000000000000002,0.000000000000000,0.000000000000000,-0.000000021855694,0.500000000000000,0.000000000000000,0.000000000000000,0.850898802280426,0.000000000000000,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::uleg_L"
+			Node: "Model::uleg_L_0"
 			Matrix: -0.000000037748947,-0.500000000000000,-0.000000021855698,0.000000000000000,0.500000000000000,-0.000000037748951,0.000000043711388,0.000000000000000,-0.000000043711388,-0.000000021855694,0.500000000000000,0.000000000000000,0.169204190373421,0.958519697189331,0.000000007473238,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::lleg_L"
+			Node: "Model::lleg_L_0"
 			Matrix: -0.000000037748947,-0.500000000000000,-0.000000021855698,0.000000000000000,0.500000000000000,-0.000000037748951,0.000000043711388,0.000000000000000,-0.000000043711388,-0.000000021855694,0.500000000000000,0.000000000000000,0.169204190373421,0.531389892101288,-0.000000011197200,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::uleg_R"
+			Node: "Model::uleg_R_0"
 			Matrix: -0.000000037748954,-0.500000000000000,-0.000000021855691,0.000000000000000,0.500000000000000,-0.000000037748951,-0.000000043711388,0.000000000000000,0.000000043711388,-0.000000021855694,0.500000000000000,0.000000000000000,-0.169204190373421,0.958519697189331,0.000000007473238,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::lleg_R"
+			Node: "Model::lleg_R_0"
 			Matrix: -0.000000037748954,-0.500000000000000,-0.000000021855691,0.000000000000000,0.500000000000000,-0.000000037748951,-0.000000043711388,0.000000000000000,0.000000043711388,-0.000000021855694,0.500000000000000,0.000000000000000,-0.169204190373421,0.531389892101288,-0.000000011197200,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::body"
+			Node: "Model::body_0"
 			Matrix: 0.000000037748951,0.500000000000000,0.000000021855694,0.000000000000000,-0.500000000000000,0.000000037748951,0.000000000000002,0.000000000000000,0.000000000000000,-0.000000021855694,0.500000000000000,0.000000000000000,0.000000000000000,1.021866559982300,0.000000007473238,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::uarm_L"
+			Node: "Model::uarm_L_0"
 			Matrix: 0.075991079211235,-0.494191616773605,-0.000000000000018,0.000000000000000,0.494191616773605,0.075991079211235,0.000000170838263,0.000000000000000,-0.000000168853660,-0.000000025964383,0.500000000000000,0.000000000000000,0.452843427658081,1.849450230598450,0.000000050228770,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::larm_L"
+			Node: "Model::larm_L_0"
 			Matrix: -0.000000104804187,-0.500000000000000,0.000000021463224,0.000000000000000,0.500000000000000,-0.000000104804172,0.000000043711395,0.000000000000000,-0.000000043711381,0.000000021463237,0.500000000000000,0.000000000000000,0.502613067626953,1.525784134864807,0.000000050228767,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::uarm_R"
+			Node: "Model::uarm_R_0"
 			Matrix: -0.075991153717041,-0.494191616773605,0.000000000000015,0.000000000000000,0.494191616773605,-0.075991153717041,-0.000000057546988,0.000000000000000,0.000000056878477,-0.000000008746108,0.500000000000000,0.000000000000000,-0.452843427658081,1.849450230598450,0.000000050228770,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::larm_R"
+			Node: "Model::larm_R_0"
 			Matrix: 0.000000036756855,-0.500000000000000,0.000000021980192,0.000000000000000,0.500000000000000,0.000000036756855,0.000000043711395,0.000000000000000,-0.000000043711381,0.000000021980190,0.500000000000000,0.000000000000000,-0.502613067626953,1.525784134864807,0.000000050228778,1.000000000000000
 		}
 		PoseNode:  {
-			Node: "Model::top"
+			Node: "Model::top_0"
 			Matrix: -0.000000037748954,0.500000000000000,-0.000000021855685,0.000000000000000,0.500000000000000,0.000000037748951,-0.000000075497901,0.000000000000000,-0.000000075497901,-0.000000021855691,-0.500000000000000,0.000000000000000,0.000000000000000,1.999999165534973,0.000000050228770,1.000000000000000
 		}
 	}
@@ -2965,35 +2965,35 @@ Objects:  {
 ;------------------------------------------------------------------
 
 Relations:  {
-	Model: "Model::PlayerArmature", "Limb" {
+	Model: "Model::PlayerArmature_0", "Limb" {
 	}
-	Model: "Model::Player", "Mesh" {
+	Model: "Model::Player_0", "Mesh" {
 	}
-	Model: "Model::root", "Limb" {
+	Model: "Model::root_0", "Limb" {
 	}
-	Model: "Model::uleg_L", "Limb" {
+	Model: "Model::uleg_L_0", "Limb" {
 	}
-	Model: "Model::lleg_L", "Limb" {
+	Model: "Model::lleg_L_0", "Limb" {
 	}
-	Model: "Model::uleg_R", "Limb" {
+	Model: "Model::uleg_R_0", "Limb" {
 	}
-	Model: "Model::lleg_R", "Limb" {
+	Model: "Model::lleg_R_0", "Limb" {
 	}
-	Model: "Model::body", "Limb" {
+	Model: "Model::body_0", "Limb" {
 	}
-	Model: "Model::uarm_L", "Limb" {
+	Model: "Model::uarm_L_0", "Limb" {
 	}
-	Model: "Model::larm_L", "Limb" {
+	Model: "Model::larm_L_0", "Limb" {
 	}
-	Model: "Model::uarm_R", "Limb" {
+	Model: "Model::uarm_R_0", "Limb" {
 	}
-	Model: "Model::larm_R", "Limb" {
+	Model: "Model::larm_R_0", "Limb" {
 	}
-	Model: "Model::top", "Limb" {
+	Model: "Model::top_0", "Limb" {
 	}
-	Model: "Model::Camera", "Camera" {
+	Model: "Model::Camera_0", "Camera" {
 	}
-	Model: "Model::Sun", "Light" {
+	Model: "Model::Sun_0", "Light" {
 	}
 	Model: "Model::Producer Perspective", "Camera" {
 	}
@@ -3011,31 +3011,31 @@ Relations:  {
 	}
 	Model: "Model::Camera Switcher", "CameraSwitcher" {
 	}
-	Material: "Material::Player", "" {
+	Material: "Material::Player_0", "" {
 	}
-	Deformer: "Deformer::Skin Player", "Skin" {
+	Deformer: "Deformer::Skin Player_0", "Skin" {
 	}
-	Deformer: "SubDeformer::Cluster Player root", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 root_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player uleg_L", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 uleg_L_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player lleg_L", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 lleg_L_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player uleg_R", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 uleg_R_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player lleg_R", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 lleg_R_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player body", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 body_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player uarm_L", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 uarm_L_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player larm_L", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 larm_L_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player uarm_R", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 uarm_R_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player larm_R", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 larm_R_0", "Cluster" {
 	}
-	Deformer: "SubDeformer::Cluster Player top", "Cluster" {
+	Deformer: "SubDeformer::Cluster Player_0 top_0", "Cluster" {
 	}
 }
 
@@ -3043,45 +3043,45 @@ Relations:  {
 ;------------------------------------------------------------------
 
 Connections:  {
-	Connect: "OO", "Model::Player", "Model::Scene"
-	Connect: "OO", "Model::Sun", "Model::Scene"
-	Connect: "OO", "Model::Camera", "Model::Scene"
-	Connect: "OO", "Model::PlayerArmature", "Model::Scene"
-	Connect: "OO", "Material::Player", "Model::Player"
-	Connect: "OO", "Deformer::Skin Player", "Model::Player"
-	Connect: "OO", "SubDeformer::Cluster Player root", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player uleg_L", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player lleg_L", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player uleg_R", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player lleg_R", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player body", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player uarm_L", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player larm_L", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player uarm_R", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player larm_R", "Deformer::Skin Player"
-	Connect: "OO", "SubDeformer::Cluster Player top", "Deformer::Skin Player"
-	Connect: "OO", "Model::root", "SubDeformer::Cluster Player root"
-	Connect: "OO", "Model::uleg_L", "SubDeformer::Cluster Player uleg_L"
-	Connect: "OO", "Model::lleg_L", "SubDeformer::Cluster Player lleg_L"
-	Connect: "OO", "Model::uleg_R", "SubDeformer::Cluster Player uleg_R"
-	Connect: "OO", "Model::lleg_R", "SubDeformer::Cluster Player lleg_R"
-	Connect: "OO", "Model::body", "SubDeformer::Cluster Player body"
-	Connect: "OO", "Model::uarm_L", "SubDeformer::Cluster Player uarm_L"
-	Connect: "OO", "Model::larm_L", "SubDeformer::Cluster Player larm_L"
-	Connect: "OO", "Model::uarm_R", "SubDeformer::Cluster Player uarm_R"
-	Connect: "OO", "Model::larm_R", "SubDeformer::Cluster Player larm_R"
-	Connect: "OO", "Model::top", "SubDeformer::Cluster Player top"
-	Connect: "OO", "Model::root", "Model::PlayerArmature"
-	Connect: "OO", "Model::uleg_L", "Model::root"
-	Connect: "OO", "Model::lleg_L", "Model::uleg_L"
-	Connect: "OO", "Model::uleg_R", "Model::root"
-	Connect: "OO", "Model::lleg_R", "Model::uleg_R"
-	Connect: "OO", "Model::body", "Model::root"
-	Connect: "OO", "Model::uarm_L", "Model::body"
-	Connect: "OO", "Model::larm_L", "Model::uarm_L"
-	Connect: "OO", "Model::uarm_R", "Model::body"
-	Connect: "OO", "Model::larm_R", "Model::uarm_R"
-	Connect: "OO", "Model::top", "Model::body"
+	Connect: "OO", "Model::Player_0", "Model::Scene"
+	Connect: "OO", "Model::Sun_0", "Model::Scene"
+	Connect: "OO", "Model::Camera_0", "Model::Scene"
+	Connect: "OO", "Model::PlayerArmature_0", "Model::Scene"
+	Connect: "OO", "Material::Player_0", "Model::Player_0"
+	Connect: "OO", "Deformer::Skin Player_0", "Model::Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 root_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 uleg_L_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 lleg_L_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 uleg_R_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 lleg_R_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 body_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 uarm_L_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 larm_L_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 uarm_R_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 larm_R_0", "Deformer::Skin Player_0"
+	Connect: "OO", "SubDeformer::Cluster Player_0 top_0", "Deformer::Skin Player_0"
+	Connect: "OO", "Model::root_0", "SubDeformer::Cluster Player_0 root_0"
+	Connect: "OO", "Model::uleg_L_0", "SubDeformer::Cluster Player_0 uleg_L_0"
+	Connect: "OO", "Model::lleg_L_0", "SubDeformer::Cluster Player_0 lleg_L_0"
+	Connect: "OO", "Model::uleg_R_0", "SubDeformer::Cluster Player_0 uleg_R_0"
+	Connect: "OO", "Model::lleg_R_0", "SubDeformer::Cluster Player_0 lleg_R_0"
+	Connect: "OO", "Model::body_0", "SubDeformer::Cluster Player_0 body_0"
+	Connect: "OO", "Model::uarm_L_0", "SubDeformer::Cluster Player_0 uarm_L_0"
+	Connect: "OO", "Model::larm_L_0", "SubDeformer::Cluster Player_0 larm_L_0"
+	Connect: "OO", "Model::uarm_R_0", "SubDeformer::Cluster Player_0 uarm_R_0"
+	Connect: "OO", "Model::larm_R_0", "SubDeformer::Cluster Player_0 larm_R_0"
+	Connect: "OO", "Model::top_0", "SubDeformer::Cluster Player_0 top_0"
+	Connect: "OO", "Model::root_0", "Model::PlayerArmature_0"
+	Connect: "OO", "Model::uleg_L_0", "Model::root_0"
+	Connect: "OO", "Model::lleg_L_0", "Model::uleg_L_0"
+	Connect: "OO", "Model::uleg_R_0", "Model::root_0"
+	Connect: "OO", "Model::lleg_R_0", "Model::uleg_R_0"
+	Connect: "OO", "Model::body_0", "Model::root_0"
+	Connect: "OO", "Model::uarm_L_0", "Model::body_0"
+	Connect: "OO", "Model::larm_L_0", "Model::uarm_L_0"
+	Connect: "OO", "Model::uarm_R_0", "Model::body_0"
+	Connect: "OO", "Model::larm_R_0", "Model::uarm_R_0"
+	Connect: "OO", "Model::top_0", "Model::body_0"
 }
 ;Takes and animation section
 ;----------------------------------------------------
@@ -3095,7 +3095,7 @@ Takes:  {
 
 		;Models animation
 		;----------------------------------------------------
-		Model: "Model::root" {
+		Model: "Model::root_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -3181,7 +3181,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::uleg_L" {
+		Model: "Model::uleg_L_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -3291,7 +3291,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::lleg_L" {
+		Model: "Model::lleg_L_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -3382,7 +3382,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::uleg_R" {
+		Model: "Model::uleg_R_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -3492,7 +3492,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::lleg_R" {
+		Model: "Model::lleg_R_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -3586,7 +3586,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::body" {
+		Model: "Model::body_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -3672,7 +3672,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::uarm_L" {
+		Model: "Model::uarm_L_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -3822,7 +3822,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::larm_L" {
+		Model: "Model::larm_L_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -3914,7 +3914,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::uarm_R" {
+		Model: "Model::uarm_R_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -4065,7 +4065,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::larm_R" {
+		Model: "Model::larm_R_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -4158,7 +4158,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::top" {
+		Model: "Model::top_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -4244,7 +4244,7 @@ Takes:  {
 				}
 			}
 		}
-		Model: "Model::Camera" {
+		Model: "Model::Camera_0" {
 			Version: 1.1
 			Channel: "Transform" {
 				Channel: "T" {
@@ -4291,26 +4291,7 @@ Takes:  {
 							3848846500,89.000035489103738,L
 						Color: 0,1,0
 					}
-					Channel: "Z" {
-						Default: -89.999749787349558
-						KeyVer: 4005
-						KeyCount: 1
-						Key: 
-							3848846500,-89.999749787349558,L
-						Color: 0,0,1
-					}
-					LayerType: 2
-				}
-				Channel: "S" {
-					Channel: "X" {
-						Default: 1.000000000000000
-						KeyVer: 4005
-						KeyCount: 1
-						Key: 
-							3848846500,1.000000000000000,L
-						Color: 1,0,0
-					}
-					Channel: "Y" {
+
 						Default: 1.000000000000000
 						KeyVer: 4005
 						KeyCount: 1
