@@ -2,7 +2,7 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine()
-  : _cam(), _skybox("./assets/skybox.tga"), _type()
+  : _cam(), _skybox(SKY_TEXTURE), _type(), _texture()
 {
 }
 
@@ -28,11 +28,16 @@ bool GameEngine::initialize()
   _skybox.initialize();
   _skybox.scale(glm::vec3(500, 500, 500));
 
-  _type[WALL] = new Cube("./assets/skybox.tga");
-  _type[BOX] = new Cube("./assets/texture.tga");
+  _type[WALL] = new Cube(_skybox);
+  _type[BOX] = new Cube(_skybox);
+  _texture[WALL] = new gdl::Texture();
+  _texture[BOX] = new gdl::Texture();
 
-  _type[WALL]->initialize();
-  _type[BOX]->initialize();
+  if (!_texture[WALL]->load(WALL_TEXTURE, true) || !_texture[BOX]->load(BOX_TEXTURE, true))
+    throw(Exception("Cannot load the texture"));
+
+  _type[WALL]->setTexture(_texture[WALL]);
+  _type[BOX]->setTexture(_texture[BOX]);
 
   if (!_model.load("./assets/marvin.fbx"))
     return (false);
@@ -77,7 +82,11 @@ void GameEngine::draw()
 void GameEngine::createDisplayMap()
 {
   v_Contcit	end = _map.ContEnd();
+  IObject	*ground = new Cube(_skybox);
 
+  ground->scale(glm::vec3(2 * _mapX, 1.0, 2 * _mapY));
+  ground->translate(glm::vec3(2 * (_mapX - 0.5), -2.0, 2 * (_mapY - 0.5)));
+  _obj.push_back(ground);
   for (v_Contcit it = _map.ContBegin();it != end;++it)
     {
       l_Entcit endList = (*it)->listEnd();

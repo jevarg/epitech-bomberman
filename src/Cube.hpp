@@ -1,4 +1,4 @@
-#ifndef _CUBE_HPP_
+ #ifndef _CUBE_HPP_
 # define _CUBE_HPP_
 
 # include <glm/glm.hpp>
@@ -21,8 +21,9 @@ public:
   virtual ~Cube();
   virtual bool initialize();
   virtual void update(gdl::Clock const &clock, gdl::Input &input);
-  virtual void draw(gdl::AShader &shader, gdl::Clock const &);
-  virtual IObject *clone();
+  virtual void draw(gdl::AShader &shader, gdl::Clock const &) const;
+  virtual IObject *clone() const;
+  void setTexture(gdl::Texture *texture);
 
 private:
   gdl::Texture *_texture;

@@ -1,4 +1,3 @@
-
 #include <iostream>
 #include "Model.hpp"
 
@@ -23,7 +22,7 @@ Model::~Model()
     delete _texture;
 }
 
-IObject *Model::clone()
+IObject *Model::clone() const
 {
   return (new Model(*this));
 }
@@ -38,7 +37,7 @@ void		Model::update(gdl::Clock const& clock, gdl::Input &input)
 
 }
 
-void		Model::draw(gdl::AShader &shader, gdl::Clock const& clock)
+void		Model::draw(gdl::AShader &shader, gdl::Clock const& clock) const
 {
   if (_texture != NULL)
     {
@@ -65,4 +64,9 @@ bool		Model::loadTexture(std::string const& path)
     delete _texture;
   _texture = new gdl::Texture();
   return (_texture->load(path));
+}
+
+void		Model::setTexture(gdl::Texture *texture)
+{
+  _texture = texture;
 }
