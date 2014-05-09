@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May  8 11:57:20 2014 Harold Fritsch
+## Last update Fri May  9 15:57:54 2014 Harold Fritsch
 ##
 
 
@@ -22,14 +22,18 @@ SRCDIR		=	./
 SRC		=	main.cpp \
 			GameEngine.cpp \
 			Exception.cpp \
-			Player.cpp \
 			Cube.cpp \
+			Model.cpp \
 			Camera.cpp \
-			AObject.cpp \
 			Container.cpp \
+			AObject.cpp \
 			AEntitie.cpp \
-			Entitie.cpp \
 			Save.cpp \
+			Item.cpp \
+			Bomb.cpp \
+			Flame.cpp \
+			ACharacter.cpp \
+			Player.cpp \
 			Map.cpp
 
 OBJDIR		=	obj/
