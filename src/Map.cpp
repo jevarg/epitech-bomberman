@@ -209,7 +209,6 @@ void	Map::createMap()
   fillBox();
   fillContainers();
   display();
-  exit(0);
 }
 
 unsigned int	Map::getContPos(int x, int y) const

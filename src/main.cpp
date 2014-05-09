@@ -1,14 +1,16 @@
 #include <iostream>
 #include "GameEngine.hpp"
 #include "Exception.hpp"
-#include "Map.hpp"
+#include "Settings.hpp"
 
 int	main(int, char **)
 {
   try
     {
       GameEngine eng;
+      Settings	set;
 
+      set.loadFile(DEFAULT_FILE);
       if (!eng.initialize())
 	return (1);
       while (eng.update())
