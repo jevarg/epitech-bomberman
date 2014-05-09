@@ -5,6 +5,7 @@
 # include "Container.hpp"
 # include "AEntitie.hpp"
 
+# define MAXSIZE 10000
 # define SQUARESIZE 10
 
 enum	e_dir
@@ -27,16 +28,20 @@ public:
   int	getHeight() const;
   void	createMap();
   void	addEntitie(t_entity *ent);
+  void	removeEntity(int x, int y);
   eType	checkMapColision(int x, int y) const;
 
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
 private:
-  void	genSmallMaze(short x, short y, short pos);
-  bool	checkValidPath(short x, short y) const;
-  bool	checkAccess(short x, short y) const;
+  void	genSmallMaze(short x, short y, short dir);
+  void	genBigMaze();
+
+  bool	checkValidPath(int x, int y) const;
   short	getDir(bool *tab, short oldDir) const;
+
+  bool	checkAccess(short x, short y) const;
   unsigned int	getContPos(int x, int y) const;
   void	fillBox();
   void	fillContainers();
