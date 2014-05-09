@@ -1,8 +1,8 @@
 #include "Item.hpp"
 
-Item::Item()
-{
-
+Item::Item(eItemType itemType)
+  : _itemType(itemType)
+{  
 }
 
 Item::~Item()

@@ -17,7 +17,7 @@ private:
   eItemType	_itemType;
 
 public:
-  Item();
+  Item(eItemType itemType);
   ~Item();
   eItemType	getType() const;
 };
