@@ -16,10 +16,11 @@ public:
 
   bool		initialize();
   void		update(gdl::Clock const&, gdl::Input &);
-  void		draw(gdl::AShader &, gdl::Clock const&);
+  void		draw(gdl::AShader &, gdl::Clock const&) const;
   bool		load(std::string const&);
   bool		loadTexture(std::string const&);
-  IObject	*clone();
+  IObject	*clone() const;
+  void		setTexture(gdl::Texture *);
 
 private:
   gdl::Model	*_obj;
