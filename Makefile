@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May  8 11:10:56 2014 luc sinet
+## Last update Fri May  9 19:03:50 2014 luc sinet
 ##
 
 
@@ -29,7 +29,8 @@ SRC		=	main.cpp \
 			Container.cpp \
 			AEntitie.cpp \
 			Entitie.cpp \
-			Map.cpp
+			Map.cpp \
+			Settings.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
