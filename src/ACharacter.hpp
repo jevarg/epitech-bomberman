@@ -29,7 +29,7 @@ public:
   void		moveRight();
   void		hit();
   bool		initialize();
-  virtual void	update(gdl::Clock const &, gdl::Input &);
+  virtual void	update(gdl::Clock const &clock, gdl::Input &input);
   void		draw(gdl::AShader &shader, gdl::Clock const &clock);
   
 public:

@@ -42,15 +42,15 @@ bool	ACharacter::initialize()
   return (true);
 }
 
-void	ACharacter::update(gdl::Clock const &, gdl::Input &)
+void	ACharacter::update(gdl::Clock const &clock, gdl::Input &input)
 {
-
+  (void) clock;
+  (void) input;
 }
 
 void	ACharacter::draw(gdl::AShader &shader, gdl::Clock const &clock)
 {
-  (void) shader;
-  (void) clock;
+  _model.draw(shader, clock);
 }
 
 int	ACharacter::getScore() const
