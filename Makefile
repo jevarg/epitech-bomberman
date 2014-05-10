@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Fri May  9 15:57:54 2014 Harold Fritsch
+## Last update Sat May 10 16:06:43 2014 
 ##
 
 
@@ -25,8 +25,8 @@ SRC		=	main.cpp \
 			Cube.cpp \
 			Model.cpp \
 			Camera.cpp \
+			ATransformation.cpp \
 			Container.cpp \
-			AObject.cpp \
 			AEntitie.cpp \
 			Save.cpp \
 			Item.cpp \
@@ -40,8 +40,8 @@ OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -g
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -Wl,-whole-archive -lgdl_gl -Wl,-no-whole-archive -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl
+CXXFLAGS	+=	-Wextra -Wall -W -g -p
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl -p
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))

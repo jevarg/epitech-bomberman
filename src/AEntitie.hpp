@@ -1,7 +1,7 @@
 #ifndef _AENTITIE_HPP_
 # define _AENTITIE_HPP_
 
-# include "AObject.hpp"
+# include "IObject.hpp"
 
 enum	eType
   {
@@ -9,7 +9,8 @@ enum	eType
     BOX,
     FREE,
     FLAME,
-    CHARACTER
+    CHARACTER,
+    GROUND
   };
 
 typedef struct	s_entity
@@ -22,7 +23,7 @@ typedef struct	s_entity
   eType		_type;
 }		t_entity;
 
-class		AEntitie : public AObject
+class		AEntitie : public IObject
 {
 public:
   AEntitie();

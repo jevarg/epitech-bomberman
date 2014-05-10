@@ -13,14 +13,22 @@
 # include "Cube.hpp"
 # include "Exception.hpp"
 # include "Camera.hpp"
+# include "IObject.hpp"
+# include "Model.hpp"
 # include "AEntitie.hpp"
 # include "Save.hpp"
+# include "Container.hpp"
 # include "Map.hpp"
 
 # define FPS 60.0f
 # define FOV 60.0f
 # define DEF_SIZE_X 800.0f
 # define DEF_SIZE_Y 600.0f
+
+# define WALL_TEXTURE "./assets/wall.tga"
+# define SKY_TEXTURE "./assets/skybox.tga"
+# define BOX_TEXTURE "./assets/box.tga"
+# define GROUND_TEXTURE "./assets/ground.tga"
 
 class GameEngine : public gdl::Game
 {
@@ -33,16 +41,22 @@ public:
   virtual void	draw();
 
 private:
+  void	createDisplayMap();
+
   gdl::SdlContext		_win;
   gdl::Input			_input;
   gdl::Clock			_clock;
   gdl::BasicShader		_shader;
-  std::vector<AObject *>	_obj;
-  Map				_map;
   Save				_save;
+  std::vector<IObject *>	_obj;
   Camera			_cam;
   int				_mapX;
   int				_mapY;
+  Cube				_skybox;
+  Model				_model;
+  Map				_map;
+  std::map<eType, IObject *>	_type;
+  std::map<eType, gdl::Texture *>	_texture;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

@@ -11,7 +11,7 @@ Map::Map()
   _mapX = 50;
   _mapY = 50;
   _density = 30;	// expressed in %
-  _linear = 40;
+  _linear = 100;
 }
 
 Map::~Map()
@@ -209,7 +209,6 @@ void	Map::createMap()
   fillBox();
   fillContainers();
   display();
-  exit(0);
 }
 
 unsigned int	Map::getContPos(int x, int y) const
