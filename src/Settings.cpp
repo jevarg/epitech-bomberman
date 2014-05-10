@@ -20,7 +20,7 @@ Settings::~Settings()
   _keyMap.clear();
 }
 
-int	Settings::toNumber(const std::string &str)
+int	Settings::toNumber(const std::string &str) const
 {
   int	num;
   std::istringstream(str) >> num;
@@ -130,4 +130,33 @@ void	Settings::loadFile(const std::string &filename)
       std::cout << _cvarList[(int)cit->first] << ": "<< cit->first <<
 	" => " << cit->second << std::endl;
     }
+}
+
+bool	Settings::cvarExist(cvar var) const
+{
+  return (_cvarMap.find(var) != _cvarMap.end());
+}
+
+/*
+** On the two methodes below, iterator 'it' would never be equal to map.end()
+** if cvarExist is used.
+*/
+
+int	Settings::getVar(cvar var) const
+{
+  std::map<cvar, int>::const_iterator	it;
+
+  if ((it = _cvarMap.find(var)) == _cvarMap.end())
+    return (0);
+  return (it->second);
+}
+
+bool	Settings::setVar(cvar var, int value)
+{
+  std::map<cvar, int>::iterator	it;
+
+  if ((it = _cvarMap.find(var)) == _cvarMap.end())
+    return (false);
+  it->second = value;
+  return (true);
 }

@@ -42,7 +42,12 @@ public:
   ~Settings();
 
   void	loadFile(const std::string &);
-  int	toNumber(const std::string &);
+
+  bool	cvarExist(cvar var) const;
+  int	getVar(cvar var) const;
+  bool	setVar(cvar var, int value);
+
+  int	toNumber(const std::string &) const;
 
 private:
   bool	readFile(std::vector<std::string> &inst, const std::string &);
