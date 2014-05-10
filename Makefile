@@ -5,9 +5,8 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Fri May  9 19:03:50 2014 luc sinet
+## Last update Sat May 10 17:52:52 2014 luc sinet
 ##
-
 
 NAME		=	bomberman
 
@@ -22,22 +21,27 @@ SRCDIR		=	./
 SRC		=	main.cpp \
 			GameEngine.cpp \
 			Exception.cpp \
-			Player.cpp \
 			Cube.cpp \
+			Model.cpp \
 			Camera.cpp \
-			AObject.cpp \
+			ATransformation.cpp \
 			Container.cpp \
 			AEntitie.cpp \
-			Entitie.cpp \
-			Map.cpp \
-			Settings.cpp
+			Settings.cpp \
+			Save.cpp \
+			Item.cpp \
+			Bomb.cpp \
+			Flame.cpp \
+			ACharacter.cpp \
+			Player.cpp \
+			Map.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -g
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -Wl,-whole-archive -lgdl_gl -Wl,-no-whole-archive -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl
+CXXFLAGS	+=	-Wextra -Wall -W -g -p
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl -p
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))

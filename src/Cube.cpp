@@ -1,129 +1,147 @@
 #include "Cube.hpp"
 
-Cube::Cube()
+Cube::Cube(): IObject(), _texture(NULL), _geometry(NULL), _file("")
+{
+
+}
+
+Cube::Cube(const Cube &cpy)
+  : IObject(), _texture(cpy._texture), _geometry(cpy._geometry), _file("")
+{
+
+}
+
+Cube::Cube(const std::string &file): IObject(), _texture(NULL), _geometry(NULL), _file(file)
 {
 
 }
 
 Cube::~Cube()
 {
-
+  if (_texture)
+    delete _texture;
+  if (_geometry)
+    delete _geometry;
 }
 
 bool Cube::initialize()
 {
-  _speed = 10.0f;
-  if (_texture.load("./assets/texture.tga") == false)
+  _geometry = new gdl::Geometry();
+
+  if (!_texture)
     {
-      std::cerr << "Cannot load the cube texture" << std::endl;
-      return (false);
+      _texture = new gdl::Texture();
+      if (_file.size() && !_texture->load(_file))
+	throw(Exception("Cannot load the texture"));
     }
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(1.0, -1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, -1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
 
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(-1.0, 1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, -1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(0.0f, 1.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(1.0, -1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, -1.0));
+  _geometry->pushUv(glm::vec2(1.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(0.0f, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(0.0f, 2.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, -1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, -1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(-1.0, 1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, -1.0));
+  _geometry->pushUv(glm::vec2(1.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(1.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushUv(glm::vec2(0.0f, 2.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, -1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(0.0f, 1.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, -1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, -1.0));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(1.0f, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(1.0f, 2.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, -1.0, -1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, -1.0));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushUv(glm::vec2(1.0f, 2.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(1.0, -1.0, -1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(0.0f, 1.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, -1.0, -1.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 0.0f));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 0.0f));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 1.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, 1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(1.0, -1.0, -1.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 0.0f));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 1.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(-1.0, 1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, 1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(0.0f, 1.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, 1.0));
+  _geometry->pushUv(glm::vec2(2.0/4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(3.0/4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(3.0/4.0, 2.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(-1.0, 1.0, 1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(-1.0, 1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, 1.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 2.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(-1.0, -1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(-1.0, 1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(-1.0, 1.0, 1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(0.0f, 1.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(-1.0, 1.0, 1.0));
+  _geometry->pushUv(glm::vec2(1.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(-1.0, 1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, -1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, -1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(-1.0, 1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(-1.0, 1.0, 1.0));
+  _geometry->pushUv(glm::vec2(1.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushUv(glm::vec2(1.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
 
-  _geometry.pushVertex(glm::vec3(-1.0, 1.0, 1.0));
-  _geometry.pushVertex(glm::vec3(-1.0, 1.0, -1.0));
-  _geometry.pushVertex(glm::vec3(1.0, 1.0, -1.0));
-  _geometry.pushUv(glm::vec2(0.0f, 0.0f));
-  _geometry.pushUv(glm::vec2(0.0f, 1.0f));
-  _geometry.pushUv(glm::vec2(1.0f, 1.0f));
+  _geometry->pushVertex(glm::vec3(-1.0, 1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, -1.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 3.0 / 3.0));
 
-  _geometry.build();
+  _geometry->pushVertex(glm::vec3(-1.0, 1.0, 1.0));
+  _geometry->pushVertex(glm::vec3(-1.0, 1.0, -1.0));
+  _geometry->pushVertex(glm::vec3(1.0, 1.0, -1.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushUv(glm::vec2(2.0 / 4.0, 3.0 / 3.0));
+  _geometry->pushUv(glm::vec2(3.0 / 4.0, 3.0 / 3.0));
+
+  _geometry->build();
   return (true);
 }
 
-void Cube::update(gdl::Clock const &clock, gdl::Input &input)
+void Cube::update(gdl::Clock const &, gdl::Input &)
 {
-  if (input.getKey(SDLK_z))
-    translate(glm::vec3(0, 1, 0) * static_cast<float>(clock.getElapsed()) * _speed);
-  if (input.getKey(SDLK_s))
-    translate(glm::vec3(0, -1, 0) * static_cast<float>(clock.getElapsed()) * _speed);
-  if (input.getKey(SDLK_UP))
-    translate(glm::vec3(0, 0, -1) * static_cast<float>(clock.getElapsed()) * _speed);
-  if (input.getKey(SDLK_DOWN))
-    translate(glm::vec3(0, 0, 1) * static_cast<float>(clock.getElapsed()) * _speed);
-  if (input.getKey(SDLK_LEFT))
-    translate(glm::vec3(-1, 0, 0) * static_cast<float>(clock.getElapsed()) * _speed);
-  if (input.getKey(SDLK_RIGHT))
-    translate(glm::vec3(1, 0, 0) * static_cast<float>(clock.getElapsed()) * _speed);
+
 }
 
-void Cube::draw(gdl::AShader &shader, gdl::Clock const &)
+void Cube::draw(gdl::AShader &shader, gdl::Clock const &) const
 {
-  _texture.bind();
-  _geometry.draw(shader, getTransformation(), GL_TRIANGLES);
+  if (_texture)
+    _texture->bind();
+  if (_geometry)
+    _geometry->draw(shader, getTransformation(), GL_TRIANGLES);
+}
+
+IObject *Cube::clone() const
+{
+  return (new Cube(*this));
+}
+
+void Cube::setTexture(gdl::Texture *texture)
+{
+  _texture = texture;
 }

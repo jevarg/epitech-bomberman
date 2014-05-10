@@ -1,4 +1,4 @@
-# include "AEntitie.hpp"
+#include "AEntitie.hpp"
 
 AEntitie::AEntitie()
 {
@@ -25,4 +25,19 @@ int	AEntitie::getYPos() const
 eType	AEntitie::getType() const
 {
   return (_type);
+}
+
+void	AEntitie::setXPos(const int &x)
+{
+  _x = x;
+}
+
+void	AEntitie::setYPos(const int &y)
+{
+  _y = y;
+}
+
+void	AEntitie::setType(const eType &type)
+{
+  _type = type;
 }

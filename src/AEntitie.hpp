@@ -1,11 +1,16 @@
-#ifndef _IENTITIE_H_
-# define _IENTITIE_H_
+#ifndef _AENTITIE_HPP_
+# define _AENTITIE_HPP_
+
+# include "IObject.hpp"
 
 enum	eType
   {
     WALL = 0,
     BOX,
-    FREE
+    FREE,
+    FLAME,
+    CHARACTER,
+    GROUND
   };
 
 typedef struct	s_entity
@@ -18,16 +23,19 @@ typedef struct	s_entity
   eType		_type;
 }		t_entity;
 
-class AEntitie
+class		AEntitie : public IObject
 {
 public:
   AEntitie();
   AEntitie(int x, int y, eType type);
   virtual ~AEntitie();
 
-  int	getXPos() const;
-  int	getYPos() const;
-  eType	getType() const;
+  int		getXPos() const;
+  int		getYPos() const;
+  eType		getType() const;
+  void		setXPos(const int &x);
+  void		setYPos(const int &y);
+  void		setType(const eType &type);
 
 protected:
   int		_x;
@@ -35,4 +43,4 @@ protected:
   eType		_type;
 };
 
-#endif /* _IENTITIE_H_ */
+#endif /* !_AENTITIE_HPP_ */
