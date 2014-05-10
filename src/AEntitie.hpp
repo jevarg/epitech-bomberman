@@ -5,7 +5,8 @@ enum	eType
   {
     WALL = 0,
     BOX,
-    FREE
+    FREE,
+    GROUND,
   };
 
 typedef struct	s_entity

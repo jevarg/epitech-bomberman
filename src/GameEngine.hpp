@@ -24,9 +24,10 @@
 # define DEF_SIZE_X 800.0f
 # define DEF_SIZE_Y 600.0f
 
-# define WALL_TEXTURE "./assets/skybox.tga"
+# define WALL_TEXTURE "./assets/wall.tga"
 # define SKY_TEXTURE "./assets/skybox.tga"
-# define BOX_TEXTURE "./assets/texture.tga"
+# define BOX_TEXTURE "./assets/box.tga"
+# define GROUND_TEXTURE "./assets/ground.tga"
 
 class GameEngine : public gdl::Game
 {
