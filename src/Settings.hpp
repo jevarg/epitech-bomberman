@@ -10,9 +10,15 @@
 # define DEFAULT_FILE "default.cfg"
 
 typedef std::vector<std::string>::const_iterator v_instCit;
+typedef std::vector<std::string>::iterator v_instit;
 
 enum	eAction
   {
+    FORWARD = 0,
+    BACK,
+    LEFT,
+    RIGHT,
+    ACTIVATE,
     UNKNOWN
   };
 
@@ -29,7 +35,9 @@ public:
 private:
   bool	readFile(std::vector<std::string> &inst, const std::string &);
   void	parsInst(const std::vector<std::string> &inst);
+  void	addKey(const std::string tab[3]);
 
+  std::vector<std::string>	_actionList;
   std::map<keyCode, eAction>	_keyMap;
 };
 
