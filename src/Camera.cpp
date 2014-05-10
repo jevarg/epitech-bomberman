@@ -3,7 +3,7 @@
 
 Camera::Camera(): _phi(0.0), _theta(0.0)
 {
-  _projection = glm::perspective(FOV, DEF_SIZE_X / DEF_SIZE_Y, 0.1f, 100.0f);
+  _projection = glm::perspective(CFOV, DEF_SIZE_X / DEF_SIZE_Y, 0.1f, 100.0f);
 }
 
 

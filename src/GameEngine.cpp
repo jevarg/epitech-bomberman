@@ -35,7 +35,7 @@ bool GameEngine::initialize()
 bool GameEngine::update()
 {
   int time;
-  double fps = (1000 / FPS);
+  double fps = (1000 / CFPS);
 
   if (_input.getInput(SDL_QUIT) || _input.getKey(SDLK_ESCAPE))
     return (false);

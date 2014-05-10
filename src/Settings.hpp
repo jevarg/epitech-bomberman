@@ -11,6 +11,7 @@
 
 typedef std::vector<std::string>::const_iterator v_instCit;
 typedef std::vector<std::string>::iterator v_instit;
+typedef unsigned char keyCode;
 
 enum	eAction
   {
@@ -22,7 +23,17 @@ enum	eAction
     UNKNOWN
   };
 
-typedef unsigned char keyCode;
+/*
+** /!\ Must be in the same order as the keywords are pushed in the vector
+*/
+
+enum	cvar
+  {
+    FPS = 0,
+    FOV,
+    WHEIGHT,
+    WWIDTH
+  };
 
 class Settings
 {
@@ -31,14 +42,19 @@ public:
   ~Settings();
 
   void	loadFile(const std::string &);
+  int	toNumber(const std::string &);
 
 private:
   bool	readFile(std::vector<std::string> &inst, const std::string &);
   void	parsInst(const std::vector<std::string> &inst);
   void	addKey(const std::string tab[3]);
+  void	addCvar(const std::string tab[3]);
 
   std::vector<std::string>	_actionList;
   std::map<keyCode, eAction>	_keyMap;
+
+  std::vector<std::string>     	_cvarList;
+  std::map<cvar, int>		_cvarMap;
 };
 
 #endif /* _SETTINGS_H_ */

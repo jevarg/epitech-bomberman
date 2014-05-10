@@ -8,11 +8,43 @@ Settings::Settings()
   _actionList.push_back("left");
   _actionList.push_back("right");
   _actionList.push_back("activate");
+
+  _cvarList.push_back("com_maxFps");
+  _cvarList.push_back("cg_fov");
+  _cvarList.push_back("r_windowHeight");
+  _cvarList.push_back("r_windowWidth");
 }
 
 Settings::~Settings()
 {
   _keyMap.clear();
+}
+
+int	Settings::toNumber(const std::string &str)
+{
+  int	num;
+  std::istringstream(str) >> num;
+
+  return (num);
+}
+
+void	Settings::addCvar(const std::string tab[3])
+{
+  v_instit	listit;
+  v_instit	listend = _cvarList.end();
+  int		cvarValue = toNumber(tab[2]);
+
+  for (listit = _cvarList.begin(); listit != listend; ++listit)
+    {
+      if (*listit == tab[1])
+	{
+	  _cvarMap.insert(std::pair<cvar, int>
+			  (static_cast<cvar>(std::distance(_cvarList.begin(), listit)),
+			   cvarValue));
+	  break ;
+	}
+    }
+
 }
 
 void	Settings::addKey(const std::string tab[3])
@@ -49,7 +81,8 @@ void	Settings::parsInst(const std::vector<std::string> &inst)
 	  }
       if (tab[0] == "bind" && tab[1].size() == 1)
 	addKey(tab);
-      std::cout << tab[0] << " " << tab[1] << " " << tab[2] << std::endl;
+      else if (tab[0] == "set")
+	addCvar(tab);
       ++it;
     }
 }
@@ -82,10 +115,19 @@ void	Settings::loadFile(const std::string &filename)
 
   if (readFile(inst, filename))
     parsInst(inst);
-  std::map<keyCode, eAction>::iterator it;
 
-  for (it = _keyMap.begin(); it != _keyMap.end(); ++it)
+  std::map<keyCode, eAction>::iterator kit;
+  std::map<cvar, int>::iterator cit;
+
+  for (kit = _keyMap.begin(); kit != _keyMap.end(); ++kit)
     {
-      std::cout << it->first << " => " << _actionList[(int)it->second] << std::endl;
+      std::cout << kit->first << " => " << kit->second << " => "
+		<<  _actionList[(int)kit->second] << std::endl;
+    }
+
+  for (cit = _cvarMap.begin(); cit != _cvarMap.end(); ++cit)
+    {
+      std::cout << _cvarList[(int)cit->first] << ": "<< cit->first <<
+	" => " << cit->second << std::endl;
     }
 }
