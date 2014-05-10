@@ -32,8 +32,11 @@ bool GameEngine::initialize()
   _type[BOX] = new Cube(_skybox);
   _texture[WALL] = new gdl::Texture();
   _texture[BOX] = new gdl::Texture();
+  _texture[GROUND] = new gdl::Texture();
 
-  if (!_texture[WALL]->load(WALL_TEXTURE, true) || !_texture[BOX]->load(BOX_TEXTURE, true))
+  if (!_texture[WALL]->load(WALL_TEXTURE, true)
+      || !_texture[BOX]->load(BOX_TEXTURE, true)
+      || !_texture[GROUND]->load(GROUND_TEXTURE, true))
     throw(Exception("Cannot load the texture"));
 
   _type[WALL]->setTexture(_texture[WALL]);
@@ -84,6 +87,7 @@ void GameEngine::createDisplayMap()
   v_Contcit	end = _map.ContEnd();
   IObject	*ground = new Cube(_skybox);
 
+  ground->setTexture(_texture[GROUND]);
   ground->scale(glm::vec3(2 * _mapX, 1.0, 2 * _mapY));
   ground->translate(glm::vec3(2 * (_mapX - 0.5), -2.0, 2 * (_mapY - 0.5)));
   _obj.push_back(ground);
