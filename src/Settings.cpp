@@ -166,10 +166,8 @@ eAction	Settings::getActionFromKey(keyCode key) const
 }
 
 /*
-**
 ** getKeyFromAct Will fill a vector of key and return the number of key inserted
 ** A vector must be used considering we handle multibinding
-**
 */
 
 int	Settings::getKeyFromAct(eAction act, std::vector<keyCode> &keySet) const
