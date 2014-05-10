@@ -54,7 +54,7 @@ bool		Model::load(std::string const& path)
   _obj = new gdl::Model();
   if (!_obj->load(path))
     return (false);
-  _obj->setCurrentAnim(0, false);
+  _obj->setCurrentAnim(0);
   return (true);
 }
 

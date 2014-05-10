@@ -39,9 +39,9 @@ bool GameEngine::initialize()
   _type[WALL]->setTexture(_texture[WALL]);
   _type[BOX]->setTexture(_texture[BOX]);
 
-  if (!_model.load("./assets/marvin.fbx"))
+  if (!_model.load("./assets/steve.fbx"))
     return (false);
-  _model.scale(glm::vec3(0.005, 0.005, 0.005));
+  _model.translate(glm::vec3(-5.0, 0, 0));
 
   _map.createMap();
   createDisplayMap();
