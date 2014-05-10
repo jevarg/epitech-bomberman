@@ -138,7 +138,7 @@ bool	Settings::cvarExist(cvar var) const
 }
 
 /*
-** On the two methodes below, iterator 'it' would never be equal to map.end()
+** On the methode below, iterator 'it' would never be equal to map.end()
 ** if cvarExist is used.
 */
 
@@ -151,12 +151,45 @@ int	Settings::getVar(cvar var) const
   return (it->second);
 }
 
-bool	Settings::setVar(cvar var, int value)
+void	Settings::setVar(cvar var, int value)
 {
-  std::map<cvar, int>::iterator	it;
+  _cvarMap[var] = value;
+}
 
-  if ((it = _cvarMap.find(var)) == _cvarMap.end())
-    return (false);
-  it->second = value;
-  return (true);
+eAction	Settings::getActionFromKey(keyCode key) const
+{
+  std::map<keyCode, eAction>::const_iterator   it;
+
+  if ((it = _keyMap.find(key)) == _keyMap.end())
+    return (UNKNOWN);
+  return (it->second);
+}
+
+/*
+**
+** getKeyFromAct Will fill a vector of key and return the number of key inserted
+** A vector must be used considering we handle multibinding
+**
+*/
+
+int	Settings::getKeyFromAct(eAction act, std::vector<keyCode> &keySet) const
+{
+  std::map<keyCode, eAction>::const_iterator   it;
+  std::map<keyCode, eAction>::const_iterator   end;
+  int	nbKey = 0;
+
+  for (it = _keyMap.begin(), end = _keyMap.end(); it != end; ++it)
+    {
+      if (it->second == act)
+	{
+	  keySet.push_back(it->first);
+	  ++nbKey;
+	}
+    }
+  return (nbKey);
+}
+
+void	Settings::setKey(keyCode key, eAction act)
+{
+  _keyMap[key] = act;
 }

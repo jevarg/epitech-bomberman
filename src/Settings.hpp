@@ -8,6 +8,7 @@
 # include <map>
 
 # define DEFAULT_FILE "default.cfg"
+# define UNBIND 0
 
 typedef std::vector<std::string>::const_iterator v_instCit;
 typedef std::vector<std::string>::iterator v_instit;
@@ -45,7 +46,10 @@ public:
 
   bool	cvarExist(cvar var) const;
   int	getVar(cvar var) const;
-  bool	setVar(cvar var, int value);
+  void	setVar(cvar var, int value);
+  eAction	getActionFromKey(keyCode key) const;
+  int	getKeyFromAct(eAction act, std::vector<keyCode> &) const;
+  void	setKey(keyCode key, eAction act);
 
   int	toNumber(const std::string &) const;
 
