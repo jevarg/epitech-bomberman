@@ -1,8 +1,8 @@
 #include <iostream>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine()
-  : _save(), _cam(), _skybox(SKY_TEXTURE), _type(), _texture()
+GameEngine::GameEngine(Settings &set)
+  : _save(), _cam(), _skybox(SKY_TEXTURE), _type(), _texture(), _map(set), _set(set)
 {
 }
 
@@ -14,9 +14,9 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
-  _mapX = 10;
-  _mapY = 10;
-  if (!_win.start(800, 600, "Bomberman"))
+  _mapX = 15;
+  _mapY = 15;
+  if (!_win.start(_set.getVar(W_WIDTH), _set.getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)

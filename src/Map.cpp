@@ -4,14 +4,13 @@
 #include <ctime>
 #include "Map.hpp"
 
-#include "GameEngine.hpp"
-
-Map::Map()
+Map::Map(Settings &set)
 {
-  _mapX = 50;
-  _mapY = 50;
-  _density = 30;	// expressed in %
-  _linear = 100;
+  _mapX = 30;
+  _mapY = 30;
+  _density = set.getVar(MAP_DENSITY);	// expressed in %
+  _linear = set.getVar(MAP_LINEAR);
+  std::cout << _density << " " << _linear << std::endl;
 }
 
 Map::~Map()

@@ -32,8 +32,10 @@ enum	cvar
   {
     FPS = 0,
     FOV,
-    WHEIGHT,
-    WWIDTH
+    W_HEIGHT,
+    W_WIDTH,
+    MAP_DENSITY,
+    MAP_LINEAR,
   };
 
 class Settings

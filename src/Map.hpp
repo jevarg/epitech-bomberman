@@ -4,6 +4,7 @@
 # include <vector>
 # include "Container.hpp"
 # include "AEntitie.hpp"
+# include "Settings.hpp"
 
 # define MAXSIZE 10000
 # define SQUARESIZE 10
@@ -21,7 +22,7 @@ typedef std::vector<Container *>::const_iterator v_Contcit;
 class Map
 {
 public:
-  Map();
+  Map(Settings &set);
   ~Map();
 
   int	getWidth() const;

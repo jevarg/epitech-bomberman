@@ -13,6 +13,8 @@ Settings::Settings()
   _cvarList.push_back("cg_fov");
   _cvarList.push_back("r_windowHeight");
   _cvarList.push_back("r_windowWidth");
+  _cvarList.push_back("s_mapDensity");
+  _cvarList.push_back("s_mapLinear");
 }
 
 Settings::~Settings()
