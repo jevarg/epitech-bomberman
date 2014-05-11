@@ -22,7 +22,7 @@ eType	Container::checkContColision(int x, int y) const
   return (FREE);
 }
 
-void	Container::stockEntitie(t_entity *ent)
+void	Container::stockEntity(t_entity *ent)
 {
   if (ent->_type == WALL)
     _staticEnt.push_back(ent);

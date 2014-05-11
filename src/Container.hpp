@@ -19,7 +19,7 @@ public:
   ~Container();
 
   eType	checkContColision(int x, int y) const;
-  void	stockEntitie(t_entity *);
+  void	stockEntity(t_entity *);
   void	removeContBlock(int x, int y);
 
   v_Entcit	vecBegin() const;

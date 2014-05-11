@@ -233,7 +233,7 @@ void	Map::addEntitie(t_entity *ent)
       cont = new Container;
       _cont.push_back(cont);
     }
-  _cont[pos]->stockEntitie(ent);
+  _cont[pos]->stockEntity(ent);
 }
 
 eType	Map::checkMapColision(int x, int y) const
