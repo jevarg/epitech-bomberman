@@ -19,9 +19,10 @@
 # include "Save.hpp"
 # include "Container.hpp"
 # include "Map.hpp"
+# include "Settings.hpp"
 
-# define FPS 60.0f
-# define FOV 60.0f
+# define CFPS 60.0f
+# define CFOV 60.0f
 # define DEF_SIZE_X 800.0f
 # define DEF_SIZE_Y 600.0f
 
@@ -33,7 +34,7 @@
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine();
+  GameEngine(Settings &set);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -56,6 +57,7 @@ private:
   Cube				_skybox;
   Model				_model;
   Map				_map;
+  Settings			&_set;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
 };
