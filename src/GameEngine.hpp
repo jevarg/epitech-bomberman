@@ -43,6 +43,7 @@ public:
 
 private:
   void	createDisplayMap();
+  void	createDisplayBorder();
 
   gdl::SdlContext		_win;
   gdl::Input			_input;

@@ -6,8 +6,8 @@
 
 Map::Map(Settings &set)
 {
-  _mapX = 30;
-  _mapY = 30;
+  _mapX = 50;
+  _mapY = 50;
   _density = set.getVar(MAP_DENSITY);	// expressed in %
   _linear = set.getVar(MAP_LINEAR);
   std::cout << _density << " " << _linear << std::endl;
@@ -169,11 +169,12 @@ void	Map::fillContainers()
 {
   unsigned int	i;
   t_entity	*ent;
-  unsigned int 	totalsize = _mapX * _mapY;
+  unsigned int 	totalsize = (_mapX - 1) * _mapY;
 
-  for (i = 0; i < totalsize; ++i)
+  for (i = _mapX; i < totalsize; ++i)
     {
-      if (_map[i] != FREE) // means there is no block
+      if (_map[i] != FREE && i % _mapX != 0 &&
+	  (i + 1) % _mapX != 0) // means there is a block / It's the border
 	{
 	  ent = new t_entity(i % _mapX, i /_mapX, _map[i]);
 	  addEntitie(ent);
@@ -238,15 +239,17 @@ eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
+  if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
+    return (WALL);
   return (_cont[pos]->checkContColision(x, y));
 }
 
-int	Map::getWidth() const
+unsigned int	Map::getWidth() const
 {
   return (_mapX);
 }
 
-int	Map::getHeight() const
+unsigned int	Map::getHeight() const
 {
   return (_mapY);
 }

@@ -83,6 +83,28 @@ void GameEngine::draw()
   _win.flush();
 }
 
+void GameEngine::createDisplayBorder()
+{
+  unsigned int	mapX = _map.getWidth();
+  unsigned int	mapY = _map.getHeight();
+  unsigned int	i;
+
+  for (i = 0; i < mapX; ++i)
+    {
+      _obj.push_back(_type[WALL]->clone());
+      _obj.back()->translate(glm::vec3(2 * i, 0.0, 0));
+      _obj.push_back(_type[WALL]->clone());
+      _obj.back()->translate(glm::vec3(2 * i, 0.0, 2 * (mapY - 1)));
+    }
+  for (i = 1; i < (mapY - 1); ++i)
+    {
+      _obj.push_back(_type[WALL]->clone());
+      _obj.back()->translate(glm::vec3(2 * (mapX - 1), 0.0, 2 * i));
+      _obj.push_back(_type[WALL]->clone());
+      _obj.back()->translate(glm::vec3(0, 0.0, 2 * i));
+    }
+}
+
 void GameEngine::createDisplayMap()
 {
   v_Contcit	end = _map.ContEnd();
@@ -91,17 +113,18 @@ void GameEngine::createDisplayMap()
   ground->scale(glm::vec3(2 * _mapX, 1.0, 2 * _mapY));
   ground->translate(glm::vec3(2 * (_mapX - 0.5), -2.0, 2 * (_mapY - 0.5)));
   _obj.push_back(ground);
-  for (v_Contcit it = _map.ContBegin();it != end;++it)
+  createDisplayBorder();
+  for (v_Contcit it = _map.ContBegin(); it != end; ++it)
     {
       l_Entcit endList = (*it)->listEnd();
-      for (l_Entcit it1 = (*it)->listBegin();it1 != endList;++it1)
+      for (l_Entcit it1 = (*it)->listBegin(); it1 != endList; ++it1)
 	if (_type[(*it1)->_type])
 	  {
 	    _obj.push_back(_type[(*it1)->_type]->clone());
 	    _obj.back()->translate(glm::vec3(2 * (*it1)->_x, 0.0, 2 * (*it1)->_y));
 	  }
       v_Entcit endVec = (*it)->vecEnd();
-      for (v_Entcit it1 = (*it)->vecBegin();it1 != endVec;++it1)
+      for (v_Entcit it1 = (*it)->vecBegin(); it1 != endVec; ++it1)
 	if (_type[(*it1)->_type])
 	  {
 	    _obj.push_back(_type[(*it1)->_type]->clone());
