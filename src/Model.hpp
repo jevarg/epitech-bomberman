@@ -27,4 +27,4 @@ private:
   gdl::Texture	*_texture;
 };
 
-#endif /* _MODEL_H_ */
+#endif /* !_MODEL_H_ */
