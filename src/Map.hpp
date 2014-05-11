@@ -24,8 +24,8 @@ public:
   Map();
   ~Map();
 
-  int	getWidth() const;
-  int	getHeight() const;
+  unsigned int	getWidth() const;
+  unsigned int	getHeight() const;
   void	createMap();
   void	addEntitie(t_entity *ent);
   void	removeEntity(int x, int y);

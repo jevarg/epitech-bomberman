@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat May 10 16:06:43 2014 
+## Last update Sun May 11 15:51:50 2014 luc sinet
 ##
 
 
@@ -40,7 +40,7 @@ OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -g -p
+CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native
 LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl -p
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
