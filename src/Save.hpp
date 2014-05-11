@@ -5,7 +5,7 @@
 // Login   <fritsc_h@epitech.net>
 // 
 // Started on  Tue May  6 21:55:22 2014 Harold Fritsch
-// Last update Thu May  8 18:47:27 2014 Harold Fritsch
+// Last update Sun May 11 17:25:19 2014 Harold Fritsch
 //
 
 #ifndef SAVE_HPP_
@@ -15,6 +15,7 @@
 #include <string>
 #include "Container.hpp"
 #include "Map.hpp"
+#include "Settings.hpp"
 
 class	GameEngine;
 
@@ -25,8 +26,8 @@ public:
   ~Save();
   bool	encrypt(std::string &);
   bool	decrypt(std::string &);
-  bool	saveGame(Map &, const std::string &);
-  bool	loadGame(Map &, const std::string &);
+  bool	saveGame(Map &, Settings &, const std::string &);
+  bool	loadGame(Map &, Settings &, const std::string &);
 private:
   ;
 };

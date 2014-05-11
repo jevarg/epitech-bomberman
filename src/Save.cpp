@@ -9,6 +9,7 @@
 #include "GameEngine.hpp"
 #include "Save.hpp"
 #include "Container.hpp"
+#include "Settings.hpp"
 
 Save::Save()
 {
@@ -49,7 +50,7 @@ bool		Save::decrypt(std::string &to_encrypt)
   return (true);
 }
 
-bool		Save::saveGame(Map &map, const std::string &name)
+bool		Save::saveGame(Map &map, Settings &settings, const std::string &name)
 {
   std::vector<Container *>::const_iterator	it = map.ContBegin();
   std::vector<Container *>::const_iterator	end = map.ContEnd();
@@ -59,7 +60,13 @@ bool		Save::saveGame(Map &map, const std::string &name)
   std::list<t_entity *>::const_iterator		lit_end;
   std::ofstream					file(name.c_str());
   std::string					buf;
+  std::ostringstream				ss;
 
+  ss << settings.getVar(W_WIDTH) << " " << settings.getVar(W_HEIGHT);
+  buf = ss.str();
+  this->encrypt(buf);
+  file << buf << "\n";
+  buf = " ";
   while (it != end)
     {
       vit = (*it)->vecBegin();
@@ -92,7 +99,7 @@ bool		Save::saveGame(Map &map, const std::string &name)
   return (true);
 }
 
-bool		Save::loadGame(Map &map, const std::string &name)
+    bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -105,21 +112,29 @@ bool		Save::loadGame(Map &map, const std::string &name)
       std::cerr << "Error opening " << name << "\n";
       return (false);
     }
-  while (std::getline(file, buf))
+  if (std::getline(file, buf))
     {
-      if (this->decrypt(buf) == false)
-	return (false);
-      if (std::count(buf.begin(), buf.end(), ' ') != 2)
-	{
-	  std::cerr << "Error : invalid savegame file" << std::endl;
-	  return (false);
-	}
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
       buf.erase(0, buf.find_first_of(' ', 0) + 1);
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
-      buf.erase(0, buf.find_first_of(' ', 0) + 1);
-      std::istringstream (buf) >> type;
-      map.addEntitie(new t_entity(x, y, static_cast<eType>(type)));
+      settings.setVar(W_WIDTH, x);
+      settings.setVar(W_HEIGHT, y);
+      while (std::getline(file, buf))
+	{
+	  if (this->decrypt(buf) == false)
+	    return (false);
+	  if (std::count(buf.begin(), buf.end(), ' ') != 2)
+	    {
+	      std::cerr << "Error : invalid savegame file" << std::endl;
+	      return (false);
+	    }
+	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
+	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
+	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
+	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
+	  std::istringstream (buf) >> type;
+	  map.addEntitie(new t_entity(x, y, static_cast<eType>(type)));
+	}
     }
   file.close();
   return (true);

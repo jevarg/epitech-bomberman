@@ -38,7 +38,7 @@ enum	cvar
     MAP_LINEAR,
   };
 
-class Settings
+class	Settings
 {
 public:
   Settings();
