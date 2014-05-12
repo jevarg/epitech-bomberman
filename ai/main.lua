@@ -40,48 +40,80 @@ function random_movement()
 	else
 		Y = Y + mov[n]
 	end
-	print("new x: " .. X .. " -- new y: " .. Y)
 end
 
--- function get_shortest_priority(map, x, y)
--- 	local dist = AGGRO
--- 	if (x > 0 and type(map[y][x]) == "number") then
--- 		if (map[y][x]) then
-			
--- 		end
--- 	end
--- 	if (x < MAP_XMAX + 1) then
--- 	end
--- 	if (y > 0) then
--- 	end
--- 	if (y < MAP_YMAX + 1) then
--- 	end
-
--- end
-
--- function get_shortest_priority(map, entities)
--- 	-- priority to
--- 	-- priority to M and P
--- 	-- next X
--- 	-- next B
--- 	-- next random direction
-
--- 	local dist = {{}}
-
--- 	for i = 1, #entities do
--- 		dist[i]["type"] = entities[i]["type"]
--- 		dist[i]["nb"] = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
--- 	end
-
-
-
--- end
-
-function get_nb_from(c)
-	if (c == "M" or c == "P") then
-		return 1
+function get_shortest_distance_of(map, x, y)
+	local cur_dist = AGGRO + 1
+	local cur_x, cur_y = 0, 0
+	if (x > 0 and type(map[y][x - 1]) == "number") then
+		if (map[y][x - 1] < cur_dist) then 
+			cur_dist = map[y][x - 1]
+			cur_x = x - 1
+			cur_y = y
+		end
 	end
-	return tonumber(c)
+	if (x < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
+		if (map[y][x + 1] < cur_dist) then
+			cur_dist = map[y][x + 1]
+			cur_x = x + 1
+			cur_y = y
+		end
+	end
+	if (y > 0 and type(map[y - 1][x]) == "number") then
+		if (map[y - 1][x] < cur_dist) then
+			cur_dist = map[y - 1][x]
+			cur_x = x
+			cur_y = y - 1
+		end
+	end
+	if (y < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
+		if (map[y + 1][x] < cur_dist) then
+			cur_dist = map[y + 1][x]
+			cur_x = x
+			cur_y = y + 1
+		end
+	end
+	return cur_dist, cur_x, cur_y
+end
+
+function get_good_way(map, x, y, nb)
+	if (x > 0 and type(map[y][x - 1]) == "number") then
+		if (map[y][x - 1] < nb) then return y, x - 1 end
+	end
+	if (x < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
+		if (map[y][x + 1] < nb) then return y, x + 1 end
+	end
+	if (y > 0 and type(map[y - 1][x]) == "number") then
+		if (map[y - 1][x] < nb) then return y - 1, x end
+	end
+	if (y < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
+		if (map[y + 1][x] < nb) then return y + 1, x end
+	end
+end
+
+function take_shortest_priority(map, entities)
+
+	-- Player(1) > Monster(2) > BonuxBox(3) > Box(4) > Random Dir
+
+	local min_t = 42
+	local t = 42
+	local dist = 0
+	local x = 0
+	local y = 0
+	local cur_dist = 0
+	for i = 1, #entities do
+		cur_dist, x, y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
+		if (cur_dist ~= AGGRO + 1) then
+			if (entities[i]["x"] < t) then
+				t = entities[i]["type"]
+				dist = cur_dist
+			end
+		end
+	end
+	while (map[y][x] ~= 0 and map[y][x] ~= 1) do
+		y, x = get_good_way(map, x, y, map[y][x])
+	end
+	return x, y
 end
 
 function check_directions(map, cur_x, cur_y, i_x, i_y)
@@ -161,7 +193,10 @@ function best_first(map, entities)
 	local cur_x, cur_y = X, Y
 	if (have_elem(entities, cur_x, cur_y)) then
 		travel_map(map, cur_x, cur_y)
-		-- get_shortest_priority(map, entities)
+		print("\nFINAL MAP\n")
+		display_map(map)
+		local x, y = take_shortest_priority(map, entities)
+		print(x, y)
 	else
 		random_movement()
 	end
@@ -170,7 +205,6 @@ end
 function pathfinding()
 	local entities = {
 		{["type"] = 1, ["x"] = 4, ["y"] = 10}, 	-- player
-		-- {["type"] = 2, ["x"] = X, ["y"] = Y},	-- me the monster
 		{["type"] = 2, ["x"] = 6, ["y"] = 3},	-- monster 2
 		{["type"] = 4, ["x"] = 8, ["y"] = 4},	-- box
 		{["type"] = 3, ["x"] = 4, ["y"] = 2},	-- box bonus
@@ -181,11 +215,11 @@ function pathfinding()
 		{"W", ".", "W", ".", "W", "M", ".", "W", ".", "W"},
 		{"W", ".", "W", ".", "W", ".", ".", "B", ".", "W"},
 		{"W", ".", "W", ".", "W", "W", "W", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", "M", ".", ".", ".", "W"},
+		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
 		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
 		{"W", ".", "W", ".", "W", ".", ".", ".", ".", "W"},
 		{"W", ".", "W", ".", "W", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", "P", "W", ".", ".", ".", ".", "W"},
+		{"W", ".", "W", "P", "W", ".", ".", "M", ".", "W"},
 		{"W", ".", "W", ".", "W", ".", ".", ".", ".", "W"},
 		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
 		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
@@ -199,12 +233,9 @@ function pathfinding()
 	}
 	display_map(map)
 	best_first(map, entities)
-
-	print("\nFINAL MAP\n")
-	display_map(map)
 end
 
-X, Y = 6, 6
+X, Y = 8, 10
 
 pathfinding()
 
