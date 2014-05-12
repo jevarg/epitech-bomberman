@@ -62,7 +62,7 @@ bool		Save::saveGame(Map &map, Settings &settings, const std::string &name)
   std::string					buf;
   std::ostringstream				ss;
 
-  ss << settings.getVar(W_WIDTH) << " " << settings.getVar(W_HEIGHT);
+  ss << settings.getVar(MAP_WIDTH) << " " << settings.getVar(MAP_HEIGHT);
   buf = ss.str();
   this->encrypt(buf);
   file << buf << "\n";
@@ -114,19 +114,23 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
     }
   if (std::getline(file, buf))
     {
+      if (this->decrypt(buf) == false)
+	return (false);
       if (std::count(buf.begin(), buf.end(), ' ') != 1)
 	{
 	  std::cerr << "Error : invalid savegame file" << std::endl;
+	  return (false);
 	}
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
       buf.erase(0, buf.find_first_of(' ', 0) + 1);
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
-      settings.setVar(W_WIDTH, x);
-      settings.setVar(W_HEIGHT, y);
+      settings.setVar(MAP_WIDTH, x);
+      settings.setVar(MAP_HEIGHT, y);
       while (std::getline(file, buf))
 	{
 	  if (this->decrypt(buf) == false)
 	    return (false);
+	  std::cout << "readed : " << buf << std::endl;
 	  if (std::count(buf.begin(), buf.end(), ' ') != 2)
 	    {
 	      std::cerr << "Error : invalid savegame file" << std::endl;
