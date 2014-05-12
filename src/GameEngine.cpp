@@ -1,8 +1,9 @@
 #include <iostream>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(Settings &set)
-  : _save(), _cam(), _skybox(SKY_TEXTURE), _type(), _texture(), _map(set), _set(set)
+GameEngine::GameEngine(Settings &set, Input &input)
+  : _save(), _cam(), _skybox(SKY_TEXTURE), _type(),
+    _texture(), _map(set), _set(set), _input(input)
 {
 }
 
@@ -58,13 +59,13 @@ bool GameEngine::update()
   int time;
   double fps = (1000 / CFPS);
 
-  if (_input.getInput(SDL_QUIT) || _input.getKey(SDLK_ESCAPE))
+  _input.getInput(_set);
+  if (_input[SDLK_ESCAPE])
     return (false);
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_clock);
-  _win.updateInputs(_input);
-  _cam.update(_clock, _input);
+  // _cam.update(_clock, _input);
   // for (size_t i = 0; i < _obj.size(); ++i)
   //   _obj[i]->update(_clock, _input);
   return (true);
