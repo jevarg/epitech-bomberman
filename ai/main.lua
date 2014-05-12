@@ -103,11 +103,9 @@ function take_shortest_priority(map, entities)
 	local cur_dist = 0
 	for i = 1, #entities do
 		cur_dist, x, y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
-		if (cur_dist ~= AGGRO + 1) then
-			if (entities[i]["x"] < t) then
-				t = entities[i]["type"]
-				dist = cur_dist
-			end
+		if (cur_dist ~= AGGRO + 1 and entities[i]["x"] < t) then
+			t = entities[i]["type"]
+			dist = cur_dist
 		end
 	end
 	while (map[y][x] ~= 0 and map[y][x] ~= 1) do
