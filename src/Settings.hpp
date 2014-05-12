@@ -12,7 +12,7 @@
 
 typedef std::vector<std::string>::const_iterator v_instCit;
 typedef std::vector<std::string>::iterator v_instit;
-typedef unsigned char keyCode;
+typedef int keyCode;
 
 enum	eAction
   {

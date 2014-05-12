@@ -10,7 +10,8 @@ enum	eType
     FREE,
     FLAME,
     CHARACTER,
-    GROUND
+    GROUND,
+    UNKNOWN
   };
 
 typedef struct	s_entity
@@ -23,12 +24,12 @@ typedef struct	s_entity
   eType		_type;
 }		t_entity;
 
-class		AEntitie : public IObject
+class		AEntity
 {
 public:
-  AEntitie();
-  AEntitie(int x, int y, eType type);
-  virtual ~AEntitie();
+  AEntity();
+  AEntity(int x, int y, eType type);
+  virtual ~AEntity();
 
   int		getXPos() const;
   int		getYPos() const;

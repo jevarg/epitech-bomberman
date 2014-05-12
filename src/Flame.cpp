@@ -1,8 +1,8 @@
 #include "Flame.hpp"
 
 Flame::Flame()
-  : AEntitie(0, 0, FLAME)
-{ 
+  : AEntity(0, 0, FLAME)
+{
 }
 
 Flame::~Flame()

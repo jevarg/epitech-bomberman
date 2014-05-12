@@ -8,23 +8,23 @@ Container::~Container()
 {
 }
 
-eType	Container::checkContColision(int x, int y) const
+eType	Container::checkColision(int x, int y) const
 {
   v_Entcit	it = _staticEnt.begin();
   l_Entcit	lit = _mobileEnt.begin();
 
   for (v_Entcit end = _staticEnt.end(); it != end; ++it)
-    if ((*it)->_x == x && (*it)->_y == y)
-      return ((*it)->_type);
+    if ((*it)->getXPos() == x && (*it)->getYPos() == y)
+      return ((*it)->getType());
   for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
-    if ((*lit)->_x == x && (*lit)->_y == y)
-      return ((*lit)->_type);
+    if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
+      return ((*lit)->getType());
   return (FREE);
 }
 
-void	Container::stockEntitie(t_entity *ent)
+void	Container::stockEntity(AEntity *ent)
 {
-  if (ent->_type == WALL)
+  if (ent->getType() == WALL)
     _staticEnt.push_back(ent);
   else
     _mobileEnt.push_back(ent);
@@ -36,7 +36,7 @@ void	Container::removeContBlock(int x, int y)
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     {
-      if ((*lit)->_x == x && (*lit)->_y == y)
+      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
 	{
 	  _mobileEnt.erase(lit);
 	  return ;	       	// Here i consider one object get erased by case.
@@ -70,13 +70,13 @@ void		Container::setMobilEnt(int x, int y, eType type)
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     {
-      if ((*lit)->_x == x && (*lit)->_y == y)
+      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
 	{
 	  if (type == FREE)
 	    _mobileEnt.erase(lit);
 	  else
-	    (*lit)->_type = type;
+	    (*lit)->setType(type);
 	  return ;
 	}
-    }  
+    }
 }
