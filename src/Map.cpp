@@ -209,6 +209,7 @@ void	Map::createMap()
   fillBox();
   fillContainers();
   display();
+  exit(0);
 }
 
 unsigned int	Map::getContPos(int x, int y) const
@@ -262,4 +263,9 @@ v_Contcit	Map::ContBegin() const
 v_Contcit	Map::ContEnd() const
 {
   return (_cont.end());
+}
+
+void		Map::setMobilEnt(int x, int y, eType type)
+{
+  ((*this)._cont[getContPos(x, y)])->setMobilEnt(x, y, type);
 }

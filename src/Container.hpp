@@ -26,6 +26,7 @@ public:
   v_Entcit	vecEnd() const;
   l_Entcit	listBegin() const;
   l_Entcit	listEnd() const;
+  void		setMobilEnt(int, int, eType);
 
 private:
   std::vector<t_entity *>	_staticEnt;
