@@ -99,7 +99,7 @@ bool		Save::saveGame(Map &map, Settings &settings, const std::string &name)
   return (true);
 }
 
-    bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
+bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -114,6 +114,10 @@ bool		Save::saveGame(Map &map, Settings &settings, const std::string &name)
     }
   if (std::getline(file, buf))
     {
+      if (std::count(buf.begin(), buf.end(), ' ') != 1)
+	{
+	  std::cerr << "Error : invalid savegame file" << std::endl;
+	}
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
       buf.erase(0, buf.find_first_of(' ', 0) + 1);
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
