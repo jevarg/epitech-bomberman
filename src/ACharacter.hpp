@@ -3,11 +3,11 @@
 
 # include <glm/glm.hpp>
 
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
 # include "Model.hpp"
 # include "Bomb.hpp"
 
-class	ACharacter : public AEntitie
+class	ACharacter : public AEntity
 {
 protected:
   glm::vec4	_color;
@@ -31,7 +31,7 @@ public:
   bool		initialize();
   virtual void	update(gdl::Clock const &, gdl::Input &);
   void		draw(gdl::AShader &shader, gdl::Clock const &clock);
-  
+
 public:
   int		getScore() const;
   bool		isAlive() const;

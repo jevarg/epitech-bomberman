@@ -168,7 +168,7 @@ void	Map::fillBox()
 void	Map::fillContainers()
 {
   unsigned int	i;
-  t_entity	*ent;
+  AEntity	*ent;
   unsigned int 	totalsize = (_mapX - 1) * _mapY;
 
   for (i = _mapX; i < totalsize; ++i)
@@ -176,8 +176,8 @@ void	Map::fillContainers()
       if (_map[i] != FREE && i % _mapX != 0 &&
 	  (i + 1) % _mapX != 0) // means there is a block / It's the border
 	{
-	  ent = new t_entity(i % _mapX, i /_mapX, _map[i]);
-	  addEntitie(ent);
+	  ent =  new Entity(i % _mapX, i /_mapX, _map[i]);
+	  addEntity(ent);
 	}
     }
   _map.clear();	// erase the temps vector
@@ -221,18 +221,18 @@ unsigned int	Map::getContPos(int x, int y) const
   return (ratioy * (_mapX / SQUARESIZE) + ratiox);
 }
 
-void	Map::addEntitie(t_entity *ent)
+void	Map::addEntity(AEntity *ent)
 {
   unsigned int	pos;
   Container	*cont;
 
-  pos = getContPos(ent->_x, ent->_y);
+  pos = getContPos(ent->getXPos(), ent->getYPos());
   while (_cont.size() <= pos)
     {
       cont = new Container;
       _cont.push_back(cont);
     }
-  _cont[pos]->stockEntitie(ent);
+  _cont[pos]->stockEntity(ent);
 }
 
 eType	Map::checkMapColision(int x, int y) const
@@ -241,7 +241,7 @@ eType	Map::checkMapColision(int x, int y) const
 
   if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
     return (WALL);
-  return (_cont[pos]->checkContColision(x, y));
+  return (_cont[pos]->checkColision(x, y));
 }
 
 unsigned int	Map::getWidth() const
@@ -262,4 +262,9 @@ v_Contcit	Map::ContBegin() const
 v_Contcit	Map::ContEnd() const
 {
   return (_cont.end());
+}
+
+void		Map::setMobilEnt(int x, int y, eType type)
+{
+  (_cont[getContPos(x, y)])->setMobilEnt(x, y, type);
 }

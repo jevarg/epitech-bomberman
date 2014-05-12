@@ -34,11 +34,13 @@ enum	cvar
     FOV,
     W_HEIGHT,
     W_WIDTH,
+    MAP_HEIGHT,
+    MAP_WIDTH,
     MAP_DENSITY,
     MAP_LINEAR,
   };
 
-class Settings
+class	Settings
 {
 public:
   Settings();
