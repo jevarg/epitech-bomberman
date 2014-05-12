@@ -63,3 +63,20 @@ l_Entcit	Container::listEnd() const
 {
   return (_mobileEnt.end());
 }
+
+void		Container::setMobilEnt(int x, int y, eType type)
+{
+  l_Entit	lit = _mobileEnt.begin();
+
+  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
+    {
+      if ((*lit)->_x == x && (*lit)->_y == y)
+	{
+	  if (type == FREE)
+	    _mobileEnt.erase(lit);
+	  else
+	    (*lit)->_type = type;
+	  return ;
+	}
+    }  
+}
