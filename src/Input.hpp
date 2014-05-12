@@ -14,6 +14,8 @@ public:
   bool	operator[](keyCode key);
 
 private:
+  void	handleEvent(const Settings &set, const SDL_Event &event, bool state);
+
   std::vector<bool>		_actionState;
   std::map<keyCode, bool>	_boundKey;
 };

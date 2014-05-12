@@ -13,30 +13,33 @@ Input::~Input()
 {
 }
 
+void	Input::handleEvent(const Settings &set, const SDL_Event &event, bool state)
+{
+  std::map<keyCode, bool>::iterator it;
+  std::map<keyCode, bool>::iterator end;
+  SDL_Keycode	key = event.key.keysym.sym;
+  eAction	act;
+
+  if ((act = set.getActionFromKey(key)) != UNKNOWN)
+    _actionState[act] = state;
+  for (it = _boundKey.begin(), end = _boundKey.end(); it != end; ++it)
+    {
+      if (it->first == key)
+	{
+	  it->second = state;
+	  break ;
+	}
+    }
+}
+
 void	Input::getInput(const Settings &set)
 {
   SDL_Event	event;
-  SDL_Keycode	keyPressed;
-  std::map<keyCode, bool>::iterator it;
-  std::map<keyCode, bool>::iterator end;
-  eAction	act;
 
   if (SDL_PollEvent(&event))
     {
-      if (event.type == SDL_KEYDOWN)
-	{
-	  keyPressed = event.key.keysym.sym;
-	  if ((act = set.getActionFromKey(keyPressed)) != UNKNOWN)
-	    _actionState[act] = true;
-	  for (it = _boundKey.begin(), end = _boundKey.end(); it != end; ++it)
-	    {
-	      if (it->first == keyPressed)
-		{
-		  it->second = true;
-		  break ;
-		}
-	    }
-	}
+      if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
+	handleEvent(set, event, event.type == SDL_KEYDOWN);
     }
 }
 
