@@ -33,48 +33,56 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::import(std::string &name)
+bool		Map::load(Settings &settings, std::string &name)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
-  int		len = 0;
-  int		y;
-  int		x;
+  unsigned int	len = 0;
+  int		y = 0;
+  int		x = 0;
 
   if ((file.rdstate() && std::ifstream::failbit) != 0)
-    return (false);
-  y = 0;
+    {
+      std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
+      return (false);
+    }
   while (std::getline(file, buf))
     {
       x = 0;
-      if (buf == 0)
+      if (len == 0)
 	len = buf.length();
       else
 	if (len != buf.length())
-	  return (false);
+	  {
+	    std::cerr << "Error while loading map on line : " << y << std::endl;
+	    return (false);
+	  }
       for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
 	{
 	  switch (*it)
 	    {
 	    case 'W':
-	      this->addEntitie(new t_entity(x, y, WALL));
+	      this->addEntity(new Entity(x, y, WALL));
 	      break;
 	    case 'B':
-	      this->addEntitie(new t_entity(x, y, FREE));
-	      break;
-	    case ' ':
-	      this->addEntitie(new t_entity(x, y, FREE));
+	      this->addEntity(new Entity(x, y, BOX));
 	      break;
 	    case 'C':
-	      this->addEntitie(new t_entity(x, y, CHARACTER));
+	      this->addEntity(new Entity(x, y, CHARACTER));
+	      break;
+	    case ' ':
 	      break;
 	    default:
+	      std::cerr << "Error while loading map on line : " << y << " column : " << x << std::endl;
 	      return (false);
 	    }
 	  ++x;
 	}
       ++y;
     }
+  settings.setVar(MAP_HEIGHT, y);
+  settings.setVar(MAP_WIDTH, x);
+  return (true);
 }
 
 short	Map::getDir(bool *rtab, short cuBlock) const

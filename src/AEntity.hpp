@@ -11,7 +11,7 @@ enum	eType
     FLAME,
     CHARACTER,
     GROUND,
-    UNKNOWN
+    UNKNOWNENTITY
   };
 
 typedef struct	s_entity

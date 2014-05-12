@@ -37,8 +37,8 @@ public:
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
-  bool		export(std::string &);
-  bool		import(std::string &);
+  bool		save(Settings &settings, std::string&);
+  bool		load(Settings &settings, std::string&);
 
 private:
   void	genSmallMaze(short x, short y, short dir);

@@ -148,7 +148,7 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
 	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
 	  std::istringstream (buf) >> type;
-	  if (type >= UNKNOWN || type < 0)
+	  if (type >= UNKNOWNENTITY || type < 0)
 	    {
 	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
 	      return (false);
