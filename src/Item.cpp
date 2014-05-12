@@ -2,7 +2,7 @@
 
 Item::Item(eItemType itemType)
   : _itemType(itemType)
-{  
+{
 }
 
 Item::~Item()
@@ -10,7 +10,7 @@ Item::~Item()
 
 }
 
-eItemType	Item::getType() const
+eItemType	Item::getItemType() const
 {
   return (_itemType);
 }

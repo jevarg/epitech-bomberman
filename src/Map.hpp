@@ -3,7 +3,8 @@
 
 # include <vector>
 # include "Container.hpp"
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
+# include "Entity.hpp"
 # include "Settings.hpp"
 
 # define MAXSIZE 10000
@@ -28,7 +29,7 @@ public:
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
   void	createMap();
-  void	addEntitie(t_entity *ent);
+  void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
   eType	checkMapColision(int x, int y) const;
   void	setMobilEnt(int x, int y, eType type);

@@ -1,19 +1,21 @@
-#ifndef INPUT_HPP_
-# define INPUT_HPP_
+#ifndef _INPUT_H_
+# define _INPUT_H_
 
-# include <vector>
-# include <Input.hh>
+# include "Settings.hpp"
 
-class	Input
+class Input
 {
 public:
   Input();
   ~Input();
 
+  void	getInput(const Settings &set);
+  bool	operator[](eAction act);
+  bool	operator[](keyCode key);
+
 private:
-  vector<bool>	_action;
-  map<keycode, action>; //existe déjà, à récup dans string
-  vector[action] = true/false;
+  std::vector<bool>		_actionState;
+  std::map<keyCode, bool>	_boundKey;
 };
 
-#endif /* !INPUT_HPP_ */
+#endif /* _INPUT_H_ */

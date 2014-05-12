@@ -15,11 +15,12 @@
 # include "Camera.hpp"
 # include "IObject.hpp"
 # include "Model.hpp"
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
 # include "Save.hpp"
 # include "Container.hpp"
 # include "Map.hpp"
 # include "Settings.hpp"
+# include "Input.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -34,7 +35,7 @@
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(Settings &set);
+  GameEngine(Settings &set, Input &input);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -46,7 +47,6 @@ private:
   void	createDisplayBorder();
 
   gdl::SdlContext		_win;
-  gdl::Input			_input;
   gdl::Clock			_clock;
   gdl::BasicShader		_shader;
   Save				_save;
@@ -58,6 +58,7 @@ private:
   Model				_model;
   Map				_map;
   Settings			&_set;
+  Input				&_input;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
 };

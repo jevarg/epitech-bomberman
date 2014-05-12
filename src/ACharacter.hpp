@@ -3,15 +3,17 @@
 
 # include <glm/glm.hpp>
 
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
 # include "Model.hpp"
 # include "Bomb.hpp"
 # include "Mutex.hpp"
 # include "Condvar.hpp"
 
-class	ACharacter : public AEntitie
+class	ACharacter : public AEntity
 {
 protected:
+  Mutex		_mutex;
+  Condvar	_condvar;
   glm::vec4	_color;
   Model		_model;
   int		_health;
@@ -21,8 +23,6 @@ protected:
   int		_speed;
   int		_range;
   int		_score;
-  Mutex		_mutex;
-  Condvar	_condvar;
 
 public:
   ACharacter(glm::vec4 color, Model model);
@@ -35,7 +35,7 @@ public:
   bool		initialize();
   virtual void	update(gdl::Clock const &, gdl::Input &);
   void		draw(gdl::AShader &shader, gdl::Clock const &clock);
-  
+
 public:
   int		getScore() const;
   bool		isAlive() const;

@@ -31,12 +31,13 @@ bool		Model::initialize()
   return (true);
 }
 
-void		Model::update(gdl::Clock const& clock, gdl::Input &input)
+void	Model::update(gdl::Clock const& clock, gdl::Input &input)
 {
-
+  (void) clock;
+  (void) input;
 }
 
-void		Model::draw(gdl::AShader &shader, gdl::Clock const& clock) const
+void	Model::draw(gdl::AShader &shader, gdl::Clock const& clock) const
 {
   if (_texture != NULL)
     _texture->bind();
