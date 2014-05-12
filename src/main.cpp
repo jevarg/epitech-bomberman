@@ -1,20 +1,14 @@
 #include <iostream>
-#include "GameEngine.hpp"
+#include "Menu.hpp"
 #include "Exception.hpp"
-#include "Player.hpp"
-#include "Map.hpp"
 
 int	main(int, char **)
 {
   try
     {
-      GameEngine eng;
+      Menu menu;
 
-      if (!eng.initialize())
-	return (1);
-      while (eng.update())
-	eng.draw();
-      return (0);
+      menu.launch();
     }
   catch (Exception &e)
     {

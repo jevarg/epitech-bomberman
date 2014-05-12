@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat May 10 16:06:43 2014 
+## Last update Mon May 12 11:16:39 2014 
 ##
 
 
@@ -34,7 +34,8 @@ SRC		=	main.cpp \
 			Flame.cpp \
 			ACharacter.cpp \
 			Player.cpp \
-			Map.cpp
+			Map.cpp \
+			Menu.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

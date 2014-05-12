@@ -33,7 +33,7 @@
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine();
+  GameEngine(gdl::SdlContext *win, gdl::Input *input, gdl::Clock *clock, gdl::BasicShader *shader);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -43,10 +43,10 @@ public:
 private:
   void	createDisplayMap();
 
-  gdl::SdlContext		_win;
-  gdl::Input			_input;
-  gdl::Clock			_clock;
-  gdl::BasicShader		_shader;
+  gdl::SdlContext		*_win;
+  gdl::Input			*_input;
+  gdl::Clock			*_clock;
+  gdl::BasicShader		*_shader;
   Save				_save;
   std::vector<IObject *>	_obj;
   Camera			_cam;
