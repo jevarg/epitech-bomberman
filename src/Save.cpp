@@ -107,7 +107,7 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
   int		y;
   int		type;
 
-  if ((file.rdstate() & std::ifstream::failbit) != 0)
+  if ((file.rdstate() && std::ifstream::failbit) != 0)
     {
       std::cerr << "Error opening " << name << "\n";
       return (false);
@@ -141,7 +141,7 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
 	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
 	  std::istringstream (buf) >> type;
-	  map.addEntitie(new t_entity(x, y, static_cast<eType>(type)));
+	  map.addEntitie(new t_entity(x, y, static_cast<eType>(type % (GROUND + 1))));
 	}
     }
   file.close();

@@ -33,6 +33,50 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
+bool		Map::import(std::string &name)
+{
+  std::ifstream	file(name.c_str());
+  std::string	buf;
+  int		len = 0;
+  int		y;
+  int		x;
+
+  if ((file.rdstate() && std::ifstream::failbit) != 0)
+    return (false);
+  y = 0;
+  while (std::getline(file, buf))
+    {
+      x = 0;
+      if (buf == 0)
+	len = buf.length();
+      else
+	if (len != buf.length())
+	  return (false);
+      for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
+	{
+	  switch (*it)
+	    {
+	    case 'W':
+	      this->addEntitie(new t_entity(x, y, WALL));
+	      break;
+	    case 'B':
+	      this->addEntitie(new t_entity(x, y, FREE));
+	      break;
+	    case ' ':
+	      this->addEntitie(new t_entity(x, y, FREE));
+	      break;
+	    case 'C':
+	      this->addEntitie(new t_entity(x, y, CHARACTER));
+	      break;
+	    default:
+	      return (false);
+	    }
+	  ++x;
+	}
+      ++y;
+    }
+}
+
 short	Map::getDir(bool *rtab, short cuBlock) const
 {
   short		dir = 0;
@@ -239,7 +283,7 @@ void	Map::addEntitie(t_entity *ent)
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
-
+  
   if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
     return (WALL);
   return (_cont[pos]->checkContColision(x, y));
