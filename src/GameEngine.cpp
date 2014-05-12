@@ -2,7 +2,7 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(Settings &set)
-  : _save(), _cam(), _skybox(SKY_TEXTURE), _type(), _texture(), _map(set), _set(set)
+  : _save(), _cam(), _skybox(SKY_TEXTURE), _map(set), _set(set), _type(), _texture()
 {
 }
 
@@ -118,17 +118,19 @@ void GameEngine::createDisplayMap()
     {
       l_Entcit endList = (*it)->listEnd();
       for (l_Entcit it1 = (*it)->listBegin(); it1 != endList; ++it1)
-	if (_type[(*it1)->_type])
+	if (_type[(*it1)->getType()])
 	  {
-	    _obj.push_back(_type[(*it1)->_type]->clone());
-	    _obj.back()->translate(glm::vec3(2 * (*it1)->_x, 0.0, 2 * (*it1)->_y));
+	    _obj.push_back(_type[(*it1)->getType()]->clone());
+	    _obj.back()->translate(glm::vec3(2 * (*it1)->getXPos(),
+					     0.0, 2 * (*it1)->getYPos()));
 	  }
       v_Entcit endVec = (*it)->vecEnd();
       for (v_Entcit it1 = (*it)->vecBegin(); it1 != endVec; ++it1)
-	if (_type[(*it1)->_type])
+	if (_type[(*it1)->getType()])
 	  {
-	    _obj.push_back(_type[(*it1)->_type]->clone());
-	    _obj.back()->translate(glm::vec3(2 * (*it1)->_x, 0.0, 2 * (*it1)->_y));
+	    _obj.push_back(_type[(*it1)->getType()]->clone());
+	    _obj.back()->translate(glm::vec3(2 * (*it1)->getXPos(), 0.0,
+					     2 * (*it1)->getYPos()));
 	  }
     }
 }

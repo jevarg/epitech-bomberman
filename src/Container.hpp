@@ -4,13 +4,13 @@
 # include <iostream>
 # include <vector>
 # include <list>
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
 
 class Container;
 
-typedef std::vector<t_entity *>::const_iterator v_Entcit;
-typedef std::list<t_entity *>::const_iterator l_Entcit;
-typedef std::list<t_entity *>::iterator l_Entit;
+typedef std::vector<AEntity *>::const_iterator v_Entcit;
+typedef std::list<AEntity *>::const_iterator l_Entcit;
+typedef std::list<AEntity *>::iterator l_Entit;
 
 class Container
 {
@@ -18,8 +18,8 @@ public:
   Container();
   ~Container();
 
-  eType	checkContColision(int x, int y) const;
-  void	stockEntitie(t_entity *);
+  eType	checkColision(int x, int y) const;
+  void	stockEntity(AEntity *);
   void	removeContBlock(int x, int y);
 
   v_Entcit	vecBegin() const;
@@ -29,8 +29,8 @@ public:
   void		setMobilEnt(int, int, eType);
 
 private:
-  std::vector<t_entity *>	_staticEnt;
-  std::list<t_entity *>		_mobileEnt;
+  std::vector<AEntity *>	_staticEnt;
+  std::list<AEntity *>		_mobileEnt;
 };
 
 #endif /* _ENTITIE_H_ */

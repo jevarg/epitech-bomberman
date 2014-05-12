@@ -15,7 +15,7 @@
 # include "Camera.hpp"
 # include "IObject.hpp"
 # include "Model.hpp"
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
 # include "Save.hpp"
 # include "Container.hpp"
 # include "Map.hpp"
