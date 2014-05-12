@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sun May 11 15:56:29 2014 luc sinet
+## Last update Mon May 12 22:03:19 2014 enzo de gregorio
 ##
 
 NAME		=	bomberman
@@ -21,6 +21,8 @@ SRCDIR		=	./
 SRC		=	main.cpp \
 			GameEngine.cpp \
 			Exception.cpp \
+			Mutex.cpp \
+			Condvar.cpp \
 			Cube.cpp \
 			Model.cpp \
 			Camera.cpp \

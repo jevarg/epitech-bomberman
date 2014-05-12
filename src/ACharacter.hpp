@@ -6,6 +6,8 @@
 # include "AEntitie.hpp"
 # include "Model.hpp"
 # include "Bomb.hpp"
+# include "Mutex.hpp"
+# include "Condvar.hpp"
 
 class	ACharacter : public AEntitie
 {
@@ -19,6 +21,8 @@ protected:
   int		_speed;
   int		_range;
   int		_score;
+  Mutex		_mutex;
+  Condvar	_condvar;
 
 public:
   ACharacter(glm::vec4 color, Model model);

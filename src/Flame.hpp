@@ -4,8 +4,11 @@
 # include "AEntitie.hpp"
 # include "ACharacter.hpp"
 
-class	Flame : public AEntitie
+class		Flame : public AEntitie
 {
+private:
+  Mutex		_mutex;
+  Condvar	_condvar;
 
 public:
   Flame();

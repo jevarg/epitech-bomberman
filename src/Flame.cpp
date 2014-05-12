@@ -1,7 +1,7 @@
 #include "Flame.hpp"
 
 Flame::Flame()
-  : AEntitie(0, 0, FLAME)
+  : AEntitie(0, 0, FLAME), _mutex(), _condvar()
 { 
 }
 
