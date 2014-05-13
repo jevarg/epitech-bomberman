@@ -15,7 +15,7 @@ public:
   virtual ~Model();
 
   bool		initialize();
-  void		update(gdl::Clock const&, gdl::Input &);
+  void		update(gdl::Clock const&, Input &);
   void		draw(gdl::AShader &, gdl::Clock const&) const;
   bool		load(std::string const&);
   bool		loadTexture(std::string const&);
@@ -27,4 +27,4 @@ private:
   gdl::Texture	*_texture;
 };
 
-#endif /* _MODEL_H_ */
+#endif /* !_MODEL_H_ */

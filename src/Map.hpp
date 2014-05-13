@@ -1,10 +1,14 @@
-#ifndef _MAP_H_
-# define _MAP_H_
+#ifndef _MAP_HPP_
+# define _MAP_HPP_
 
+# include <string>
 # include <vector>
 # include "Container.hpp"
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
+# include "Entity.hpp"
+# include "Settings.hpp"
 
+# define MAXSIZE 10000
 # define SQUARESIZE 10
 
 enum	e_dir
@@ -20,23 +24,30 @@ typedef std::vector<Container *>::const_iterator v_Contcit;
 class Map
 {
 public:
-  Map();
+  Map(Settings &set);
   ~Map();
 
-  int	getWidth() const;
-  int	getHeight() const;
+  unsigned int	getWidth() const;
+  unsigned int	getHeight() const;
   void	createMap();
-  void	addEntitie(t_entity *ent);
+  void	addEntity(AEntity *ent);
+  void	removeEntity(int x, int y);
   eType	checkMapColision(int x, int y) const;
-
+  void	setMobilEnt(int x, int y, eType type);
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
+  bool		save(Settings &settings, std::string&);
+  bool		load(Settings &settings, std::string&);
+
 private:
-  void	genSmallMaze(short x, short y, short pos);
-  bool	checkValidPath(short x, short y) const;
-  bool	checkAccess(short x, short y) const;
+  void	genSmallMaze(short x, short y, short dir);
+  void	genBigMaze();
+
+  bool	checkValidPath(int x, int y) const;
   short	getDir(bool *tab, short oldDir) const;
+
+  bool	checkAccess(short x, short y) const;
   unsigned int	getContPos(int x, int y) const;
   void	fillBox();
   void	fillContainers();
@@ -50,4 +61,4 @@ private:
   std::vector<Container *>	_cont;
 };
 
-#endif /* _MAP_H_ */
+#endif /* !_MAP_HPP_ */

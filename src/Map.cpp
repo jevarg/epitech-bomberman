@@ -4,21 +4,20 @@
 #include <ctime>
 #include "Map.hpp"
 
-#include "GameEngine.hpp"
-
-Map::Map()
+Map::Map(Settings &set)
 {
-  _mapX = 20;
-  _mapY = 20;
-  _density = 30;	// expressed in %
-  _linear = 100;
+  _mapX = 50;
+  _mapY = 50;
+  _density = set.getVar(MAP_DENSITY);	// expressed in %
+  _linear = set.getVar(MAP_LINEAR);
+  std::cout << _density << " " << _linear << std::endl;
 }
 
 Map::~Map()
 {
 }
 
-bool	Map::checkValidPath(short x, short y) const
+bool	Map::checkValidPath(int x, int y) const
 {
   int	counter = 0;
   bool	equa[4];
@@ -34,6 +33,58 @@ bool	Map::checkValidPath(short x, short y) const
   return (counter == 2 ? false : true);
 }
 
+bool		Map::load(Settings &settings, std::string &name)
+{
+  std::ifstream	file(name.c_str());
+  std::string	buf;
+  unsigned int	len = 0;
+  int		y = 0;
+  int		x = 0;
+
+  if ((file.rdstate() && std::ifstream::failbit) != 0)
+    {
+      std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
+      return (false);
+    }
+  while (std::getline(file, buf))
+    {
+      x = 0;
+      if (len == 0)
+	len = buf.length();
+      else
+	if (len != buf.length())
+	  {
+	    std::cerr << "Error while loading map on line : " << y << std::endl;
+	    return (false);
+	  }
+      for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
+	{
+	  switch (*it)
+	    {
+	    case 'W':
+	      this->addEntity(new Entity(x, y, WALL));
+	      break;
+	    case 'B':
+	      this->addEntity(new Entity(x, y, BOX));
+	      break;
+	    case 'C':
+	      this->addEntity(new Entity(x, y, CHARACTER));
+	      break;
+	    case ' ':
+	      break;
+	    default:
+	      std::cerr << "Error while loading map on line : " << y << " column : " << x << std::endl;
+	      return (false);
+	    }
+	  ++x;
+	}
+      ++y;
+    }
+  settings.setVar(MAP_HEIGHT, y);
+  settings.setVar(MAP_WIDTH, x);
+  return (true);
+}
+
 short	Map::getDir(bool *rtab, short cuBlock) const
 {
   short		dir = 0;
@@ -45,17 +96,28 @@ short	Map::getDir(bool *rtab, short cuBlock) const
     if (!tab[i])
       ++dir;
   if (dir > 1)
-    tab[(cuBlock + 2) % 4] = true;
-  dir = std::rand() % dir;
-  for (short i = 0; i < 4 && dir >= 0; ++i)
     {
-      if (!tab[i] && dir == 0)
+      tab[(cuBlock + 2) % 4] = true;
+      --dir;
+    }
+  else if (dir == 0)
+    return (-1);
+  dir = std::rand() % dir;
+  for (short i = 0; i < 4; ++i)
+    {
+      if (!tab[i] && dir <= 0)
 	return (i);
-      else if (!tab[i])
+      else if (!tab[i] && dir > 0)
 	--dir;
     }
-  return (0);
+  return (-1);
 }
+
+/*
+**
+** Recursive Backtracker
+**
+*/
 
 void	Map::genSmallMaze(short x, short y, short pos)
 {
@@ -71,12 +133,40 @@ void	Map::genSmallMaze(short x, short y, short pos)
     {
       tx = x;
       ty = y;
-      dir = getDir(tabdir, pos);
+      if ((dir = getDir(tabdir, pos)) == -1)
+	return ;
       tabdir[dir] = true;
       tx += (dir == WEST) ? -1 : (dir == EAST) ? 1 : 0;
       ty += (dir == SOUTH) ? 1 : (dir == NORTH) ? -1 : 0;
       if (checkValidPath(tx, ty) == true)
 	genSmallMaze(tx, ty, (dir + 2) % 4);
+    }
+}
+
+/*
+**
+** Hunt & Kill
+**
+*/
+
+void	Map::genBigMaze()
+{
+  unsigned int	i;
+  unsigned int	max = (_mapY - 1) * _mapX;
+
+  for (i = _mapX; i < max; ++i)
+    {
+      if (i % _mapX == 0 || (i + 1) % _mapX == 0)
+	continue ;
+      if ((i / _mapX) % 2 != 0)
+	{
+	  if (std::rand() % 100 < _density / 4)
+	    _map[i] = BOX;
+	  else
+	    _map[i] = FREE;
+	}
+      else if (i % 2 != 0)
+	_map[i] = FREE;
     }
 }
 
@@ -127,45 +217,29 @@ void	Map::fillBox()
     }
 }
 
-unsigned int	Map::getContPos(int x, int y) const
-{
-  unsigned int	ratiox;
-  unsigned int	ratioy;
-
-  ratiox = x / SQUARESIZE;
-  ratioy = y / SQUARESIZE;
-  return (ratioy * (_mapX / SQUARESIZE) + ratiox);
-}
-
-void	Map::addEntitie(t_entity *ent)
-{
-  unsigned int	pos;
-  Container	*cont;
-
-  pos = getContPos(ent->_x, ent->_y);
-  while (_cont.size() <= pos)
-    {
-      cont = new Container;
-      _cont.push_back(cont);
-    }
-  _cont[pos]->stockEntitie(ent);
-}
-
 void	Map::fillContainers()
 {
   unsigned int	i;
-  t_entity	*ent;
-  unsigned int 	totalsize = _mapX * _mapY;
+  AEntity	*ent;
+  unsigned int 	totalsize = (_mapX - 1) * _mapY;
 
-  for (i = 0; i < totalsize; ++i)
+  for (i = _mapX; i < totalsize; ++i)
     {
-      if (_map[i] != FREE) // means there is no block
+      if (_map[i] != FREE && i % _mapX != 0 &&
+	  (i + 1) % _mapX != 0) // means there is a block / It's the border
 	{
-	  ent = new t_entity(i % _mapX, i /_mapX, _map[i]);
-	  addEntitie(ent);
+	  ent =  new Entity(i % _mapX, i /_mapX, _map[i]);
+	  addEntity(ent);
 	}
     }
   _map.clear();	// erase the temps vector
+}
+
+void	Map::removeEntity(int x, int y)
+{
+  unsigned int	pos = getContPos(x, y);
+
+  _cont[pos]->removeContBlock(x, y);
 }
 
 void	Map::createMap()
@@ -180,25 +254,54 @@ void	Map::createMap()
   posx = 2 + std::rand() % (_mapX - 3);
   posy = 2 + std::rand() % (_mapY - 3);
   std::cout << "Starting at " << posx << " " << posy << std::endl;
-  genSmallMaze(posx, posy, 4);
+  if (_mapX * _mapY > MAXSIZE)
+    genBigMaze();
+  else
+    genSmallMaze(posx, posy, 4);
   fillBox();
   fillContainers();
   display();
 }
 
+unsigned int	Map::getContPos(int x, int y) const
+{
+  unsigned int	ratiox;
+  unsigned int	ratioy;
+
+  ratiox = x / SQUARESIZE;
+  ratioy = y / SQUARESIZE;
+  return (ratioy * (_mapX / SQUARESIZE) + ratiox);
+}
+
+void	Map::addEntity(AEntity *ent)
+{
+  unsigned int	pos;
+  Container	*cont;
+
+  pos = getContPos(ent->getXPos(), ent->getYPos());
+  while (_cont.size() <= pos)
+    {
+      cont = new Container;
+      _cont.push_back(cont);
+    }
+  _cont[pos]->stockEntity(ent);
+}
+
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
-
-  return (_cont[pos]->checkContColision(x, y));
+  
+  if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
+    return (WALL);
+  return (_cont[pos]->checkColision(x, y));
 }
 
-int	Map::getWidth() const
+unsigned int	Map::getWidth() const
 {
   return (_mapX);
 }
 
-int	Map::getHeight() const
+unsigned int	Map::getHeight() const
 {
   return (_mapY);
 }
@@ -211,4 +314,9 @@ v_Contcit	Map::ContBegin() const
 v_Contcit	Map::ContEnd() const
 {
   return (_cont.end());
+}
+
+void		Map::setMobilEnt(int x, int y, eType type)
+{
+  (_cont[getContPos(x, y)])->setMobilEnt(x, y, type);
 }
