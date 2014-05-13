@@ -6,8 +6,8 @@
 
 Map::Map(Settings &set)
 {
-  _mapX = 50;
-  _mapY = 50;
+  _mapX = set.getVar(MAP_HEIGHT);
+  _mapY = set.getVar(MAP_WIDTH);
   _density = set.getVar(MAP_DENSITY);	// expressed in %
   _linear = set.getVar(MAP_LINEAR);
   std::cout << _density << " " << _linear << std::endl;
@@ -62,13 +62,13 @@ bool		Map::load(Settings &settings, std::string &name)
 	  switch (*it)
 	    {
 	    case 'W':
-	      this->addEntity(new Entity(x, y, WALL));
+	      addEntity(new Entity(x, y, WALL));
 	      break;
 	    case 'B':
-	      this->addEntity(new Entity(x, y, BOX));
+	      addEntity(new Entity(x, y, BOX));
 	      break;
 	    case 'C':
-	      this->addEntity(new Entity(x, y, CHARACTER));
+	      addEntity(new Entity(x, y, CHARACTER));
 	      break;
 	    case ' ':
 	      break;
@@ -290,7 +290,7 @@ void	Map::addEntity(AEntity *ent)
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
-  
+
   if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
     return (WALL);
   return (_cont[pos]->checkColision(x, y));
