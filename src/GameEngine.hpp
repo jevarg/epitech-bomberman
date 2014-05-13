@@ -38,6 +38,7 @@ public:
   virtual bool	initialize();
   virtual bool	update();
   virtual void	draw();
+  float				_rotation;
 
 private:
   void	createDisplayMap();
@@ -52,7 +53,6 @@ private:
   int				_mapY;
   Cube				_skybox;
   Model				_model;
-  Map				_map;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
 };
