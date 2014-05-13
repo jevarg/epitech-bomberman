@@ -3,7 +3,7 @@
 
 Camera::Camera()
 {
-  _projection = glm::perspective(FOV, DEF_SIZE_X / DEF_SIZE_Y, 0.1f, 1000.0f);
+  _projection = glm::perspective(CFOV, DEF_SIZE_X / DEF_SIZE_Y, 0.1f, 100.0f);
 }
 
 
@@ -19,34 +19,34 @@ bool	Camera::initialize()
   return (true);
 }
 
-void Camera::update(gdl::Clock const &clock, gdl::Input &in)
+void Camera::update(gdl::Clock const &clock, Input &in)
 {
-  if (in.getKey(SDLK_q))
+  if (in[SDLK_q])
     {
       _position += (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
       _pos_view += (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
     }
-  if (in.getKey(SDLK_d))
+  if (in[SDLK_d])
     {
       _position -= (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
       _pos_view -= (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
     }
-  if (in.getKey(SDLK_z))
+  if (in[SDLK_z])
     {
       _position += (glm::vec3(0.0, 0.0, 2.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
       _pos_view += (glm::vec3(0.0, 0.0, 2.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
     }
-  if (in.getKey(SDLK_s))
+  if (in[SDLK_s])
     {
       _position -= (glm::vec3(0.0, 0.0, 2.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
       _pos_view -= (glm::vec3(0.0, 0.0, 2.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
     }
-  if (in.getKey(SDLK_UP))
+  if (in[SDLK_UP])
     {
       _position += (glm::vec3(0.0, 2.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
       _pos_view += (glm::vec3(0.0, 2.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
     }
-  if (in.getKey(SDLK_DOWN))
+  if (in[SDLK_DOWN])
     {
       _position -= (glm::vec3(0.0, 2.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
       _pos_view -= (glm::vec3(0.0, 2.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);

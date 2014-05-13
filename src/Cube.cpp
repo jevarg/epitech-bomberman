@@ -123,7 +123,7 @@ bool Cube::initialize()
   return (true);
 }
 
-void Cube::update(gdl::Clock const &, gdl::Input &)
+void Cube::update(gdl::Clock const &, Input &)
 {
 
 }

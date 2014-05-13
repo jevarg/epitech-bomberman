@@ -1,12 +1,18 @@
 #include <iostream>
 #include "Menu.hpp"
 #include "Exception.hpp"
+#include "Settings.hpp"
+#include "Player.hpp"
 
 int	main(int, char **)
 {
   try
     {
-      Menu menu;
+      Settings	set;
+      Input	input;
+
+      set.loadFile(DEFAULT_FILE);
+      Menu menu(set, input);
 
       menu.launch();
     }

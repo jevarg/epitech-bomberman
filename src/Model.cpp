@@ -31,7 +31,7 @@ bool		Model::initialize()
   return (true);
 }
 
-void		Model::update(gdl::Clock const& clock, gdl::Input &input)
+void		Model::update(gdl::Clock const& clock, Input &input)
 {
 
 }

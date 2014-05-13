@@ -5,9 +5,8 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Mon May 12 11:16:39 2014 
+## Last update Mon May 12 22:43:05 2014 
 ##
-
 
 NAME		=	bomberman
 
@@ -27,7 +26,9 @@ SRC		=	main.cpp \
 			Camera.cpp \
 			ATransformation.cpp \
 			Container.cpp \
-			AEntitie.cpp \
+			AEntity.cpp \
+			Entity.cpp \
+			Settings.cpp \
 			Save.cpp \
 			Item.cpp \
 			Bomb.cpp \
@@ -35,13 +36,14 @@ SRC		=	main.cpp \
 			ACharacter.cpp \
 			Player.cpp \
 			Map.cpp \
-			Menu.cpp
+			Menu.cpp \
+			Input.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -g -p
+CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native
 LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl -p
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \

@@ -9,6 +9,6 @@ Player::~Player()
 {
 }
 
-void	Player::update(gdl::Clock const &, gdl::Input &)
+void	Player::update(gdl::Clock const &, Input &)
 {
 }

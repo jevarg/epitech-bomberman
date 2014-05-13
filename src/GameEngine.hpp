@@ -15,13 +15,15 @@
 # include "Camera.hpp"
 # include "IObject.hpp"
 # include "Model.hpp"
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
 # include "Save.hpp"
 # include "Container.hpp"
 # include "Map.hpp"
+# include "Settings.hpp"
+# include "Input.hpp"
 
-# define FPS 60.0f
-# define FOV 60.0f
+# define CFPS 60.0f
+# define CFOV 60.0f
 # define DEF_SIZE_X 800.0f
 # define DEF_SIZE_Y 600.0f
 
@@ -33,7 +35,7 @@
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(gdl::SdlContext *win, gdl::Input *input, gdl::Clock *clock, gdl::BasicShader *shader);
+  GameEngine(gdl::SdlContext *win, gdl::Clock *clock, gdl::BasicShader *shader, Settings &set, Input &input);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -42,9 +44,9 @@ public:
 
 private:
   void	createDisplayMap();
+  void	createDisplayBorder();
 
   gdl::SdlContext		*_win;
-  gdl::Input			*_input;
   gdl::Clock			*_clock;
   gdl::BasicShader		*_shader;
   Save				_save;
@@ -55,6 +57,8 @@ private:
   Cube				_skybox;
   Model				_model;
   Map				_map;
+  Settings			&_set;
+  Input				&_input;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
 };

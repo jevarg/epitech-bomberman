@@ -3,12 +3,14 @@
 
 # include <Game.hh>
 # include <SdlContext.hh>
+# include "Settings.hpp"
+# include "Input.hpp"
 # include "GameEngine.hpp"
 
 class Menu
 {
 public:
-  Menu();
+  Menu(Settings &set, Input &input);
   virtual ~Menu();
 
   bool	initialize();
@@ -20,7 +22,8 @@ private:
   void	launchGame();
 
   gdl::SdlContext	_win;
-  gdl::Input		_input;
+  Input			_input;
+  Settings		_set;
   gdl::Clock		_clock;
   gdl::BasicShader	_shader;
   bool			_done;

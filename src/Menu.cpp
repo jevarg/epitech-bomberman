@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-Menu::Menu(): _win(), _input(),  _shader(), _done(false)
+Menu::Menu(Settings &set, Input &input): _win(), _input(input), _set(set), _shader(), _done(false)
 {
 
 }
@@ -11,7 +11,8 @@ Menu::~Menu()
 
 bool  Menu::initialize()
 {
-  if (!_win.start(1920, 1080, "Bomberman", SDL_INIT_VIDEO, SDL_WINDOW_OPENGL | SDL_WINDOW_FULLSCREEN))
+  if (!_win.start(_set.getVar(W_WIDTH), _set.getVar(W_HEIGHT), "Bomberman",
+		  SDL_INIT_VIDEO, SDL_WINDOW_OPENGL))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
@@ -23,14 +24,14 @@ bool  Menu::initialize()
 bool  Menu::update()
 {
   double time;
-  double fps = (1000 / FPS);
+  double fps = (1000 / _set.getVar(FPS));
 
-  if (_input.getKey(SDLK_g))
-    launchGame();
-  if (_input.getKey(SDLK_ESCAPE) || _input.getInput(SDL_QUIT))
-    return (false);
+  _input.getInput(_set);
   _win.updateClock(_clock);
-  _win.updateInputs(_input);
+  if (_input[LAUNCHGAME])
+    launchGame();
+  if (_input[SDLK_ESCAPE]) // || _input.getInput(SDL_QUIT))
+    return (false);
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   return (true);
@@ -46,9 +47,10 @@ void  Menu::draw()
 
 void	Menu::launchGame()
 {
-  GameEngine eng(&_win, &_input, &_clock, &_shader);
+  GameEngine eng(&_win, &_clock, &_shader, _set, _input);
   bool	done = true;
 
+  std::cout << "LAUNCH" << std::endl;
   if (!eng.initialize())
     return ;
   while ((done = eng.update()))
