@@ -12,6 +12,7 @@
 class	ACharacter : public AEntity
 {
 protected:
+  pthread_t	_thread;
   Mutex		_mutex;
   Condvar	_condvar;
   glm::vec4	_color;
@@ -23,22 +24,26 @@ protected:
   int		_speed;
   int		_range;
   int		_score;
-
+  
 public:
   ACharacter(glm::vec4 color, Model model);
   ~ACharacter();
+  bool		initialize();
+  virtual void	update(gdl::Clock const &clock, gdl::Input &input);
+  void		draw(gdl::AShader &shader, gdl::Clock const &clock);
+
+public:
   void		moveUp();
   void		moveDown();
   void		moveLeft();
   void		moveRight();
   void		hit();
-  bool		initialize();
-  virtual void	update(gdl::Clock const &, gdl::Input &);
-  void		draw(gdl::AShader &shader, gdl::Clock const &clock);
 
 public:
   int		getScore() const;
   bool		isAlive() const;
 };
+
+void	*handle_thread(void *arg);
 
 #endif /* ! ACHARACTER_HPP_ */
