@@ -11,7 +11,7 @@ private:
   Condvar	_condvar;
 
 public:
-  Flame();
+  Flame(IObject *model);
   ~Flame();
   void	hurtCharacter(ACharacter *character);
 };

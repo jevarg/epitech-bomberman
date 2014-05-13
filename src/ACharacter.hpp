@@ -8,6 +8,7 @@
 # include "Bomb.hpp"
 # include "Mutex.hpp"
 # include "Condvar.hpp"
+# include "Settings.hpp"
 
 class	ACharacter : public AEntity
 {
@@ -16,7 +17,6 @@ protected:
   Mutex		_mutex;
   Condvar	_condvar;
   glm::vec4	_color;
-  Model		_model;
   int		_health;
   bool		_isAlive;
   int		_bombStock;
@@ -24,19 +24,16 @@ protected:
   int		_speed;
   int		_range;
   int		_score;
-  
+
 public:
-  ACharacter(glm::vec4 color, Model model);
+  ACharacter(int x, int y, glm::vec4 color, IObject *model);
   ~ACharacter();
   bool		initialize();
   virtual void	update(gdl::Clock const &clock, gdl::Input &input);
   void		draw(gdl::AShader &shader, gdl::Clock const &clock);
 
 public:
-  void		moveUp();
-  void		moveDown();
-  void		moveLeft();
-  void		moveRight();
+  void		move(eAction);
   void		hit();
 
 public:

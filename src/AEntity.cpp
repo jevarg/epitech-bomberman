@@ -4,8 +4,12 @@ AEntity::AEntity()
 {
 }
 
-AEntity::AEntity(int x, int y, eType type) : _x(x), _y(y), _type(type)
+# include <iostream>
+
+AEntity::AEntity(int x, int y, eType type, IObject *model) : _x(x), _y(y), _type(type), _model(model)
 {
+  std::cout << x << ", " << y << " | " << type << std::endl;
+  _model->translate(glm::vec3((float)(x * 2), 0.0, (float)(y * 2)));
 }
 
 AEntity::~AEntity()
@@ -40,4 +44,9 @@ void	AEntity::setYPos(const int &y)
 void	AEntity::setType(const eType &type)
 {
   _type = type;
+}
+
+void	AEntity::draw(gdl::AShader &shader, gdl::Clock &clock)
+{
+  _model->draw(shader, clock);
 }

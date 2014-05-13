@@ -1,7 +1,7 @@
 #include "Player.hpp"
 
-Player::Player(Camera camera, glm::vec4 color, Model model)
-  : ACharacter(color, model), _camera(camera)
+Player::Player(int x, int y, Camera camera, glm::vec4 color, IObject *model)
+  : ACharacter(x, y, color, model), _camera(camera)
 {
 }
 

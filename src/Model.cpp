@@ -17,8 +17,6 @@ Model::~Model()
 {
   if (_obj != NULL)
     delete _obj;
-  if (_texture != NULL)
-    delete _texture;
 }
 
 IObject *Model::clone() const
