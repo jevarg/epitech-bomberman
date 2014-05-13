@@ -64,7 +64,7 @@ bool		Save::saveGame(Map &map, Settings &settings, const std::string &name)
   buf = ss.str();
   this->encrypt(buf);
   file << buf << "\n";
-  buf = " ";
+  buf = "";
   while (it != end)
     {
       vit = (*it)->vecBegin();

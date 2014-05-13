@@ -1,5 +1,5 @@
-#ifndef _AENTITIE_HPP_
-# define _AENTITIE_HPP_
+#ifndef _AENTITY_HPP_
+# define _AENTITY_HPP_
 
 # include "IObject.hpp"
 
@@ -44,4 +44,4 @@ protected:
   eType		_type;
 };
 
-#endif /* !_AENTITIE_HPP_ */
+#endif /* !_AENTITY_HPP_ */
