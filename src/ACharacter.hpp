@@ -24,9 +24,6 @@ public:
   ACharacter(glm::vec4 color, Model model);
   ~ACharacter();
   void		moveUp();
-  void		moveDown();
-  void		moveLeft();
-  void		moveRight();
   void		hit();
   bool		initialize();
   virtual void	update(gdl::Clock const &clock, gdl::Input &input);

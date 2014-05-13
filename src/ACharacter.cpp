@@ -10,22 +10,7 @@ ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::moveUp()
-{
-
-}
-
-void	ACharacter::moveDown()
-{
-
-}
-
-void	ACharacter::moveLeft()
-{
-
-}
-
-void	ACharacter::moveRight()
+void	ACharacter::move()
 {
 
 }
