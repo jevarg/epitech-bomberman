@@ -15,8 +15,8 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
-  _mapX = 15;
-  _mapY = 15;
+  _mapX = _set.getVar(MAP_HEIGHT);
+  _mapY = _set.getVar(MAP_WIDTH);
   if (!_win.start(_set.getVar(W_WIDTH), _set.getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
