@@ -52,9 +52,8 @@ private:
   Save				_save;
   std::vector<IObject *>	_obj;
   Camera			_cam;
-  int				_mapX;
-  int				_mapY;
-  Cube				_skybox;
+  unsigned int			_mapX;
+  unsigned int			_mapY;
   Model				_model;
   Map				_map;
   Settings			&_set;

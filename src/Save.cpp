@@ -9,97 +9,98 @@
 #include "GameEngine.hpp"
 #include "Save.hpp"
 #include "Container.hpp"
-#include "Settings.hpp"
+ #include "Settings.hpp"
 
-Save::Save()
-{
-}
+ Save::Save()
+ {
+ }
 
-Save::~Save()
-{
-}
+ Save::~Save()
+ {
+ }
 
-bool		Save::encrypt(std::string &to_encrypt)
-{
-  for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
-    {
-      if ((*it <= '9' && *it >= '0') || *it == ' ')
-	*it -= 25;
-      else
-	{
-	  std::cerr << "Encrypt error : incorrect savegame file" << std::endl;
-	  return (false);
-	}
-    }
-  return (true);
-}
+ bool		Save::encrypt(std::string &to_encrypt)
+ {
+   for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
+     {
+       if ((*it <= '9' && *it >= '0') || *it == ' ')
+	 *it -= 25;
+       else
+	 {
+	   std::cerr << "Encrypt error : incorrect savegame file" << std::endl;
+	   return (false);
+	 }
+     }
+   return (true);
+ }
 
-bool		Save::decrypt(std::string &to_encrypt)
-{
-  for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
-    {
-      *it += 25;
-      if ((*it > '9' || *it < '0') && *it != ' ')
-      	{
-      	  std::cerr << "Decrypt error : incorrect savegame file" << std::endl;
-      	  return (false);
-      	}
-    }
-  return (true);
-}
+ bool		Save::decrypt(std::string &to_encrypt)
+ {
+   for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
+     {
+       *it += 25;
+       if ((*it > '9' || *it < '0') && *it != ' ')
+	 {
+	   std::cerr << "Decrypt error : incorrect savegame file" << std::endl;
+	   return (false);
+	 }
+     }
+   return (true);
+ }
 
-bool		Save::saveGame(Map &map, Settings &settings, const std::string &name)
-{
-  std::vector<Container *>::const_iterator	it = map.ContBegin();
-  std::vector<Container *>::const_iterator	end = map.ContEnd();
-  v_Entcit	vit;
-  v_Entcit	vit_end;
-  l_Entcit     	lit;
-  l_Entcit     	lit_end;
-  std::ofstream	file(name.c_str());
-  std::string	buf;
-  std::ostringstream	ss;
+ bool		Save::saveGame(Map &map, Settings &settings, const std::string &name)
+ {
+   std::vector<Container *>::const_iterator	it = map.ContBegin();
+   std::vector<Container *>::const_iterator	end = map.ContEnd();
+   v_Entcit	vit;
+   v_Entcit	vit_end;
+   l_Entcit     	lit;
+   l_Entcit     	lit_end;
+   std::ofstream	file(name.c_str());
+   std::string	buf;
+   std::ostringstream	ss;
 
-  ss << settings.getVar(MAP_WIDTH) << " " << settings.getVar(MAP_HEIGHT);
-  buf = ss.str();
-  this->encrypt(buf);
-  file << buf << "\n";
-  buf = " ";
-  while (it != end)
-    {
-      vit = (*it)->vecBegin();
-      vit_end = (*it)->vecEnd();
-      while (vit != vit_end)
-	{
-	  std::ostringstream	oss;
-	  oss << (*vit)->getXPos() << " " << (*vit)->getYPos() << " "
-	      << static_cast<int>((*vit)->getType());
-	  buf = oss.str();
-	  this->encrypt(buf);
-	  file << buf << "\n";
-	  ++vit;
-	  buf = "";
-	}
-      lit = (*it)->listBegin();
-      lit_end = (*it)->listEnd();
-      while (lit != lit_end)
-	{
-	  std::ostringstream	oss;
-	  oss << (*lit)->getXPos() << " " << (*lit)->getYPos() << " "
-	      << static_cast<int>((*lit)->getType());
-	  buf = oss.str();
-	  this->encrypt(buf);
-	  file << buf << "\n";
-	  ++lit;
-	  buf = "";
-	}
-      ++it;
-    }
-  file.close();
-  return (true);
-}
+   ss << settings.getVar(MAP_WIDTH) << " " << settings.getVar(MAP_HEIGHT);
+   buf = ss.str();
+   this->encrypt(buf);
+   file << buf << "\n";
+   buf = " ";
+   while (it != end)
+     {
+       vit = (*it)->vecBegin();
+       vit_end = (*it)->vecEnd();
+       while (vit != vit_end)
+	 {
+	   std::ostringstream	oss;
+	   oss << (*vit)->getXPos() << " " << (*vit)->getYPos() << " "
+	       << static_cast<int>((*vit)->getType());
+	   buf = oss.str();
+	   this->encrypt(buf);
+	   file << buf << "\n";
+	   ++vit;
+	   buf = "";
+	 }
+       lit = (*it)->listBegin();
+       lit_end = (*it)->listEnd();
+       while (lit != lit_end)
+	 {
+	   std::ostringstream	oss;
+	   oss << (*lit)->getXPos() << " " << (*lit)->getYPos() << " "
+	       << static_cast<int>((*lit)->getType());
+	   buf = oss.str();
+	   this->encrypt(buf);
+	   file << buf << "\n";
+	   ++lit;
+	   buf = "";
+	 }
+       ++it;
+     }
+   file.close();
+   return (true);
+ }
 
-bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
+ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name,
+				std::map<eType, IObject *> &model)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -153,7 +154,8 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
 	      return (false);
 	    }
-	  map.addEntity(new Entity(x, y, static_cast<eType>(type % (GROUND + 1))));
+	  eType tmp = static_cast<eType>(type % (GROUND + 1));
+	  map.addEntity(new Entity(x, y, tmp, model[tmp]->clone()));
 	  ++line;
 	}
     }

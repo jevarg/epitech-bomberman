@@ -29,7 +29,7 @@ public:
 
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
-  void	createMap();
+  void	createMap(std::map<eType, IObject *> &type);
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
   eType	checkMapColision(int x, int y) const;
@@ -38,7 +38,7 @@ public:
   v_Contcit	ContEnd() const;
 
   bool		save(Settings &settings, std::string&);
-  bool		load(Settings &settings, std::string&);
+  bool		load(Settings &settings, std::string&, std::map<eType, IObject *> &type);
 
 private:
   void	genSmallMaze(short x, short y, short dir);
@@ -50,7 +50,7 @@ private:
   bool	checkAccess(short x, short y) const;
   unsigned int	getContPos(int x, int y) const;
   void	fillBox();
-  void	fillContainers();
+  void	fillContainers(std::map<eType, IObject *> &type);
   void	display();
 
   unsigned short	_mapX;

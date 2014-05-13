@@ -1,7 +1,7 @@
 #include "Flame.hpp"
 
-Flame::Flame()
-  : AEntity(0, 0, FLAME), _mutex(), _condvar()
+Flame::Flame(IObject *model)
+  : AEntity(0, 0, FLAME, model), _mutex(), _condvar()
 {
 }
 

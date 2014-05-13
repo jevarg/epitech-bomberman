@@ -33,7 +33,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, std::string &name)
+bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *> &type)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -62,13 +62,13 @@ bool		Map::load(Settings &settings, std::string &name)
 	  switch (*it)
 	    {
 	    case 'W':
-	      addEntity(new Entity(x, y, WALL));
+	      addEntity(new Entity(x, y, WALL, type[WALL]->clone()));
 	      break;
 	    case 'B':
-	      addEntity(new Entity(x, y, BOX));
+	      addEntity(new Entity(x, y, BOX, type[BOX]->clone()));
 	      break;
 	    case 'C':
-	      addEntity(new Entity(x, y, CHARACTER));
+	      addEntity(new Entity(x, y, CHARACTER, type[CHARACTER]->clone()));
 	      break;
 	    case ' ':
 	      break;
@@ -217,20 +217,16 @@ void	Map::fillBox()
     }
 }
 
-void	Map::fillContainers()
+void	Map::fillContainers(std::map<eType, IObject *> &type)
 {
   unsigned int	i;
-  AEntity	*ent;
   unsigned int 	totalsize = (_mapX - 1) * _mapY;
 
   for (i = _mapX; i < totalsize; ++i)
     {
       if (_map[i] != FREE && i % _mapX != 0 &&
 	  (i + 1) % _mapX != 0) // means there is a block / It's the border
-	{
-	  ent =  new Entity(i % _mapX, i /_mapX, _map[i]);
-	  addEntity(ent);
-	}
+	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], type[_map[i]]->clone()));
     }
   _map.clear();	// erase the temps vector
 }
@@ -242,7 +238,7 @@ void	Map::removeEntity(int x, int y)
   _cont[pos]->removeContBlock(x, y);
 }
 
-void	Map::createMap()
+void	Map::createMap(std::map<eType, IObject *> &type)
 {
   int	posx;
   int	posy;
@@ -259,7 +255,7 @@ void	Map::createMap()
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
-  fillContainers();
+  fillContainers(type);
   display();
 }
 

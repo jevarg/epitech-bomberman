@@ -2,7 +2,7 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(Settings &set, Input &input)
-    : _save(), _cam(), _skybox(SKY_TEXTURE), _map(set), _set(set),
+    : _save(), _cam(), _map(set), _set(set),
       _input(input), _type(), _texture()
 {
 }
@@ -10,11 +10,18 @@ GameEngine::GameEngine(Settings &set, Input &input)
 
 GameEngine::~GameEngine()
 {
+  while (_obj.size())
+    {
+      delete _obj.back();
+      _obj.pop_back();
+    }
   _win.stop();
 }
 
 bool GameEngine::initialize()
 {
+  Cube *skybox;
+
   _mapX = _set.getVar(MAP_HEIGHT);
   _mapY = _set.getVar(MAP_WIDTH);
   if (!_win.start(_set.getVar(W_WIDTH), _set.getVar(W_HEIGHT), "Bomberman"))
@@ -26,15 +33,22 @@ bool GameEngine::initialize()
   _cam.initialize();
   _cam.translate(glm::vec3(0, 5, -10));
 
-  _skybox.initialize();
-  _skybox.scale(glm::vec3(500, 500, 500));
+  skybox = new Cube(SKY_TEXTURE);
+  skybox->initialize();
+  skybox->scale(glm::vec3(500, 500, 500));
+  _obj.push_back(skybox);
 
-  _type[WALL] = new Cube(_skybox);
-  _type[BOX] = new Cube(_skybox);
-  _type[CHARACTER] = new Cube(_skybox);
+  _type[WALL] = new Cube(*skybox);
+  _type[BOX] = new Cube(*skybox);
+  _type[CHARACTER] = new Cube(*skybox);
   _texture[WALL] = new gdl::Texture();
   _texture[BOX] = new gdl::Texture();
   _texture[GROUND] = new gdl::Texture();
+
+  skybox = new Cube(*skybox);
+  skybox->translate(glm::vec3(_mapX, -1.0, _mapY));
+  skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
+  _obj.push_back(skybox);
 
   if (!_texture[WALL]->load(WALL_TEXTURE, true)
       || !_texture[BOX]->load(BOX_TEXTURE, true)
@@ -48,16 +62,16 @@ bool GameEngine::initialize()
     return (false);
   _model.scale(glm::vec3(0.005, 0.005, 0.005));
 
-  _map.createMap();
-  createDisplayMap();
-  _obj.push_back(&_model);
+  _map.createMap(_type);
+  createDisplayBorder();
+  // _obj.push_back(&_model);
   return (true);
 }
 
 bool GameEngine::update()
 {
   int time;
-  double fps = (1000 / CFPS);
+  double fps = (1000 / _set.getVar(FPS));
   t_mouse mouse;
 
   _input.getInput(_set);
@@ -70,7 +84,7 @@ bool GameEngine::update()
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_clock);
-  // _cam.update(_clock, _input);
+  _cam.update(_clock, _input);
   // for (size_t i = 0; i < _obj.size(); ++i)
   //   _obj[i]->update(_clock, _input);
   return (true);
@@ -83,60 +97,37 @@ void GameEngine::draw()
   _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
   _shader.bind();
-  _skybox.draw(_shader, _clock);
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _clock);
+  v_Contcit end = _map.ContEnd();
+  for (v_Contcit it = _map.ContBegin();it != end;it++)
+    {
+      v_Entcit end_vector = (*it)->vecEnd();
+      l_Entcit end_list = (*it)->listEnd();
+      for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)
+	(*it1)->draw(_shader, _clock);
+      for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
+	(*it1)->draw(_shader, _clock);
+    }
   _win.flush();
 }
 
 void GameEngine::createDisplayBorder()
 {
-  unsigned int	mapX = _map.getWidth();
-  unsigned int	mapY = _map.getHeight();
   unsigned int	i;
 
-  for (i = 0; i < mapX; ++i)
+  for (i = 0; i < _mapX; ++i)
     {
       _obj.push_back(_type[WALL]->clone());
       _obj.back()->translate(glm::vec3(2 * i, 0.0, 0));
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(2 * i, 0.0, 2 * (mapY - 1)));
+      _obj.back()->translate(glm::vec3(2 * i, 0.0, 2 * (_mapY - 1)));
     }
-  for (i = 1; i < (mapY - 1); ++i)
+  for (i = 1; i < (_mapY - 1); ++i)
     {
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(2 * (mapX - 1), 0.0, 2 * i));
+      _obj.back()->translate(glm::vec3(2 * (_mapX - 1), 0.0, 2 * i));
       _obj.push_back(_type[WALL]->clone());
       _obj.back()->translate(glm::vec3(0, 0.0, 2 * i));
-    }
-}
-
-void GameEngine::createDisplayMap()
-{
-  v_Contcit	end = _map.ContEnd();
-  IObject	*ground = new Cube(_skybox);
-
-  ground->scale(glm::vec3(2 * _mapX, 1.0, 2 * _mapY));
-  ground->translate(glm::vec3(2 * (_mapX - 0.5), -2.0, 2 * (_mapY - 0.5)));
-  _obj.push_back(ground);
-  createDisplayBorder();
-  for (v_Contcit it = _map.ContBegin(); it != end; ++it)
-    {
-      l_Entcit endList = (*it)->listEnd();
-      for (l_Entcit it1 = (*it)->listBegin(); it1 != endList; ++it1)
-	if (_type[(*it1)->getType()])
-	  {
-	    _obj.push_back(_type[(*it1)->getType()]->clone());
-	    _obj.back()->translate(glm::vec3(2 * (*it1)->getXPos(),
-					     0.0, 2 * (*it1)->getYPos()));
-	  }
-      v_Entcit endVec = (*it)->vecEnd();
-      for (v_Entcit it1 = (*it)->vecBegin(); it1 != endVec; ++it1)
-	if (_type[(*it1)->getType()])
-	  {
-	    _obj.push_back(_type[(*it1)->getType()]->clone());
-	    _obj.back()->translate(glm::vec3(2 * (*it1)->getXPos(), 0.0,
-					     2 * (*it1)->getYPos()));
-	  }
     }
 }
