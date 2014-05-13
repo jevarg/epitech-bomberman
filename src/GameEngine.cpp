@@ -46,7 +46,7 @@ bool GameEngine::initialize()
   _texture[GROUND] = new gdl::Texture();
 
   skybox = new Cube(*skybox);
-  skybox->translate(glm::vec3(_mapX, -1.0, _mapY));
+  skybox->translate(glm::vec3(_mapX - 1, -1.0, _mapY - 1));
   skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
   _obj.push_back(skybox);
 
