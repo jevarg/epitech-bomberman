@@ -13,33 +13,54 @@
 # include "Cube.hpp"
 # include "Exception.hpp"
 # include "Camera.hpp"
-# include "AEntitie.hpp"
+# include "IObject.hpp"
+# include "Model.hpp"
+# include "AEntity.hpp"
+# include "Save.hpp"
+# include "Container.hpp"
 # include "Map.hpp"
+# include "Settings.hpp"
+# include "Input.hpp"
 
-# define FPS 60.0f
-# define FOV 60.0f
+# define CFPS 60.0f
+# define CFOV 60.0f
 # define DEF_SIZE_X 800.0f
 # define DEF_SIZE_Y 600.0f
+
+# define WALL_TEXTURE "./assets/wall.tga"
+# define SKY_TEXTURE "./assets/skybox.tga"
+# define BOX_TEXTURE "./assets/box.tga"
+# define GROUND_TEXTURE "./assets/ground.tga"
 
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine();
+  GameEngine(Settings &set, Input &input);
   ~GameEngine();
 
   virtual bool	initialize();
   virtual bool	update();
   virtual void	draw();
+
 private:
-  gdl::SdlContext	_win;
-  gdl::Input		_input;
-  gdl::Clock		_clock;
+  void	createDisplayMap();
+  void	createDisplayBorder();
+
+  gdl::SdlContext		_win;
+  gdl::Clock			_clock;
   gdl::BasicShader		_shader;
-  std::vector<AObject *>	_obj;
-  Map			_map;
-  Camera		_cam;
-  int			_mapX;
-  int			_mapY;
+  Save				_save;
+  std::vector<IObject *>	_obj;
+  Camera			_cam;
+  int				_mapX;
+  int				_mapY;
+  Cube				_skybox;
+  Model				_model;
+  Map				_map;
+  Settings			&_set;
+  Input				&_input;
+  std::map<eType, IObject *>	_type;
+  std::map<eType, gdl::Texture *>	_texture;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

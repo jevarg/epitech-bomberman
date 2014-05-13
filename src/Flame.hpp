@@ -1,11 +1,14 @@
 #ifndef FLAME_HPP_
 # define FLAME_HPP_
 
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
 # include "ACharacter.hpp"
 
-class	Flame : public AEntitie
+class	Flame : public AEntity
 {
+private:
+  Mutex		_mutex;
+  Condvar	_condvar;
 
 public:
   Flame();

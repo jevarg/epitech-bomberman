@@ -4,14 +4,13 @@
 #include <ctime>
 #include "Map.hpp"
 
-#include "GameEngine.hpp"
-
-Map::Map()
+Map::Map(Settings &set)
 {
   _mapX = 50;
   _mapY = 50;
-  _density = 30;	// expressed in %
-  _linear = 40;
+  _density = set.getVar(MAP_DENSITY);	// expressed in %
+  _linear = set.getVar(MAP_LINEAR);
+  std::cout << _density << " " << _linear << std::endl;
 }
 
 Map::~Map()
@@ -32,6 +31,58 @@ bool	Map::checkValidPath(int x, int y) const
   for (int i = 0; i < 4 && counter < 2; ++i)
     counter += equa[i];
   return (counter == 2 ? false : true);
+}
+
+bool		Map::load(Settings &settings, std::string &name)
+{
+  std::ifstream	file(name.c_str());
+  std::string	buf;
+  unsigned int	len = 0;
+  int		y = 0;
+  int		x = 0;
+
+  if ((file.rdstate() && std::ifstream::failbit) != 0)
+    {
+      std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
+      return (false);
+    }
+  while (std::getline(file, buf))
+    {
+      x = 0;
+      if (len == 0)
+	len = buf.length();
+      else
+	if (len != buf.length())
+	  {
+	    std::cerr << "Error while loading map on line : " << y << std::endl;
+	    return (false);
+	  }
+      for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
+	{
+	  switch (*it)
+	    {
+	    case 'W':
+	      this->addEntity(new Entity(x, y, WALL));
+	      break;
+	    case 'B':
+	      this->addEntity(new Entity(x, y, BOX));
+	      break;
+	    case 'C':
+	      this->addEntity(new Entity(x, y, CHARACTER));
+	      break;
+	    case ' ':
+	      break;
+	    default:
+	      std::cerr << "Error while loading map on line : " << y << " column : " << x << std::endl;
+	      return (false);
+	    }
+	  ++x;
+	}
+      ++y;
+    }
+  settings.setVar(MAP_HEIGHT, y);
+  settings.setVar(MAP_WIDTH, x);
+  return (true);
 }
 
 short	Map::getDir(bool *rtab, short cuBlock) const
@@ -169,15 +220,16 @@ void	Map::fillBox()
 void	Map::fillContainers()
 {
   unsigned int	i;
-  t_entity	*ent;
-  unsigned int 	totalsize = _mapX * _mapY;
+  AEntity	*ent;
+  unsigned int 	totalsize = (_mapX - 1) * _mapY;
 
-  for (i = 0; i < totalsize; ++i)
+  for (i = _mapX; i < totalsize; ++i)
     {
-      if (_map[i] != FREE) // means there is no block
+      if (_map[i] != FREE && i % _mapX != 0 &&
+	  (i + 1) % _mapX != 0) // means there is a block / It's the border
 	{
-	  ent = new t_entity(i % _mapX, i /_mapX, _map[i]);
-	  addEntitie(ent);
+	  ent =  new Entity(i % _mapX, i /_mapX, _map[i]);
+	  addEntity(ent);
 	}
     }
   _map.clear();	// erase the temps vector
@@ -209,7 +261,6 @@ void	Map::createMap()
   fillBox();
   fillContainers();
   display();
-  exit(0);
 }
 
 unsigned int	Map::getContPos(int x, int y) const
@@ -222,12 +273,12 @@ unsigned int	Map::getContPos(int x, int y) const
   return (ratioy * (_mapX / SQUARESIZE) + ratiox);
 }
 
-void	Map::addEntitie(t_entity *ent)
+void	Map::addEntity(AEntity *ent)
 {
   unsigned int	pos;
   Container	*cont;
 
-  pos = getContPos(ent->_x, ent->_y);
+  pos = getContPos(ent->getXPos(), ent->getYPos());
   while (_cont.size() <= pos)
     {
       cont = new Container;
@@ -239,16 +290,18 @@ void	Map::addEntitie(t_entity *ent)
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
-
-  return (_cont[pos]->checkContColision(x, y));
+  
+  if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
+    return (WALL);
+  return (_cont[pos]->checkColision(x, y));
 }
 
-int	Map::getWidth() const
+unsigned int	Map::getWidth() const
 {
   return (_mapX);
 }
 
-int	Map::getHeight() const
+unsigned int	Map::getHeight() const
 {
   return (_mapY);
 }
@@ -261,4 +314,9 @@ v_Contcit	Map::ContBegin() const
 v_Contcit	Map::ContEnd() const
 {
   return (_cont.end());
+}
+
+void		Map::setMobilEnt(int x, int y, eType type)
+{
+  (_cont[getContPos(x, y)])->setMobilEnt(x, y, type);
 }

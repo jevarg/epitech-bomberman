@@ -1,9 +1,15 @@
 #include "ACharacter.hpp"
 
 ACharacter::ACharacter(glm::vec4 color, Model model)
-  : AEntitie(0, 0, CHARACTER), _color(color), _model(model), _health(1), _isAlive(true),
-    _bombStock(1), _bombType(NORMAL), _speed(5), _range(5), _score(0)
+  : AEntity(0, 0, CHARACTER), _mutex(), _condvar(), _color(color),
+    _model(model), _health(1), _isAlive(true), _bombStock(1),
+    _bombType(NORMAL), _speed(5), _range(5), _score(0)
 {
+  pthread_t         thread;
+
+  if (pthread_create(&thread, NULL, &handle_thread, this) != 0)
+    throw (Exception("Can't create Acharacter's thread"));
+  _thread = thread;
 }
 
 ACharacter::~ACharacter()
@@ -46,4 +52,10 @@ int	ACharacter::getScore() const
 bool	ACharacter::isAlive() const
 {
   return (_isAlive);
+}
+
+void	*handle_thread(void *arg)
+{
+  (void) arg;
+  return (NULL);
 }

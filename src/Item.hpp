@@ -1,7 +1,7 @@
 #ifndef ITEM_HPP_
 # define ITEM_HPP_
 
-# include "AEntitie.hpp"
+# include "AEntity.hpp"
 
 enum	eItemType
   {
@@ -11,7 +11,7 @@ enum	eItemType
     STOCK
   };
 
-class		Item : public AEntitie
+class		Item : public AEntity
 {
 private:
   eItemType	_itemType;
@@ -19,7 +19,8 @@ private:
 public:
   Item(eItemType itemType);
   ~Item();
-  eItemType	getType() const;
+
+  eItemType	getItemType() const;
 };
 
 #endif /* !ITEM_HPP_ */
