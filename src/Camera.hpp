@@ -2,7 +2,8 @@
 # define _CAMERA_HPP_
 
 # include <glm/glm.hpp>
-# include <Input.hh>
+
+class Input;
 
 class Camera : public ATransformation
 {

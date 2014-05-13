@@ -6,8 +6,8 @@
 
 Map::Map(Settings &set)
 {
-  _mapX = 50;
-  _mapY = 50;
+  _mapX = set.getVar(MAP_HEIGHT);
+  _mapY = set.getVar(MAP_WIDTH);
   _density = set.getVar(MAP_DENSITY);	// expressed in %
   _linear = set.getVar(MAP_LINEAR);
   std::cout << _density << " " << _linear << std::endl;
@@ -33,7 +33,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, std::string &name)
+bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *> &type)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -62,13 +62,10 @@ bool		Map::load(Settings &settings, std::string &name)
 	  switch (*it)
 	    {
 	    case 'W':
-	      this->addEntity(new Entity(x, y, WALL));
+	      addEntity(new Entity(x, y, WALL, type[WALL]->clone()));
 	      break;
 	    case 'B':
-	      this->addEntity(new Entity(x, y, BOX));
-	      break;
-	    case 'C':
-	      this->addEntity(new Entity(x, y, CHARACTER));
+	      addEntity(new Entity(x, y, BOX, type[BOX]->clone()));
 	      break;
 	    case ' ':
 	      break;
@@ -82,6 +79,33 @@ bool		Map::load(Settings &settings, std::string &name)
     }
   settings.setVar(MAP_HEIGHT, y);
   settings.setVar(MAP_WIDTH, x);
+  return (true);
+}
+
+bool		Map::save(Settings &settings, std::string &name)
+{
+  std::ofstream	file(name.c_str());
+  std::string	buf;
+
+  for (int y = 0; y < _mapY; ++y)
+    {
+      buf = "";
+      for (int x = 0; x < _mapX; ++x)
+	{
+	  switch (checkMapColision(x, y))
+	    {
+	    case WALL:
+	      buf.insert(x, 1, 'W');
+	      break;
+	    case BOX:
+	      buf.insert(x, 1, 'B');
+	      break;
+	    default:
+	      buf.insert(x, 1, ' ');
+	    }
+	}
+      file << buf << "\n";
+    }
   return (true);
 }
 
@@ -217,20 +241,16 @@ void	Map::fillBox()
     }
 }
 
-void	Map::fillContainers()
+void	Map::fillContainers(std::map<eType, IObject *> &type)
 {
   unsigned int	i;
-  AEntity	*ent;
   unsigned int 	totalsize = (_mapX - 1) * _mapY;
 
   for (i = _mapX; i < totalsize; ++i)
     {
       if (_map[i] != FREE && i % _mapX != 0 &&
 	  (i + 1) % _mapX != 0) // means there is a block / It's the border
-	{
-	  ent =  new Entity(i % _mapX, i /_mapX, _map[i]);
-	  addEntity(ent);
-	}
+	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], type[_map[i]]->clone()));
     }
   _map.clear();	// erase the temps vector
 }
@@ -242,7 +262,7 @@ void	Map::removeEntity(int x, int y)
   _cont[pos]->removeContBlock(x, y);
 }
 
-void	Map::createMap()
+void	Map::createMap(std::map<eType, IObject *> &type)
 {
   int	posx;
   int	posy;
@@ -259,7 +279,7 @@ void	Map::createMap()
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
-  fillContainers();
+  fillContainers(type);
   display();
 }
 
@@ -290,7 +310,7 @@ void	Map::addEntity(AEntity *ent)
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
-  
+
   if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
     return (WALL);
   return (_cont[pos]->checkColision(x, y));

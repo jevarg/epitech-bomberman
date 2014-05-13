@@ -1,4 +1,5 @@
 #include "GameEngine.hpp"
+#include "Input.hpp"
 #include "Camera.hpp"
 
 Camera::Camera()
