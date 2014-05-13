@@ -67,9 +67,6 @@ bool		Map::load(Settings &settings, std::string &name)
 	    case 'B':
 	      addEntity(new Entity(x, y, BOX));
 	      break;
-	    case 'C':
-	      addEntity(new Entity(x, y, CHARACTER));
-	      break;
 	    case ' ':
 	      break;
 	    default:
@@ -82,6 +79,33 @@ bool		Map::load(Settings &settings, std::string &name)
     }
   settings.setVar(MAP_HEIGHT, y);
   settings.setVar(MAP_WIDTH, x);
+  return (true);
+}
+
+bool		Map::save(Settings &settings, std::string &name)
+{
+  std::ofstream	file(name.c_str());
+  std::string	buf;
+
+  for (int y = 0; y < _mapY; ++y)
+    {
+      buf = "";
+      for (int x = 0; x < _mapX; ++x)
+	{
+	  switch (checkMapColision(x, y))
+	    {
+	    case WALL:
+	      buf.insert(x, 1, 'W');
+	      break;
+	    case BOX:
+	      buf.insert(x, 1, 'B');
+	      break;
+	    default:
+	      buf.insert(x, 1, ' ');
+	    }
+	}
+      file << buf << "\n";
+    }
   return (true);
 }
 
