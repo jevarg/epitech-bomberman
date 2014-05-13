@@ -10,11 +10,11 @@ GameEngine::GameEngine(Settings &set, Input &input)
 
 GameEngine::~GameEngine()
 {
-  while (_obj.size())
-    {
-      delete _obj.back();
-      _obj.pop_back();
-    }
+  // while (_obj.size())
+  //   {
+  //     delete _obj.back();
+  //     _obj.pop_back();
+  //   }
   _win.stop();
 }
 
@@ -64,7 +64,7 @@ bool GameEngine::initialize()
 
   _map.createMap(_type);
   createDisplayBorder();
-  // _obj.push_back(&_model);
+  _obj.push_back(&_model);
   return (true);
 }
 
