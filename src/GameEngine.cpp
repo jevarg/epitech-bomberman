@@ -58,10 +58,15 @@ bool GameEngine::update()
 {
   int time;
   double fps = (1000 / CFPS);
+  t_mouse mouse;
 
   _input.getInput(_set);
   if (_input[SDLK_ESCAPE])
     return (false);
+  if (_input[SDLK_g])
+    std::cout << "g pressed" << std::endl;
+  if (_input[mouse])
+    std::cout << "catched event " << mouse.event << std::endl;
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_clock);

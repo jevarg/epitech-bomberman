@@ -8,6 +8,7 @@ Settings::Settings()
   _actionList.push_back("left");
   _actionList.push_back("right");
   _actionList.push_back("activate");
+  _actionList.push_back("launchgame");
 
   _cvarList.push_back("com_maxFps");
   _cvarList.push_back("cg_fov");

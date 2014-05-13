@@ -21,6 +21,7 @@ enum	eAction
     LEFT,
     RIGHT,
     ACTIVATE,
+    LAUNCHGAME,
     UNKNOWN
   };
 
