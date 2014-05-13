@@ -42,7 +42,7 @@ bool	ACharacter::initialize()
   return (true);
 }
 
-void	ACharacter::update(gdl::Clock const &, gdl::Input &)
+void	ACharacter::update(gdl::Clock const &, Input &)
 {
 
 }

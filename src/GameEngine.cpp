@@ -62,14 +62,14 @@ bool GameEngine::update()
   _input.getInput(_set);
   if (_input[SDLK_ESCAPE])
     return (false);
-  if (_input.getInput(SDLK_o))
+  if (_input[SDLK_o])
     _model.rotate(glm::vec3(0, 1.0, 0), 5);
-  if (_input.getInput(SDLK_p))
+  if (_input[SDLK_p])
     _model.rotate(glm::vec3(0, 1.0, 0), -5);
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_clock);
-  // _cam.update(_clock, _input);
+  _cam.update(_clock, _input);
   // for (size_t i = 0; i < _obj.size(); ++i)
   //   _obj[i]->update(_clock, _input);
   return (true);
