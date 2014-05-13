@@ -36,9 +36,9 @@ bool GameEngine::initialize()
   _texture[BOX] = new gdl::Texture();
   _texture[GROUND] = new gdl::Texture();
 
-  if (!_texture[WALL]->load(WALL_TEXTURE, true)
-      || !_texture[BOX]->load(BOX_TEXTURE, true)
-      || !_texture[GROUND]->load(GROUND_TEXTURE, true))
+  if (!_texture[WALL]->load(WALL_TEXTURE, false)
+      || !_texture[BOX]->load(BOX_TEXTURE, false)
+      || !_texture[GROUND]->load(GROUND_TEXTURE, false))
     throw(Exception("Cannot load the texture"));
 
   _type[WALL]->setTexture(_texture[WALL]);
@@ -82,13 +82,9 @@ void GameEngine::draw()
   _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
   _shader.bind();
-  glEnable(GL_LINE_SMOOTH);
-  glEnable(GL_BLEND);
   _skybox.draw(_shader, _clock);
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _clock);
-  glDisable(GL_BLEND);
-  glDisable(GL_LINE_SMOOTH);
   _win.flush();
 }
 
