@@ -1,6 +1,7 @@
-#ifndef _MAP_H_
-# define _MAP_H_
+#ifndef _MAP_HPP_
+# define _MAP_HPP_
 
+# include <string>
 # include <vector>
 # include "Container.hpp"
 # include "AEntity.hpp"
@@ -36,6 +37,9 @@ public:
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
+  bool		save(Settings &settings, std::string&);
+  bool		load(Settings &settings, std::string&);
+
 private:
   void	genSmallMaze(short x, short y, short dir);
   void	genBigMaze();
@@ -57,4 +61,4 @@ private:
   std::vector<Container *>	_cont;
 };
 
-#endif /* _MAP_H_ */
+#endif /* !_MAP_HPP_ */

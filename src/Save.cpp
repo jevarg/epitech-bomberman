@@ -103,11 +103,12 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
+  int		line = 0;
   int		x;
   int		y;
   int		type;
 
-  if ((file.rdstate() & std::ifstream::failbit) != 0)
+  if ((file.rdstate() && std::ifstream::failbit) != 0)
     {
       std::cerr << "Error opening " << name << "\n";
       return (false);
@@ -115,7 +116,10 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
   if (std::getline(file, buf))
     {
       if (this->decrypt(buf) == false)
-	return (false);
+	    {
+	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
+	      return (false);
+	    }
       if (std::count(buf.begin(), buf.end(), ' ') != 1)
 	{
 	  std::cerr << "Error : invalid savegame file" << std::endl;
@@ -129,11 +133,14 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
       while (std::getline(file, buf))
 	{
 	  if (this->decrypt(buf) == false)
-	    return (false);
+	    {
+	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
+	      return (false);
+	    }
 	  std::cout << "readed : " << buf << std::endl;
 	  if (std::count(buf.begin(), buf.end(), ' ') != 2)
 	    {
-	      std::cerr << "Error : invalid savegame file" << std::endl;
+	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
 	      return (false);
 	    }
 	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
@@ -141,7 +148,13 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
 	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
 	  std::istringstream (buf) >> type;
-	  map.addEntity(new Entity(x, y, static_cast<eType>(type)));
+	  if (type >= UNKNOWNENTITY || type < 0)
+	    {
+	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
+	      return (false);
+	    }
+	  map.addEntity(new Entity(x, y, static_cast<eType>(type % (GROUND + 1))));
+	  ++line;
 	}
     }
   file.close();
