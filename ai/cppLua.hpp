@@ -21,8 +21,10 @@ public:
   ~cppLua();
 
   void	pushCreateTable(const int nb);
-  void	pushStringS(const int index, const char *val) const;
-  void	pushIntS(const int index, const int val) const;
+  void  pushIntString(const int index, const char *val) const;
+  void  pushStringString(const char *index, const char *val) const;
+  void  pushIntInt(const int index, const int val) const;
+  void  pushStringInt(const char *index, const int val) const;
   void	pushSetGlobal(const char *name) const;
   void	executeLua(const char *name);
 

@@ -1,6 +1,7 @@
 dofile("global.lua")
 dofile("utils.lua")
 dofile("best_first.lua")
+print("salut")
 
 function check_bomb(map)
 	return true
@@ -40,6 +41,7 @@ function artificial_intelligence()
 		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
 		{"W", "W", "W", "W", "W", "W", "W", "W", "W", "W"}
 	}
+
 	display_map(map)
 	if (check_bomb(map) and check_character(map)) then
 		best_first(map, entities)
@@ -47,8 +49,5 @@ function artificial_intelligence()
 end
 
 X, Y = 8, 10
-
 artificial_intelligence()
-
-a = add(12, 12)
-print(a)
+print(arg["yo"])

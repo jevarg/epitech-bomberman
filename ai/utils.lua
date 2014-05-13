@@ -33,6 +33,7 @@ end
 function random_movement()
 	local mov = {1, -1, 1, -1}
 	local n = math.random(1, 4)
+
 	if (n == 1 or n == 2) then
 		X = X + mov[n]
 	else
@@ -40,3 +41,14 @@ function random_movement()
 	end
 end
 
+function set_priority(player, monster, item, box, bomb)
+	TYPE_PRIORITY["player"] 	= player
+	TYPE_PRIORITY["monster"]	= monster
+	TYPE_PRIORITY["item"]		= item
+	TYPE_PRIORITY["box"]		= box
+	TYPE_PRIORITY["bomb"]		= bomb
+end
+
+function set_aggro(a)
+	AGGRO = a
+end

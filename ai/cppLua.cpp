@@ -31,16 +31,30 @@ void	cppLua::pushCreateTable(const int nb)
   lua_createtable(_luaState, nb, 0);
 }
 
-void	cppLua::pushStringS(const int index, const char *val) const
+void  cppLua::pushIntString(const int index, const char *val) const
 {
   lua_pushnumber(_luaState, index);
   lua_pushstring(_luaState, val);
   lua_settable(_luaState, -3);
 }
 
-void	cppLua::pushIntS(const int index, const int val) const
+void  cppLua::pushStringString(const char *index, const char *val) const
+{
+  lua_pushstring(_luaState, index);
+  lua_pushstring(_luaState, val);
+  lua_settable(_luaState, -3);
+}
+
+void  cppLua::pushIntInt(const int index, const int val) const
 {
   lua_pushnumber(_luaState, index);
+  lua_pushnumber(_luaState, val);
+  lua_settable(_luaState, -3);
+}
+
+void  cppLua::pushStringInt(const char *index, const int val) const
+{
+  lua_pushstring(_luaState, index);
   lua_pushnumber(_luaState, val);
   lua_settable(_luaState, -3);
 }
