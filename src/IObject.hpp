@@ -4,6 +4,7 @@
 # include <Clock.hh>
 # include <Input.hh>
 # include <BasicShader.hh>
+# include <Texture.hh>
 # include "ATransformation.hpp"
 
 class IObject: public ATransformation
