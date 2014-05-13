@@ -67,9 +67,3 @@ void		Model::setTexture(gdl::Texture *texture)
 {
   _texture = texture;
 }
-
-void	Model::draw(gdl::AShader &shader, gdl::Clock const &clock)
-{
-  (void) shader;
-  (void) clock;
-}

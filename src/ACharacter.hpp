@@ -8,6 +8,7 @@
 # include "Bomb.hpp"
 # include "Mutex.hpp"
 # include "Condvar.hpp"
+# include "Settings.hpp"
 
 class	ACharacter : public AEntity
 {
@@ -33,7 +34,7 @@ public:
   void		draw(gdl::AShader &shader, gdl::Clock const &clock);
 
 public:
-  void		move();
+  void		move(eAction);
   void		hit();
 
 public:

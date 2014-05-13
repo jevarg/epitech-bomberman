@@ -16,9 +16,25 @@ ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::move()
+void	ACharacter::move(eAction action)
 {
+  switch (action)
+    {
+    case FORWARD:
+	
+      break;
+    case BACK:
+      
+      break;
+    case LEFT:
 
+      break;
+    case RIGHT:
+	
+      break;
+    default:
+      break;
+    }
 }
 
 void	ACharacter::hit()
