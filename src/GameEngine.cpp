@@ -2,7 +2,7 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(Settings &set, Input &input)
-    : _save(), _cam(), _map(set), _set(set),
+  : _save(), _cam(),_map(set), _set(set),
       _input(input), _type(), _texture()
 {
 }
@@ -58,13 +58,15 @@ bool GameEngine::initialize()
   _type[WALL]->setTexture(_texture[WALL]);
   _type[BOX]->setTexture(_texture[BOX]);
 
-  if (!_model.load("./assets/marvin.fbx"))
+  _model = new Model();
+  if (!_model->load("./assets/marvin.fbx"))
     return (false);
-  _model.scale(glm::vec3(0.005, 0.005, 0.005));
+  _model->scale(glm::vec3(0.005, 0.005, 0.005));
+  _player = new Player(1, 1, _cam, glm::vec4(0.0, 0.0, 0.0, 0.0), _model);
 
   _map.createMap(_type);
   createDisplayBorder();
-  // _obj.push_back(&_model);
+  _map.addEntity(_player);
   return (true);
 }
 
@@ -84,9 +86,14 @@ bool GameEngine::update()
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_clock);
-  _cam.update(_clock, _input);
-  // for (size_t i = 0; i < _obj.size(); ++i)
-  //   _obj[i]->update(_clock, _input);
+  // _cam.update(_clock, _input);
+  v_Contcit end = _map.ContEnd();
+  for (v_Contcit it = _map.ContBegin();it != end;it++)
+    {
+      l_Entcit end_list = (*it)->listEnd();
+      for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
+	(*it1)->update(_clock, _input, _map);
+    }
   return (true);
 }
 

@@ -1,14 +1,12 @@
+#include "Map.hpp"
 #include "AEntity.hpp"
 
 AEntity::AEntity()
 {
 }
 
-# include <iostream>
-
 AEntity::AEntity(int x, int y, eType type, IObject *model) : _x(x), _y(y), _type(type), _model(model)
 {
-  std::cout << x << ", " << y << " | " << type << std::endl;
   _model->translate(glm::vec3((float)(x * 2), 0.0, (float)(y * 2)));
 }
 

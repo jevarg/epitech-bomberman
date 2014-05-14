@@ -1,3 +1,5 @@
+#include "Map.hpp"
+#include "Input.hpp"
 #include "ACharacter.hpp"
 
 ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model)
@@ -16,21 +18,37 @@ ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::move(eAction action)
+void	ACharacter::move(eAction action, Map const &map)
 {
   switch (action)
     {
     case FORWARD:
-
+      if (map.checkMapColision(_x, _y + 1) == FREE)
+	{
+	  _y += 1;
+	  _model->translate(glm::vec3(0, 0, 2));
+	}
       break;
     case BACK:
-
+      if (map.checkMapColision(_x, _y - 1) == FREE)
+	{
+	  _y -= 1;
+	  _model->translate(glm::vec3(0, 0, -2));
+	}
       break;
     case LEFT:
-
+      if (map.checkMapColision(_x + 1, _y) == FREE)
+	{
+	  _x += 1;
+	  _model->translate(glm::vec3(2, 0, 0));
+	}
       break;
     case RIGHT:
-
+      if (map.checkMapColision(_x - 1, _y) == FREE)
+	{
+	  _x -= 1;
+	  _model->translate(glm::vec3(-2, 0, 0));
+	}
       break;
     default:
       break;
@@ -47,17 +65,6 @@ void	ACharacter::hit()
 bool	ACharacter::initialize()
 {
   return (true);
-}
-
-void	ACharacter::update(gdl::Clock const &clock, gdl::Input &input)
-{
-  (void) clock;
-  (void) input;
-}
-
-void	ACharacter::draw(gdl::AShader &shader, gdl::Clock const &clock)
-{
-  _model->draw(shader, clock);
 }
 
 int	ACharacter::getScore() const

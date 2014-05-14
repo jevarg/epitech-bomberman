@@ -8,7 +8,10 @@
 # include "Bomb.hpp"
 # include "Mutex.hpp"
 # include "Condvar.hpp"
+# include "Input.hpp"
 # include "Settings.hpp"
+
+class Input;
 
 class	ACharacter : public AEntity
 {
@@ -29,11 +32,10 @@ public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
   ~ACharacter();
   bool		initialize();
-  virtual void	update(gdl::Clock const &clock, gdl::Input &input);
-  void		draw(gdl::AShader &shader, gdl::Clock const &clock);
+  virtual void	update(gdl::Clock const &clock, Input const &input, Map const &map) = 0;
 
 public:
-  void		move(eAction);
+  void		move(eAction, Map const &map);
   void		hit();
 
 public:

@@ -10,8 +10,7 @@ public:
   Player(int x, int y, Camera camera, glm::vec4 color, IObject *model);
   virtual ~Player();
 
-  void		update(gdl::Clock const &, gdl::Input &);
-
+  void	update(gdl::Clock const &clock, Input const &input, Map const &map);
 private:
   Camera	_camera;
 };
