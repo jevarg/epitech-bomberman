@@ -6,9 +6,12 @@
 
 class	Flame : public AEntity
 {
+private:
+  Mutex		_mutex;
+  Condvar	_condvar;
 
 public:
-  Flame();
+  Flame(IObject *model);
   ~Flame();
   void	hurtCharacter(ACharacter *character);
 };

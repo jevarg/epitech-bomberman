@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Mon May 12 21:23:13 2014 luc sinet
+## Last update Tue May 13 20:51:15 2014 
 ##
 
 NAME		=	bomberman
@@ -21,6 +21,8 @@ SRCDIR		=	./
 SRC		=	main.cpp \
 			GameEngine.cpp \
 			Exception.cpp \
+			Mutex.cpp \
+			Condvar.cpp \
 			Cube.cpp \
 			Model.cpp \
 			Camera.cpp \
@@ -42,7 +44,7 @@ OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native
+CXXFLAGS	+=	-Wextra -Wall -W -g
 LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl -p
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \

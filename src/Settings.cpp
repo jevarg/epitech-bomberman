@@ -8,6 +8,7 @@ Settings::Settings()
   _actionList.push_back("left");
   _actionList.push_back("right");
   _actionList.push_back("activate");
+  _actionList.push_back("launchgame");
 
   _cvarList.push_back("com_maxFps");
   _cvarList.push_back("cg_fov");
@@ -17,6 +18,7 @@ Settings::Settings()
   _cvarList.push_back("m_mapWidth");
   _cvarList.push_back("s_mapDensity");
   _cvarList.push_back("s_mapLinear");
+  _cvarList.push_back("r_mipmap");
 }
 
 Settings::~Settings()
