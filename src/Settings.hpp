@@ -39,6 +39,7 @@ enum	cvar
     MAP_WIDTH,
     MAP_DENSITY,
     MAP_LINEAR,
+    R_MIPMAP
   };
 
 class	Settings

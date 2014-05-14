@@ -1,6 +1,7 @@
-#ifndef _MAP_H_
-# define _MAP_H_
+#ifndef _MAP_HPP_
+# define _MAP_HPP_
 
+# include <string>
 # include <vector>
 # include "Container.hpp"
 # include "AEntity.hpp"
@@ -28,13 +29,16 @@ public:
 
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
-  void	createMap();
+  void	createMap(std::map<eType, IObject *> &type);
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
   eType	checkMapColision(int x, int y) const;
   void	setMobilEnt(int x, int y, eType type);
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
+
+  bool		save(Settings &settings, std::string&);
+  bool		load(Settings &settings, std::string&, std::map<eType, IObject *> &type);
 
 private:
   void	genSmallMaze(short x, short y, short dir);
@@ -46,7 +50,7 @@ private:
   bool	checkAccess(short x, short y) const;
   unsigned int	getContPos(int x, int y) const;
   void	fillBox();
-  void	fillContainers();
+  void	fillContainers(std::map<eType, IObject *> &type);
   void	display();
 
   unsigned short	_mapX;
@@ -57,4 +61,4 @@ private:
   std::vector<Container *>	_cont;
 };
 
-#endif /* _MAP_H_ */
+#endif /* !_MAP_HPP_ */

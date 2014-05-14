@@ -18,6 +18,7 @@ Settings::Settings()
   _cvarList.push_back("m_mapWidth");
   _cvarList.push_back("s_mapDensity");
   _cvarList.push_back("s_mapLinear");
+  _cvarList.push_back("r_mipmap");
 }
 
 Settings::~Settings()

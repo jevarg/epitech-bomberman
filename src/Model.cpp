@@ -17,8 +17,6 @@ Model::~Model()
 {
   if (_obj != NULL)
     delete _obj;
-  if (_texture != NULL)
-    delete _texture;
 }
 
 IObject *Model::clone() const
@@ -33,10 +31,11 @@ bool		Model::initialize()
 
 void		Model::update(gdl::Clock const& clock, Input &input)
 {
-
+  (void) clock;
+  (void) input;
 }
 
-void		Model::draw(gdl::AShader &shader, gdl::Clock const& clock) const
+void	Model::draw(gdl::AShader &shader, gdl::Clock const& clock) const
 {
   if (_texture != NULL)
     _texture->bind();

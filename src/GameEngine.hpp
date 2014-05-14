@@ -21,6 +21,7 @@
 # include "Map.hpp"
 # include "Settings.hpp"
 # include "Input.hpp"
+# include "Player.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -52,15 +53,16 @@ private:
   Save				_save;
   std::vector<IObject *>	_obj;
   Camera			_cam;
-  int				_mapX;
-  int				_mapY;
-  Cube				_skybox;
-  Model				_model;
+  unsigned int			_mapX;
+  unsigned int			_mapY;
   Map				_map;
   Settings			&_set;
   Input				&_input;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
+
+  Model				*_model;
+  Player			*_player;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

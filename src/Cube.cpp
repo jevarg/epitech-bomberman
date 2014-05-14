@@ -18,10 +18,10 @@ Cube::Cube(const std::string &file): IObject(), _texture(NULL), _geometry(NULL),
 
 Cube::~Cube()
 {
-  if (_texture)
-    delete _texture;
-  if (_geometry)
-    delete _geometry;
+  // if (_texture)
+  //   delete _texture;
+  // if (_geometry)
+  //   delete _geometry;
 }
 
 bool Cube::initialize()
