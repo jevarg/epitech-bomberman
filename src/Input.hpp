@@ -1,6 +1,7 @@
 #ifndef _INPUT_H_
 # define _INPUT_H_
 
+# include <SDL.h>
 # include "Settings.hpp"
 
 enum	eMouse
@@ -28,8 +29,8 @@ public:
   ~Input();
 
   void	getInput(const Settings &set);
-  bool	operator[](eAction act);
-  bool	operator[](keyCode key);
+  bool	operator[](eAction act) const;
+  bool	operator[](keyCode key) const;
   bool	operator[](t_mouse &key);
 
 private:

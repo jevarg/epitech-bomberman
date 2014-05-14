@@ -1,4 +1,3 @@
-#include <SDL.h>
 #include <cstring>
 #include "Input.hpp"
 
@@ -85,12 +84,12 @@ void	Input::getInput(const Settings &set)
     }
 }
 
-bool	Input::operator[](eAction act)
+bool	Input::operator[](eAction act) const
 {
   return (_actionState[static_cast<int>(act)]);
 }
 
-bool	Input::operator[](keyCode key)
+bool	Input::operator[](keyCode key) const
 {
   std::map<keyCode, bool>::const_iterator	it;
 
