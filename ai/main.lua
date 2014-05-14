@@ -1,7 +1,6 @@
 dofile("global.lua")
 dofile("utils.lua")
 dofile("best_first.lua")
-print("salut")
 
 function check_bomb(map)
 	return true
@@ -12,6 +11,7 @@ function check_character(map)
 end
 
 function artificial_intelligence()
+
 	local entities = {
 		{["type"] = 1, ["x"] = 4, ["y"] = 10}, 	-- player
 		{["type"] = 2, ["x"] = 6, ["y"] = 3},	-- monster 2
@@ -50,4 +50,3 @@ end
 
 X, Y = 8, 10
 artificial_intelligence()
-print(arg["yo"])
