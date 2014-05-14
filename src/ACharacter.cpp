@@ -18,7 +18,7 @@ ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::move(eAction action, Map const &map)
+void	ACharacter::move(eAction action, Map &map)
 {
   switch (action)
     {
@@ -26,13 +26,18 @@ void	ACharacter::move(eAction action, Map const &map)
       if (map.checkMapColision(_x, _y + 1) == FREE)
 	{
 	  _y += 1;
+	  map.setMobilEnt(_x, _y, CHARACTER);
+	  map.setMobilEnt(_x, _y - 1, FREE);
 	  _model->translate(glm::vec3(0, 0, 2));
+
 	}
       break;
     case BACK:
       if (map.checkMapColision(_x, _y - 1) == FREE)
 	{
 	  _y -= 1;
+	  map.setMobilEnt(_x, _y, CHARACTER);	  
+	  map.setMobilEnt(_x, _y + 1, FREE);
 	  _model->translate(glm::vec3(0, 0, -2));
 	}
       break;
@@ -40,6 +45,8 @@ void	ACharacter::move(eAction action, Map const &map)
       if (map.checkMapColision(_x + 1, _y) == FREE)
 	{
 	  _x += 1;
+	  map.setMobilEnt(_x, _y, CHARACTER);	  
+	  map.setMobilEnt(_x - 1, _y, FREE);
 	  _model->translate(glm::vec3(2, 0, 0));
 	}
       break;
@@ -47,6 +54,8 @@ void	ACharacter::move(eAction action, Map const &map)
       if (map.checkMapColision(_x - 1, _y) == FREE)
 	{
 	  _x -= 1;
+	  map.setMobilEnt(_x, _y, CHARACTER);	  
+	  map.setMobilEnt(_x + 1, _y, FREE);
 	  _model->translate(glm::vec3(-2, 0, 0));
 	}
       break;

@@ -32,10 +32,10 @@ public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
   ~ACharacter();
   bool		initialize();
-  virtual void	update(gdl::Clock const &clock, Input const &input, Map const &map) = 0;
+  virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 
 public:
-  void		move(eAction, Map const &map);
+  void		move(eAction, Map &map);
   void		hit();
 
 public:

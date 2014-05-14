@@ -9,7 +9,7 @@ Player::~Player()
 {
 }
 
-void	Player::update(gdl::Clock const &clock, Input const &input, Map const &map)
+void	Player::update(gdl::Clock const &clock, Input const &input, Map &map)
 {
   if (input[FORWARD])
     move(FORWARD, map);
