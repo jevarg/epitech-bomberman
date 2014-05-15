@@ -26,7 +26,12 @@ public:
   v_Entcit	vecEnd() const;
   l_Entcit	listBegin() const;
   l_Entcit	listEnd() const;
-  void		setMobilEnt(int, int, eType);
+  void		setEntity(int, int, eType);
+  void		setEntityIf(int, int, eType, eType);
+  void		setEntityIfNot(int, int, eType, eType);
+  AEntity	*getEntity(int, int);
+  AEntity	*getEntityIf(int, int, eType);
+  AEntity	*getEntityIfNot(int, int, eType);
 
 private:
   std::vector<AEntity *>	_staticEnt;

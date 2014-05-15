@@ -336,7 +336,32 @@ v_Contcit	Map::ContEnd() const
   return (_cont.end());
 }
 
-void		Map::setMobilEnt(int x, int y, eType type)
+void		Map::setEntity(int x, int y, eType type)
 {
-  (_cont[getContPos(x, y)])->setMobilEnt(x, y, type);
+  (_cont[getContPos(x, y)])->setEntity(x, y, type);
+}
+
+void		Map::setEntityIf(int x, int y, eType newValue, eType oldValue)
+{
+  (_cont[getContPos(x, y)])->setEntityIf(x, y, newValue, oldValue);
+}
+
+void		Map::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
+{
+  (_cont[getContPos(x, y)])->setEntityIfNot(x, y, newValue, oldValue);
+}
+
+AEntity		*Map::getEntity(int x, int y) const
+{
+  return ((_cont[getContPos(x, y)])->getEntity(x, y));
+}
+
+AEntity		*Map::getEntityIf(int x, int y, eType value) const
+{
+  return ((_cont[getContPos(x, y)])->getEntityIf(x, y, value));
+}
+
+AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
+{
+  return ((_cont[getContPos(x, y)])->getEntityIfNot(x, y, value));
 }

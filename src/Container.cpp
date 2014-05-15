@@ -64,7 +64,7 @@ l_Entcit	Container::listEnd() const
   return (_mobileEnt.end());
 }
 
-void		Container::setMobilEnt(int x, int y, eType type)
+void		Container::setEntity(int x, int y, eType type)
 {
   l_Entit	lit = _mobileEnt.begin();
 
@@ -79,4 +79,87 @@ void		Container::setMobilEnt(int x, int y, eType type)
 	  return ;
 	}
     }
+}
+
+void		Container::setEntityIf(int x, int y, eType newValue, eType oldValue)
+{
+  l_Entit	lit = _mobileEnt.begin();
+
+  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
+    {
+      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
+	  (*lit)->getType() == oldValue)
+	{
+	  if (newValue == FREE)
+	    _mobileEnt.erase(lit);
+	  else
+	    (*lit)->setType(newValue);
+	  return ;
+	}
+    }
+}
+
+void		Container::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
+{
+  l_Entit	lit = _mobileEnt.begin();
+
+  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
+    {
+      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
+	  (*lit)->getType() != oldValue)
+	{
+	  if (newValue == FREE)
+	    _mobileEnt.erase(lit);
+	  else
+	    (*lit)->setType(newValue);
+	  return ;
+	}
+    }
+}
+
+
+AEntity		*Container::getEntity(int x, int y)
+{
+  l_Entit	lit = _mobileEnt.begin();
+  v_Entcit	vit = _staticEnt.begin();
+  
+  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
+    if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
+      return (*lit);
+  for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
+    if ((*vit)->getXPos() == x && (*vit)->getYPos() == y)
+      return (*vit);
+  return (NULL);
+}
+
+AEntity		*Container::getEntityIf(int x, int y, eType value)
+{
+  l_Entit	lit = _mobileEnt.begin();
+  v_Entcit	vit = _staticEnt.begin();
+
+  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
+    if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
+	(*lit)->getType() == value)
+      return (*lit);
+  for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
+    if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
+	(*vit)->getType() == value)
+      return (*vit);
+  return (NULL);
+}
+
+AEntity		*Container::getEntityIfNot(int x, int y, eType value)
+{
+  l_Entit	lit = _mobileEnt.begin();
+  v_Entcit	vit = _staticEnt.begin();
+
+  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
+    if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
+	(*lit)->getType() != value)
+      return (*lit);
+  for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
+    if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
+	(*vit)->getType() != value)
+      return (*vit);
+  return (NULL);
 }

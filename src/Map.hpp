@@ -33,7 +33,12 @@ public:
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
   eType	checkMapColision(int x, int y) const;
-  void	setMobilEnt(int x, int y, eType type);
+  void	setEntity(int, int, eType);
+  void	setEntityIf(int, int, eType, eType);
+  void	setEntityIfNot(int, int, eType, eType);
+  AEntity	*getEntity(int, int) const;
+  AEntity	*getEntityIf(int, int, eType) const;
+  AEntity	*getEntityIfNot(int, int, eType) const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
