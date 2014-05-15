@@ -7,8 +7,8 @@
 
 Map::Map(Settings &set)
 {
-  _mapX = 5;
-  _mapY = 5;
+  _mapX = set.getVar(MAP_HEIGHT);
+  _mapY = set.getVar(MAP_WIDTH);
   _density = set.getVar(MAP_DENSITY);	// expressed in %
   _linear = set.getVar(MAP_LINEAR);
   std::cout << _density << " " << _linear << std::endl;
@@ -34,7 +34,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, std::string &name)
+bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *> &type)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -63,13 +63,10 @@ bool		Map::load(Settings &settings, std::string &name)
 	  switch (*it)
 	    {
 	    case 'W':
-	      addEntity(new Entity(x, y, WALL));
+	      addEntity(new Entity(x, y, WALL, type[WALL]->clone()));
 	      break;
 	    case 'B':
-	      addEntity(new Entity(x, y, BOX));
-	      break;
-	    case 'C':
-	      addEntity(new Entity(x, y, CHARACTER));
+	      addEntity(new Entity(x, y, BOX, type[BOX]->clone()));
 	      break;
 	    case ' ':
 	      break;
@@ -83,6 +80,33 @@ bool		Map::load(Settings &settings, std::string &name)
     }
   settings.setVar(MAP_HEIGHT, y);
   settings.setVar(MAP_WIDTH, x);
+  return (true);
+}
+
+bool		Map::save(Settings &settings, std::string &name)
+{
+  std::ofstream	file(name.c_str());
+  std::string	buf;
+
+  for (int y = 0; y < _mapY; ++y)
+    {
+      buf = "";
+      for (int x = 0; x < _mapX; ++x)
+	{
+	  switch (checkMapColision(x, y))
+	    {
+	    case WALL:
+	      buf.insert(x, 1, 'W');
+	      break;
+	    case BOX:
+	      buf.insert(x, 1, 'B');
+	      break;
+	    default:
+	      buf.insert(x, 1, ' ');
+	    }
+	}
+      file << buf << "\n";
+    }
   return (true);
 }
 
@@ -226,20 +250,16 @@ void	Map::fillBox()
     }
 }
 
-void	Map::fillContainers()
+void	Map::fillContainers(std::map<eType, IObject *> &type)
 {
   unsigned int	i;
-  AEntity	*ent;
   unsigned int 	totalsize = (_mapX - 1) * _mapY;
 
   for (i = _mapX; i < totalsize; ++i)
     {
       if (_map[i] != FREE && i % _mapX != 0 &&
 	  (i + 1) % _mapX != 0) // means there is a block / It's the border
-	{
-	  ent =  new Entity(i % _mapX, i /_mapX, _map[i]);
-	  addEntity(ent);
-	}
+	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], type[_map[i]]->clone()));
     }
   _map.clear();	// erase the temps vector
 }
@@ -255,7 +275,7 @@ void	Map::removeEntity(int x, int y)
 ** Main function
 */
 
-void	Map::createMap()
+void	Map::createMap(std::map<eType, IObject *> &type)
 {
   int	posx;
   int	posy;
@@ -271,8 +291,8 @@ void	Map::createMap()
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
-  fillContainers();
-  spawnEnt(20, 0);
+  fillContainers(type);
+  spawnEnt(20, 0, type);
   display();
 }
 
@@ -346,20 +366,20 @@ void	Map::createCharacter(int &nbPlayer, int &nbIa, int x, int y)
     }
 */
 
-bool	Map::putPlayer(int x, int y)
+bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
 {
   int	tx = x;
   int	ty = y;
   int	radius = 0;
   char	dirX;
   char	dirY;
-  eType	type;
+  eType	stype;
   int	maxside = (_mapX > _mapY) ? _mapX : _mapY;
 
   // std::cout << std::endl << std::endl << std::endl << "Putting new player" << std::endl;
   // std::cout << "Center: " << x << " " << y << std::endl;
   while (((tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1) ||
-	  (type = checkMapColision(tx, ty)) != FREE) && radius < maxside)
+	  (stype = checkMapColision(tx, ty)) != FREE) && radius < maxside)
     {
       tx = x - (radius + 1);
       ty = y + (radius + 1);
@@ -406,8 +426,8 @@ bool	Map::putPlayer(int x, int y)
       while (tx != (x - (radius + 1)) || ty != (y + (radius + 1)));
       ++radius;
     }
-  if (type == FREE)
-    addEntity(new Entity(tx, ty, UNKNOWNENTITY));
+  if (stype == FREE)
+    addEntity(new Entity(tx, ty, CHARACTER, type[CHARACTER]));
   else
     {
       std::cerr << "No place for player" << std::endl;
@@ -454,7 +474,7 @@ void	Map::initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const
   spawn.toPlace = spawn.totalPlayer;
 }
 
-void	Map::spawnEnt(int nbPlayer, int nbIa)
+void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type)
 {
   t_spawn	spawn;
   int	x = 0;
@@ -470,7 +490,7 @@ void	Map::spawnEnt(int nbPlayer, int nbIa)
 	{
 	  x = _mapX / 2;
 	  y = _mapY / 2;
-	  if (putPlayer(x, y) == false)
+	  if (putPlayer(x, y, type) == false)
 	    return ;
 	  --spawn.totalPlayer;
 	  continue ;
@@ -484,7 +504,7 @@ void	Map::spawnEnt(int nbPlayer, int nbIa)
 			 * spawn.radiusX + 0.5);
 	  y = std::floor((_mapY / 2) + sin(RAD(spawn.angle))
 			 * spawn.radiusY + 0.5);
-	  if (putPlayer(x, y) == false)
+	  if (putPlayer(x, y, type) == false)
 	    return ;
 	  spawn.angle = (spawn.angle += spawn.angleStep) > 360 ?
 	    spawn.angle - 360 : spawn.angle;

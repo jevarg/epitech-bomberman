@@ -6,12 +6,20 @@
 # include "AEntity.hpp"
 # include "Model.hpp"
 # include "Bomb.hpp"
+# include "Mutex.hpp"
+# include "Condvar.hpp"
+# include "Input.hpp"
+# include "Settings.hpp"
+
+class Input;
 
 class	ACharacter : public AEntity
 {
 protected:
+  pthread_t	_thread;
+  Mutex		_mutex;
+  Condvar	_condvar;
   glm::vec4	_color;
-  Model		_model;
   int		_health;
   bool		_isAlive;
   int		_bombStock;
@@ -21,20 +29,20 @@ protected:
   int		_score;
 
 public:
-  ACharacter(glm::vec4 color, Model model);
+  ACharacter(int x, int y, glm::vec4 color, IObject *model);
   ~ACharacter();
-  void		moveUp();
-  void		moveDown();
-  void		moveLeft();
-  void		moveRight();
-  void		hit();
   bool		initialize();
-  virtual void	update(gdl::Clock const &, gdl::Input &);
-  void		draw(gdl::AShader &shader, gdl::Clock const &clock);
+  virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+
+public:
+  void		move(eAction, Map &map);
+  void		hit();
 
 public:
   int		getScore() const;
   bool		isAlive() const;
 };
+
+void	*handle_thread(void *arg);
 
 #endif /* ! ACHARACTER_HPP_ */

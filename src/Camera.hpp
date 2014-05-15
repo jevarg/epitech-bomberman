@@ -2,7 +2,8 @@
 # define _CAMERA_HPP_
 
 # include <glm/glm.hpp>
-# include <Input.hh>
+
+class Input;
 
 class Camera : public ATransformation
 {
@@ -11,12 +12,10 @@ public:
   ~Camera();
 
   bool initialize();
-  void update(gdl::Clock const &, gdl::Input &);
+  void update(gdl::Clock const &, Input &);
   void lookAt();
   const glm::mat4 &getTransformation() const;
   const glm::mat4 &getProjection() const;
-
-  void	update(gdl::Input &in);
 
 private:
   glm::mat4	_transformation;

@@ -1,7 +1,10 @@
-#ifndef _AENTITIE_HPP_
-# define _AENTITIE_HPP_
+#ifndef _AENTITY_HPP_
+# define _AENTITY_HPP_
 
+# include <Clock.hh>
+# include <BasicShader.hh>
 # include "IObject.hpp"
+# include "Input.hpp"
 
 enum	eType
   {
@@ -13,6 +16,8 @@ enum	eType
     GROUND,
     UNKNOWNENTITY
   };
+
+class Map;
 
 typedef struct	s_entity
 {
@@ -28,7 +33,7 @@ class		AEntity
 {
 public:
   AEntity();
-  AEntity(int x, int y, eType type);
+  AEntity(int x, int y, eType type, IObject *model);
   virtual ~AEntity();
 
   int		getXPos() const;
@@ -37,11 +42,14 @@ public:
   void		setXPos(const int &x);
   void		setYPos(const int &y);
   void		setType(const eType &type);
+  void		draw(gdl::AShader &shader, gdl::Clock &clock);
+  virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 
 protected:
   int		_x;
   int		_y;
   eType		_type;
+  IObject	*_model;
 };
 
-#endif /* !_AENTITIE_HPP_ */
+#endif /* !_AENTITY_HPP_ */
