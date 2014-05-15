@@ -9,7 +9,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model)
 {
   pthread_t         thread;
 
-  if (pthread_create(&thread, NULL, &handle_thread, this) != 0)
+  if (pthread_create(&thread, NULL, &handle_character_thread, this) != 0)
     throw (Exception("Can't create Acharacter's thread"));
   _thread = thread;
 }
@@ -86,7 +86,7 @@ bool	ACharacter::isAlive() const
   return (_isAlive);
 }
 
-void	*handle_thread(void *arg)
+void	*handle_character_thread(void *arg)
 {
   (void) arg;
   return (NULL);

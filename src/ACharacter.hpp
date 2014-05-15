@@ -43,6 +43,6 @@ public:
   bool		isAlive() const;
 };
 
-void	*handle_thread(void *arg);
+void	*handle_character_thread(void *arg);
 
 #endif /* ! ACHARACTER_HPP_ */
