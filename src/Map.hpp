@@ -10,6 +10,7 @@
 
 # define MAXSIZE 10000
 # define SQUARESIZE 10
+# define RAD(x) ((x) * 3.14159265359 / 180)
 
 enum	e_dir
   {
@@ -20,6 +21,19 @@ enum	e_dir
   };
 
 typedef std::vector<Container *>::const_iterator v_Contcit;
+
+typedef struct	s_spawn
+{
+  double       	centerX;
+  double       	centerY;
+  double       	radiusX;
+  double       	radiusY;
+  double       	angle;
+  double       	angleStep;
+  int		totalPlayer;
+  int		toPlace;
+  int		packSize;
+}		t_spawn;
 
 class Map
 {
@@ -34,6 +48,8 @@ public:
   void	removeEntity(int x, int y);
   eType	checkMapColision(int x, int y) const;
   void	setMobilEnt(int x, int y, eType type);
+  void	spawnEnt(int nbPlayer, int nbIa);
+
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
@@ -53,6 +69,11 @@ private:
   void	fillContainers();
   void	display();
 
+  void	*createCharacter(int &nbPlayer, int &nbIa);
+  bool	putPlayer(int x, int y);
+  void	setStart(t_spawn &spawn, int pack) const;
+  void	initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const;
+  // void	createCharacter(int &nbPlayer, int &nbIa, int x, int y);
   unsigned short	_mapX;
   unsigned short	_mapY;
   unsigned short	_density;
