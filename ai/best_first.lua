@@ -45,20 +45,24 @@ function get_good_way(map, x, y, nb)
 end
 
 function take_shortest_priority(map, entities)
-	local t = 42
-	local x, tmp_x = 1000000, 0
-	local y, tmp_y = 1000000, 0
+	local x, tmp_x = 1000000, 1000000
+	local y, tmp_y = 1000000, 1000000
 	local cur_dist = 0
+	local min_dist = 50
+	local t = 4
 
 	for i = 1, #entities do
-		if (entities[i]["type"] == 4) then
+		if (entities[i]["type"] ~= 6 and entities[i]["type"] ~= 7 and (entities[i]["x"] ~= X or entities[i]["y"] ~= Y)) then
 			cur_dist, tmp_x, tmp_y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
-			if (tmp_x ~= 0 and tmp_y ~= 0 and tmp_x < x and tmp_y < y) then
-				x = tmp_x
-				y = tmp_y
-			end
-			if (cur_dist ~= AGGRO + 1 and entities[i]["x"] < t) then
-				t = entities[i]["type"]
+			if (cur_dist ~= AGGRO + 1 and tmp_x ~= 0 and tmp_y ~= 0) then
+				if (entities[i]["type"] < t) then
+					min_dist = 50
+					t = entities[i]["type"]
+				end
+				if (min_dist > cur_dist and entities[i]["type"] == t) then
+					x, y = tmp_x, tmp_y
+					min_dist = cur_dist
+				end
 			end
 		end
 	end

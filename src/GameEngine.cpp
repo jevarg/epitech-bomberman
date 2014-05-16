@@ -77,7 +77,7 @@ void GameEngine::prepareIA(int level)
   for (std::vector<Container *>::const_iterator cont_it = _map.ContBegin() ; cont_it != _map.ContEnd() ; ++cont_it)
     for (std::list<AEntity *>::const_iterator ent_it = (*cont_it)->listBegin() ; ent_it != (*cont_it)->listEnd() ; ++ent_it)
       {
-	if ((*ent_it)->getType() == BOX)
+	if ((*ent_it)->getType() == CHARACTER)
 	  {
 	    int y = (*ent_it)->getYPos() - aggro[level - 1];
 	    int x = (*ent_it)->getYPos() - aggro[level - 1];

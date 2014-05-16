@@ -21,9 +21,9 @@ function create_map(entities, aggro)
 	end
 
 	for i = 1, #entities do
-		if (entities[i]["type"] == 0) then
+		if (entities[i]["type"] == 6) then
 			map[entities[i]["y"]][entities[i]["x"]] = "W"
-		elseif (entities[i]["type"] == 2) then
+		elseif (entities[i]["type"] == 7) then
 			map[entities[i]["y"]][entities[i]["x"]] = "."
 		elseif (entities[i]["type"] == 1) then
 			map[entities[i]["y"]][entities[i]["x"]] = "P"
@@ -35,16 +35,24 @@ function create_map(entities, aggro)
 end
 
 function artificial_intelligence()
+	local ent = {}
 	local entities = {}
 	local translate = {
-		[0] = 0,
+		[0] = TYPE_PRIORITY["wall"],
 		[1] = TYPE_PRIORITY["box"],
-		[2] = 2,
+		[2] = TYPE_PRIORITY["free"],
 		[4] = TYPE_PRIORITY["player"]
 	}
 
 	for i = 1, #arg, 3 do
-		table.insert(entities, {["type"] = translate[arg[i]], ["y"] = arg[i + 1], ["x"] = arg[i + 2]})
+		table.insert(ent, {["type"] = translate[arg[i]], ["y"] = arg[i + 1], ["x"] = arg[i + 2]})
+	end
+	for i = 1, 8 do
+		for j = 1, #ent do
+			if (ent[j]["type"] == i) then
+				table.insert(entities, ent[j])
+			end
+		end
 	end
 	local map = create_map(entities, arg["aggro"])
 	display_map(map)

@@ -292,7 +292,7 @@ void	Map::createMap(std::map<eType, IObject *> &type)
     genSmallMaze(posx, posy, 4);
   fillBox();
   fillContainers(type);
-  spawnEnt(1, 0, type);
+  spawnEnt(5, 0, type);
   display();
 }
 

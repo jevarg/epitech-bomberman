@@ -12,5 +12,7 @@ TYPE_PRIORITY = {
 	["player"] = 1,
 	["item"] = 3,
 	["box"] = 4,
-	["bomb"] = 5
+	["bomb"] = 5,
+	["wall"] = 6,
+	["free"] = 7
 }
