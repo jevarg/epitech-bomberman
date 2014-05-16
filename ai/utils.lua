@@ -1,4 +1,3 @@
-print("aaaa")
 function display_map(map)
 	for i = 1, #map do
 		for k, v in pairs(map[i]) do
