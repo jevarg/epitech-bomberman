@@ -1,3 +1,32 @@
+function get_abs_dist(entities, x, y, i)
+	return math.abs(entities[i]["x"] - x + entities[i]["y"] - y)
+end
+
+function have_elem(entities, x, y)
+	for i = 1, #entities do
+		if (get_abs_dist(entities, x, y, i) <= AGGRO) then
+			return 1
+		end
+	end
+	return 0
+end
+
+function random_movement()
+	local mov = {1, -1, 1, -1}
+	local n = math.random(1, 4)
+
+	if (n == 1 or n == 2) then
+		local x = X + mov[n]
+		if (x < 1) then x = 1 end
+		if (x > MAP_XMAX) then x = MAP_XMAX end
+	else
+		local y = Y + mov[n]
+		if (y < 1) then y = 1 end
+		if (y > MAP_YMAX) then y = MAP_YMAX end
+	end
+	return x, y
+end
+
 function determine_way(cur_x, cur_y)
 	local enum_action = {
 		["forward"] = 0,
@@ -65,7 +94,7 @@ function take_shortest_priority(map, entities)
 	local t = 4
 
 	for i = 1, #entities do
-		if (entities[i]["type"] ~= 6 and entities[i]["type"] ~= 7 and (entities[i]["x"] ~= X or entities[i]["y"] ~= Y)) then
+		if (entities[i]["type"] ~= TYPE_PRIORITY["wall"] and entities[i]["type"] ~= TYPE_PRIORITY["free"] and (entities[i]["x"] ~= X or entities[i]["y"] ~= Y)) then
 			cur_dist, tmp_x, tmp_y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
 			if (cur_dist ~= AGGRO + 1 and tmp_x ~= 0 and tmp_y ~= 0) then
 				if (entities[i]["type"] < t) then

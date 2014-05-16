@@ -1,7 +1,8 @@
 X = 0
 Y = 0
 
-AGGRO = 12
+AGGRO = 0
+LEVEL = 0
 
 MAP_XMAX = 0
 MAP_YMAX = 0

@@ -1,3 +1,4 @@
+print("aaaa")
 function display_map(map)
 	for i = 1, #map do
 		for k, v in pairs(map[i]) do
@@ -17,42 +18,61 @@ function display_map(map)
 	end
 end
 
-function get_abs_dist(entities, x, y, i)
-	return math.abs(entities[i]["x"] - x + entities[i]["y"] - y)
-end
-
-function have_elem(entities, x, y)
-	for i = 1, #entities do
-		if (get_abs_dist(entities, x, y, i) <= AGGRO) then
-			return 1
+function get_entities()
+	local translate = {
+		[0] = TYPE_PRIORITY["wall"],
+		[1] = TYPE_PRIORITY["box"],
+		[2] = TYPE_PRIORITY["free"],
+		[4] = TYPE_PRIORITY["player"]
+	}
+	local ent = {}
+	local entities = {}
+	for i = 1, #arg, 3 do
+		table.insert(ent, {["type"] = translate[arg[i]], ["y"] = arg[i + 1], ["x"] = arg[i + 2]})
+	end
+	for i = 1, 8 do
+		for j = 1, #ent do
+			if (ent[j]["type"] == i) then
+				table.insert(entities, ent[j])
+			end
 		end
 	end
-	return 0
+	return entities	
 end
 
-function random_movement()
-	local mov = {1, -1, 1, -1}
-	local n = math.random(1, 4)
+function create_map(entities, aggro)
+	local map = {}
 
-	if (n == 1 or n == 2) then
-		local x = X + mov[n]
-		if (x < 1) then x = 1 end
-		if (x > MAP_XMAX) then x = MAP_XMAX end
-	else
-		local y = Y + mov[n]
-		if (y < 1) then y = 1 end
-		if (y > MAP_YMAX) then y = MAP_YMAX end
+	for i = 1, aggro do
+		table.insert(map, {})
+		for j = 1, aggro do
+			table.insert(map[i], " ")
+		end
 	end
-	return x, y
+	for i = 1, #entities do
+		if (entities[i]["type"] == TYPE_PRIORITY["wall"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "W"
+		elseif (entities[i]["type"] == TYPE_PRIORITY["free"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "."
+		elseif (entities[i]["type"] == TYPE_PRIORITY["player"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "P"
+		elseif (entities[i]["type"] == TYPE_PRIORITY["box"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "B"
+		end
+	end
+	return map
 end
 
-function set_priority(player, item, box, bomb)
+function set_priority(level)
+	if (level == 1) then
+		local player, item, box, bomb = 1, 2, 3, 4
+	elseif (level == 2) then
+		local player, item, box, bomb = 1, 2, 3, 4
+	elseif (level == 2) then
+		local player, item, box, bomb = 1, 2, 3, 4
+	end
 	TYPE_PRIORITY["player"] 	= player
 	TYPE_PRIORITY["item"]		= item
 	TYPE_PRIORITY["box"]		= box
 	TYPE_PRIORITY["bomb"]		= bomb
-end
-
-function set_aggro(a)
-	AGGRO = a
 end
