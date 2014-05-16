@@ -1,6 +1,6 @@
-dofile("global.lua")
-dofile("utils.lua")
-dofile("best_first.lua")
+dofile("ai/global.lua")
+dofile("ai/utils.lua")
+dofile("ai/best_first.lua")
 
 function check_bomb(map)
 	return true
@@ -10,43 +10,51 @@ function check_character(map)
 	return true
 end
 
+function create_map(entities, aggro)
+	local map = {}
+
+	for i = 1, aggro do
+		table.insert(map, {})
+		for j = 1, aggro do
+			table.insert(map[i], " ")
+		end
+	end
+
+	for i = 1, #entities do
+		if (entities[i]["type"] == 0) then
+			map[entities[i]["y"]][entities[i]["x"]] = "W"
+		elseif (entities[i]["type"] == 2) then
+			map[entities[i]["y"]][entities[i]["x"]] = "."
+		elseif (entities[i]["type"] == 1) then
+			map[entities[i]["y"]][entities[i]["x"]] = "P"
+		elseif (entities[i]["type"] == 4) then
+			map[entities[i]["y"]][entities[i]["x"]] = "B"
+		end
+	end
+	return map
+end
+
 function artificial_intelligence()
-
-	local entities = {
-		{["type"] = 1, ["x"] = 4, ["y"] = 10}, 	-- player
-		{["type"] = 2, ["x"] = 6, ["y"] = 3},	-- monster 2
-		{["type"] = 4, ["x"] = 8, ["y"] = 4},	-- box
-		{["type"] = 3, ["x"] = 4, ["y"] = 2},	-- box bonus
-		{["type"] = 5, ["x"] = 7, ["y"] = 10}	-- bomb
-	}
-	local map = {
-		{"W", "W", "W", "W", "W", "W", "W", "W", "W", "W"},
-		{"W", ".", "W", "X", "W", ".", ".", "W", ".", "W"},
-		{"W", ".", "W", ".", "W", "M", ".", "W", ".", "W"},
-		{"W", ".", "W", ".", "W", ".", ".", "B", ".", "W"},
-		{"W", ".", "W", ".", "W", "W", "W", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", "W", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", "W", ".", ".", "W", ".", "W"},
-		{"W", ".", "W", "P", "W", ".", "B", "M", ".", "W"},
-		{"W", ".", "W", ".", "W", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", ".", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", ".", "W", ".", ".", ".", ".", ".", ".", "W"},
-		{"W", "W", "W", "W", "W", "W", "W", "W", "W", "W"}
+	local entities = {}
+	local translate = {
+		[0] = 0,
+		[1] = TYPE_PRIORITY["box"],
+		[2] = 2,
+		[4] = TYPE_PRIORITY["player"]
 	}
 
+	for i = 1, #arg, 3 do
+		table.insert(entities, {["type"] = translate[arg[i]], ["y"] = arg[i + 1], ["x"] = arg[i + 2]})
+	end
+	local map = create_map(entities, arg["aggro"])
 	display_map(map)
 	if (check_bomb(map) and check_character(map)) then
 		best_first(map, entities)
 	end
 end
 
-X, Y = 8, 10
+X, Y = arg["x"], arg["y"]
+AGGRO = arg["aggro"]
+MAP_XMAX = AGGRO
+MAP_YMAX = AGGRO
 artificial_intelligence()

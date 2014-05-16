@@ -17,7 +17,7 @@ function display_map(map)
 	end
 end
 
-function get_abs_dist(entities, x, y, i, j)
+function get_abs_dist(entities, x, y, i)
 	return math.abs(entities[i]["x"] - x + entities[i]["y"] - y)
 end
 
@@ -35,15 +35,19 @@ function random_movement()
 	local n = math.random(1, 4)
 
 	if (n == 1 or n == 2) then
-		X = X + mov[n]
+		local x = X + mov[n]
+		if (x < 1) then x = 1 end
+		if (x > MAP_XMAX) then x = MAP_XMAX end
 	else
-		Y = Y + mov[n]
+		local y = Y + mov[n]
+		if (y < 1) then y = 1 end
+		if (y > MAP_YMAX) then y = MAP_YMAX end
 	end
+	return x, y
 end
 
-function set_priority(player, monster, item, box, bomb)
+function set_priority(player, item, box, bomb)
 	TYPE_PRIORITY["player"] 	= player
-	TYPE_PRIORITY["monster"]	= monster
 	TYPE_PRIORITY["item"]		= item
 	TYPE_PRIORITY["box"]		= box
 	TYPE_PRIORITY["bomb"]		= bomb

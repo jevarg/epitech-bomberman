@@ -2,25 +2,25 @@ function get_shortest_distance_of(map, x, y)
 	local cur_dist = AGGRO + 1
 	local cur_x, cur_y = 0, 0
 
-	if (x > 0 and type(map[y][x - 1]) == "number") then
+	if (x - 1 > 0 and type(map[y][x - 1]) == "number") then
 		if (map[y][x - 1] < cur_dist) then 
 			cur_dist = map[y][x - 1]
 			cur_x, cur_y = x - 1, y
 		end
 	end
-	if (x < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
+	if (x + 1 < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
 		if (map[y][x + 1] < cur_dist) then
 			cur_dist = map[y][x + 1]
 			cur_x, cur_y = x + 1, y
 		end
 	end
-	if (y > 0 and type(map[y - 1][x]) == "number") then
+	if (y - 1 > 0 and type(map[y - 1][x]) == "number") then
 		if (map[y - 1][x] < cur_dist) then
 			cur_dist = map[y - 1][x]
 			cur_x, cur_y = x, y - 1
 		end
 	end
-	if (y < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
+	if (y + 1 < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
 		if (map[y + 1][x] < cur_dist) then
 			cur_dist = map[y + 1][x]
 			cur_x, cur_y = x, y + 1
@@ -30,31 +30,36 @@ function get_shortest_distance_of(map, x, y)
 end
 
 function get_good_way(map, x, y, nb)
-	if (x > 0 and type(map[y][x - 1]) == "number") then
+	if (x - 1 > 0 and type(map[y][x - 1]) == "number") then
 		if (map[y][x - 1] < nb) then return y, x - 1 end
 	end
-	if (x < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
+	if (x + 1 < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
 		if (map[y][x + 1] < nb) then return y, x + 1 end
 	end
-	if (y > 0 and type(map[y - 1][x]) == "number") then
+	if (y - 1 > 0 and type(map[y - 1][x]) == "number") then
 		if (map[y - 1][x] < nb) then return y - 1, x end
 	end
-	if (y < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
+	if (y + 1 < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
 		if (map[y + 1][x] < nb) then return y + 1, x end
 	end
 end
 
 function take_shortest_priority(map, entities)
-	local min_t = 42
 	local t = 42
-	local x = 0
-	local y = 0
+	local x, tmp_x = 1000000, 0
+	local y, tmp_y = 1000000, 0
 	local cur_dist = 0
 
 	for i = 1, #entities do
-		cur_dist, x, y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
-		if (cur_dist ~= AGGRO + 1 and entities[i]["x"] < t) then
-			t = entities[i]["type"]
+		if (entities[i]["type"] == 4) then
+			cur_dist, tmp_x, tmp_y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
+			if (tmp_x ~= 0 and tmp_y ~= 0 and tmp_x < x and tmp_y < y) then
+				x = tmp_x
+				y = tmp_y
+			end
+			if (cur_dist ~= AGGRO + 1 and entities[i]["x"] < t) then
+				t = entities[i]["type"]
+			end
 		end
 	end
 	while (map[y][x] ~= 0 and map[y][x] ~= 1) do
@@ -146,8 +151,9 @@ function best_first(map, entities)
 		print("\nFINAL MAP\n")
 		display_map(map)
 		cur_x, cur_y = take_shortest_priority(map, entities)
-		print(cur_x, cur_y)
+		print("\ndirection is : x y : ", cur_x, cur_y, "")
+		print("\n--------------------------------------\n")
 	else
-		random_movement()
+		cur_x, cur_y = random_movement()
 	end
 end
