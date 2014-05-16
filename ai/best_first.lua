@@ -160,4 +160,5 @@ function best_first(map, entities)
 	else
 		cur_x, cur_y = random_movement()
 	end
+	return cur_x, cur_y
 end

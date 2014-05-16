@@ -3,6 +3,7 @@
 
 # include <lua.hpp>
 # include <iostream>
+# include <sstream>
 
 # include "Container.hpp"
 
@@ -20,9 +21,10 @@ public:
   void	pushSetGlobal(const char *name) const;
   void	executeLua(const char *name);
   void	closeState() const;
+  void	getDatas();
+  void	popStack() const;
 
   lua_State* getState() const;
-  void popStack() const;
 
 private:
   lua_State*	_luaState;

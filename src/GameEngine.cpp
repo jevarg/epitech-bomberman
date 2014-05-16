@@ -110,6 +110,7 @@ void GameEngine::prepareIA(int level)
 		_lua.pushStringInt("aggro", aggro[level - 1]);
 		_lua.pushSetGlobal("arg");
 		_lua.executeLua("ai/main.lua");
+		_lua.getDatas();
 	      }
 	  }
       }

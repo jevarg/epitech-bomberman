@@ -57,7 +57,7 @@ function artificial_intelligence()
 	local map = create_map(entities, arg["aggro"])
 	display_map(map)
 	if (check_bomb(map) and check_character(map)) then
-		best_first(map, entities)
+		return best_first(map, entities)
 	end
 end
 
@@ -65,4 +65,4 @@ X, Y = arg["x"], arg["y"]
 AGGRO = arg["aggro"]
 MAP_XMAX = AGGRO
 MAP_YMAX = AGGRO
-artificial_intelligence()
+return artificial_intelligence()
