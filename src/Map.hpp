@@ -41,18 +41,21 @@ public:
   Map(Settings &set);
   ~Map();
 
-  unsigned int	getWidth() const;
-  unsigned int	getHeight() const;
   void	createMap(std::map<eType, IObject *> &type);
+  eType	checkMapColision(int x, int y) const;
+
+  bool		save(const std::string&);
+  bool		load(Settings &settings, const std::string&,
+		     std::map<eType, IObject *> &type);
+
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
-  eType	checkMapColision(int x, int y) const;
+
   void	setMobilEnt(int x, int y, eType type);
   void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type);
 
-  bool		save(const std::string&);
-  bool		load(Settings &settings, const std::string&, std::map<eType, IObject *> &type);
-
+  unsigned int	getWidth() const;
+  unsigned int	getHeight() const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
@@ -74,6 +77,7 @@ private:
   void	setStart(t_spawn &spawn, int pack) const;
   void	initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const;
   // void	createCharacter(int &nbPlayer, int &nbIa, int x, int y);
+
   unsigned short	_mapX;
   unsigned short	_mapY;
   unsigned short	_density;

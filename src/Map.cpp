@@ -255,12 +255,12 @@ void	Map::fillBox()
 void	Map::fillContainers(std::map<eType, IObject *> &type)
 {
   unsigned int	i;
-  unsigned int 	totalsize = (_mapX - 1) * _mapY;
+  unsigned int 	totalsize = (_mapY - 1) * _mapX;
 
   for (i = _mapX; i < totalsize; ++i)
     {
-      if (_map[i] != FREE && i % _mapX != 0 &&
-	  (i + 1) % _mapX != 0) // means there is a block / It's the border
+      // means there is a block & It's not the border
+      if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
 	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], type[_map[i]]->clone()));
     }
   _map.clear();	// erase the temps vector
@@ -322,12 +322,20 @@ void	Map::addEntity(AEntity *ent)
   _cont[pos]->stockEntity(ent);
 }
 
+/*
+** The condition pos >= _cont.size() is only used when a region isn't mapped
+** It could happen if the SQUARESIZE is very small (1 or 2)
+** It happens if the mapped zone has no block in a zonesize > SQUARESIZE.
+*/
+
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
   if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
     return (WALL);
+  else if (pos >= _cont.size())
+    return (FREE);
   return (_cont[pos]->checkColision(x, y));
 }
 

@@ -8,6 +8,7 @@ Input::Input()
   _boundKey.insert(std::pair<keyCode, bool>(SDLK_BACKSPACE, false));
   _boundKey.insert(std::pair<keyCode, bool>(SDLK_ESCAPE, false));
   std::memset(&_mouse, 0, sizeof(_mouse));
+  std::memset(&_window, 0, sizeof(_window));
 }
 
 Input::~Input()
