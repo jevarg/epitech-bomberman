@@ -34,7 +34,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *> &type)
+bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IObject *> &type)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -83,7 +83,7 @@ bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *
   return (true);
 }
 
-bool		Map::save(Settings &settings, std::string &name)
+bool		Map::save(const std::string &name)
 {
   std::ofstream	file(name.c_str());
   std::string	buf;
@@ -208,6 +208,8 @@ void	Map::display()
 	std::cout << "B";
       else if (t == FREE)
 	std::cout << " ";
+      else if (t == CHARACTER)
+	std::cout << "C";
       else
 	std::cout << "?";
       if (i != 0 && i % _mapX == _mapX - 1)

@@ -72,17 +72,20 @@ bool GameEngine::initialize()
 
 bool GameEngine::update()
 {
-  int time;
-  double fps = (1000 / _set.getVar(FPS));
-  t_mouse mouse;
+  int	time;
+  double	fps = (1000 / _set.getVar(FPS));
+  t_mouse	mouse;
+  t_window	win;
 
   _input.getInput(_set);
-  if (_input[SDLK_ESCAPE])
+  if (_input[SDLK_ESCAPE] || (_input[win] && win.event == WIN_QUIT))
     return (false);
   if (_input[SDLK_g])
     std::cout << "g pressed" << std::endl;
   if (_input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;
+  if (win.event == WIN_RESIZE) // Seems not to work
+    std::cout << "Resize to: " << win.x << " " << win.y << std::endl;
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_clock);

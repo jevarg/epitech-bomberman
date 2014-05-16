@@ -50,11 +50,11 @@ public:
   void	setMobilEnt(int x, int y, eType type);
   void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type);
 
+  bool		save(const std::string&);
+  bool		load(Settings &settings, const std::string&, std::map<eType, IObject *> &type);
+
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
-
-  bool		save(Settings &settings, std::string&);
-  bool		load(Settings &settings, std::string&, std::map<eType, IObject *> &type);
 
 private:
   void	genSmallMaze(short x, short y, short dir);
