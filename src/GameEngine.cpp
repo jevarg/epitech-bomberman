@@ -111,9 +111,11 @@ void GameEngine::prepareIA(int level)
 		_lua.pushSetGlobal("arg");
 		_lua.executeLua("ai/main.lua");
 		_lua.getDatas();
+		// call new action
 	      }
 	  }
       }
+  exit(0);
 }
 
 bool GameEngine::update()

@@ -79,7 +79,9 @@ void LuaCommunication::getDatas()
 	  break;
         }
       lua_pop(_luaState, 1);
-      std::cout << str_buf.str() << std::endl;
+      std::cout << str_buf.str()
+		<< std::endl;
+      std::cout << "\n-------------------------------\n" << std::endl;
       str_buf.str("");
     }
 }

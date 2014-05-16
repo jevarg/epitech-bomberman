@@ -1,3 +1,16 @@
+function determine_way(cur_x, cur_y)
+	local enum_action = {
+		["forward"] = 0,
+		["back"] = 1,
+		["left"] = 2,
+		["right"] = 3,
+	}
+	if (cur_x > X) then return enum_action["right"] end
+	if (cur_x < X) then return enum_action["left"] end
+	if (cur_y > Y) then return enum_action["back"] end
+	if (cur_y < Y) then return enum_action["forward"] end
+end
+
 function get_shortest_distance_of(map, x, y)
 	local cur_dist = AGGRO + 1
 	local cur_x, cur_y = 0, 0
@@ -155,10 +168,9 @@ function best_first(map, entities)
 		print("\nFINAL MAP\n")
 		display_map(map)
 		cur_x, cur_y = take_shortest_priority(map, entities)
-		print("\ndirection is : x y : ", cur_x, cur_y, "")
-		print("\n--------------------------------------\n")
+		print("\ndirection is : x y : ", cur_x, cur_y)
 	else
 		cur_x, cur_y = random_movement()
 	end
-	return cur_x, cur_y
+	return determine_way(cur_x, cur_y)
 end
