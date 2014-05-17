@@ -13,6 +13,14 @@
 
 class Input;
 
+enum	e_dir
+  {
+    NORTH = 0,
+    WEST,
+    SOUTH,
+    EAST,
+  };
+
 class	ACharacter : public AEntity
 {
 protected:
@@ -27,6 +35,7 @@ protected:
   int		_speed;
   int		_range;
   int		_score;
+  e_dir		_orient;
 
 public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
