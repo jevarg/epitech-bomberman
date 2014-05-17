@@ -16,10 +16,17 @@ end
 
 function check_item_dir(map, cur_x, cur_y, w)
 	for i = 0, AGGRO do
-		if (cur_x + i ~= MAP_XMAX + 1 and map[cur_y][cur_x + i] == w) then return true
-		elseif (cur_x - i ~= 0 and map[cur_y][cur_x - i] == w) then return true
-		elseif (cur_y + i ~= MAP_YMAX + 1 and map[cur_y + i][cur_x] == w) then return true
-		elseif (cur_y - i ~= 0 and map[cur_y - i][cur_x] == w) then return true end
+		if (cur_x + i ~= MAP_XMAX + 1) then
+			if (map[cur_y][cur_x + i] == w) then return true end
+		elseif (cur_x - i ~= 0) then
+			if (map[cur_y][cur_x - i] == w) then return true end
+		elseif (cur_y + i ~= MAP_YMAX + 1) then
+			if (map[cur_y + i][cur_x] == w) then return true end
+		elseif (cur_y - i ~= 0) then
+			if (map[cur_y - i][cur_x] == w) then return true end
+		else
+			return false
+		end
 	end
 	return false
 end
