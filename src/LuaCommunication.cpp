@@ -67,21 +67,12 @@ void LuaCommunication::popStack() const
 
 void LuaCommunication::getDatas()
 {
-  std::stringstream str_buf;
-
   while(lua_gettop(_luaState))
     {
-      switch(lua_type(_luaState, lua_gettop(_luaState)))
-        {
-        case LUA_TNUMBER:
-	  str_buf << "script returned the number: "
-		  << lua_tonumber(_luaState, lua_gettop(_luaState));
-	  break;
-        }
+      if (lua_type(_luaState, lua_gettop(_luaState)) == LUA_TNUMBER)
+	std::cout << "script returned the number: "
+		  << lua_tonumber(_luaState, lua_gettop(_luaState)) << std::endl;
       lua_pop(_luaState, 1);
-      std::cout << str_buf.str()
-		<< std::endl;
-      std::cout << "\n-------------------------------\n" << std::endl;
-      str_buf.str("");
     }
+  std::cout << "\n-------------------------------\n" << std::endl;
 }

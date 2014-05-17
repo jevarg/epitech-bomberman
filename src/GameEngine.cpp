@@ -115,7 +115,6 @@ void GameEngine::prepareIA(int level)
 	      }
 	  }
       }
-  exit(0);
 }
 
 bool GameEngine::update()

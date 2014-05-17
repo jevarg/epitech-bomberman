@@ -11,9 +11,17 @@ BOMB_RANGE = 4
 
 TYPE_PRIORITY = {
 	["player"] = 1,
-	["item"] = 3,
-	["box"] = 4,
-	["bomb"] = 5,
-	["wall"] = 6,
-	["free"] = 7
+	["item"] = 2,
+	["box"] = 3,
+	["bomb"] = 4,
+	["wall"] = 5,
+	["free"] = 6
+}
+
+ENUM_ACTION = {
+	["forward"] = 0,
+	["back"] = 1,
+	["left"] = 2,
+	["right"] = 3,
+	["bomb"] = 4
 }

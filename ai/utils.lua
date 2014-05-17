@@ -64,14 +64,18 @@ end
 
 function set_priority(level)
 	if (level == 1) then
-		local player, item, box, bomb = 1, 2, 3, 4
+		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
 	elseif (level == 2) then
-		local player, item, box, bomb = 1, 2, 3, 4
-	elseif (level == 2) then
-		local player, item, box, bomb = 1, 2, 3, 4
+		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
+	elseif (level == 3) then
+		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
 	end
-	TYPE_PRIORITY["player"] 	= player
-	TYPE_PRIORITY["item"]		= item
-	TYPE_PRIORITY["box"]		= box
-	TYPE_PRIORITY["bomb"]		= bomb
+	TYPE_PRIORITY = {
+		["player"] = player,
+		["item"] = item,
+		["box"] = box,
+		["bomb"] = bomb,
+		["wall"] = wall,
+		["free"] = free
+	}
 end

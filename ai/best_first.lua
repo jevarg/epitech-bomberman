@@ -28,16 +28,10 @@ function random_movement()
 end
 
 function determine_way(cur_x, cur_y)
-	local enum_action = {
-		["forward"] = 0,
-		["back"] = 1,
-		["left"] = 2,
-		["right"] = 3,
-	}
-	if (cur_x > X) then return enum_action["right"] end
-	if (cur_x < X) then return enum_action["left"] end
-	if (cur_y > Y) then return enum_action["back"] end
-	if (cur_y < Y) then return enum_action["forward"] end
+	if (cur_x > X) then return ENUM_ACTION["right"] end
+	if (cur_x < X) then return ENUM_ACTION["left"] end
+	if (cur_y > Y) then return ENUM_ACTION["back"] end
+	if (cur_y < Y) then return ENUM_ACTION["forward"] end
 end
 
 function get_shortest_distance_of(map, x, y)
@@ -45,7 +39,7 @@ function get_shortest_distance_of(map, x, y)
 	local cur_x, cur_y = 0, 0
 
 	if (x - 1 > 0 and type(map[y][x - 1]) == "number") then
-		if (map[y][x - 1] < cur_dist) then 
+		if (map[y][x - 1] < cur_dist) then
 			cur_dist = map[y][x - 1]
 			cur_x, cur_y = x - 1, y
 		end
