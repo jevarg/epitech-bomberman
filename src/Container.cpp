@@ -52,6 +52,7 @@ void	Container::removeContBlockByPtr(AEntity *ptr)
     {
       if (*lit == ptr)
 	{
+	  *lit = NULL;
 	  _mobileEnt.erase(lit);
 	  return ;	       	// Here i consider one object get erased by case.
 	}

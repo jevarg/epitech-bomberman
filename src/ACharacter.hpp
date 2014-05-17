@@ -32,11 +32,11 @@ public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
   ~ACharacter();
 
-  virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 
-  void		updatePosition(Map &map, eAction action);
+  bool		updatePosition(Map &map, eAction action);
   bool		initialize();
-  void		move(Map &map, int dirX, int dirY);
+  bool		move(Map &map, int dirX, int dirY);
   void		takeDamages(int amount);
 
   int		getScore() const;

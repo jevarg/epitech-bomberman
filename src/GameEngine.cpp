@@ -94,8 +94,9 @@ bool GameEngine::update()
   for (v_Contcit it = _map.ContBegin();it != end;it++)
     {
       l_Entcit end_list = (*it)->listEnd();
-      for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->update(_clock, _input, _map);
+      for (l_Entcit it1 = (*it)->listBegin(); it1 != end_list; it1++)
+	if ((*it1)->update(_clock, _input, _map) == true)
+	  return (true);
     }
   return (true);
 }

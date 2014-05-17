@@ -18,7 +18,7 @@ ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::updatePosition(Map &map, eAction action)
+bool	ACharacter::updatePosition(Map &map, eAction action)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
   int		dirX;
@@ -32,15 +32,16 @@ void	ACharacter::updatePosition(Map &map, eAction action)
 	  dirY = ((i < 2) ? ((action == FORWARD) ? 1 : -1) : 0);
 	  if (map.checkMapColision(_x + dirX, _y + dirY) == FREE)
 	    {
-	      move(map, dirX, dirY);
 	      _model->translate(glm::vec3(dirX * 2, 0, dirY * 2));
+	      return (move(map, dirX, dirY));
 	    }
 	  break ;
 	}
     }
+  return (false);
 }
 
-void	ACharacter::move(Map &map, int dirX, int dirY)
+bool	ACharacter::move(Map &map, int dirX, int dirY)
 {
   unsigned int oldCont;
   unsigned int newCont;
@@ -58,9 +59,9 @@ void	ACharacter::move(Map &map, int dirX, int dirY)
     {
       std::cout << "Add it at new pos" << std::endl;
       map.addEntity(this);
+      return (true);
     }
-  std::cout << this << " "
-	    << map.getEntityIf(_x, _y, CHARACTER) << std::endl;
+  return (false);
 }
 
 void	ACharacter::takeDamages(int amount)
