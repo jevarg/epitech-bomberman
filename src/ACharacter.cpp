@@ -18,56 +18,40 @@ ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::move(eAction action, Map &map)
+void	ACharacter::updatePosition(Map &map, eAction action)
 {
-  switch (action)
-    {
-    case FORWARD:
-      if (map.checkMapColision(_x, _y + 1) == FREE)
-	{
-	  _y += 1;
-	  map.setEntityIf(_x, _y, CHARACTER, FREE);
-	  map.setEntityIf(_x, _y - 1, FREE, CHARACTER);
-	  _model->translate(glm::vec3(0, 0, 2));
+  eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
+  int		dirX;
+  int		dirY;
 
-	}
-      break;
-    case BACK:
-      if (map.checkMapColision(_x, _y - 1) == FREE)
+  for (int i = 0; i < 4; ++i)
+    {
+      if (tab[i] == action)
 	{
-	  _y -= 1;
-	  map.setEntityIf(_x, _y, CHARACTER, FREE);	  
-	  map.setEntityIf(_x, _y + 1, FREE, CHARACTER);
-	  _model->translate(glm::vec3(0, 0, -2));
+	  dirX = ((i >= 2) ? ((action == LEFT) ? 1 : -1) : 0);
+	  dirY = ((i < 2) ? ((action == FORWARD) ? 1 : -1) : 0);
+	  if (map.checkMapColision(_x + dirX, _y + dirY) == FREE)
+	    {
+	      move(map, dirX, dirY);
+	      _model->translate(glm::vec3(dirX * 2, 0, dirY * 2));
+	    }
+	  break ;
 	}
-      break;
-    case LEFT:
-      if (map.checkMapColision(_x + 1, _y) == FREE)
-	{
-	  _x += 1;
-	  map.setEntityIf(_x, _y, CHARACTER, FREE);	  
-	  map.setEntityIf(_x - 1, _y, FREE, CHARACTER);
-	  _model->translate(glm::vec3(2, 0, 0));
-	}
-      break;
-    case RIGHT:
-      if (map.checkMapColision(_x - 1, _y) == FREE)
-	{
-	  _x -= 1;
-	  map.setEntityIf(_x, _y, CHARACTER, FREE);	  
-	  map.setEntityIf(_x + 1, _y, FREE, CHARACTER);
-	  _model->translate(glm::vec3(-2, 0, 0));
-	}
-      break;
-    default:
-      break;
     }
 }
 
-void	ACharacter::hit()
+void	ACharacter::move(Map &map, int dirX, int dirY)
 {
-  --_health;
-  if (_health == 0)
+  (void)map;
+  // HERE CHECK CONTAINER CHANGEMENT
+  _y += dirY;
+  _x += dirX;
+}
+
+void	ACharacter::takeDamages(int amount)
+{
+  _health -= amount;
+  if (_health <= 0)
     _isAlive = false;
 }
 

@@ -31,14 +31,14 @@ protected:
 public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
   ~ACharacter();
-  bool		initialize();
+
   virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 
-public:
-  void		move(eAction, Map &map);
-  void		hit();
+  void		updatePosition(Map &map, eAction action);
+  bool		initialize();
+  void		move(Map &map, int dirX, int dirY);
+  void		takeDamages(int amount);
 
-public:
   int		getScore() const;
   bool		isAlive() const;
 };

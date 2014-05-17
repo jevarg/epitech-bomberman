@@ -10,6 +10,7 @@
 
 # define MAXSIZE 10000
 # define SQUARESIZE 10
+# define RAD(x) ((x) * 3.14159265359 / 180)
 
 enum	e_dir
   {
@@ -21,29 +22,48 @@ enum	e_dir
 
 typedef std::vector<Container *>::const_iterator v_Contcit;
 
+typedef struct	s_spawn
+{
+  double       	centerX;
+  double       	centerY;
+  double       	radiusX;
+  double       	radiusY;
+  double       	angle;
+  double       	angleStep;
+  int		totalPlayer;
+  int		toPlace;
+  int		packSize;
+}		t_spawn;
+
 class Map
 {
 public:
   Map(Settings &set);
   ~Map();
 
-  unsigned int	getWidth() const;
-  unsigned int	getHeight() const;
   void	createMap(std::map<eType, IObject *> &type);
+  eType	checkMapColision(int x, int y) const;
+
+  bool		save(const std::string&);
+  bool		load(Settings &settings, const std::string&,
+		     std::map<eType, IObject *> &type);
+
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
-  eType	checkMapColision(int x, int y) const;
-  void	setEntity(int, int, eType);
-  void	setEntityIf(int, int, eType, eType);
-  void	setEntityIfNot(int, int, eType, eType);
+
+  void		setEntity(int, int, eType);
+  void		setEntityIf(int, int, eType, eType);
+  void		setEntityIfNot(int, int, eType, eType);
   AEntity	*getEntity(int, int) const;
   AEntity	*getEntityIf(int, int, eType) const;
   AEntity	*getEntityIfNot(int, int, eType) const;
+
+  void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type);
+
+  unsigned int	getWidth() const;
+  unsigned int	getHeight() const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
-
-  bool		save(Settings &settings, std::string&);
-  bool		load(Settings &settings, std::string&, std::map<eType, IObject *> &type);
 
 private:
   void	genSmallMaze(short x, short y, short dir);
@@ -57,6 +77,12 @@ private:
   void	fillBox();
   void	fillContainers(std::map<eType, IObject *> &type);
   void	display();
+
+  void	*createCharacter(int &nbPlayer, int &nbIa);
+  bool	putPlayer(int x, int y, std::map<eType, IObject *> &type);
+  void	setStart(t_spawn &spawn, int pack) const;
+  void	initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const;
+  // void	createCharacter(int &nbPlayer, int &nbIa, int x, int y);
 
   unsigned short	_mapX;
   unsigned short	_mapY;
