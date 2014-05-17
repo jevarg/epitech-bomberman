@@ -9,7 +9,7 @@
 # include "Settings.hpp"
 
 # define MAXSIZE 10000
-# define SQUARESIZE 5
+# define SQUARESIZE 10
 # define RAD(x) ((x) * 3.14159265359 / 180)
 
 enum	e_dir
