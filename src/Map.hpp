@@ -9,7 +9,7 @@
 # include "Settings.hpp"
 
 # define MAXSIZE 10000
-# define SQUARESIZE 10
+# define SQUARESIZE 5
 # define RAD(x) ((x) * 3.14159265359 / 180)
 
 enum	e_dir
@@ -50,6 +50,7 @@ public:
 
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
+  void	removeEntityByPtr(AEntity *ptr);
 
   void		setEntity(int, int, eType);
   void		setEntityIf(int, int, eType, eType);
@@ -62,6 +63,7 @@ public:
 
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
+  unsigned int	getContPos(int x, int y) const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
@@ -73,7 +75,6 @@ private:
   short	getDir(bool *tab, short oldDir) const;
 
   bool	checkAccess(short x, short y) const;
-  unsigned int	getContPos(int x, int y) const;
   void	fillBox();
   void	fillContainers(std::map<eType, IObject *> &type);
   void	display();

@@ -273,6 +273,13 @@ void	Map::removeEntity(int x, int y)
   _cont[pos]->removeContBlock(x, y);
 }
 
+void	Map::removeEntityByPtr(AEntity *ptr)
+{
+  unsigned int	pos = getContPos(ptr->getXPos(), ptr->getYPos());
+
+  _cont[pos]->removeContBlockByPtr(ptr);
+}
+
 /*
 ** Main function
 */

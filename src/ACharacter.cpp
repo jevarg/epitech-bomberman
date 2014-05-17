@@ -42,10 +42,25 @@ void	ACharacter::updatePosition(Map &map, eAction action)
 
 void	ACharacter::move(Map &map, int dirX, int dirY)
 {
-  (void)map;
-  // HERE CHECK CONTAINER CHANGEMENT
+  unsigned int oldCont;
+  unsigned int newCont;
+
+  oldCont = map.getContPos(_x, _y);
+  newCont = map.getContPos(_x + dirX, _y + dirY);
+  if (newCont != oldCont) // means the player crossed from contA to contB
+    {
+      std::cout << "Remove element at old pos" << std::endl;
+      map.removeEntityByPtr(this);
+    }
   _y += dirY;
   _x += dirX;
+  if (newCont != oldCont) // now add it to contB
+    {
+      std::cout << "Add it at new pos" << std::endl;
+      map.addEntity(this);
+    }
+  std::cout << this << " "
+	    << map.getEntityIf(_x, _y, CHARACTER) << std::endl;
 }
 
 void	ACharacter::takeDamages(int amount)
