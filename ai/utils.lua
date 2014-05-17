@@ -50,14 +50,15 @@ function create_map(entities, aggro)
 	end
 	for i = 1, #entities do
 		if (entities[i]["type"] == TYPE_PRIORITY["wall"]) then
-			map[entities[i]["y"]][entities[i]["x"]] = "W"
-		elseif (entities[i]["type"] == TYPE_PRIORITY["free"]) then
-			map[entities[i]["y"]][entities[i]["x"]] = "."
-		elseif (entities[i]["type"] == TYPE_PRIORITY["player"]) then
-			map[entities[i]["y"]][entities[i]["x"]] = "P"
-		elseif (entities[i]["type"] == TYPE_PRIORITY["box"]) then
-			map[entities[i]["y"]][entities[i]["x"]] = "B"
-		end
+			map[entities[i]["y"]][entities[i]["x"]] = "W" end
+		if (entities[i]["type"] == TYPE_PRIORITY["free"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "." end
+		if (entities[i]["type"] == TYPE_PRIORITY["player"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "P" end
+		if (entities[i]["type"] == TYPE_PRIORITY["box"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "B" end
+		if (entities[i]["type"] == TYPE_PRIORITY["bomb"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "O" end
 	end
 	return map
 end
