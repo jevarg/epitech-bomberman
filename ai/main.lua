@@ -33,8 +33,10 @@ end
 
 function take_decision(map, entities)
 	if (check_item_dir(map, X, Y, "O") == true) then return check_way_out(map, X, Y, ".") end
-	if (check_item_dir(map, X, Y, "P") == true) then return ENUM_ACTION["bomb"] end
-	if (check_item_dir(map, X, Y, "B") == true) then return ENUM_ACTION["bomb"] end
+	r = check_way_out(map, X, Y, "P")
+	if (r ~= -1) then return ENUM_ACTION["bomb"] end
+	r = check_way_out(map, X, Y, "B")
+	if (r ~= -1) then return ENUM_ACTION["bomb"] end
 	return best_first(map, entities)
 end
 
