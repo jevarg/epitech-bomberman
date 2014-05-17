@@ -5,7 +5,7 @@
 ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model)
   : AEntity(x, y, CHARACTER, model), _mutex(), _condvar(), _color(color),
     _health(1), _isAlive(true), _bombStock(1),
-    _bombType(NORMAL), _speed(5), _range(5), _score(0)
+    _bombType(NORMAL), _speed(5), _range(5), _score(0), _orient(NORTH)
 {
   pthread_t         thread;
 
@@ -21,6 +21,7 @@ ACharacter::~ACharacter()
 bool	ACharacter::updatePosition(Map &map, eAction action)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
+  eDir		tabdir[4] = {NORTH, SOUTH, WEST, EAST};
   int		dirX;
   int		dirY;
 
@@ -30,9 +31,11 @@ bool	ACharacter::updatePosition(Map &map, eAction action)
 	{
 	  dirX = ((i >= 2) ? ((action == LEFT) ? 1 : -1) : 0);
 	  dirY = ((i < 2) ? ((action == FORWARD) ? 1 : -1) : 0);
+	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * tabdir[i] - 90.0 * _orient);
+	  _orient = tabdir[i];
 	  if (map.checkMapColision(_x + dirX, _y + dirY) == FREE)
 	    {
-	      _model->translate(glm::vec3(dirX * 2, 0, dirY * 2));
+	      _model->translate(glm::vec3(dirX, 0, dirY));
 	      return (move(map, dirX, dirY));
 	    }
 	  break ;

@@ -6,19 +6,12 @@
 # include "Container.hpp"
 # include "AEntity.hpp"
 # include "Entity.hpp"
+# include "Player.hpp"
 # include "Settings.hpp"
 
 # define MAXSIZE 10000
 # define SQUARESIZE 10
 # define RAD(x) ((x) * 3.14159265359 / 180)
-
-enum	e_dir
-  {
-    NORTH = 0,
-    EAST = 1,
-    SOUTH = 2,
-    WEST = 3
-  };
 
 typedef std::vector<Container *>::const_iterator v_Contcit;
 

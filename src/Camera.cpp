@@ -15,7 +15,7 @@ Camera::~Camera()
 
 bool	Camera::initialize()
 {
-  _pos_view = glm::vec3(1.0, 0.0, 0.0);
+  _pos_view = glm::vec3(0.0, 0.0, 1.0);
   _dir = glm::vec3(0.0, 1.0, 0.0);
   return (true);
 }

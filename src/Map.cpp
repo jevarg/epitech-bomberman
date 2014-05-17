@@ -444,7 +444,7 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
       ++radius;
     }
   if (stype == FREE)
-    addEntity(new Entity(tx, ty, CHARACTER, type[CHARACTER]));
+    addEntity(new Entity(tx, ty, CHARACTER, type[BOX]->clone()));
   else
     {
       std::cerr << "No place for player" << std::endl;
