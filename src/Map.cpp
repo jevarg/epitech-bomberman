@@ -393,8 +393,6 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
   eType	stype;
   int	maxside = (_mapX > _mapY) ? _mapX : _mapY;
 
-  // std::cout << std::endl << std::endl << std::endl << "Putting new player" << std::endl;
-  // std::cout << "Center: " << x << " " << y << std::endl;
   while (((tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1) ||
 	  (stype = checkMapColision(tx, ty)) != FREE) && radius < maxside)
     {
@@ -402,15 +400,10 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
       ty = y + (radius + 1);
       dirX = 1;
       dirY = 0;
-      // display();
-      // std::cout << "New radius: " << radius << std::endl;
       do
 	{
-	  // std::cout << "try at pos " << tx << " " << ty << std::endl;
-	  // getchar();
 	  if (!(tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1))
 	    {
-	      // std::cout << "Checking colision" << std::endl;
 	      if (checkMapColision(tx, ty) == FREE)
 		break ;
 	    }
@@ -419,26 +412,21 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
 	  if (dirX == 1 && dirY == 0 &&
 	      tx == (x + (radius + 1)) && ty == (y + (radius + 1)))
 	    {
-	      // std::cout << "FIRST CHANGE DIR" << std::endl;
 	      dirX = 0;
 	      dirY = -1;
 	    }
 	  else if (dirX == 0 && dirY == -1 &&
 		   tx == (x + (radius + 1)) && ty == (y - (radius + 1)))
 	    {
-	      // std::cout << "SECOND CHANGE DIR" << std::endl;
 	      dirX = -1;
 	      dirY = 0;
 	    }
 	  else if (dirX == -1 && dirY == 0 &&
 		   tx == (x - (radius + 1)) && ty == (y - (radius + 1)))
 	    {
-	      // std::cout << "THIRD CHANGE DIR" << std::endl;
 	      dirX = 0;
 	      dirY = 1;
 	    }
-	  // std::cout << tx << " " << ty << " | " << x - (radius + 1)
-	  // 	    << " " << y + (radius + 1) << std::endl;
 	}
       while (tx != (x - (radius + 1)) || ty != (y + (radius + 1)));
       ++radius;
