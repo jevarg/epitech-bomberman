@@ -47,6 +47,7 @@ public:
   bool	operator[](keyCode key) const;
   bool	operator[](t_mouse &key);
   bool	operator[](t_window &win);
+  bool	operator[](SDL_Keycode &key);
 
 private:
   void	keyboardInput(const Settings &set, const SDL_Event &event, bool state);
@@ -54,6 +55,7 @@ private:
   void	windowEvent(const SDL_Event &event);
   std::vector<bool>		_actionState;
   std::map<keyCode, bool>	_boundKey;
+  SDL_Keycode			_key;
   t_mouse			_mouse;
   t_window			_window;
 };

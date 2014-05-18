@@ -19,14 +19,14 @@ void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool stat
 {
   std::map<keyCode, bool>::iterator it;
   std::map<keyCode, bool>::iterator end;
-  SDL_Keycode	key = event.key.keysym.sym;
   eAction	act;
 
-  if ((act = set.getActionFromKey(key)) != UNKNOWN)
+  _key = event.key.keysym.sym;
+  if ((act = set.getActionFromKey(_key)) != UNKNOWN)
     _actionState[act] = state;
   for (it = _boundKey.begin(), end = _boundKey.end(); it != end; ++it)
     {
-      if (it->first == key)
+      if (it->first == _key)
 	{
 	  it->second = state;
 	  break ;
@@ -96,6 +96,7 @@ void	Input::getInput(const Settings &set)
   if (_mouse.event != BUTTONDOWN)
     _mouse.event = NONE;
   _window.event = WIN_NONE;
+  _key = SDLK_UNKNOWN;
   while (SDL_PollEvent(&event))
     {
       switch (event.type)
@@ -144,5 +145,13 @@ bool	Input::operator[](t_window &win)
   if (_window.event == WIN_NONE)
     return (false);
   win = _window;
+  return (true);
+}
+
+bool	Input::operator[](SDL_Keycode &key)
+{
+  if (_key == SDLK_UNKNOWN)
+    return (false);
+  key = _key;
   return (true);
 }
