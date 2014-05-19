@@ -79,7 +79,10 @@ bool GameEngine::update()
   if ((_input[win] && win.event == WIN_QUIT) || _input[SDLK_ESCAPE])
     return (false);
   if (_input[DROPBOMB])
-    std::cout << "DROP THE BOMB" << std::endl;
+    {
+      std::cout << "DROP THE BOMB" << std::endl;
+      _map.addEntity(new Entity(rand() % 10, rand() % 10, WALL, _obj[WALL]->clone()));
+    }
   if (_input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;
   // if (win.event == WIN_RESIZE) // Seems not to work

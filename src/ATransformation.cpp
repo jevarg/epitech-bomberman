@@ -5,6 +5,10 @@ ATransformation::ATransformation(): _position(0, 0, 0), _rotation(0, 0, 0), _sca
 
 }
 
+ATransformation::~ATransformation()
+{
+}
+
 void ATransformation::translate(glm::vec3 const &v)
 {
   _position += v;

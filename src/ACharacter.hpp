@@ -39,7 +39,7 @@ protected:
 
 public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
-  ~ACharacter();
+  virtual ~ACharacter() = 0;
 
   virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 

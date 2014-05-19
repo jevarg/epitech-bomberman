@@ -15,7 +15,7 @@ class AItem
 {
 public:
   AItem();
-  virtual ~AItem();
+  virtual ~AItem() = 0;
 
 protected:
   int	_timeout;
