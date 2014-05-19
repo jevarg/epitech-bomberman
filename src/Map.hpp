@@ -34,7 +34,7 @@ public:
   Map(Settings &set);
   ~Map();
 
-  void	createMap(std::map<eType, IObject *> &type);
+  void	createMap(std::map<eType, IObject *> &type, Camera **cam);
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
@@ -52,7 +52,8 @@ public:
   AEntity	*getEntityIf(int, int, eType) const;
   AEntity	*getEntityIfNot(int, int, eType) const;
 
-  void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type);
+  void	setMobilEnt(int x, int y, eType type);
+  void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type, Camera **cam);
 
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
@@ -73,7 +74,7 @@ private:
   void	display();
 
   void	*createCharacter(int &nbPlayer, int &nbIa);
-  bool	putPlayer(int x, int y, std::map<eType, IObject *> &type);
+  bool	putPlayer(int x, int y, std::map<eType, IObject *> &type, Camera **cam);
   void	setStart(t_spawn &spawn, int pack) const;
   void	initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const;
   // void	createCharacter(int &nbPlayer, int &nbIa, int x, int y);
