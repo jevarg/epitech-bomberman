@@ -110,10 +110,26 @@ void	Settings::addCvar(const std::string tab[3])
 	  break ;
 	}
     }
-
 }
 
-keyCode	Settings::getCorrespondingKey(const std::string &str) const
+/*
+** Getters for config files
+** As I throw an exception, a try/catch block will be needed
+*/
+
+const std::string &Settings::getCodeFromKey(SDL_Keycode key) const
+{
+  m_keyCit	it = _speKeys.begin();
+
+  for (m_keyCit end = _speKeys.end(); it != end; ++it)
+    {
+      if (it->second == key)
+	return (it->first);
+    }
+  throw(Exception("Key not registered"));
+}
+
+keyCode	Settings::getKeyFromCode(const std::string &str) const
 {
   m_keyCit	it = _speKeys.find(str);
 
@@ -134,7 +150,7 @@ void	Settings::addKey(const std::string tab[3])
 	    _keyMap.insert(std::pair<keyCode, eAction>
 			   (tab[1].at(0), static_cast<eAction>
 			    (std::distance(_actionList.begin(), listit))));
-	  else if ((boundkey = getCorrespondingKey(tab[1])) != UNKNOWN_KEY)
+	  else if ((boundkey = getKeyFromCode(tab[1])) != UNKNOWN_KEY)
 	    _keyMap.insert(std::pair<keyCode, eAction>
 			   (boundkey, static_cast<eAction>
 			    (std::distance(_actionList.begin(), listit))));

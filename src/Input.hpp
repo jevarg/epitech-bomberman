@@ -44,17 +44,15 @@ public:
 
   void	getInput(const Settings &set);
   bool	operator[](eAction act) const;
-  bool	operator[](keyCode key) const;
-  bool	operator[](t_mouse &key);
-  bool	operator[](t_window &win);
-  bool	operator[](SDL_Keycode &key);
+  bool	operator[](t_mouse &key) const;
+  bool	operator[](t_window &win) const;
+  bool	operator[](SDL_Keycode key) const;
 
 private:
   void	keyboardInput(const Settings &set, const SDL_Event &event, bool state);
   void	mouseInput(const SDL_Event &event);
   void	windowEvent(const SDL_Event &event);
   std::vector<bool>		_actionState;
-  std::map<keyCode, bool>	_boundKey;
   SDL_Keycode			_key;
   t_mouse			_mouse;
   t_window			_window;

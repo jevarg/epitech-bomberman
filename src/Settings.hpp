@@ -6,6 +6,7 @@
 # include <fstream>
 # include <vector>
 # include <map>
+# include "Exception.hpp"
 
 # define DEFAULT_FILE "default.cfg"
 # define UNBIND 0
@@ -58,6 +59,7 @@ public:
   eAction	getActionFromKey(keyCode key) const;
   int	getKeyFromAct(eAction act, std::vector<keyCode> &) const;
   void	setKey(keyCode key, eAction act);
+  const std::string &getCodeFromKey(SDL_Keycode key) const;
 
   int	toNumber(const std::string &) const;
   bool	isAscii(const std::string &) const;
@@ -67,7 +69,7 @@ private:
   void	parsInst(const std::vector<std::string> &inst);
   void	addKey(const std::string tab[3]);
   void	addCvar(const std::string tab[3]);
-  keyCode	getCorrespondingKey(const std::string &) const;
+  keyCode	getKeyFromCode(const std::string &) const;
 
   std::vector<std::string>	_actionList;
   std::map<keyCode, eAction>	_keyMap;
