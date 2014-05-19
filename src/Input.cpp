@@ -8,6 +8,7 @@ Input::Input()
   _boundKey.insert(std::pair<keyCode, bool>(SDLK_BACKSPACE, false));
   _boundKey.insert(std::pair<keyCode, bool>(SDLK_ESCAPE, false));
   std::memset(&_mouse, 0, sizeof(_mouse));
+  std::memset(&_window, 0, sizeof(_window));
 }
 
 Input::~Input()
@@ -33,7 +34,7 @@ void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool stat
     }
 }
 
-void	Input::mouseInput(SDL_Event &event)
+void	Input::mouseInput(const SDL_Event &event)
 {
   switch (event.type)
     {
@@ -70,17 +71,49 @@ void	Input::mouseInput(SDL_Event &event)
     }
 }
 
+void	Input::windowEvent(const SDL_Event &event)
+{
+  switch (event.type)
+    {
+    case SDL_QUIT:
+      _window.event = WIN_QUIT;
+      break ;
+    }
+  switch (event.window.event)
+    {
+    case SDL_WINDOWEVENT_RESIZED:
+      _window.event = WIN_RESIZE;
+      _window.x = event.window.data1;
+      _window.y = event.window.data2;
+    break ;
+    }
+}
+
 void	Input::getInput(const Settings &set)
 {
   SDL_Event	event;
 
   if (_mouse.event != BUTTONDOWN)
     _mouse.event = NONE;
+  _window.event = WIN_NONE;
   while (SDL_PollEvent(&event))
     {
-      if (event.type == SDL_KEYDOWN || event.type == SDL_KEYUP)
-	keyboardInput(set, event, event.type == SDL_KEYDOWN);
-      mouseInput(event);
+      switch (event.type)
+	{
+	case SDL_KEYDOWN:
+	case SDL_KEYUP:
+	  keyboardInput(set, event, event.type == SDL_KEYDOWN);
+	  break ;
+	case SDL_MOUSEMOTION:
+	case SDL_MOUSEBUTTONDOWN:
+	case SDL_MOUSEBUTTONUP:
+	case SDL_MOUSEWHEEL:
+	  mouseInput(event);
+	  break ;
+	case SDL_QUIT:
+	  windowEvent(event);
+	  break ;
+	}
     }
 }
 
@@ -103,5 +136,13 @@ bool	Input::operator[](t_mouse &mouse)
   if (_mouse.event == NONE)
     return (false);
   mouse = _mouse;
+  return (true);
+}
+
+bool	Input::operator[](t_window &win)
+{
+  if (_window.event == WIN_NONE)
+    return (false);
+  win = _window;
   return (true);
 }

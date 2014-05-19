@@ -53,6 +53,5 @@ AGGRO = arg["aggro"]
 LEVEL = arg["level"]
 MAP_XMAX = AGGRO
 MAP_YMAX = AGGRO
-
 print("for player in ", X, Y)
 return artificial_intelligence()

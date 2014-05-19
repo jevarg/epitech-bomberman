@@ -7,10 +7,11 @@ Model::Model()
   _texture = NULL;
 }
 
+# include <iostream>
+
 Model::Model(Model const& model)
   : IObject(), _obj(model._obj), _texture(model._texture)
 {
-
 }
 
 Model::~Model()
@@ -29,10 +30,9 @@ bool		Model::initialize()
   return (true);
 }
 
-void	Model::update(gdl::Clock const& clock, gdl::Input &input)
+void	Model::update(gdl::Clock const &, gdl::Input &)
 {
-  (void) clock;
-  (void) input;
+
 }
 
 void	Model::draw(gdl::AShader &shader, gdl::Clock const& clock) const

@@ -26,8 +26,8 @@
 
 # define CFPS 60.0f
 # define CFOV 60.0f
-# define DEF_SIZE_X 800.0f
-# define DEF_SIZE_Y 600.0f
+# define DEF_SIZE_X 1600.0f
+# define DEF_SIZE_Y 900.0f
 
 # define WALL_TEXTURE "./assets/wall.tga"
 # define SKY_TEXTURE "./assets/skybox.tga"

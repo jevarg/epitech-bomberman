@@ -9,14 +9,18 @@ Player::~Player()
 {
 }
 
-void	Player::update(gdl::Clock const &clock, Input const &input, Map &map)
+bool	Player::update(gdl::Clock const &clock, Input const &input, Map &map)
 {
-  if (input[FORWARD])
-    move(FORWARD, map);
-  if (input[BACK])
-    move(BACK, map);
-  if (input[RIGHT])
-    move(RIGHT, map);
-  if (input[LEFT])
-    move(LEFT, map);
+  eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
+  bool		ret = false;
+
+  for (int i = 0; i < 4; ++i)
+    {
+      if (input[tab[i]])
+	{
+	  if ((ret = updatePosition(map, tab[i])) == true)
+	    return (true);
+	}
+    }
+  return (ret);
 }

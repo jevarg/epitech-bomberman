@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Fri May 16 13:41:35 2014 jonathan.collinet
+## Last update Sat May 17 16:38:35 2014 jonathan.collinet
 ##
 
 NAME		=	bomberman

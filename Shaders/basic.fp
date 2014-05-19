@@ -7,7 +7,7 @@ uniform	mat4 model;
 uniform sampler2D fTexture0;
 
 varying vec4 fColor;
-varying vec4 fNormal;
+varying vec3 fNormal;
 varying vec2 fUv;
 
 void main(void)

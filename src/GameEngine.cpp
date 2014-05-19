@@ -38,15 +38,21 @@ bool GameEngine::initialize()
   skybox->scale(glm::vec3(500, 500, 500));
   _obj.push_back(skybox);
 
+  _model = new Model();
+  if (!_model->load("./assets/marvin.fbx"))
+    return (false);
+  _model->translate(glm::vec3(0.0, -0.5, 0.0));
+  _model->scale(glm::vec3(0.002, 0.002, 0.002));
+
   _type[WALL] = new Cube(*skybox);
   _type[BOX] = new Cube(*skybox);
-  _type[CHARACTER] = new Cube(*skybox);
+  _type[CHARACTER] = _model;
   _texture[WALL] = new gdl::Texture();
   _texture[BOX] = new gdl::Texture();
   _texture[GROUND] = new gdl::Texture();
 
   skybox = new Cube(*skybox);
-  skybox->translate(glm::vec3(_mapX - 1, -1.0, _mapY - 1));
+  skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0), -0.5, (((float)(_mapY) - 1.0) / 2.0)));
   skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
   _obj.push_back(skybox);
 
@@ -58,11 +64,7 @@ bool GameEngine::initialize()
   _type[WALL]->setTexture(_texture[WALL]);
   _type[BOX]->setTexture(_texture[BOX]);
 
-  _model = new Model();
-  if (!_model->load("./assets/marvin.fbx"))
-    return (false);
-  _model->scale(glm::vec3(0.005, 0.005, 0.005));
-  _player = new Player(1, 1, _cam, glm::vec4(0.0, 0.0, 0.0, 0.0), _model);
+  _player = new Player(1, 1, _cam, glm::vec4(0.0, 0.0, 0.0, 0.0), _type[CHARACTER]);
 
   _map.createMap(_type);
   createDisplayBorder();
@@ -119,28 +121,32 @@ void GameEngine::prepareIA(int level)
 
 bool GameEngine::update()
 {
-  int time;
-  double fps = (1000 / _set.getVar(FPS));
-  t_mouse mouse;
+  int	time;
+  double	fps = (1000 / _set.getVar(FPS));
+  t_mouse	mouse;
+  t_window	win;
 
   prepareIA(2);
   _input.getInput(_set);
-  if (_input[SDLK_ESCAPE])
+  if ((_input[win] && win.event == WIN_QUIT) || _input[SDLK_ESCAPE])
     return (false);
   if (_input[SDLK_g])
     std::cout << "g pressed" << std::endl;
   if (_input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;
+  // if (win.event == WIN_RESIZE) // Seems not to work
+  //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl;
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_clock);
-  // _cam.update(_clock, _input);
+   _cam.update(_clock, _input);
   v_Contcit end = _map.ContEnd();
   for (v_Contcit it = _map.ContBegin();it != end;it++)
     {
       l_Entcit end_list = (*it)->listEnd();
-      for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->update(_clock, _input, _map);
+      for (l_Entcit it1 = (*it)->listBegin(); it1 != end_list; it1++)
+	if ((*it1)->update(_clock, _input, _map) == true)
+	  return (true);
     }
   return (true);
 }
@@ -154,6 +160,7 @@ void GameEngine::draw()
   _shader.bind();
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _clock);
+  std::cout << " BEGIN "<< std::endl;
   v_Contcit end = _map.ContEnd();
   for (v_Contcit it = _map.ContBegin();it != end;it++)
     {
@@ -164,6 +171,7 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(_shader, _clock);
     }
+  std::cout << " END "<< std::endl;
   _win.flush();
 }
 
@@ -174,15 +182,15 @@ void GameEngine::createDisplayBorder()
   for (i = 0; i < _mapX; ++i)
     {
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(2 * i, 0.0, 0));
+      _obj.back()->translate(glm::vec3(i, 0.0, 0));
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(2 * i, 0.0, 2 * (_mapY - 1)));
+      _obj.back()->translate(glm::vec3(i, 0.0, (_mapY - 1)));
     }
   for (i = 1; i < (_mapY - 1); ++i)
     {
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(2 * (_mapX - 1), 0.0, 2 * i));
+      _obj.back()->translate(glm::vec3((_mapX - 1), 0.0, i));
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(0, 0.0, 2 * i));
+      _obj.back()->translate(glm::vec3(0, 0.0, i));
     }
 }
