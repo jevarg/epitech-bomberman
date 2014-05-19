@@ -5,8 +5,6 @@ Input::Input()
 {
   for (unsigned int i = FORWARD; i < UNKNOWN; ++i)
     _actionState.push_back(false);
-  _boundKey.insert(std::pair<keyCode, bool>(SDLK_BACKSPACE, false));
-  _boundKey.insert(std::pair<keyCode, bool>(SDLK_ESCAPE, false));
   std::memset(&_mouse, 0, sizeof(_mouse));
   std::memset(&_window, 0, sizeof(_window));
 }
@@ -19,19 +17,11 @@ void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool stat
 {
   std::map<keyCode, bool>::iterator it;
   std::map<keyCode, bool>::iterator end;
-  SDL_Keycode	key = event.key.keysym.sym;
   eAction	act;
 
-  if ((act = set.getActionFromKey(key)) != UNKNOWN)
+  _key = event.key.keysym.sym;
+  if ((act = set.getActionFromKey(_key)) != UNKNOWN)
     _actionState[act] = state;
-  for (it = _boundKey.begin(), end = _boundKey.end(); it != end; ++it)
-    {
-      if (it->first == key)
-	{
-	  it->second = state;
-	  break ;
-	}
-    }
 }
 
 void	Input::mouseInput(const SDL_Event &event)
@@ -96,6 +86,7 @@ void	Input::getInput(const Settings &set)
   if (_mouse.event != BUTTONDOWN)
     _mouse.event = NONE;
   _window.event = WIN_NONE;
+  _key = SDLK_UNKNOWN;
   while (SDL_PollEvent(&event))
     {
       switch (event.type)
@@ -122,16 +113,7 @@ bool	Input::operator[](eAction act) const
   return (_actionState[static_cast<int>(act)]);
 }
 
-bool	Input::operator[](keyCode key) const
-{
-  std::map<keyCode, bool>::const_iterator	it;
-
-  if ((it = _boundKey.find(key)) == _boundKey.end())
-    return (false);
-  return (it->second);
-}
-
-bool	Input::operator[](t_mouse &mouse)
+bool	Input::operator[](t_mouse &mouse) const
 {
   if (_mouse.event == NONE)
     return (false);
@@ -139,10 +121,15 @@ bool	Input::operator[](t_mouse &mouse)
   return (true);
 }
 
-bool	Input::operator[](t_window &win)
+bool	Input::operator[](t_window &win) const
 {
   if (_window.event == WIN_NONE)
     return (false);
   win = _window;
   return (true);
+}
+
+bool	Input::operator[](SDL_Keycode key) const
+{
+  return (key == _key);
 }

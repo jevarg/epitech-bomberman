@@ -12,6 +12,8 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model)
   if (pthread_create(&thread, NULL, &handle_character_thread, this) != 0)
     throw (Exception("Can't create Acharacter's thread"));
   _thread = thread;
+  _model->translate(glm::vec3(0.0, -0.5, 0.0));
+  _model->scale(glm::vec3(0.002, 0.002, 0.002));
 }
 
 ACharacter::~ACharacter()
@@ -62,9 +64,8 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
     {
       std::cout << "Add it at new pos" << std::endl;
       map.addEntity(this);
-      return (true);
     }
-  return (false);
+  return (true);
 }
 
 void	ACharacter::takeDamages(int amount)
