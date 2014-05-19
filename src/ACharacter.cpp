@@ -95,6 +95,16 @@ void	*handle_character_thread(void *arg)
   return (NULL);
 }
 
+int	ACharacter::getSpeed() const
+{
+  return (_speed);
+}
+
+int	ACharacter::getHealth() const
+{
+  return (_health);
+}
+
 void	ACharacter::setSpeed(int speed)
 {
   _speed = speed;

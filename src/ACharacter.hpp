@@ -51,6 +51,8 @@ public:
   int		getScore() const;
   bool		isAlive() const;
 
+  int		getSpeed() const;
+  int		getHealth() const;
   void		setSpeed(int speed);
   void		setHealth(int health);
 };
