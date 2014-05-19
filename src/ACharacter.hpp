@@ -50,6 +50,9 @@ public:
 
   int		getScore() const;
   bool		isAlive() const;
+
+  void		setSpeed(int speed);
+  void		setHealth(int health);
 };
 
 void	*handle_character_thread(void *arg);

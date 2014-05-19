@@ -94,3 +94,13 @@ void	*handle_character_thread(void *arg)
   (void) arg;
   return (NULL);
 }
+
+void	ACharacter::setSpeed(int speed)
+{
+  _speed = speed;
+}
+
+void	ACharacter::setHealth(int health)
+{
+  _health = health;
+}
