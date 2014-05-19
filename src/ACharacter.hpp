@@ -39,7 +39,7 @@ protected:
 
 public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
-  ~ACharacter();
+  virtual ~ACharacter() = 0;
 
   virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 
@@ -50,6 +50,11 @@ public:
 
   int		getScore() const;
   bool		isAlive() const;
+
+  int		getSpeed() const;
+  int		getHealth() const;
+  void		setSpeed(int speed);
+  void		setHealth(int health);
 };
 
 void	*handle_character_thread(void *arg);

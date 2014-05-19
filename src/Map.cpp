@@ -284,7 +284,7 @@ void	Map::removeEntityByPtr(AEntity *ptr)
 ** Main function
 */
 
-void	Map::createMap(std::map<eType, IObject *> &type)
+void	Map::createMap(std::map<eType, IObject *> &type, Camera **cam)
 {
   int	posx;
   int	posy;
@@ -301,7 +301,7 @@ void	Map::createMap(std::map<eType, IObject *> &type)
     genSmallMaze(posx, posy, 4);
   fillBox();
   fillContainers(type);
-  spawnEnt(1, 0, type);
+  spawnEnt(1, 0, type, cam);
   display();
 }
 
@@ -383,7 +383,7 @@ void	Map::createCharacter(int &nbPlayer, int &nbIa, int x, int y)
     }
 */
 
-bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
+bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type, Camera **cam)
 {
   int	tx = x;
   int	ty = y;
@@ -393,8 +393,6 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
   eType	stype;
   int	maxside = (_mapX > _mapY) ? _mapX : _mapY;
 
-  // std::cout << std::endl << std::endl << std::endl << "Putting new player" << std::endl;
-  // std::cout << "Center: " << x << " " << y << std::endl;
   while (((tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1) ||
 	  (stype = checkMapColision(tx, ty)) != FREE) && radius < maxside)
     {
@@ -402,15 +400,10 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
       ty = y + (radius + 1);
       dirX = 1;
       dirY = 0;
-      // display();
-      // std::cout << "New radius: " << radius << std::endl;
       do
 	{
-	  // std::cout << "try at pos " << tx << " " << ty << std::endl;
-	  // getchar();
 	  if (!(tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1))
 	    {
-	      // std::cout << "Checking colision" << std::endl;
 	      if (checkMapColision(tx, ty) == FREE)
 		break ;
 	    }
@@ -419,32 +412,27 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
 	  if (dirX == 1 && dirY == 0 &&
 	      tx == (x + (radius + 1)) && ty == (y + (radius + 1)))
 	    {
-	      // std::cout << "FIRST CHANGE DIR" << std::endl;
 	      dirX = 0;
 	      dirY = -1;
 	    }
 	  else if (dirX == 0 && dirY == -1 &&
 		   tx == (x + (radius + 1)) && ty == (y - (radius + 1)))
 	    {
-	      // std::cout << "SECOND CHANGE DIR" << std::endl;
 	      dirX = -1;
 	      dirY = 0;
 	    }
 	  else if (dirX == -1 && dirY == 0 &&
 		   tx == (x - (radius + 1)) && ty == (y - (radius + 1)))
 	    {
-	      // std::cout << "THIRD CHANGE DIR" << std::endl;
 	      dirX = 0;
 	      dirY = 1;
 	    }
-	  // std::cout << tx << " " << ty << " | " << x - (radius + 1)
-	  // 	    << " " << y + (radius + 1) << std::endl;
 	}
       while (tx != (x - (radius + 1)) || ty != (y + (radius + 1)));
       ++radius;
     }
   if (stype == FREE)
-    addEntity(new Entity(tx, ty, CHARACTER, type[BOX]->clone()));
+    addEntity(new Player(tx, ty, cam[0], glm::vec4(0.0), type[CHARACTER]->clone()));
   else
     {
       std::cerr << "No place for player" << std::endl;
@@ -491,7 +479,7 @@ void	Map::initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const
   spawn.toPlace = spawn.totalPlayer;
 }
 
-void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type)
+void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type, Camera **cam)
 {
   t_spawn	spawn;
   int	x = 0;
@@ -507,7 +495,7 @@ void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type)
 	{
 	  x = _mapX / 2;
 	  y = _mapY / 2;
-	  if (putPlayer(x, y, type) == false)
+	  if (putPlayer(x, y, type, cam) == false)
 	    return ;
 	  --spawn.totalPlayer;
 	  continue ;
@@ -521,7 +509,7 @@ void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type)
 			 * spawn.radiusX + 0.5);
 	  y = std::floor((_mapY / 2) + sin(RAD(spawn.angle))
 			 * spawn.radiusY + 0.5);
-	  if (putPlayer(x, y, type) == false)
+	  if (putPlayer(x, y, type, cam) == false)
 	    return ;
 	  spawn.angle = (spawn.angle += spawn.angleStep) > 360 ?
 	    spawn.angle - 360 : spawn.angle;

@@ -2,7 +2,7 @@
 #include "Exception.hpp"
 
 Bomb::Bomb()
-  : _mutex(), _condvar()
+  : _mutex()
 {
   pthread_t         thread;
 

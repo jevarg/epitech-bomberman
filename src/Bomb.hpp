@@ -19,7 +19,6 @@ public:
 private:
   pthread_t	_thread;
   Mutex		_mutex;
-  Condvar	_condvar;
   eBombType	_type;
   int		_range;
 };

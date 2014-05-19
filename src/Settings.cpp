@@ -1,5 +1,6 @@
-#include "Settings.hpp"
+#include <SDL.h>
 #include <iterator>
+#include "Settings.hpp"
 
 Settings::Settings()
 {
@@ -7,6 +8,7 @@ Settings::Settings()
   _actionList.push_back("back");
   _actionList.push_back("left");
   _actionList.push_back("right");
+  _actionList.push_back("dropBomb");
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
 
@@ -19,6 +21,61 @@ Settings::Settings()
   _cvarList.push_back("s_mapDensity");
   _cvarList.push_back("s_mapLinear");
   _cvarList.push_back("r_mipmap");
+
+  _speKeys["CAPSLOCK"] = SDLK_CAPSLOCK;
+  _speKeys["SPACE"] = SDLK_SPACE;
+
+  _speKeys["F1"] = SDLK_F1;
+  _speKeys["F2"] = SDLK_F2;
+  _speKeys["F3"] = SDLK_F3;
+  _speKeys["F4"] = SDLK_F4;
+  _speKeys["F5"] = SDLK_F5;
+  _speKeys["F6"] = SDLK_F6;
+  _speKeys["F7"] = SDLK_F7;
+  _speKeys["F8"] = SDLK_F8;
+  _speKeys["F9"] = SDLK_F9;
+  _speKeys["F10"] = SDLK_F10;
+  _speKeys["F11"] = SDLK_F11;
+  _speKeys["F12"] = SDLK_F12;
+
+  _speKeys["KP_0"] = SDLK_KP_0;
+  _speKeys["KP_1"] = SDLK_KP_1;
+  _speKeys["KP_2"] = SDLK_KP_2;
+  _speKeys["KP_3"] = SDLK_KP_3;
+  _speKeys["KP_4"] = SDLK_KP_4;
+  _speKeys["KP_5"] = SDLK_KP_5;
+  _speKeys["KP_6"] = SDLK_KP_6;
+  _speKeys["KP_7"] = SDLK_KP_7;
+  _speKeys["KP_8"] = SDLK_KP_8;
+  _speKeys["KP_9"] = SDLK_KP_9;
+  _speKeys["KP_POINT"] = SDLK_PERIOD;
+
+  _speKeys["UPARROW"] = SDLK_UP;
+  _speKeys["RIGHTARROW"] = SDLK_RIGHT;
+  _speKeys["DOWNARROW"] = SDLK_DOWN;
+  _speKeys["LEFTARROW"] = SDLK_LEFT;
+
+  _speKeys["KP_PLUS"] = SDLK_KP_PLUS;
+  _speKeys["KP_MINUS"] = SDLK_KP_MINUS;
+  _speKeys["KP_DIV"] = SDLK_KP_DIVIDE;
+  _speKeys["KP_MULT"] = SDLK_KP_MULTIPLY;
+  _speKeys["KP_ENTER"] = SDLK_KP_ENTER;
+  _speKeys["KP_NUMLOCK"] = SDLK_NUMLOCKCLEAR;
+  _speKeys["KP_PGDN"] = SDLK_PAGEDOWN;
+  _speKeys["KP_PGUP"] = SDLK_PAGEUP;
+  _speKeys["KP_PRINTSCREEN"] = SDLK_PRINTSCREEN;
+  _speKeys["KP_END"] = SDLK_END;
+  _speKeys["KP_INSERT"] = SDLK_INSERT;
+
+  _speKeys["LCTRL"] = SDLK_LCTRL;
+  _speKeys["LSHIFT"] = SDLK_LSHIFT;
+  _speKeys["LALT"] = SDLK_LALT;
+  _speKeys["RCTRL"] = SDLK_RCTRL;
+  _speKeys["RSHIFT"] = SDLK_RSHIFT;
+  _speKeys["RALT"] = SDLK_RALT;
+  _speKeys["KP_INSERT"] = SDLK_INSERT;
+  _speKeys["KP_INSERT"] = SDLK_INSERT;
+  _speKeys["KP_INSERT"] = SDLK_INSERT;
 }
 
 Settings::~Settings()
@@ -32,6 +89,11 @@ int	Settings::toNumber(const std::string &str) const
   std::istringstream(str) >> num;
 
   return (num);
+}
+
+bool	Settings::isAscii(const std::string &str) const
+{
+  return (str.size() == 1);
 }
 
 void	Settings::addCvar(const std::string tab[3])
@@ -50,21 +112,50 @@ void	Settings::addCvar(const std::string tab[3])
 	  break ;
 	}
     }
+}
 
+/*
+** Getters for config files
+** As I throw an exception, a try/catch block will be needed
+*/
+
+const std::string &Settings::getCodeFromKey(SDL_Keycode key) const
+{
+  m_keyCit	it = _speKeys.begin();
+
+  for (m_keyCit end = _speKeys.end(); it != end; ++it)
+    {
+      if (it->second == key)
+	return (it->first);
+    }
+  throw(Exception("Key not registered"));
+}
+
+keyCode	Settings::getKeyFromCode(const std::string &str) const
+{
+  m_keyCit	it = _speKeys.find(str);
+
+  return ((it == _speKeys.end()) ? UNKNOWN_KEY : it->second);
 }
 
 void	Settings::addKey(const std::string tab[3])
 {
   v_instit	listit;
   v_instit	listend = _actionList.end();
+  int		boundkey;
 
   for (listit = _actionList.begin(); listit != listend; ++listit)
     {
       if (*listit == tab[2])
 	{
-	  _keyMap.insert(std::pair<keyCode, eAction>
-			 (tab[1].at(0), static_cast<eAction>
-			  (std::distance(_actionList.begin(), listit))));
+	  if (isAscii(tab[1]))
+	    _keyMap.insert(std::pair<keyCode, eAction>
+			   (tab[1].at(0), static_cast<eAction>
+			    (std::distance(_actionList.begin(), listit))));
+	  else if ((boundkey = getKeyFromCode(tab[1])) != UNKNOWN_KEY)
+	    _keyMap.insert(std::pair<keyCode, eAction>
+			   (boundkey, static_cast<eAction>
+			    (std::distance(_actionList.begin(), listit))));
 	  break ;
 	}
     }
@@ -85,7 +176,7 @@ void	Settings::parsInst(const std::vector<std::string> &inst)
 	    std::cerr << "Missing arguments for " << tab[0] << std::endl;
 	    break ;
 	  }
-      if (tab[0] == "bind" && tab[1].size() == 1)
+      if (tab[0] == "bind")
 	addKey(tab);
       else if (tab[0] == "set")
 	addCvar(tab);

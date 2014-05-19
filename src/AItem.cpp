@@ -2,15 +2,10 @@
 
 AItem::AItem()
 {
+  _timeout = NO_TIMEOUT;
+  _amount = 0;
 }
 
 AItem::~AItem()
 {
-}
-
-void	AItem::modifyAmount(int &objAttr)
-{
-  objAttr += _powerAmount;
-  if (objAttr < 0)
-    objAttr = 0;
 }

@@ -7,8 +7,6 @@ Model::Model()
   _texture = NULL;
 }
 
-# include <iostream>
-
 Model::Model(Model const& model)
   : IObject(), _obj(model._obj), _texture(model._texture)
 {
