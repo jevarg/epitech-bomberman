@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iostream>
 #include <ctime>
+#include <cmath>
 #include "Map.hpp"
 
 Map::Map(Settings &set)
@@ -33,7 +34,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *> &type)
+bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IObject *> &type)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -82,7 +83,7 @@ bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *
   return (true);
 }
 
-bool		Map::save(Settings &settings, std::string &name)
+bool		Map::save(const std::string &name)
 {
   std::ofstream	file(name.c_str());
   std::string	buf;
@@ -197,12 +198,22 @@ void	Map::genBigMaze()
 void	Map::display()
 {
   int	totalsize = _mapX * _mapY;
+  eType	t;
 
   for (int i = 0; i < totalsize; ++i)
     {
-      if (i != 0 && i % (_mapX ) == 0)
+      if ((t = checkMapColision(i % _mapX, i / _mapX)) == WALL)
+	std::cout << "x";
+      else if (t == BOX)
+	std::cout << "B";
+      else if (t == FREE)
+	std::cout << " ";
+      else if (t == CHARACTER)
+	std::cout << "C";
+      else
+	std::cout << "?";
+      if (i != 0 && i % _mapX == _mapX - 1)
 	std::cout << std::endl;
-      std::cout << (_map[i] == WALL ? "x" : (_map[i] == BOX) ? "B" : " ");
     }
   std::cout << std::endl;
 }
@@ -244,12 +255,12 @@ void	Map::fillBox()
 void	Map::fillContainers(std::map<eType, IObject *> &type)
 {
   unsigned int	i;
-  unsigned int 	totalsize = (_mapX - 1) * _mapY;
+  unsigned int 	totalsize = (_mapY - 1) * _mapX;
 
   for (i = _mapX; i < totalsize; ++i)
     {
-      if (_map[i] != FREE && i % _mapX != 0 &&
-	  (i + 1) % _mapX != 0) // means there is a block / It's the border
+      // means there is a block & It's not the border
+      if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
 	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], type[_map[i]]->clone()));
     }
   _map.clear();	// erase the temps vector
@@ -262,7 +273,18 @@ void	Map::removeEntity(int x, int y)
   _cont[pos]->removeContBlock(x, y);
 }
 
-void	Map::createMap(std::map<eType, IObject *> &type)
+void	Map::removeEntityByPtr(AEntity *ptr)
+{
+  unsigned int	pos = getContPos(ptr->getXPos(), ptr->getYPos());
+
+  _cont[pos]->removeContBlockByPtr(ptr);
+}
+
+/*
+** Main function
+*/
+
+void	Map::createMap(std::map<eType, IObject *> &type, Camera **cam)
 {
   int	posx;
   int	posy;
@@ -273,13 +295,13 @@ void	Map::createMap(std::map<eType, IObject *> &type)
     _map.push_back(WALL);
   posx = 2 + std::rand() % (_mapX - 3);
   posy = 2 + std::rand() % (_mapY - 3);
-  std::cout << "Starting at " << posx << " " << posy << std::endl;
   if (_mapX * _mapY > MAXSIZE)
     genBigMaze();
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
   fillContainers(type);
+  spawnEnt(1, 0, type, cam);
   display();
 }
 
@@ -307,14 +329,195 @@ void	Map::addEntity(AEntity *ent)
   _cont[pos]->stockEntity(ent);
 }
 
+/*
+** The condition pos >= _cont.size() is only used when a region isn't mapped
+** It could happen if the SQUARESIZE is very small (1 or 2)
+** It happens if the mapped zone has no block in a zonesize > SQUARESIZE.
+*/
+
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
-  if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
+  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
     return (WALL);
+  else if (pos >= _cont.size())
+    return (FREE);
   return (_cont[pos]->checkColision(x, y));
 }
+
+/*
+** Placement of players & IA
+*/
+
+/*
+void	Map::createCharacter(int &nbPlayer, int &nbIa, int x, int y)
+{
+  if (nbPlayer == 0)
+    {
+      Player	*p = new Player(x, y);
+      addEntity(p);
+      --nbPlayer;
+    }
+  else if (nbIa == 0)
+    {
+      Player	*p = new Player(x, y); // Here replace with ia class
+      addEntity(p);
+      --nbIa;
+    }
+  else
+    {
+      if (rand() % 2 == 0)
+	{
+	  Player *p = new Player(x, y);
+	  addEntity(p);
+	  --nbPlayer;
+	}
+      else
+	{
+	  Player *p = new Player(x, y); // Here replace with ia class
+	  addEntity(p);
+	  --nbIa;
+	}
+    }
+    }
+*/
+
+bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type, Camera **cam)
+{
+  int	tx = x;
+  int	ty = y;
+  int	radius = 0;
+  char	dirX;
+  char	dirY;
+  eType	stype;
+  int	maxside = (_mapX > _mapY) ? _mapX : _mapY;
+
+  while (((tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1) ||
+	  (stype = checkMapColision(tx, ty)) != FREE) && radius < maxside)
+    {
+      tx = x - (radius + 1);
+      ty = y + (radius + 1);
+      dirX = 1;
+      dirY = 0;
+      do
+	{
+	  if (!(tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1))
+	    {
+	      if (checkMapColision(tx, ty) == FREE)
+		break ;
+	    }
+	  tx += dirX;
+	  ty += dirY;
+	  if (dirX == 1 && dirY == 0 &&
+	      tx == (x + (radius + 1)) && ty == (y + (radius + 1)))
+	    {
+	      dirX = 0;
+	      dirY = -1;
+	    }
+	  else if (dirX == 0 && dirY == -1 &&
+		   tx == (x + (radius + 1)) && ty == (y - (radius + 1)))
+	    {
+	      dirX = -1;
+	      dirY = 0;
+	    }
+	  else if (dirX == -1 && dirY == 0 &&
+		   tx == (x - (radius + 1)) && ty == (y - (radius + 1)))
+	    {
+	      dirX = 0;
+	      dirY = 1;
+	    }
+	}
+      while (tx != (x - (radius + 1)) || ty != (y + (radius + 1)));
+      ++radius;
+    }
+  if (stype == FREE)
+    addEntity(new Player(tx, ty, cam[0], glm::vec4(0.0), type[CHARACTER]->clone()));
+  else
+    {
+      std::cerr << "No place for player" << std::endl;
+      return (false);
+    }
+  return (true);
+}
+
+void	Map::setStart(t_spawn &spawn, int pack) const
+{
+  double	totalSquare;
+  double	cuSquare;
+  double	stepX;
+  double	stepY;
+
+  totalSquare = (std::ceil((spawn.toPlace - 1.0) / spawn.packSize)
+		 * spawn.packSize) / spawn.packSize;
+  cuSquare = (std::ceil((spawn.totalPlayer - 1.0) / spawn.packSize)
+	      * spawn.packSize) / spawn.packSize;
+  stepX = (_mapX / 2.0 - 1.0) / totalSquare;
+  stepY = (_mapY / 2.0 - 1.0) / totalSquare;
+  spawn.radiusX = (_mapX / 2.0 - 1.0) - ((totalSquare - cuSquare) * stepX);
+  spawn.radiusY =  (_mapY / 2.0 - 1.0) - ((totalSquare - cuSquare) * stepY);
+  spawn.angleStep = 360 / pack;
+  if ((spawn.totalPlayer / spawn.packSize) % 2 != 0)
+    spawn.angle = spawn.angleStep / 2;
+  else
+    spawn.angle = 0;
+  spawn.angleStep = 360 / pack;
+}
+
+void	Map::initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const
+{
+  int	minside;
+
+  minside = ((_mapX < _mapY) ? _mapX : _mapY) - 2;
+  spawn.totalPlayer = nbPlayer + nbIa;
+  spawn.toPlace = spawn.totalPlayer;
+  spawn.packSize = minside / 2;
+  spawn.angle = 0;
+  spawn.angleStep = spawn.totalPlayer / spawn.packSize;
+  spawn.centerX = _mapX / 2;
+  spawn.centerY = _mapY / 2;
+  spawn.toPlace = spawn.totalPlayer;
+}
+
+void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type, Camera **cam)
+{
+  t_spawn	spawn;
+  int	x = 0;
+  int	y = 0;
+  int	pack;
+
+  if (nbPlayer + nbIa <= 0)
+    return ;
+  initSpawn(spawn, nbPlayer, nbIa);
+  while (spawn.totalPlayer > 0)
+    {
+      if (spawn.totalPlayer == 1)
+	{
+	  x = _mapX / 2;
+	  y = _mapY / 2;
+	  if (putPlayer(x, y, type, cam) == false)
+	    return ;
+	  --spawn.totalPlayer;
+	  continue ;
+	}
+      pack = (spawn.totalPlayer < spawn.packSize) ?
+	spawn.totalPlayer : spawn.packSize;
+      setStart(spawn, pack);
+      for (int i = 0; i < pack; ++i)
+	{
+	  x = std::floor((_mapX / 2) + cos(RAD(spawn.angle))
+			 * spawn.radiusX + 0.5);
+	  y = std::floor((_mapY / 2) + sin(RAD(spawn.angle))
+			 * spawn.radiusY + 0.5);
+	  if (putPlayer(x, y, type, cam) == false)
+	    return ;
+	  spawn.angle = (spawn.angle += spawn.angleStep) > 360 ?
+	    spawn.angle - 360 : spawn.angle;
+	  --spawn.totalPlayer;
+	}
+    }
+}
+
 
 unsigned int	Map::getWidth() const
 {
@@ -336,7 +539,32 @@ v_Contcit	Map::ContEnd() const
   return (_cont.end());
 }
 
-void		Map::setMobilEnt(int x, int y, eType type)
+void		Map::setEntity(int x, int y, eType type)
 {
-  (_cont[getContPos(x, y)])->setMobilEnt(x, y, type);
+  (_cont[getContPos(x, y)])->setEntity(x, y, type);
+}
+
+void		Map::setEntityIf(int x, int y, eType newValue, eType oldValue)
+{
+  (_cont[getContPos(x, y)])->setEntityIf(x, y, newValue, oldValue);
+}
+
+void		Map::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
+{
+  (_cont[getContPos(x, y)])->setEntityIfNot(x, y, newValue, oldValue);
+}
+
+AEntity		*Map::getEntity(int x, int y) const
+{
+  return ((_cont[getContPos(x, y)])->getEntity(x, y));
+}
+
+AEntity		*Map::getEntityIf(int x, int y, eType value) const
+{
+  return ((_cont[getContPos(x, y)])->getEntityIf(x, y, value));
+}
+
+AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
+{
+  return ((_cont[getContPos(x, y)])->getEntityIfNot(x, y, value));
 }

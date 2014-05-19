@@ -7,3 +7,8 @@ Entity::Entity(int x, int y, eType type, IObject *model) : AEntity(x, y, type, m
 Entity::~Entity()
 {
 }
+
+bool	Entity::update(gdl::Clock const &, Input const &, Map &)
+{
+  return (false);
+}

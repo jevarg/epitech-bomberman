@@ -10,7 +10,6 @@ Model::Model()
 Model::Model(Model const& model)
   : IObject(), _obj(model._obj), _texture(model._texture)
 {
-
 }
 
 Model::~Model()
@@ -29,7 +28,7 @@ bool		Model::initialize()
   return (true);
 }
 
-void		Model::update(gdl::Clock const& clock, Input &input)
+void	Model::update(gdl::Clock const &, Input &)
 {
 
 }

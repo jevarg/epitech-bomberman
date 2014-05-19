@@ -2,7 +2,7 @@
 #include "Input.hpp"
 #include "Camera.hpp"
 
-Camera::Camera()
+Camera::Camera(): _pos(0.0, 0.0, 0.0), _pos_view(0.0, 0.0, 1.0), _dir(0.0, 1.0, 0.0)
 {
   _projection = glm::perspective(CFOV, DEF_SIZE_X / DEF_SIZE_Y, 0.1f, 100.0f);
 }
@@ -13,50 +13,15 @@ Camera::~Camera()
 
 }
 
-bool	Camera::initialize()
-{
-  _pos_view = glm::vec3(1.0, 0.0, 0.0);
-  _dir = glm::vec3(0.0, 1.0, 0.0);
-  return (true);
-}
-
-void Camera::update(gdl::Clock const &clock, Input &in)
-{
-  if (in[LEFT])
-    {
-      _position += (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-      _pos_view += (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-    }
-  if (in[RIGHT])
-    {
-      _position -= (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-      _pos_view -= (glm::vec3(2.0, 0.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-    }
-  if (in[FORWARD])
-    {
-      _position += (glm::vec3(0.0, 0.0, 2.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-      _pos_view += (glm::vec3(0.0, 0.0, 2.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-    }
-  if (in[BACK])
-    {
-      _position -= (glm::vec3(0.0, 0.0, 2.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-      _pos_view -= (glm::vec3(0.0, 0.0, 2.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-    }
-  // if (in.getKey(SDLK_UP))
-  //   {
-  //     _position += (glm::vec3(0.0, 2.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-  //     _pos_view += (glm::vec3(0.0, 2.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-  //   }
-  // if (in.getKey(SDLK_DOWN))
-  //   {
-  //     _position -= (glm::vec3(0.0, 2.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-  //     _pos_view -= (glm::vec3(0.0, 2.0, 0.0) * static_cast<float>(clock.getElapsed()) * 10.0f);
-  //   }
-}
-
 void	Camera::lookAt()
 {
-  _transformation = glm::lookAt(_position, _pos_view, _dir);
+  _transformation = glm::lookAt(_pos, _pos_view, _dir);
+}
+
+void	Camera::translate(glm::vec3 vec)
+{
+  _pos += vec;
+  _pos_view += vec;
 }
 
 const glm::mat4 &Camera::getTransformation() const
@@ -67,4 +32,9 @@ const glm::mat4 &Camera::getTransformation() const
 const glm::mat4	&Camera::getProjection() const
 {
   return (_projection);
+}
+
+void	Camera::setPointView(glm::vec3 vec)
+{
+  _pos_view = vec;
 }
