@@ -4,18 +4,14 @@
 GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
 		       gdl::BasicShader *shader, Settings &set, Input &input)
   : _win(win), _clock(clock), _shader(shader), _save(), _cam(),
-    _map(set), _set(set), _input(input), _type(), _texture()
+    _map(set), _set(set), _input(input), _type(), _texture(), _text()
 {
+
 }
 
 GameEngine::~GameEngine()
 {
-  // while (_obj.size())
-  //   {
-  //     delete _obj.back();
-  //     _obj.pop_back();
-  //   }
-  // _win.stop();
+
 }
 
 bool GameEngine::initialize()
@@ -26,6 +22,10 @@ bool GameEngine::initialize()
   _mapY = _set.getVar(MAP_WIDTH);
   _cam.initialize();
   _cam.translate(glm::vec3(0, 5, -10));
+
+  if (!_text.initialize())
+    return (false);
+  _text.write("TEST", 0, 0, 3.0);
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
@@ -81,7 +81,6 @@ bool GameEngine::update()
   if ((time = _clock->getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _cam.update(*_clock, _input);
-  // _cam.update(_clock, _input);
   v_Contcit end = _map.ContEnd();
   for (v_Contcit it = _map.ContBegin();it != end;it++)
     {
@@ -111,6 +110,7 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(*_shader, *_clock);
     }
+  _text.draw(*_shader, *_clock);
   _win->flush();
 }
 

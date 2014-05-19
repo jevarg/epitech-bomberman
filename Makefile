@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Wed May 14 16:32:33 2014 
+## Last update Fri May 16 16:52:49 2014 Jean Gravier
 ##
 
 NAME		=	bomberman
@@ -39,7 +39,8 @@ SRC		=	main.cpp \
 			Player.cpp \
 			Map.cpp \
 			Menu.cpp \
-			Input.cpp
+			Input.cpp \
+			Text.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

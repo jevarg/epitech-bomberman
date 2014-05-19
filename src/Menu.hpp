@@ -3,6 +3,7 @@
 
 # include <Game.hh>
 # include <SdlContext.hh>
+# include "Text.hpp"
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "GameEngine.hpp"
@@ -27,6 +28,7 @@ private:
   gdl::Clock		_clock;
   gdl::BasicShader	_shader;
   bool			_done;
+  Text			_text;
 };
 
 #endif /* _MENU_HPP_ */

@@ -22,6 +22,7 @@
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "Player.hpp"
+# include "Text.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -60,9 +61,9 @@ private:
   Input				&_input;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
-
   Model				*_model;
   Player			*_player;
+  Text				_text;
 };
 
 #endif /* _GAMEENGINE_HPP_ */
