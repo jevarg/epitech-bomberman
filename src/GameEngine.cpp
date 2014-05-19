@@ -23,10 +23,6 @@ bool GameEngine::initialize()
   _cam.initialize();
   _cam.translate(glm::vec3(0, 5, -10));
 
-  if (!_text.initialize())
-    return (false);
-  _text.write("TEST", 0, 0, 3.0);
-
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
   skybox->scale(glm::vec3(500, 500, 500));
