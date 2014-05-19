@@ -78,8 +78,8 @@ bool GameEngine::update()
   _input.getInput(_set);
   if ((_input[win] && win.event == WIN_QUIT) || _input[SDLK_ESCAPE])
     return (false);
-  if (_input[SDLK_g])
-    std::cout << "g pressed" << std::endl;
+  if (_input[DROPBOMB])
+    std::cout << "DROP THE BOMB" << std::endl;
   if (_input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;
   // if (win.event == WIN_RESIZE) // Seems not to work
@@ -107,7 +107,7 @@ void GameEngine::draw()
   _shader.bind();
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _clock);
-  std::cout << " BEGIN "<< std::endl;
+  //std::cout << " BEGIN "<< std::endl;
   v_Contcit end = _map.ContEnd();
   for (v_Contcit it = _map.ContBegin();it != end;it++)
     {
@@ -118,7 +118,7 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(_shader, _clock);
     }
-  std::cout << " END "<< std::endl;
+  //  std::cout << " END "<< std::endl;
   _win.flush();
 }
 

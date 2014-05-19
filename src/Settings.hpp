@@ -23,6 +23,7 @@ enum	eAction
     BACK,
     LEFT,
     RIGHT,
+    DROPBOMB,
     ACTIVATE,
     LAUNCHGAME,
     UNKNOWN
