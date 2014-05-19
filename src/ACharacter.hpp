@@ -13,7 +13,7 @@
 
 class Input;
 
-enum	e_dir
+enum	eDir
   {
     NORTH = 0,
     WEST,
@@ -35,23 +35,23 @@ protected:
   int		_speed;
   int		_range;
   int		_score;
-  e_dir		_orient;
+  eDir		_orient;
 
 public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
   ~ACharacter();
+
+  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+
+  bool		updatePosition(Map &map, eAction action);
   bool		initialize();
-  virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  bool		move(Map &map, int dirX, int dirY);
+  void		takeDamages(int amount);
 
-public:
-  bool		move(eAction, Map &map);
-  void		hit();
-
-public:
   int		getScore() const;
   bool		isAlive() const;
 };
 
-void	*handle_thread(void *arg);
+void	*handle_character_thread(void *arg);
 
 #endif /* ! ACHARACTER_HPP_ */

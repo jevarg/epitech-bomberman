@@ -43,7 +43,7 @@ public:
   void		setYPos(const int &y);
   void		setType(const eType &type);
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
-  virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 
 protected:
   int		_x;

@@ -273,6 +273,13 @@ void	Map::removeEntity(int x, int y)
   _cont[pos]->removeContBlock(x, y);
 }
 
+void	Map::removeEntityByPtr(AEntity *ptr)
+{
+  unsigned int	pos = getContPos(ptr->getXPos(), ptr->getYPos());
+
+  _cont[pos]->removeContBlockByPtr(ptr);
+}
+
 /*
 ** Main function
 */
@@ -386,8 +393,6 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type, Camera **cam
   eType	stype;
   int	maxside = (_mapX > _mapY) ? _mapX : _mapY;
 
-  // std::cout << std::endl << std::endl << std::endl << "Putting new player" << std::endl;
-  // std::cout << "Center: " << x << " " << y << std::endl;
   while (((tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1) ||
 	  (stype = checkMapColision(tx, ty)) != FREE) && radius < maxside)
     {
@@ -395,15 +400,10 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type, Camera **cam
       ty = y + (radius + 1);
       dirX = 1;
       dirY = 0;
-      // display();
-      // std::cout << "New radius: " << radius << std::endl;
       do
 	{
-	  // std::cout << "try at pos " << tx << " " << ty << std::endl;
-	  // getchar();
 	  if (!(tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1))
 	    {
-	      // std::cout << "Checking colision" << std::endl;
 	      if (checkMapColision(tx, ty) == FREE)
 		break ;
 	    }
@@ -412,26 +412,21 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type, Camera **cam
 	  if (dirX == 1 && dirY == 0 &&
 	      tx == (x + (radius + 1)) && ty == (y + (radius + 1)))
 	    {
-	      // std::cout << "FIRST CHANGE DIR" << std::endl;
 	      dirX = 0;
 	      dirY = -1;
 	    }
 	  else if (dirX == 0 && dirY == -1 &&
 		   tx == (x + (radius + 1)) && ty == (y - (radius + 1)))
 	    {
-	      // std::cout << "SECOND CHANGE DIR" << std::endl;
 	      dirX = -1;
 	      dirY = 0;
 	    }
 	  else if (dirX == -1 && dirY == 0 &&
 		   tx == (x - (radius + 1)) && ty == (y - (radius + 1)))
 	    {
-	      // std::cout << "THIRD CHANGE DIR" << std::endl;
 	      dirX = 0;
 	      dirY = 1;
 	    }
-	  // std::cout << tx << " " << ty << " | " << x - (radius + 1)
-	  // 	    << " " << y + (radius + 1) << std::endl;
 	}
       while (tx != (x - (radius + 1)) || ty != (y + (radius + 1)));
       ++radius;
@@ -544,7 +539,32 @@ v_Contcit	Map::ContEnd() const
   return (_cont.end());
 }
 
-void		Map::setMobilEnt(int x, int y, eType type)
+void		Map::setEntity(int x, int y, eType type)
 {
-  (_cont[getContPos(x, y)])->setMobilEnt(x, y, type);
+  (_cont[getContPos(x, y)])->setEntity(x, y, type);
+}
+
+void		Map::setEntityIf(int x, int y, eType newValue, eType oldValue)
+{
+  (_cont[getContPos(x, y)])->setEntityIf(x, y, newValue, oldValue);
+}
+
+void		Map::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
+{
+  (_cont[getContPos(x, y)])->setEntityIfNot(x, y, newValue, oldValue);
+}
+
+AEntity		*Map::getEntity(int x, int y) const
+{
+  return ((_cont[getContPos(x, y)])->getEntity(x, y));
+}
+
+AEntity		*Map::getEntityIf(int x, int y, eType value) const
+{
+  return ((_cont[getContPos(x, y)])->getEntityIf(x, y, value));
+}
+
+AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
+{
+  return ((_cont[getContPos(x, y)])->getEntityIfNot(x, y, value));
 }

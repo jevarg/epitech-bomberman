@@ -8,7 +8,7 @@ Entity::~Entity()
 {
 }
 
-void	Entity::update(gdl::Clock const &clock, Input const &input, Map &map)
+bool	Entity::update(gdl::Clock const &clock, Input const &input, Map &map)
 {
-
+  return (false);
 }

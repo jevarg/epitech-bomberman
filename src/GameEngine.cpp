@@ -30,7 +30,7 @@ bool GameEngine::initialize()
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
    || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
     return (false);
-  _cam.translate(glm::vec3(0.5, 5, -10));
+  _cam.translate(glm::vec3(0, 5, -10));
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
@@ -91,8 +91,9 @@ bool GameEngine::update()
   for (v_Contcit it = _map.ContBegin();it != end;it++)
     {
       l_Entcit end_list = (*it)->listEnd();
-      for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->update(_clock, _input, _map);
+      for (l_Entcit it1 = (*it)->listBegin(); it1 != end_list; it1++)
+	if ((*it1)->update(_clock, _input, _map) == true)
+	  return (true);
     }
   return (true);
 }

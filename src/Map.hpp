@@ -43,12 +43,21 @@ public:
 
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
+  void	removeEntityByPtr(AEntity *ptr);
+
+  void		setEntity(int, int, eType);
+  void		setEntityIf(int, int, eType, eType);
+  void		setEntityIfNot(int, int, eType, eType);
+  AEntity	*getEntity(int, int) const;
+  AEntity	*getEntityIf(int, int, eType) const;
+  AEntity	*getEntityIfNot(int, int, eType) const;
 
   void	setMobilEnt(int x, int y, eType type);
   void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type, Camera **cam);
 
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
+  unsigned int	getContPos(int x, int y) const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
 
@@ -60,7 +69,6 @@ private:
   short	getDir(bool *tab, short oldDir) const;
 
   bool	checkAccess(short x, short y) const;
-  unsigned int	getContPos(int x, int y) const;
   void	fillBox();
   void	fillContainers(std::map<eType, IObject *> &type);
   void	display();
