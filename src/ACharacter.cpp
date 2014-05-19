@@ -12,14 +12,18 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model)
   if (pthread_create(&thread, NULL, &handle_thread, this) != 0)
     throw (Exception("Can't create Acharacter's thread"));
   _thread = thread;
+  _model->translate(glm::vec3(0.0, -0.5, 0.0));
+  _model->scale(glm::vec3(0.002, 0.002, 0.002));
 }
 
 ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::move(eAction action, Map &map)
+bool	ACharacter::move(eAction action, Map &map)
 {
+  bool	ret = true;
+
   switch (action)
     {
     case FORWARD:
@@ -32,6 +36,8 @@ void	ACharacter::move(eAction action, Map &map)
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * NORTH - 90.0 * _orient);
 	  _orient = NORTH;
 	}
+      else
+	ret = false;
       break;
     case BACK:
       if (map.checkMapColision(_x, _y - 1) == FREE)
@@ -43,6 +49,8 @@ void	ACharacter::move(eAction action, Map &map)
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * SOUTH - 90.0 * _orient);
 	  _orient = SOUTH;
 	}
+      else
+	ret = false;
       break;
     case LEFT:
       if (map.checkMapColision(_x + 1, _y) == FREE)
@@ -54,6 +62,8 @@ void	ACharacter::move(eAction action, Map &map)
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * WEST - 90.0 * _orient);
 	  _orient = WEST;
 	}
+      else
+	ret = false;
       break;
     case RIGHT:
       if (map.checkMapColision(_x - 1, _y) == FREE)
@@ -65,10 +75,14 @@ void	ACharacter::move(eAction action, Map &map)
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * EAST - 90.0 * _orient);
 	  _orient = EAST;
 	}
+      else
+	ret = false;
       break;
     default:
+      ret = false;
       break;
     }
+  return (ret);
 }
 
 void	ACharacter::hit()

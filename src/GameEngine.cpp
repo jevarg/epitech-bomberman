@@ -30,8 +30,7 @@ bool GameEngine::initialize()
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
    || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
     return (false);
-  _cam.initialize();
-  _cam.translate(glm::vec3(0, 5, -10));
+  _cam.translate(glm::vec3(0.5, 5, -10));
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
@@ -41,8 +40,6 @@ bool GameEngine::initialize()
   _model = new Model();
   if (!_model->load("./assets/marvin.fbx"))
     return (false);
-  _model->translate(glm::vec3(0.0, -0.5, 0.0));
-  _model->scale(glm::vec3(0.002, 0.002, 0.002));
 
   _type[WALL] = new Cube(*skybox);
   _type[BOX] = new Cube(*skybox);
@@ -64,11 +61,10 @@ bool GameEngine::initialize()
   _type[WALL]->setTexture(_texture[WALL]);
   _type[BOX]->setTexture(_texture[BOX]);
 
-  _player = new Player(1, 1, _cam, glm::vec4(0.0, 0.0, 0.0, 0.0), _type[CHARACTER]);
+  Camera *all_cam[1] = { &_cam };
 
-  _map.createMap(_type);
+  _map.createMap(_type, all_cam);
   createDisplayBorder();
-  _map.addEntity(_player);
   return (true);
 }
 
@@ -91,7 +87,6 @@ bool GameEngine::update()
   if ((time = _clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_clock);
-   _cam.update(_clock, _input);
   v_Contcit end = _map.ContEnd();
   for (v_Contcit it = _map.ContBegin();it != end;it++)
     {

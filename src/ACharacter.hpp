@@ -44,7 +44,7 @@ public:
   virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 
 public:
-  void		move(eAction, Map &map);
+  bool		move(eAction, Map &map);
   void		hit();
 
 public:

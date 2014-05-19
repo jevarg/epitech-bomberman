@@ -277,7 +277,7 @@ void	Map::removeEntity(int x, int y)
 ** Main function
 */
 
-void	Map::createMap(std::map<eType, IObject *> &type)
+void	Map::createMap(std::map<eType, IObject *> &type, Camera **cam)
 {
   int	posx;
   int	posy;
@@ -294,7 +294,7 @@ void	Map::createMap(std::map<eType, IObject *> &type)
     genSmallMaze(posx, posy, 4);
   fillBox();
   fillContainers(type);
-  spawnEnt(1, 0, type);
+  spawnEnt(1, 0, type, cam);
   display();
 }
 
@@ -376,7 +376,7 @@ void	Map::createCharacter(int &nbPlayer, int &nbIa, int x, int y)
     }
 */
 
-bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
+bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type, Camera **cam)
 {
   int	tx = x;
   int	ty = y;
@@ -437,7 +437,7 @@ bool	Map::putPlayer(int x, int y, std::map<eType, IObject *> &type)
       ++radius;
     }
   if (stype == FREE)
-    addEntity(new Entity(tx, ty, CHARACTER, type[BOX]->clone()));
+    addEntity(new Player(tx, ty, cam[0], glm::vec4(0.0), type[CHARACTER]->clone()));
   else
     {
       std::cerr << "No place for player" << std::endl;
@@ -484,7 +484,7 @@ void	Map::initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const
   spawn.toPlace = spawn.totalPlayer;
 }
 
-void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type)
+void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type, Camera **cam)
 {
   t_spawn	spawn;
   int	x = 0;
@@ -500,7 +500,7 @@ void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type)
 	{
 	  x = _mapX / 2;
 	  y = _mapY / 2;
-	  if (putPlayer(x, y, type) == false)
+	  if (putPlayer(x, y, type, cam) == false)
 	    return ;
 	  --spawn.totalPlayer;
 	  continue ;
@@ -514,7 +514,7 @@ void	Map::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type)
 			 * spawn.radiusX + 0.5);
 	  y = std::floor((_mapY / 2) + sin(RAD(spawn.angle))
 			 * spawn.radiusY + 0.5);
-	  if (putPlayer(x, y, type) == false)
+	  if (putPlayer(x, y, type, cam) == false)
 	    return ;
 	  spawn.angle = (spawn.angle += spawn.angleStep) > 360 ?
 	    spawn.angle - 360 : spawn.angle;
