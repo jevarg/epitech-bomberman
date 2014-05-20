@@ -2,20 +2,17 @@ dofile("ai/global.lua")
 dofile("ai/utils.lua")
 dofile("ai/best_first.lua")
 
-function check_entities(entities)
-	
+function check_way_out(map, cur_x, cur_y)
+	local w = -1
+	for i = 1, BOMB_RANGE + 1 do
+		w = check_elem_at(map, cur_x, cur_y, ".", i)
+		if (w == -1) then return -1 end
+	end
+	return w
 end
 
-function check_way_out(map, cur_x, cur_y, w)
-	if (cur_x + 1 ~= MAP_XMAX + 1 and map[cur_y][cur_x + 1] == w) then return ENUM_ACTION["right"] end
-	if (cur_x - 1 ~= 0 and map[cur_y][cur_x - 1] == w) then return ENUM_ACTION["left"] end
-	if (cur_y + 1 ~= MAP_YMAX + 1 and map[cur_y + 1][cur_x] == w) then return ENUM_ACTION["back"] end
-	if (cur_y - 1 ~= 0 and map[cur_y - 1][cur_x] == w) then return ENUM_ACTION["forward"] end
-	return -1
-end
-
-function check_item_dir(map, cur_x, cur_y, w)
-	for i = 0, AGGRO do
+function check_item_dir(map, cur_x, cur_y, w, cond)
+	for i = 0, cond do
 		if (cur_x + i ~= MAP_XMAX + 1) then
 			if (map[cur_y][cur_x + i] == w) then return true end
 		elseif (cur_x - i ~= 0) then
@@ -32,12 +29,16 @@ function check_item_dir(map, cur_x, cur_y, w)
 end
 
 function take_decision(map, entities)
-	if (check_item_dir(map, X, Y, "O") == true) then return check_way_out(map, X, Y, ".") end
-	r = check_way_out(map, X, Y, "P")
-	if (r ~= -1) then return ENUM_ACTION["bomb"] end
-	r = check_way_out(map, X, Y, "B")
-	if (r ~= -1) then return ENUM_ACTION["bomb"] end
-	return best_first(map, entities)
+	if (map[Y][X] == "D") then
+		return check_way_out
+	else
+		if (check_item_dir(map, X, Y, "O", BOMB_RANGE) == true) then return check_way_out(map, X, Y) end
+		r = check_elem_at(map, X, Y, "P", 1)
+		if (r ~= -1) then return ENUM_ACTION["bomb"] end
+		-- r = check_elem_at(map, X, Y, "B", 1)
+		-- if (r ~= -1) then return ENUM_ACTION["bomb"] end
+		return best_first(map, entities)
+	end
 end
 
 function artificial_intelligence()
@@ -49,6 +50,7 @@ function artificial_intelligence()
 end
 
 X, Y = arg["x"], arg["y"]
+BOMB_RANGE = arg["bomb_range"]
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
 MAP_XMAX = AGGRO

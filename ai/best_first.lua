@@ -88,7 +88,9 @@ function take_shortest_priority(map, entities)
 	local t = 4
 
 	for i = 1, #entities do
-		if (entities[i]["type"] ~= TYPE_PRIORITY["wall"] and entities[i]["type"] ~= TYPE_PRIORITY["free"] and (entities[i]["x"] ~= X or entities[i]["y"] ~= Y)) then
+		if (entities[i]["type"] ~= TYPE_PRIORITY["wall"] and
+			entities[i]["type"] ~= TYPE_PRIORITY["free"] and
+			(entities[i]["x"] ~= X or entities[i]["y"] ~= Y)) then
 			cur_dist, tmp_x, tmp_y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
 			if (cur_dist ~= AGGRO + 1 and tmp_x ~= 0 and tmp_y ~= 0) then
 				if (entities[i]["type"] < t) then
@@ -108,17 +110,27 @@ function take_shortest_priority(map, entities)
 	return x, y
 end
 
+function authorized_entities(point)
+	if (point == "." or
+		-- point == "B" or
+		type(point) == "number") then
+		return 1
+	end
+	return 0
+end
+
 function check_directions(map, cur_x, cur_y, i_x, i_y)
 	local move = 0
 	local nb = nil
 
 	for i = 1, (AGGRO * 2) + 1 do
-		if (nb ~= nil and (map[cur_y][cur_x] == "." or type(map[cur_y][cur_x]) == "number")) then
+		if (nb ~= nil and authorized_entities(map[cur_y][cur_x])) then
 			if (nb + 1 > AGGRO and map[cur_y][cur_x] ~= nb - 1) then return move end
 			if (type(map[cur_y][cur_x]) == "number" and (nb + 1 < tonumber(map[cur_y][cur_x]))) then
 				map[cur_y][cur_x] = nb + 1
 				move = move + 1
-			elseif (map[cur_y][cur_x] == ".") then
+				-- or map[cur_y][cur_x] == "B"
+			elseif (map[cur_y][cur_x] == "." ) then
 				map[cur_y][cur_x] = nb + 1
 				move = move + 1
 			end
@@ -158,10 +170,10 @@ function go_all_directions(map, cur_x, cur_y)
 	local n4 = cur_y + AGGRO
 	if (n4 > MAP_YMAX) then n4 = MAP_YMAX end
 	local move = 0
-	move = move + init_direction(map, n1, n4, 0, -1, 1, 0) --up
-	move = move + init_direction(map, n1, n3, 0, 1, 1, 0) -- down
-	move = move + init_direction(map, n1, n3, 1, 0, 0, 1) -- right
-	move = move + init_direction(map, n2, n3, -1, 0, 0, 1) -- left
+	move = move + init_direction(map, n1, n4, 0, -1, 1, 0)	-- up
+	move = move + init_direction(map, n1, n3, 0, 1, 1, 0)	-- down
+	move = move + init_direction(map, n1, n3, 1, 0, 0, 1)	-- right
+	move = move + init_direction(map, n2, n3, -1, 0, 0, 1)	-- left
 	if (move ~= 0) then
 		return 1
 	end
@@ -172,10 +184,10 @@ function travel_map(map, cur_x, cur_y)
 	local move = 0
 
 	map[cur_y][cur_x] = "0"
-	move = move + check_directions(map, cur_x, cur_y, 0, -1)
-	move = move + check_directions(map, cur_x, cur_y, 0, 1)
-	move = move + check_directions(map, cur_x, cur_y, 1, 0)
-	move = move + check_directions(map, cur_x, cur_y, -1, 0)
+	move = move + check_directions(map, cur_x, cur_y, 0, -1) 	-- up
+	move = move + check_directions(map, cur_x, cur_y, 0, 1)		-- down
+	move = move + check_directions(map, cur_x, cur_y, 1, 0)		-- right
+	move = move + check_directions(map, cur_x, cur_y, -1, 0)	-- left
 	if (move == 0) then	return 0 end
 	move = 1
 	while (move == 1) do

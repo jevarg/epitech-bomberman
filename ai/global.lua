@@ -15,7 +15,8 @@ TYPE_PRIORITY = {
 	["box"] = 3,
 	["bomb"] = 4,
 	["wall"] = 5,
-	["free"] = 6
+	["free"] = 6,
+	["danger"] = 7
 }
 
 ENUM_ACTION = {

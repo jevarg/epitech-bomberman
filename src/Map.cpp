@@ -301,7 +301,7 @@ void	Map::createMap(std::map<eType, IObject *> &type, Camera **cam)
     genSmallMaze(posx, posy, 4);
   fillBox();
   fillContainers(type);
-  spawnEnt(1, 0, type, cam);
+  spawnEnt(3, 0, type, cam);
   display();
 }
 

@@ -102,6 +102,7 @@ void GameEngine::prepareIA(int level)
 	      }
 	    if (cnt != 0)
 	      {
+		_lua.pushStringInt("bomb_range", 4);
 		_lua.pushStringInt("x", (*ent_it)->getXPos());
 		_lua.pushStringInt("y", (*ent_it)->getYPos());
 		_lua.pushStringInt("level", level);
@@ -113,6 +114,7 @@ void GameEngine::prepareIA(int level)
 	      }
 	  }
       }
+  exit(0);
 }
 
 bool GameEngine::update()
