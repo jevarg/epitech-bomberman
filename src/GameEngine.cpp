@@ -2,9 +2,10 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
-  : _save(), _type(), _texture(), _condvar(), _mutex(),
-    _gameInfo(clock, map, set, input)
+  : _save(), _type(), _texture(), _gameInfo(clock, map, set, input)
 {
+  _gameInfo.mutex = new Mutex;
+  _gameInfo.condvar = new Condvar;
 }
 
 
@@ -67,7 +68,7 @@ bool GameEngine::initialize()
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_type);
-  spawn.spawnEnt(1, 0, _type, all_cam, _condvar, _mutex);
+  spawn.spawnEnt(1, 0, _type, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }

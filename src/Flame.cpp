@@ -16,5 +16,6 @@ void	Flame::hurtCharacter(ACharacter *character)
 
 bool	Flame::update(gdl::Clock const &clock, Input const &input, Map &map)
 {
-
+  (void)clock;(void)input;(void)map;
+  return (true);
 }

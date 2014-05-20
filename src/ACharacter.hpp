@@ -26,7 +26,7 @@ class	ACharacter : public ALivingEntity
 {
 public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model,
-	     Condvar &condvar, Mutex &mutex);
+	     t_gameinfo &gameInfo);
   virtual ~ACharacter() = 0;
 
   virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;

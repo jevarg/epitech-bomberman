@@ -6,17 +6,18 @@
 # include "Condvar.hpp"
 # include "Mutex.hpp"
 
+typedef struct s_gameinfo	t_gameInfo;
+
 typedef struct			s_engine
 {
   s_engine(std::map<eType, IObject *> &ptype, Camera **pcam,
-	   Condvar &pcondvar, Mutex &pmutex) :
-    type(ptype), cam(pcam), condvar(pcondvar), mutex(pmutex)
+	   t_gameinfo &pgameInfo) :
+    type(ptype), cam(pcam), gameInfo(pgameInfo)
   {
   }
   std::map<eType, IObject *>	&type;
   Camera			**cam;
-  Condvar			&condvar;
-  Mutex				&mutex;
+  t_gameinfo			&gameInfo;
 }				t_engine;
 
 typedef struct	s_spawn
@@ -45,7 +46,7 @@ public:
   virtual ~Spawn();
 
 void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type, Camera **cam,
-		   Condvar &condvar, Mutex &mutex);
+		 t_gameinfo &gameInfo);
 
 private:
   void	*createCharacter(int &nbPlayer, int &nbIa);
