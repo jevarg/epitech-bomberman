@@ -28,16 +28,16 @@ function check_item_dir(map, cur_x, cur_y, w, cond)
 	return false
 end
 
-function take_decision(map, entities)
+function take_decision(map, map_nb, entities)
 	if (map[Y][X] == "D") then
 		-- return check_way_out
 	else
-		if (check_item_dir(map, X, Y, "O", BOMB_RANGE) == true) then return check_way_out(map, X, Y) end
-		r = check_elem_at(map, X, Y, "P", 1)
+		if (check_item_dir(map_nb, X, Y, "O", BOMB_RANGE) == true) then return check_way_out(map_nb, X, Y) end
+		r = check_elem_at(map_nb, X, Y, "P", 1)
 		if (r ~= -1) then return ENUM_ACTION["bomb"] end
 		-- r = check_elem_at(map, X, Y, "B", 1)
 		-- if (r ~= -1) then return ENUM_ACTION["bomb"] end
-		return best_first(map, entities)
+		return best_first(map, map_nb, entities)
 	end
 end
 
@@ -45,8 +45,10 @@ function artificial_intelligence()
 	-- set_priority(LEVEL)
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
+	local map_nb = create_map(entities, AGGRO)
+	fill_dangerous_fields(map_nb)
 	display_map(map)
-	return take_decision(map, entities)
+	return take_decision(map, map_nb, entities)
 end
 
 X, Y = arg["x"], arg["y"]

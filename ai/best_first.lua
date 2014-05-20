@@ -11,6 +11,10 @@ function have_elem(entities, x, y)
 	return 0
 end
 
+function go_out_bomb(map, x, y)
+	-- find way 
+end
+
 function random_movement()
 	local mov = {1, -1, 1, -1}
 	local n = math.random(1, 4)
@@ -27,7 +31,8 @@ function random_movement()
 	return x, y
 end
 
-function determine_way(cur_x, cur_y)
+function determine_way(map, cur_x, cur_y)
+	if (map[cur_y][cur_x] == "B") then return ENUM_ACTION["bomb"] end
 	if (cur_x > X) then return ENUM_ACTION["right"] end
 	if (cur_x < X) then return ENUM_ACTION["left"] end
 	if (cur_y > Y) then return ENUM_ACTION["back"] end
@@ -112,7 +117,7 @@ end
 
 function authorized_entities(point)
 	if (point == "." or
-		-- point == "B" or
+		point == "B" or
 		type(point) == "number") then
 		return 1
 	end
@@ -129,8 +134,7 @@ function check_directions(map, cur_x, cur_y, i_x, i_y)
 			if (type(map[cur_y][cur_x]) == "number" and (nb + 1 < tonumber(map[cur_y][cur_x]))) then
 				map[cur_y][cur_x] = nb + 1
 				move = move + 1
-				-- or map[cur_y][cur_x] == "B"
-			elseif (map[cur_y][cur_x] == "." ) then
+			elseif (map[cur_y][cur_x] == "." or map[cur_y][cur_x] == "B") then
 				map[cur_y][cur_x] = nb + 1
 				move = move + 1
 			end
@@ -195,17 +199,18 @@ function travel_map(map, cur_x, cur_y)
 	end
 end
 
-function best_first(map, entities)
+function best_first(map, map_nb, entities)
 	local cur_x, cur_y = X, Y
 
 	if (have_elem(entities, cur_x, cur_y)) then
-		travel_map(map, cur_x, cur_y)
+		travel_map(map_nb, cur_x, cur_y)
 		print("\nFINAL MAP\n")
-		display_map(map)
-		cur_x, cur_y = take_shortest_priority(map, entities)
+		display_map(map_nb)
+		cur_x, cur_y = take_shortest_priority(map_nb, entities)
 		print("\ndirection is : x y : ", cur_x, cur_y)
 	else
 		cur_x, cur_y = random_movement()
 	end
-	return determine_way(cur_x, cur_y)
+	display_map(map)
+	return determine_way(map, cur_x, cur_y)
 end

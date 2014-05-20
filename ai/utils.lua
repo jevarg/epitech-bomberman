@@ -96,7 +96,7 @@ function create_map(entities, aggro)
 		if (entities[i]["type"] == TYPE_PRIORITY["bomb"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "O" end
 	end
-	return fill_dangerous_fields(map)
+	return map
 end
 
 function set_priority(level)
