@@ -30,7 +30,7 @@ end
 
 function take_decision(map, entities)
 	if (map[Y][X] == "D") then
-		return check_way_out
+		-- return check_way_out
 	else
 		if (check_item_dir(map, X, Y, "O", BOMB_RANGE) == true) then return check_way_out(map, X, Y) end
 		r = check_elem_at(map, X, Y, "P", 1)
