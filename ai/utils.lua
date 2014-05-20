@@ -43,9 +43,11 @@ end
 function get_entities()
 	local translate = {
 		[0] = TYPE_PRIORITY["wall"],
-		[1] = TYPE_PRIORITY["box"],
-		[2] = TYPE_PRIORITY["free"],
-		[4] = TYPE_PRIORITY["player"]
+		[1] = TYPE_PRIORITY["free"],
+		[2] = TYPE_PRIORITY["box"],
+		[3] = TYPE_PRIORITY["bomb"],
+		[4] = TYPE_PRIORITY["bomb"],
+		[5] = TYPE_PRIORITY["player"]
 	}
 	local ent = {}
 	local entities = {}
