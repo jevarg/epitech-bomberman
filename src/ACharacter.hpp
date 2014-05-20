@@ -4,7 +4,13 @@
 # include <glm/glm.hpp>
 
 # include "ALivingEntity.hpp"
-# include "Bomb.hpp"
+# include "AEntity.hpp"
+# include "Model.hpp"
+# include "ABomb.hpp"
+# include "Mutex.hpp"
+# include "Condvar.hpp"
+# include "Input.hpp"
+# include "Settings.hpp"
 
 class Input;
 
@@ -39,12 +45,11 @@ protected:
   glm::vec4	_color;
   int		_health;
   int		_bombStock;
-  eBombType	_bombType;
+  ABomb		*_bomb;
   int		_speed;
   int		_range;
   int		_score;
   eDir		_orient;
-
 };
 
 #endif /* ! ACHARACTER_HPP_ */

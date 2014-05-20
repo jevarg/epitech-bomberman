@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Tue May 20 14:14:59 2014 luc sinet
+## Last update Tue May 20 15:06:31 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -36,13 +36,15 @@ SRC		=	main.cpp \
 			Settings.cpp \
 			Save.cpp \
 			Item.cpp \
+			ABomb.cpp \
 			Bomb.cpp \
 			Flame.cpp \
 			ACharacter.cpp \
 			Player.cpp \
 			Map.cpp \
 			Spawn.cpp \
-			Input.cpp
+			Input.cpp \
+			ModelFactory.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

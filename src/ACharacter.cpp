@@ -5,12 +5,12 @@
 ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
 		       Condvar &condvar, Mutex &mutex)
   : ALivingEntity(x, y, CHARACTER, model, condvar, mutex)
+/* handle the bomb type at creation */
 {
   pthread_t         thread;
 
   _bombStock = 1;
   _health = 100;
-  _bombType = NORMAL;
   _speed = 5;
   _range = 5;
   _score = 0;

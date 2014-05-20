@@ -1,22 +1,15 @@
 #include "Bomb.hpp"
-#include "Exception.hpp"
+#include "ABomb.hpp"
+#include "GameEngine.hpp"
 
-Bomb::Bomb()
-  : _mutex()
+/* get the fuck out those "model" parameters from constructors */
+Bomb::Bomb(int x, int y, IObject *bombModel)
+  : ABomb(x, y, bombModel)
 {
-  pthread_t         thread;
-
-  if (pthread_create(&thread, NULL, &handle_bomb_thread, this) != 0)
-    throw (Exception("Can't create Bomb's thread"));
-  _thread = thread;
+  _range = 5;
+  _power = 1;
 }
 
 Bomb::~Bomb()
 {
-}
-
-void	*handle_bomb_thread(void *arg)
-{
-  (void) arg;
-  return (NULL);
 }
