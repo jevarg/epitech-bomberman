@@ -5,62 +5,74 @@
 /* handle the bomb type at creation */
 ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model)
   : AEntity(x, y, CHARACTER, model), _mutex(), _condvar(), _color(color),
-    _health(1), _isAlive(true), _bombStock(1), /* _bomb(NULL), */ _speed(5),
-    _range(5), _score(0)
+    _health(1), _isAlive(true), _bombStock(1), /* _bomb(REF TO BOMB USED BY PLAYER), */
+    _speed(5), _range(5), _score(0), _orient(NORTH)
 {
   pthread_t         thread;
 
   if (pthread_create(&thread, NULL, &handle_character_thread, this) != 0)
     throw (Exception("Can't create Acharacter's thread"));
   _thread = thread;
+  _model->translate(glm::vec3(0.0, -0.5, 0.0));
+  _model->scale(glm::vec3(0.002, 0.002, 0.002));
 }
 
 ACharacter::~ACharacter()
 {
 }
 
-void	ACharacter::move(eAction action, Map &map)
+bool	ACharacter::updatePosition(Map &map, eAction action)
 {
-  switch (action)
-    {
-    case FORWARD:
-      if (map.checkMapColision(_x, _y + 1) == FREE)
-	{
-	  _y += 1;
-	  _model->translate(glm::vec3(0, 0, 2));
+  eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
+  eDir		tabdir[4] = {NORTH, SOUTH, WEST, EAST};
+  int		dirX;
+  int		dirY;
 
-	}
-      break;
-    case BACK:
-      if (map.checkMapColision(_x, _y - 1) == FREE)
+  for (int i = 0; i < 4; ++i)
+    {
+      if (tab[i] == action)
 	{
-	  _y -= 1;
-	  _model->translate(glm::vec3(0, 0, -2));
+	  dirX = ((i >= 2) ? ((action == LEFT) ? 1 : -1) : 0);
+	  dirY = ((i < 2) ? ((action == FORWARD) ? 1 : -1) : 0);
+	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * tabdir[i] - 90.0 * _orient);
+	  _orient = tabdir[i];
+	  if (map.checkMapColision(_x + dirX, _y + dirY) == FREE)
+	    {
+	      _model->translate(glm::vec3(dirX, 0, dirY));
+	      return (move(map, dirX, dirY));
+	    }
+	  break ;
 	}
-      break;
-    case LEFT:
-      if (map.checkMapColision(_x + 1, _y) == FREE)
-	{
-	  _x += 1;
-	  _model->translate(glm::vec3(2, 0, 0));
-	}
-      break;
-    case RIGHT:
-      if (map.checkMapColision(_x - 1, _y) == FREE)
-	{
-	  _x -= 1;
-	  _model->translate(glm::vec3(-2, 0, 0));
-	}
-      break;
-    default:
-      break;
     }
+  return (false);
 }
 
-void	ACharacter::hit()
+bool	ACharacter::move(Map &map, int dirX, int dirY)
 {
-  --_health;
-  if (_health == 0)
+  unsigned int oldCont;
+  unsigned int newCont;
+
+  oldCont = map.getContPos(_x, _y);
+  newCont = map.getContPos(_x + dirX, _y + dirY);
+  if (newCont != oldCont) // means the player crossed from contA to contB
+    {
+      std::cout << "Remove element at old pos" << std::endl;
+      map.removeEntityByPtr(this);
+    }
+  _y += dirY;
+  _x += dirX;
+  if (newCont != oldCont) // now add it to contB
+    {
+      std::cout << "Add it at new pos" << std::endl;
+      map.addEntity(this);
+    }
+  return (true);
+}
+
+void	ACharacter::takeDamages(int amount)
+{
+  _health -= amount;
+  if (_health <= 0)
     _isAlive = false;
 }
 
@@ -83,4 +95,24 @@ void	*handle_character_thread(void *arg)
 {
   (void) arg;
   return (NULL);
+}
+
+int	ACharacter::getSpeed() const
+{
+  return (_speed);
+}
+
+int	ACharacter::getHealth() const
+{
+  return (_health);
+}
+
+void	ACharacter::setSpeed(int speed)
+{
+  _speed = speed;
+}
+
+void	ACharacter::setHealth(int health)
+{
+  _health = health;
 }

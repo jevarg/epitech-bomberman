@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Tue May 20 13:54:38 2014 enzo de gregorio
+## Last update Tue May 20 14:22:25 2014 enzo de gregorio
 ##
 
 NAME		=	bomberman
@@ -29,6 +29,8 @@ SRC		=	main.cpp \
 			ATransformation.cpp \
 			Container.cpp \
 			AEntity.cpp \
+			AItem.cpp \
+			SpeedItem.cpp \
 			Entity.cpp \
 			Settings.cpp \
 			Save.cpp \
@@ -39,14 +41,15 @@ SRC		=	main.cpp \
 			ACharacter.cpp \
 			Player.cpp \
 			Map.cpp \
-			Input.cpp
+			Input.cpp \
+			ModelFactory.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -g
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -ldl -p
+CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -lm -ldl -p
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))

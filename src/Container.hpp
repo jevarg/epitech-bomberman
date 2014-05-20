@@ -21,6 +21,7 @@ public:
   eType	checkColision(int x, int y) const;
   void	stockEntity(AEntity *);
   void	removeContBlock(int x, int y);
+  void	removeContBlockByPtr(AEntity *ptr);
 
   v_Entcit	vecBegin() const;
   v_Entcit	vecEnd() const;

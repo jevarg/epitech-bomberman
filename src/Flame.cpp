@@ -11,11 +11,10 @@ Flame::~Flame()
 
 void	Flame::hurtCharacter(ACharacter *character)
 {
-  character->hit();
+  character->takeDamages(0);
 }
 
-void	Flame::update(gdl::Clock const &clock,
-		      Input const &input, Map &map)
+bool	Flame::update(gdl::Clock const &clock, Input const &input, Map &map)
 {
 
 }

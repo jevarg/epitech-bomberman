@@ -13,6 +13,14 @@
 
 class Input;
 
+enum	eDir
+  {
+    NORTH = 0,
+    WEST,
+    SOUTH,
+    EAST,
+  };
+
 class	ACharacter : public AEntity
 {
 protected:
@@ -27,20 +35,26 @@ protected:
   int		_speed;
   int		_range;
   int		_score;
+  eDir		_orient;
 
 public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model);
-  ~ACharacter();
+  virtual ~ACharacter() = 0;
+
+  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+
+  bool		updatePosition(Map &map, eAction action);
   bool		initialize();
-  virtual void	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  bool		move(Map &map, int dirX, int dirY);
+  void		takeDamages(int amount);
 
-public:
-  void		move(eAction, Map &map);
-  void		hit();
-
-public:
   int		getScore() const;
   bool		isAlive() const;
+
+  int		getSpeed() const;
+  int		getHealth() const;
+  void		setSpeed(int speed);
+  void		setHealth(int health);
 };
 
 void	*handle_character_thread(void *arg);

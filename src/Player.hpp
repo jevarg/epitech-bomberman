@@ -7,12 +7,12 @@
 class		Player : public ACharacter
 {
 public:
-  Player(int x, int y, Camera camera, glm::vec4 color, IObject *model);
+  Player(int x, int y, Camera *camera, glm::vec4 color, IObject *model);
   virtual ~Player();
 
-  void	update(gdl::Clock const &clock, Input const &input, Map &map);
+  bool	update(gdl::Clock const &clock, Input const &input, Map &map);
 private:
-  Camera	_camera;
+  Camera	*_camera;
 };
 
 #endif /* _PLAYER_HPP_ */
