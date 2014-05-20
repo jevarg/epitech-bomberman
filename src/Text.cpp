@@ -47,8 +47,8 @@ void	Text::write(std::string const& str, float x, float y, float size)
     {
       for (int i = 0; i < str.length(); ++i)
 	{
-	  UVx = ((str[i] % 16)) / 16.0f;
-	  UVy = (str[i] / 16) / 16.0f;
+	  UVx = ((str[i] % 16) - 32 % 16) / 16.0f;
+	  UVy = ((str[i] / 16) - 32 / 16)/ 16.0f;
 
 	  _geometry->pushVertex(glm::vec3(x + i * size, y + size, 0)); // Top Left
 	  _geometry->pushVertex(glm::vec3(x + i * size + size, y + size, 0)); // Top Right
