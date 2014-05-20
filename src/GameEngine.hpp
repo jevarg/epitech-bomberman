@@ -4,6 +4,7 @@
 # include <glm/glm.hpp>
 # include <glm/gtc/matrix_transform.hpp>
 # include <vector>
+# include <map>
 # include <unistd.h>
 # include <Game.hh>
 # include <BasicShader.hh>
@@ -19,10 +20,13 @@
 # include "Save.hpp"
 # include "Container.hpp"
 # include "Map.hpp"
+# include "Spawn.hpp"
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "Player.hpp"
 # include "LuaCommunication.hpp"
+# include "Condvar.hpp"
+# include "Mutex.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -33,11 +37,25 @@
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
+# define BOMB_TEXTURE "./assets/box.tga"
+# define FLAME_TEXTURE "./assets/skybox.tga"
+
+typedef struct	s_gameinfo
+{
+  s_gameinfo(gdl::Clock &pclock, Map &pmap, Settings &pset, Input &pinput) :
+    clock(pclock), map(pmap), input(pinput), set(pset)
+  {
+  }
+  gdl::Clock   	&clock;
+  Map	       	&map;
+  Input	       	&input;
+  Settings     	&set;
+}		t_gameinfo;
 
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(Settings &set, Input &input);
+  GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -50,22 +68,20 @@ private:
   void	createDisplayBorder();
 
   gdl::SdlContext		_win;
-  gdl::Clock			_clock;
   gdl::BasicShader		_shader;
   Save				_save;
   std::vector<IObject *>	_obj;
   Camera			_cam;
   unsigned int			_mapX;
   unsigned int			_mapY;
-  Map				_map;
-  Settings			&_set;
-  Input				&_input;
   LuaCommunication		_lua;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
-
   Model				*_model;
   Player			*_player;
+  Condvar			_condvar;
+  Mutex				_mutex;
+  t_gameinfo			_gameInfo;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

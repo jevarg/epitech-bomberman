@@ -15,26 +15,13 @@
 
 typedef std::vector<Container *>::const_iterator v_Contcit;
 
-typedef struct	s_spawn
-{
-  double       	centerX;
-  double       	centerY;
-  double       	radiusX;
-  double       	radiusY;
-  double       	angle;
-  double       	angleStep;
-  int		totalPlayer;
-  int		toPlace;
-  int		packSize;
-}		t_spawn;
-
 class Map
 {
 public:
   Map(Settings &set);
   ~Map();
 
-  void	createMap(std::map<eType, IObject *> &type, Camera **cam);
+  void	createMap(std::map<eType, IObject *> &type);
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
@@ -53,7 +40,6 @@ public:
   AEntity	*getEntityIfNot(int, int, eType) const;
 
   void	setMobilEnt(int x, int y, eType type);
-  void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type, Camera **cam);
 
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
@@ -73,13 +59,8 @@ private:
   void	fillContainers(std::map<eType, IObject *> &type);
   void	display();
 
-  void	*createCharacter(int &nbPlayer, int &nbIa);
-  bool	putPlayer(int x, int y, std::map<eType, IObject *> &type, Camera **cam);
-  void	setStart(t_spawn &spawn, int pack) const;
-  void	initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const;
-  // void	createCharacter(int &nbPlayer, int &nbIa, int x, int y);
-  unsigned short	_mapX;
-  unsigned short	_mapY;
+  int			_mapX;
+  int			_mapY;
   unsigned short	_density;
   unsigned short	_linear;
   std::vector<eType>	_map;

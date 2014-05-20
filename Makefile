@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Mon May 19 18:19:49 2014 jonathan.collinet
+## Last update Tue May 20 18:18:04 2014 jonathan.collinet
 ##
 
 NAME		=	bomberman
@@ -29,17 +29,23 @@ SRC		=	main.cpp \
 			ATransformation.cpp \
 			Container.cpp \
 			AEntity.cpp \
+			ALivingEntity.cpp \
+			AItem.cpp \
+			SpeedItem.cpp \
 			Entity.cpp \
 			Settings.cpp \
 			Save.cpp \
 			Item.cpp \
+			ABomb.cpp \
 			Bomb.cpp \
 			Flame.cpp \
 			ACharacter.cpp \
 			Player.cpp \
 			Map.cpp \
 			Input.cpp \
-			LuaCommunication.cpp
+			LuaCommunication.cpp \
+			Spawn.cpp \
+			ModelFactory.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

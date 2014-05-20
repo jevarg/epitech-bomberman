@@ -8,6 +8,7 @@ Settings::Settings()
   _actionList.push_back("back");
   _actionList.push_back("left");
   _actionList.push_back("right");
+  _actionList.push_back("dropBomb");
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
 
@@ -22,6 +23,7 @@ Settings::Settings()
   _cvarList.push_back("r_mipmap");
 
   _speKeys["CAPSLOCK"] = SDLK_CAPSLOCK;
+  _speKeys["SPACE"] = SDLK_SPACE;
 
   _speKeys["F1"] = SDLK_F1;
   _speKeys["F2"] = SDLK_F2;

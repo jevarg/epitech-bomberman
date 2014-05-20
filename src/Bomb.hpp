@@ -1,29 +1,19 @@
 #ifndef BOMB_HPP_
 # define BOMB_HPP_
 
-# include "Condvar.hpp"
-# include "Mutex.hpp"
+# include "ABomb.hpp"
+# include "IObject.hpp"
 
-enum	eBombType
-  {
-    NORMAL,
-    BONUS
-  };
-
-class		Bomb
+class		Bomb: public ABomb
 {
 public:
-  Bomb();
-  ~Bomb();
+  Bomb(int x, int y, IObject *model);
+  virtual ~Bomb();
 
 private:
   pthread_t	_thread;
   Mutex		_mutex;
-  Condvar	_condvar;
-  eBombType	_type;
   int		_range;
 };
-
-void	*handle_bomb_thread(void *arg);
 
 #endif /* ! BOMB_HPP_ */
