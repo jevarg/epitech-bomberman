@@ -11,7 +11,7 @@ public:
 	 t_gameinfo &gameInfo);
   virtual ~Player();
 
-  bool	update(gdl::Clock const &clock, Input const &input, Map &map);
+  void	update(t_gameinfo &gameInfo);
 private:
   Camera	*_camera;
 };

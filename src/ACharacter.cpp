@@ -20,6 +20,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
 
 ACharacter::~ACharacter()
 {
+  std::cout << "ACharacter death" << std::endl;
 }
 
 bool	ACharacter::updatePosition(Map &map, eAction action)

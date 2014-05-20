@@ -16,18 +16,18 @@ public:
 		IObject *model, t_gameinfo &gameInfo);
   virtual ~ALivingEntity() = 0;
 
-  static void	*createAliveEntity(void *arg);
-
   void		aliveLoop();
-
+  void		setDead();
   bool		isAlive() const;
 
-  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  virtual void	update(t_gameinfo &gameInfo) = 0;
 
 protected:
   t_gameinfo	&_gameInfo;
   pthread_t	_thread;
   bool		_isAlive;
 };
+
+void	*createAliveEntity(void *arg);
 
 #endif /* _ALIVINGENTITY_H_ */

@@ -14,8 +14,7 @@ void	Flame::hurtCharacter(ACharacter *character)
   character->setHealth(character->getHealth() - 0);
 }
 
-bool	Flame::update(gdl::Clock const &clock, Input const &input, Map &map)
+void	Flame::update(t_gameinfo &gameInfo)
 {
-  (void)clock;(void)input;(void)map;
-  return (true);
+  (void)gameInfo;
 }

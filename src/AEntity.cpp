@@ -44,6 +44,16 @@ void	AEntity::setType(const eType &type)
   _type = type;
 }
 
+void	AEntity::destroy()
+{
+  _toDestroy = true;
+}
+
+bool	AEntity::toDestroy() const
+{
+  return (_toDestroy);
+}
+
 void	AEntity::draw(gdl::AShader &shader, gdl::Clock &clock)
 {
   _model->draw(shader, clock);

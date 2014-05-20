@@ -5,7 +5,7 @@ ALivingEntity::ALivingEntity(int x, int y, eType type,
 			     IObject *model, t_gameinfo &gameInfo) :
   AEntity(x, y, type, model), _gameInfo(gameInfo)
 {
-  if (pthread_create(&_thread, NULL, &createAliveEntity, NULL) != 0)
+  if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
     throw (Exception("Can't create thread"));
 }
 
@@ -13,10 +13,14 @@ ALivingEntity::~ALivingEntity()
 {
 }
 
-void	*ALivingEntity::createAliveEntity(void *arg)
+void	ALivingEntity::setDead()
 {
-  (void)arg;
-  //aliveLoop()
+  _isAlive = false;
+}
+
+void	*createAliveEntity(void *arg)
+{
+  static_cast<ALivingEntity *>(arg)->aliveLoop();
   return (NULL);
 }
 
@@ -24,8 +28,17 @@ void	ALivingEntity::aliveLoop()
 {
   while (1)
     {
-      //update()
+      if (_toDestroy)
+	{
+	  int	ret;
+	  pthread_exit(&ret);
+	  //delete this;
+	  break ;
+	}
+      if (_isAlive)
+	update(_gameInfo);
     }
+  pthread_exit(NULL);
 }
 
 bool	ALivingEntity::isAlive() const

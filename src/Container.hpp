@@ -27,6 +27,8 @@ public:
   v_Entcit	vecEnd() const;
   l_Entcit	listBegin() const;
   l_Entcit	listEnd() const;
+  l_Entit	listBeginMod();
+  l_Entit	listEndMod();
   void		setEntity(int, int, eType);
   void		setEntityIf(int, int, eType, eType);
   void		setEntityIfNot(int, int, eType, eType);

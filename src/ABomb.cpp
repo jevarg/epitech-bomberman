@@ -1,17 +1,11 @@
 #include "ABomb.hpp"
 #include "Exception.hpp"
 #include "GameEngine.hpp"
-#include "Map.hpp"
 #include "Flame.hpp"
 
-ABomb::ABomb(int x, int y, IObject *bombModel)
-  : AEntity(x, y, BOMB, bombModel), _mutex(), _condvar()
+ABomb::ABomb(int x, int y, IObject *bombModel, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, BOMB, bombModel, gameInfo)
 {
-  pthread_t         thread;
-
-  if (pthread_create(&thread, NULL, &handle_bomb_thread, this) != 0)
-    throw (Exception("Can't create ABomb's thread"));
-  _thread = thread;
 }
 
 ABomb::~ABomb()
@@ -52,10 +46,4 @@ void	ABomb::setFire(int x, int y, eAction direction, int range, Map &map)
     default:
       break;
     }
-}
-
-void	*handle_bomb_thread(void *arg)
-{
-  (void) arg;
-  return (NULL);
 }
