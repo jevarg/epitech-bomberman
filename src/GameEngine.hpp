@@ -32,6 +32,8 @@
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
+# define BOMB_TEXTURE "./assets/box.tga"
+# define FLAME_TEXTURE "./assets/skybox.tga"
 
 class GameEngine : public gdl::Game
 {

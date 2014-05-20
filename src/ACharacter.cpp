@@ -2,10 +2,11 @@
 #include "Input.hpp"
 #include "ACharacter.hpp"
 
+/* handle the bomb type at creation */
 ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model)
   : AEntity(x, y, CHARACTER, model), _mutex(), _condvar(), _color(color),
-    _health(1), _isAlive(true), _bombStock(1),
-    _bombType(NORMAL), _speed(5), _range(5), _score(0)
+    _health(1), _isAlive(true), _bombStock(1), /* _bomb(NULL), */ _speed(5),
+    _range(5), _score(0)
 {
   pthread_t         thread;
 
@@ -26,8 +27,6 @@ void	ACharacter::move(eAction action, Map &map)
       if (map.checkMapColision(_x, _y + 1) == FREE)
 	{
 	  _y += 1;
-	  map.setEntityIf(_x, _y, CHARACTER, FREE);
-	  map.setEntityIf(_x, _y - 1, FREE, CHARACTER);
 	  _model->translate(glm::vec3(0, 0, 2));
 
 	}
@@ -36,8 +35,6 @@ void	ACharacter::move(eAction action, Map &map)
       if (map.checkMapColision(_x, _y - 1) == FREE)
 	{
 	  _y -= 1;
-	  map.setEntityIf(_x, _y, CHARACTER, FREE);	  
-	  map.setEntityIf(_x, _y + 1, FREE, CHARACTER);
 	  _model->translate(glm::vec3(0, 0, -2));
 	}
       break;
@@ -45,8 +42,6 @@ void	ACharacter::move(eAction action, Map &map)
       if (map.checkMapColision(_x + 1, _y) == FREE)
 	{
 	  _x += 1;
-	  map.setEntityIf(_x, _y, CHARACTER, FREE);	  
-	  map.setEntityIf(_x - 1, _y, FREE, CHARACTER);
 	  _model->translate(glm::vec3(2, 0, 0));
 	}
       break;
@@ -54,8 +49,6 @@ void	ACharacter::move(eAction action, Map &map)
       if (map.checkMapColision(_x - 1, _y) == FREE)
 	{
 	  _x -= 1;
-	  map.setEntityIf(_x, _y, CHARACTER, FREE);	  
-	  map.setEntityIf(_x + 1, _y, FREE, CHARACTER);
 	  _model->translate(glm::vec3(-2, 0, 0));
 	}
       break;

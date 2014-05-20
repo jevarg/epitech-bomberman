@@ -5,7 +5,7 @@
 
 # include "AEntity.hpp"
 # include "Model.hpp"
-# include "Bomb.hpp"
+# include "ABomb.hpp"
 # include "Mutex.hpp"
 # include "Condvar.hpp"
 # include "Input.hpp"
@@ -23,7 +23,7 @@ protected:
   int		_health;
   bool		_isAlive;
   int		_bombStock;
-  eBombType	_bombType;
+  ABomb		*_bomb;
   int		_speed;
   int		_range;
   int		_score;

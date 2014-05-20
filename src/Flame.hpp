@@ -11,9 +11,10 @@ private:
   Condvar	_condvar;
 
 public:
-  Flame(IObject *model);
+  Flame(int x, int y, IObject *model);
   ~Flame();
   void	hurtCharacter(ACharacter *character);
+  void	update(gdl::Clock const &clock, Input const &input, Map &map);
 };
 
 #endif /* !FLAME_HPP_ */
