@@ -1,7 +1,8 @@
 #include "Player.hpp"
 
-Player::Player(int x, int y, Camera *camera, glm::vec4 color, IObject *model)
-  : ACharacter(x, y, color, model), _camera(camera)
+Player::Player(int x, int y, Camera *camera, glm::vec4 color, IObject *model,
+	       Condvar &condvar, Mutex &mutex)
+  : ACharacter(x, y, color, model, condvar, mutex), _camera(camera)
 {
   _camera->translate(glm::vec3(x, 0.0, y));
   _camera->setPointView(glm::vec3(x, 0.0, y));

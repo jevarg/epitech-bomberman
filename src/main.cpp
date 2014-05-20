@@ -9,10 +9,12 @@ int	main(int, char **)
   try
     {
       Settings	set;
-      Input	input;
-
       set.loadFile(DEFAULT_FILE);
-      GameEngine eng(set, input);
+
+      Input	input;
+      Map	map(set);
+      gdl::Clock clock;
+      GameEngine eng(clock, map, set, input);
 
       if (!eng.initialize())
 	return (1);

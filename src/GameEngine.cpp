@@ -1,9 +1,9 @@
 #include <iostream>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(Settings &set, Input &input)
-  : _save(), _cam(),_map(set), _set(set),
-      _input(input), _type(), _texture()
+GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
+  : _save(), _type(), _texture(), _condvar(), _mutex(),
+    _gameInfo(clock, map, set, input)
 {
 }
 
@@ -21,10 +21,12 @@ GameEngine::~GameEngine()
 bool GameEngine::initialize()
 {
   Cube *skybox;
+  Spawn	spawn(_gameInfo.map);
 
-  _mapX = _set.getVar(MAP_HEIGHT);
-  _mapY = _set.getVar(MAP_WIDTH);
-  if (!_win.start(_set.getVar(W_WIDTH), _set.getVar(W_HEIGHT), "Bomberman"))
+  _mapX = _gameInfo.set.getVar(MAP_HEIGHT);
+  _mapY = _gameInfo.set.getVar(MAP_WIDTH);
+  if (!_win.start(_gameInfo.set.getVar(W_WIDTH),
+		  _gameInfo.set.getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
@@ -49,7 +51,8 @@ bool GameEngine::initialize()
   _texture[GROUND] = new gdl::Texture();
 
   skybox = new Cube(*skybox);
-  skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0), -0.5, (((float)(_mapY) - 1.0) / 2.0)));
+  skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
+			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
   skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
   _obj.push_back(skybox);
 
@@ -63,7 +66,8 @@ bool GameEngine::initialize()
 
   Camera *all_cam[1] = { &_cam };
 
-  _map.createMap(_type, all_cam);
+  _gameInfo.map.createMap(_type);
+  spawn.spawnEnt(1, 0, _type, all_cam, _condvar, _mutex);
   createDisplayBorder();
   return (true);
 }
@@ -71,31 +75,31 @@ bool GameEngine::initialize()
 bool GameEngine::update()
 {
   int	time;
-  double	fps = (1000 / _set.getVar(FPS));
+  double	fps = (1000 / _gameInfo.set.getVar(FPS));
   t_mouse	mouse;
   t_window	win;
 
-  _input.getInput(_set);
-  if ((_input[win] && win.event == WIN_QUIT) || _input[SDLK_ESCAPE])
+  _gameInfo.input.getInput(_gameInfo.set);
+  if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
     return (false);
-  if (_input[DROPBOMB])
+  if (_gameInfo.input[DROPBOMB])
     {
       std::cout << "DROP THE BOMB" << std::endl;
-      _map.addEntity(new Entity(rand() % 10, rand() % 10, WALL, _obj[WALL]->clone()));
+      _gameInfo.map.addEntity(new Entity(rand() % 10, rand() % 10, WALL, _obj[WALL]->clone()));
     }
-  if (_input[mouse])
+  if (_gameInfo.input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;
   // if (win.event == WIN_RESIZE) // Seems not to work
   //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl;
-  if ((time = _clock.getElapsed()) < fps)
+  if ((time = _gameInfo.clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
-  _win.updateClock(_clock);
-  v_Contcit end = _map.ContEnd();
-  for (v_Contcit it = _map.ContBegin();it != end;it++)
+  _win.updateClock(_gameInfo.clock);
+  v_Contcit end = _gameInfo.map.ContEnd();
+  for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
     {
       l_Entcit end_list = (*it)->listEnd();
       for (l_Entcit it1 = (*it)->listBegin(); it1 != end_list; it1++)
-	if ((*it1)->update(_clock, _input, _map) == true)
+	if ((*it1)->update(_gameInfo.clock, _gameInfo.input, _gameInfo.map) == true)
 	  return (true);
     }
   return (true);
@@ -109,17 +113,17 @@ void GameEngine::draw()
   _shader.setUniform("projection", _cam.getProjection());
   _shader.bind();
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
-    (*it)->draw(_shader, _clock);
+    (*it)->draw(_shader, _gameInfo.clock);
   //std::cout << " BEGIN "<< std::endl;
-  v_Contcit end = _map.ContEnd();
-  for (v_Contcit it = _map.ContBegin();it != end;it++)
+  v_Contcit end = _gameInfo.map.ContEnd();
+  for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
     {
       v_Entcit end_vector = (*it)->vecEnd();
       l_Entcit end_list = (*it)->listEnd();
       for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)
-	(*it1)->draw(_shader, _clock);
+	(*it1)->draw(_shader, _gameInfo.clock);
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->draw(_shader, _clock);
+	(*it1)->draw(_shader, _gameInfo.clock);
     }
   //  std::cout << " END "<< std::endl;
   _win.flush();

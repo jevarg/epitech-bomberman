@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Mon May 19 18:34:02 2014 luc sinet
+## Last update Tue May 20 14:14:59 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -29,6 +29,7 @@ SRC		=	main.cpp \
 			ATransformation.cpp \
 			Container.cpp \
 			AEntity.cpp \
+			ALivingEntity.cpp \
 			AItem.cpp \
 			SpeedItem.cpp \
 			Entity.cpp \
@@ -40,6 +41,7 @@ SRC		=	main.cpp \
 			ACharacter.cpp \
 			Player.cpp \
 			Map.cpp \
+			Spawn.cpp \
 			Input.cpp
 
 OBJDIR		=	obj/

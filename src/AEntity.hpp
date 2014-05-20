@@ -5,6 +5,7 @@
 # include <BasicShader.hh>
 # include "IObject.hpp"
 # include "Input.hpp"
+# include "Model.hpp"
 
 enum	eType
   {
@@ -51,5 +52,7 @@ protected:
   eType		_type;
   IObject	*_model;
 };
+
+void	*handle_character_thread(void *arg);
 
 #endif /* !_AENTITY_HPP_ */

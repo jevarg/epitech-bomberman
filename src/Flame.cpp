@@ -11,5 +11,5 @@ Flame::~Flame()
 
 void	Flame::hurtCharacter(ACharacter *character)
 {
-  character->takeDamages(0);
+  character->setHealth(character->getHealth() - 0);
 }
