@@ -30,6 +30,8 @@ void	Player::checkInput(t_gameinfo &gameInfo)
 	    }
 	}
     }
+  if (_gameInfo.input[DROPBOMB])
+    dropBomb(gameInfo);
 }
 
 void	Player::update(t_gameinfo &gameInfo)

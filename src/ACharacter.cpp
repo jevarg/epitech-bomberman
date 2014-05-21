@@ -71,6 +71,12 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
   return (true);
 }
 
+void	ACharacter::dropBomb(t_gameinfo &gameInfo)
+{
+  std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
+  //  gameInfo.map.addEntity(new Bomb(_x, _y, _obj[WALL]->clone(), t_gameinfo &gameInfo));
+}
+
 bool	ACharacter::initialize()
 {
   return (true);

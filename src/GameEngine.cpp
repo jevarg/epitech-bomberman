@@ -80,8 +80,8 @@ bool GameEngine::update()
   t_mouse	mouse;
   t_window	win;
 
-  _gameInfo.condvar->broadcast();
   _gameInfo.input.getInput(_gameInfo.set);
+  _gameInfo.condvar->broadcast();
   if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
     {
       v_Contcit end = _gameInfo.map.ContEnd();
@@ -92,11 +92,6 @@ bool GameEngine::update()
 	    (*it1)->setDestroy();
 	}
       return (false);
-    }
-  if (_gameInfo.input[DROPBOMB])
-    {
-      std::cout << "DROP THE BOMB" << std::endl;
-      _gameInfo.map.addEntity(new Entity(rand() % 10, rand() % 10, WALL, _obj[WALL]->clone()));
     }
   if (_gameInfo.input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;

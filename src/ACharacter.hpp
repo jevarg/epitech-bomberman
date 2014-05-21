@@ -29,6 +29,7 @@ public:
   bool		initialize();
   bool		move(Map &map, int dirX, int dirY);
   bool		updatePosition(Map &map, eAction action);
+  void		dropBomb(t_gameinfo &gameInfo);
 
   int		getScore() const;
   int		getSpeed() const;
