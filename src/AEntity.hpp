@@ -7,6 +7,8 @@
 # include "Input.hpp"
 # include "Model.hpp"
 
+typedef struct s_gameinfo       t_gameinfo;
+
 enum	eType
   {
     WALL = 0,
@@ -47,8 +49,10 @@ public:
   void		setDestroy();
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
+  virtual void	update(t_gameinfo &gameInfo) = 0;
+  virtual void	die();
+  virtual void	destroy(Map &map) = 0;
 
-  virtual void		destroy(Map &map) = 0;
 protected:
   int		_x;
   int		_y;

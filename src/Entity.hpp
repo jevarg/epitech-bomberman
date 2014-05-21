@@ -2,6 +2,7 @@
 # define _ENTITY_H_
 
 # include "AEntity.hpp"
+# include "GameEngine.hpp"
 
 class Entity : public AEntity
 {
@@ -10,7 +11,7 @@ public:
   virtual ~Entity();
 
   void	destroy(Map &map);
-  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map);
+  virtual void	update(t_gameinfo &gameInfo);
 };
 
 #endif /* _ENTITY_H_ */

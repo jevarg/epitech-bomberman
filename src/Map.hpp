@@ -21,7 +21,7 @@ public:
   Map(Settings &set);
   ~Map();
 
-  void	createMap(std::map<eType, IObject *> &type);
+  void	createMap(std::map<eType, IObject *> &type, t_gameinfo gameInfo);
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
@@ -56,7 +56,7 @@ private:
 
   bool	checkAccess(short x, short y) const;
   void	fillBox();
-  void	fillContainers(std::map<eType, IObject *> &type);
+  void	fillContainers(std::map<eType, IObject *> &type, t_gameinfo &gameInfo);
   void	display();
 
   int			_mapX;

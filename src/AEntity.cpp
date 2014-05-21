@@ -59,3 +59,8 @@ void	AEntity::draw(gdl::AShader &shader, gdl::Clock &clock)
 {
   _model->draw(shader, clock);
 }
+
+void	AEntity::die()
+{
+
+}
