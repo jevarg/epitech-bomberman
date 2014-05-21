@@ -8,17 +8,16 @@
 # include "Model.hpp"
 # include "IObject.hpp"
 # include "AEntity.hpp"
+# include "Exception.hpp"
 
 class ModelFactory
 {
 public:
   /* Appel */
   /* ModelFactory &fact = ModelFactory::getInstance(); */
-  static const ModelFactory &getInstance();
-  void	addModel(eType, IObject *);
+  static ModelFactory &getInstance();
   void	addModel(eType, const std::string &);
   void	addModel(eType, IObject *, const std::string &);
-  void	addTexture(const std::string &);
 
   IObject	*getModel(eType type);
 

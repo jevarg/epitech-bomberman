@@ -8,7 +8,7 @@
 class		ABomb: public ALivingEntity
 {
 public:
-  ABomb(int x, int y, IObject *model, t_gameinfo &gameInfo);
+  ABomb(int x, int y, t_gameinfo &gameInfo);
   virtual ~ABomb();
 
   void	explode(Map &map);

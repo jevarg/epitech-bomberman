@@ -2,7 +2,7 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
-  : _save(), _type(), _texture(), _gameInfo(clock, map, set, input)
+  : _save(), _gameInfo(clock, map, set, input)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -21,6 +21,7 @@ GameEngine::~GameEngine()
 
 bool GameEngine::initialize()
 {
+  ModelFactory &fact = ModelFactory::getInstance();
   Cube *skybox;
   Spawn	spawn(_gameInfo.map);
 
@@ -31,7 +32,8 @@ bool GameEngine::initialize()
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
-   || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
+      || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
+      || !_shader.build())
     return (false);
   _cam.translate(glm::vec3(0, 5, -10));
 
@@ -40,35 +42,20 @@ bool GameEngine::initialize()
   skybox->scale(glm::vec3(500, 500, 500));
   _obj.push_back(skybox);
 
-  _model = new Model();
-  if (!_model->load("./assets/marvin.fbx"))
-    return (false);
-
-  _type[WALL] = new Cube(*skybox);
-  _type[BOX] = new Cube(*skybox);
-  _type[CHARACTER] = _model;
-  _texture[WALL] = new gdl::Texture();
-  _texture[BOX] = new gdl::Texture();
-  _texture[GROUND] = new gdl::Texture();
-
   skybox = new Cube(*skybox);
   skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
 			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
   skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
   _obj.push_back(skybox);
 
-  if (!_texture[WALL]->load(WALL_TEXTURE, true)
-      || !_texture[BOX]->load(BOX_TEXTURE, true)
-      || !_texture[GROUND]->load(GROUND_TEXTURE, true))
-    throw(Exception("Cannot load the texture"));
-
-  _type[WALL]->setTexture(_texture[WALL]);
-  _type[BOX]->setTexture(_texture[BOX]);
+  fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
+  fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
+  fact.addModel(CHARACTER, "./assets/marvin.fbx");
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.createMap(_type);
-  spawn.spawnEnt(1, 0, _type, all_cam, _gameInfo);
+  _gameInfo.map.createMap();
+  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
@@ -131,19 +118,20 @@ void GameEngine::draw()
 void GameEngine::createDisplayBorder()
 {
   unsigned int	i;
+  ModelFactory &fact = ModelFactory::getInstance();
 
   for (i = 0; i < _mapX; ++i)
     {
-      _obj.push_back(_type[WALL]->clone());
+      _obj.push_back(fact.getModel(WALL));
       _obj.back()->translate(glm::vec3(i, 0.0, 0));
-      _obj.push_back(_type[WALL]->clone());
+      _obj.push_back(fact.getModel(WALL));
       _obj.back()->translate(glm::vec3(i, 0.0, (_mapY - 1)));
     }
   for (i = 1; i < (_mapY - 1); ++i)
     {
-      _obj.push_back(_type[WALL]->clone());
+      _obj.push_back(fact.getModel(WALL));
       _obj.back()->translate(glm::vec3((_mapX - 1), 0.0, i));
-      _obj.push_back(_type[WALL]->clone());
+      _obj.push_back(fact.getModel(WALL));
       _obj.back()->translate(glm::vec3(0, 0.0, i));
     }
 }
