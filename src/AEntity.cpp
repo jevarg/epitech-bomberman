@@ -3,6 +3,7 @@
 
 AEntity::AEntity()
 {
+  _toDestroy = false;
 }
 
 AEntity::AEntity(int x, int y, eType type, IObject *model) : _x(x), _y(y), _type(type), _model(model)
