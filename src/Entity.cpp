@@ -1,7 +1,7 @@
 #include "Map.hpp"
 #include "Entity.hpp"
 
-Entity::Entity(int x, int y, eType type, IObject *model) : AEntity(x, y, type, model)
+Entity::Entity(int x, int y, eType type) : AEntity(x, y, type)
 {
 }
 

@@ -99,8 +99,7 @@
   return (true);
 }
 
-bool		Save::loadGame(Map &map, Settings &settings, const std::string &name,
-				std::map<eType, IObject *> &model)
+bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -155,7 +154,7 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name,
 	      return (false);
 	    }
 	  eType tmp = static_cast<eType>(type % (GROUND + 1));
-	  map.addEntity(new Entity(x, y, tmp, model[tmp]->clone()));
+	  map.addEntity(new Entity(x, y, tmp));
 	  ++line;
 	}
     }

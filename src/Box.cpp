@@ -2,7 +2,7 @@
 #include "ALivingEntity.hpp"
 
 Box::Box(int x, int y, t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, BOX, NULL, gameInfo)
+  : ALivingEntity(x, y, BOX, gameInfo)
 {
 }
 

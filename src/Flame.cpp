@@ -1,8 +1,8 @@
 #include "GameEngine.hpp"
 #include "Flame.hpp"
 
-Flame::Flame(int x, int y, int power, IObject *model, t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, FLAME, model, gameInfo)
+Flame::Flame(int x, int y, int power, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, FLAME, gameInfo)
 {
   _power = power;
 }
@@ -21,7 +21,7 @@ void    Flame::setFire(int x, int y, eDir direction, int range)
     return ;
   if (direction != ALLDIR)
     {
-      newFlame = new Flame(x, y, _power, NULL, _gameInfo); // add model via singleton here
+      newFlame = new Flame(x, y, _power, _gameInfo); // add model via singleton here
       _gameInfo.map.addEntity(newFlame);
     }
   if (_gameInfo.map.getEntityIf(x, y, CHARACTER))

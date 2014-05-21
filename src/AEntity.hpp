@@ -37,7 +37,7 @@ class		AEntity
 {
 public:
   AEntity();
-  AEntity(int x, int y, eType type, IObject *model);
+  AEntity(int x, int y, eType type);
   virtual ~AEntity() = 0;
 
   int		getXPos() const;

@@ -21,8 +21,7 @@ enum	eDir
 class	ACharacter : public ALivingEntity
 {
 public:
-  ACharacter(int x, int y, glm::vec4 color, IObject *model,
-	     t_gameinfo &gameInfo);
+  ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo);
   virtual ~ACharacter() = 0;
 
   virtual void	update(t_gameinfo &gameInfo) = 0;
@@ -30,6 +29,7 @@ public:
   bool		initialize();
   bool		move(Map &map, int dirX, int dirY);
   bool		updatePosition(Map &map, eAction action);
+  void		dropBomb(t_gameinfo &gameInfo);
 
   int		getScore() const;
   int		getSpeed() const;

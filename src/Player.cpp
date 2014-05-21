@@ -1,9 +1,8 @@
 #include "GameEngine.hpp"
 #include "Player.hpp"
 
-Player::Player(int x, int y, Camera *camera, glm::vec4 color, IObject *model,
-	       t_gameinfo &gameInfo)
-  : ACharacter(x, y, color, model, gameInfo), _camera(camera)
+Player::Player(int x, int y, Camera *camera, glm::vec4 color, t_gameinfo &gameInfo)
+  : ACharacter(x, y, color, gameInfo), _camera(camera)
 {
   _camera->translate(glm::vec3(x, 0.0, y));
   _camera->setPointView(glm::vec3(x, 0.0, y));
@@ -30,6 +29,8 @@ void	Player::checkInput(t_gameinfo &gameInfo)
 	    }
 	}
     }
+  if (_gameInfo.input[DROPBOMB])
+    dropBomb(gameInfo);
 }
 
 void	Player::update(t_gameinfo &gameInfo)
