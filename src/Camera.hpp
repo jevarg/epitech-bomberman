@@ -5,21 +5,24 @@
 
 class Input;
 
-class Camera : public ATransformation
+class Camera
 {
 public:
   Camera();
   ~Camera();
 
-  bool initialize();
-  void update(gdl::Clock const &, Input &);
   void lookAt();
+  void translate(glm::vec3 vec);
+  void	setPointView(glm::vec3 vec);
+
   const glm::mat4 &getTransformation() const;
   const glm::mat4 &getProjection() const;
+  const glm::vec3 &getPosView() const;
 
 private:
   glm::mat4	_transformation;
   glm::mat4	_projection;
+  glm::vec3	_pos;
   glm::vec3	_pos_view;
   glm::vec3	_dir;
 };

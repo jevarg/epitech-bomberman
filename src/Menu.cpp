@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-Menu::Menu(Settings &set, Input &input): _win(), _input(input), _set(set), _shader(), _done(false)
+Menu::Menu(Settings &set): _win(), _input(), _set(set), _shader(), _done(false)
 {
 
 }
@@ -18,9 +18,9 @@ bool  Menu::initialize()
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
    || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
     return (false);
-  if (!_text.initialize())
-    return (false);
-  _text.write("TEST", 0, 0, 1.0);
+  // if (!_text.initialize())
+  //   return (false);
+  // _text.write("TEST", 0, 0, 1.0);
   return (true);
 }
 
@@ -45,16 +45,16 @@ void  Menu::draw()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // _shader.bind();
   // _shader.setUniform("view", glm::mat4(1));
-  _text.draw(_shader, _clock);
+  // _text.draw(_shader, _clock);
   _win.flush();
 }
 
 void	Menu::launchGame()
 {
-  GameEngine eng(&_win, &_clock, &_shader, _set, _input);
+  Map map(_set);
+  GameEngine eng(&_win, _clock, &_shader, map, _set, _input);
   bool	done = true;
 
-  std::cout << "LAUNCH" << std::endl;
   if (!eng.initialize())
     return ;
   while ((done = eng.update()))

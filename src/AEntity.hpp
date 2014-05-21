@@ -5,12 +5,14 @@
 # include <BasicShader.hh>
 # include "IObject.hpp"
 # include "Input.hpp"
+# include "Model.hpp"
 
 enum	eType
   {
     WALL = 0,
-    BOX,
     FREE,
+    BOX,
+    BOMB,
     FLAME,
     CHARACTER,
     GROUND,
@@ -34,7 +36,7 @@ class		AEntity
 public:
   AEntity();
   AEntity(int x, int y, eType type, IObject *model);
-  virtual ~AEntity();
+  virtual ~AEntity() = 0;
 
   int		getXPos() const;
   int		getYPos() const;
@@ -43,7 +45,7 @@ public:
   void		setYPos(const int &y);
   void		setType(const eType &type);
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
-  virtual void	update(gdl::Clock const &clock, Input const &input, Map const &map) = 0;
+  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
 
 protected:
   int		_x;
@@ -51,5 +53,7 @@ protected:
   eType		_type;
   IObject	*_model;
 };
+
+void	*handle_character_thread(void *arg);
 
 #endif /* !_AENTITY_HPP_ */

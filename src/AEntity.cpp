@@ -7,7 +7,7 @@ AEntity::AEntity()
 
 AEntity::AEntity(int x, int y, eType type, IObject *model) : _x(x), _y(y), _type(type), _model(model)
 {
-  _model->translate(glm::vec3((float)(x * 2), 0.0, (float)(y * 2)));
+  _model->translate(glm::vec3(x, 0.0, y));
 }
 
 AEntity::~AEntity()

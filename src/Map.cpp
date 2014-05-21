@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iostream>
 #include <ctime>
+#include <cmath>
 #include "Map.hpp"
 
 Map::Map(Settings &set)
@@ -33,7 +34,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *> &type)
+bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IObject *> &type)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -82,7 +83,7 @@ bool		Map::load(Settings &settings, std::string &name, std::map<eType, IObject *
   return (true);
 }
 
-bool		Map::save(Settings &settings, std::string &name)
+bool		Map::save(const std::string &name)
 {
   std::ofstream	file(name.c_str());
   std::string	buf;
@@ -150,6 +151,7 @@ void	Map::genSmallMaze(short x, short y, short pos)
   short	ty;
   bool 	tabdir[4] = {false, false, false, false};
 
+  std::cout << x << " " << y << " " << _mapX << std::endl;
   _map[y * _mapX + x] = FREE;
   if (pos < 4)
     tabdir[pos] = true;
@@ -197,12 +199,22 @@ void	Map::genBigMaze()
 void	Map::display()
 {
   int	totalsize = _mapX * _mapY;
+  eType	t;
 
   for (int i = 0; i < totalsize; ++i)
     {
-      if (i != 0 && i % (_mapX ) == 0)
+      if ((t = checkMapColision(i % _mapX, i / _mapX)) == WALL)
+	std::cout << "x";
+      else if (t == BOX)
+	std::cout << "B";
+      else if (t == FREE)
+	std::cout << " ";
+      else if (t == CHARACTER)
+	std::cout << "C";
+      else
+	std::cout << "?";
+      if (i != 0 && i % _mapX == _mapX - 1)
 	std::cout << std::endl;
-      std::cout << (_map[i] == WALL ? "x" : (_map[i] == BOX) ? "B" : " ");
     }
   std::cout << std::endl;
 }
@@ -244,12 +256,12 @@ void	Map::fillBox()
 void	Map::fillContainers(std::map<eType, IObject *> &type)
 {
   unsigned int	i;
-  unsigned int 	totalsize = (_mapX - 1) * _mapY;
+  unsigned int 	totalsize = (_mapY - 1) * _mapX;
 
   for (i = _mapX; i < totalsize; ++i)
     {
-      if (_map[i] != FREE && i % _mapX != 0 &&
-	  (i + 1) % _mapX != 0) // means there is a block / It's the border
+      // means there is a block & It's not the border
+      if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
 	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], type[_map[i]]->clone()));
     }
   _map.clear();	// erase the temps vector
@@ -262,6 +274,17 @@ void	Map::removeEntity(int x, int y)
   _cont[pos]->removeContBlock(x, y);
 }
 
+void	Map::removeEntityByPtr(AEntity *ptr)
+{
+  unsigned int	pos = getContPos(ptr->getXPos(), ptr->getYPos());
+
+  _cont[pos]->removeContBlockByPtr(ptr);
+}
+
+/*
+** Main function
+*/
+
 void	Map::createMap(std::map<eType, IObject *> &type)
 {
   int	posx;
@@ -273,7 +296,6 @@ void	Map::createMap(std::map<eType, IObject *> &type)
     _map.push_back(WALL);
   posx = 2 + std::rand() % (_mapX - 3);
   posy = 2 + std::rand() % (_mapY - 3);
-  std::cout << "Starting at " << posx << " " << posy << std::endl;
   if (_mapX * _mapY > MAXSIZE)
     genBigMaze();
   else
@@ -307,12 +329,20 @@ void	Map::addEntity(AEntity *ent)
   _cont[pos]->stockEntity(ent);
 }
 
+/*
+** The condition pos >= _cont.size() is only used when a region isn't mapped
+** It could happen if the SQUARESIZE is very small (1 or 2)
+** It happens if the mapped zone has no block in a zonesize > SQUARESIZE.
+*/
+
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
-  if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
+  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
     return (WALL);
+  else if (pos >= _cont.size())
+    return (FREE);
   return (_cont[pos]->checkColision(x, y));
 }
 
@@ -336,7 +366,32 @@ v_Contcit	Map::ContEnd() const
   return (_cont.end());
 }
 
-void		Map::setMobilEnt(int x, int y, eType type)
+void		Map::setEntity(int x, int y, eType type)
 {
-  (_cont[getContPos(x, y)])->setMobilEnt(x, y, type);
+  (_cont[getContPos(x, y)])->setEntity(x, y, type);
+}
+
+void		Map::setEntityIf(int x, int y, eType newValue, eType oldValue)
+{
+  (_cont[getContPos(x, y)])->setEntityIf(x, y, newValue, oldValue);
+}
+
+void		Map::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
+{
+  (_cont[getContPos(x, y)])->setEntityIfNot(x, y, newValue, oldValue);
+}
+
+AEntity		*Map::getEntity(int x, int y) const
+{
+  return ((_cont[getContPos(x, y)])->getEntity(x, y));
+}
+
+AEntity		*Map::getEntityIf(int x, int y, eType value) const
+{
+  return ((_cont[getContPos(x, y)])->getEntityIf(x, y, value));
+}
+
+AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
+{
+  return ((_cont[getContPos(x, y)])->getEntityIfNot(x, y, value));
 }

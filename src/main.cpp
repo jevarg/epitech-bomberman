@@ -9,10 +9,9 @@ int	main(int, char **)
   try
     {
       Settings	set;
-      Input	input;
-
       set.loadFile(DEFAULT_FILE);
-      Menu menu(set, input);
+
+      Menu menu(set);
 
       menu.launch();
     }

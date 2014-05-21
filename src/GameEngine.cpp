@@ -1,42 +1,52 @@
 #include <iostream>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
-		       gdl::BasicShader *shader, Settings &set, Input &input)
-  : _win(win), _clock(clock), _shader(shader), _save(), _cam(),
-    _map(set), _set(set), _input(input), _type(), _texture(), _text()
+GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock &clock,
+		       gdl::BasicShader *shader, Map &map, Settings &set, Input &input)
+  : _win(win), _shader(shader), _save(), _gameInfo(clock, map, set, input) // , _text()
 {
-
+  _gameInfo.mutex = new Mutex;
+  _gameInfo.condvar = new Condvar;
 }
 
 GameEngine::~GameEngine()
 {
-
+  // while (_obj.size())
+  //   {
+  //     delete _obj.back();
+  //     _obj.pop_back();
+  //   }
+  _win->stop();
 }
 
 bool GameEngine::initialize()
 {
   Cube *skybox;
+  Spawn	spawn(_gameInfo.map);
 
-  _mapX = _set.getVar(MAP_HEIGHT);
-  _mapY = _set.getVar(MAP_WIDTH);
-  _cam.initialize();
+  _mapX = _gameInfo.set.getVar(MAP_HEIGHT);
+  _mapY = _gameInfo.set.getVar(MAP_WIDTH);
   _cam.translate(glm::vec3(0, 5, -10));
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
-  skybox->scale(glm::vec3(500, 500, 500));
+  skybox->scale(glm::vec3(200, 200, 200));
   _obj.push_back(skybox);
+
+  _model = new Model();
+  if (!_model->load("./assets/steve.fbx"))
+    return (false);
 
   _type[WALL] = new Cube(*skybox);
   _type[BOX] = new Cube(*skybox);
-  _type[CHARACTER] = new Cube(*skybox);
+  _type[CHARACTER] = _model;
   _texture[WALL] = new gdl::Texture();
   _texture[BOX] = new gdl::Texture();
   _texture[GROUND] = new gdl::Texture();
 
   skybox = new Cube(*skybox);
-  skybox->translate(glm::vec3(_mapX - 1, -1.0, _mapY - 1));
+  skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
+			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
   skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
   _obj.push_back(skybox);
 
@@ -48,41 +58,43 @@ bool GameEngine::initialize()
   _type[WALL]->setTexture(_texture[WALL]);
   _type[BOX]->setTexture(_texture[BOX]);
 
-  _model = new Model();
-  if (!_model->load("./assets/marvin.fbx"))
-    return (false);
-  _model->scale(glm::vec3(0.005, 0.005, 0.005));
-  _player = new Player(1, 1, _cam, glm::vec4(0.0, 0.0, 0.0, 0.0), _model);
+  Camera *all_cam[1] = { &_cam };
 
-  _map.createMap(_type);
+  _gameInfo.map.createMap(_type);
+  spawn.spawnEnt(1, 0, _type, all_cam, _gameInfo);
   createDisplayBorder();
-  _map.addEntity(_player);
   return (true);
 }
 
 bool GameEngine::update()
 {
-  int time;
-  double fps = (1000 / _set.getVar(FPS));
-  t_mouse mouse;
+  int	time;
+  double	fps = (1000 / _gameInfo.set.getVar(FPS));
+  t_mouse	mouse;
+  t_window	win;
 
-  _win->updateClock(*_clock);
-  _input.getInput(_set);
-  if (_input[SDLK_ESCAPE])
+  _gameInfo.input.getInput(_gameInfo.set);
+  if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
     return (false);
-  if (_input[SDLK_g])
-    std::cout << "g pressed" << std::endl;
-  if (_input[mouse])
+  if (_gameInfo.input[DROPBOMB])
+    {
+      std::cout << "DROP THE BOMB" << std::endl;
+      _gameInfo.map.addEntity(new Entity(rand() % 10, rand() % 10, WALL, _obj[WALL]->clone()));
+    }
+  if (_gameInfo.input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;
-  if ((time = _clock->getElapsed()) < fps)
+  // if (win.event == WIN_RESIZE) // Seems not to work
+  //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl;
+  if ((time = _gameInfo.clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
-  _cam.update(*_clock, _input);
-  v_Contcit end = _map.ContEnd();
-  for (v_Contcit it = _map.ContBegin();it != end;it++)
+  _win->updateClock(_gameInfo.clock);
+  v_Contcit end = _gameInfo.map.ContEnd();
+  for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
     {
       l_Entcit end_list = (*it)->listEnd();
-      for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->update(*_clock, _input, _map);
+      for (l_Entcit it1 = (*it)->listBegin(); it1 != end_list; it1++)
+	if ((*it1)->update(_gameInfo.clock, _gameInfo.input, _gameInfo.map) == true)
+	  return (true);
     }
   return (true);
 }
@@ -91,22 +103,23 @@ void GameEngine::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   _cam.lookAt();
-  _shader->bind();
+  _shader->setUniform("model", glm::translate(glm::mat4(1.0f), _cam.getPosView()));
   _shader->setUniform("view", _cam.getTransformation());
   _shader->setUniform("projection", _cam.getProjection());
+  _shader->bind();
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
-    (*it)->draw(*_shader, *_clock);
-  v_Contcit end = _map.ContEnd();
-  for (v_Contcit it = _map.ContBegin();it != end;it++)
+    (*it)->draw(*_shader, _gameInfo.clock);
+  v_Contcit end = _gameInfo.map.ContEnd();
+  for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
     {
       v_Entcit end_vector = (*it)->vecEnd();
       l_Entcit end_list = (*it)->listEnd();
       for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)
-	(*it1)->draw(*_shader, *_clock);
+	(*it1)->draw(*_shader, _gameInfo.clock);
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->draw(*_shader, *_clock);
+	(*it1)->draw(*_shader, _gameInfo.clock);
     }
-  _text.draw(*_shader, *_clock);
+  // _text.draw(*_shader, *_clock);
   _win->flush();
 }
 
@@ -117,15 +130,15 @@ void GameEngine::createDisplayBorder()
   for (i = 0; i < _mapX; ++i)
     {
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(2 * i, 0.0, 0));
+      _obj.back()->translate(glm::vec3(i, 0.0, 0));
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(2 * i, 0.0, 2 * (_mapY - 1)));
+      _obj.back()->translate(glm::vec3(i, 0.0, (_mapY - 1)));
     }
   for (i = 1; i < (_mapY - 1); ++i)
     {
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(2 * (_mapX - 1), 0.0, 2 * i));
+      _obj.back()->translate(glm::vec3((_mapX - 1), 0.0, i));
       _obj.push_back(_type[WALL]->clone());
-      _obj.back()->translate(glm::vec3(0, 0.0, 2 * i));
+      _obj.back()->translate(glm::vec3(0, 0.0, i));
     }
 }

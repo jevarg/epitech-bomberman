@@ -3,15 +3,15 @@
 
 # include <Game.hh>
 # include <SdlContext.hh>
-# include "Text.hpp"
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "GameEngine.hpp"
+// # include "Text.hpp"
 
 class Menu
 {
 public:
-  Menu(Settings &set, Input &input);
+  Menu(Settings &set);
   virtual ~Menu();
 
   bool	initialize();
@@ -28,7 +28,7 @@ private:
   gdl::Clock		_clock;
   gdl::BasicShader	_shader;
   bool			_done;
-  Text			_text;
+  // Text			_text;
 };
 
 #endif /* _MENU_HPP_ */
