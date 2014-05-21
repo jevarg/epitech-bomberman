@@ -10,12 +10,10 @@ typedef struct s_gameinfo	t_gameInfo;
 
 typedef struct			s_engine
 {
-  s_engine(std::map<eType, IObject *> &ptype, Camera **pcam,
-	   t_gameinfo &pgameInfo) :
-    type(ptype), cam(pcam), gameInfo(pgameInfo)
+  s_engine(Camera **pcam, t_gameinfo &pgameInfo) :
+    cam(pcam), gameInfo(pgameInfo)
   {
   }
-  std::map<eType, IObject *>	&type;
   Camera			**cam;
   t_gameinfo			&gameInfo;
 }				t_engine;
@@ -45,8 +43,7 @@ public:
   Spawn(Map &map);
   virtual ~Spawn();
 
-void	spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type, Camera **cam,
-		 t_gameinfo &gameInfo);
+void	spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameinfo &gameInfo);
 
 private:
   void	*createCharacter(int &nbPlayer, int &nbIa);

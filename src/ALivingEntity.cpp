@@ -7,6 +7,7 @@ ALivingEntity::ALivingEntity(int x, int y, eType type,
 {
   _isAlive = true;
   _toDestroy = false;
+
   if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
     throw (Exception("Can't create thread"));
 }

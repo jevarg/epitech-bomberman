@@ -34,10 +34,11 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IObject *> &type)
+bool		Map::load(Settings &settings, const std::string &name)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
+  ModelFactory	&fact = ModelFactory::getInstance();
   unsigned int	len = 0;
   int		y = 0;
   int		x = 0;
@@ -63,10 +64,10 @@ bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IOb
 	  switch (*it)
 	    {
 	    case 'W':
-	      addEntity(new Entity(x, y, WALL, type[WALL]->clone()));
+	      addEntity(new Entity(x, y, WALL, fact.getModel(WALL)));
 	      break;
 	    case 'B':
-	      addEntity(new Entity(x, y, BOX, type[BOX]->clone()));
+	      addEntity(new Entity(x, y, BOX, fact.getModel(BOX)));
 	      break;
 	    case ' ':
 	      break;
@@ -253,7 +254,7 @@ void	Map::fillBox()
     }
 }
 
-void	Map::fillContainers(std::map<eType, IObject *> &type)
+void	Map::fillContainers()
 {
   unsigned int	i;
   unsigned int 	totalsize = (_mapY - 1) * _mapX;
@@ -286,7 +287,7 @@ void	Map::removeEntityByPtr(AEntity *ptr)
 ** Main function
 */
 
-void	Map::createMap(std::map<eType, IObject *> &type)
+void	Map::createMap()
 {
   int	posx;
   int	posy;
@@ -302,7 +303,7 @@ void	Map::createMap(std::map<eType, IObject *> &type)
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
-  fillContainers(type);
+  fillContainers();
   display();
 }
 

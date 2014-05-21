@@ -133,10 +133,9 @@ void	Spawn::initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const
   spawn.nbIa = nbIa;
 }
 
-void	Spawn::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type,
-			Camera **cam, t_gameInfo &gameInfo)
+void	Spawn::spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameInfo &gameInfo)
 {
-  t_engine	engine(type, cam, gameInfo);
+  t_engine	engine(cam, gameInfo);
   t_spawn	spawn(engine);
   int	x = 0;
   int	y = 0;

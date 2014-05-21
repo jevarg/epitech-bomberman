@@ -2,7 +2,7 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
-  : _save(), _type(), _texture(), _gameInfo(clock, map, set, input)
+  : _save(), _gameInfo(clock, map, set, input)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -32,7 +32,8 @@ bool GameEngine::initialize()
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
-   || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
+      || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
+      || !_shader.build())
     return (false);
   _cam.translate(glm::vec3(0, 5, -10));
 
@@ -53,8 +54,8 @@ bool GameEngine::initialize()
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.createMap(_type);
-  spawn.spawnEnt(1, 0, _type, all_cam, _gameInfo);
+  _gameInfo.map.createMap();
+  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
