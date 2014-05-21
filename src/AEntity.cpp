@@ -3,6 +3,7 @@
 
 AEntity::AEntity()
 {
+  _toDestroy = false;
 }
 
 AEntity::AEntity(int x, int y, eType type, IObject *model) : _x(x), _y(y), _type(type), _model(model)
@@ -42,6 +43,16 @@ void	AEntity::setYPos(const int &y)
 void	AEntity::setType(const eType &type)
 {
   _type = type;
+}
+
+void	AEntity::destroy()
+{
+  _toDestroy = true;
+}
+
+bool	AEntity::toDestroy() const
+{
+  return (_toDestroy);
 }
 
 void	AEntity::draw(gdl::AShader &shader, gdl::Clock &clock)

@@ -8,10 +8,10 @@ class		Player : public ACharacter
 {
 public:
   Player(int x, int y, Camera *camera, glm::vec4 color, IObject *model,
-	 Condvar &condvar, Mutex &mutex);
+	 t_gameinfo &gameInfo);
   virtual ~Player();
 
-  bool	update(gdl::Clock const &clock, Input const &input, Map &map);
+  void	update(t_gameinfo &gameInfo);
 private:
   Camera	*_camera;
 };

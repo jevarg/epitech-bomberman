@@ -14,7 +14,7 @@ public:
   Flame(int x, int y, IObject *model);
   ~Flame();
   void	hurtCharacter(ACharacter *character);
-  bool	update(gdl::Clock const &clock, Input const &input, Map &map);
+  void	update(t_gameinfo &gameInfo);
 };
 
 #endif /* !FLAME_HPP_ */

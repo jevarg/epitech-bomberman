@@ -1,23 +1,44 @@
+#include "GameEngine.hpp"
 #include "ALivingEntity.hpp"
 
 ALivingEntity::ALivingEntity(int x, int y, eType type,
-			     IObject *model, Condvar &condvar, Mutex &mutex) :
-  AEntity(x, y, type, model), _mutex(mutex), _condvar(condvar)
+			     IObject *model, t_gameinfo &gameInfo) :
+  AEntity(x, y, type, model), _gameInfo(gameInfo)
 {
+  _isAlive = true;
+  if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
+    throw (Exception("Can't create thread"));
 }
 
 ALivingEntity::~ALivingEntity()
 {
 }
 
-void	*ALivingEntity::createAliveEntity(void *arg)
+void	ALivingEntity::setDead()
 {
-  (void)arg;
+  _isAlive = false;
+}
+
+void	*createAliveEntity(void *arg)
+{
+  static_cast<ALivingEntity *>(arg)->aliveLoop();
   return (NULL);
 }
 
 void	ALivingEntity::aliveLoop()
 {
+  while (1)
+    {
+      if (_toDestroy)
+	{
+	  int	ret;
+	  pthread_exit(&ret);
+	  break ;
+	}
+      if (_isAlive)
+	update(_gameInfo);
+    }
+  pthread_exit(NULL);
 }
 
 bool	ALivingEntity::isAlive() const

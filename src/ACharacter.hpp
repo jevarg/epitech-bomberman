@@ -4,13 +4,8 @@
 # include <glm/glm.hpp>
 
 # include "ALivingEntity.hpp"
-# include "AEntity.hpp"
 # include "Model.hpp"
 # include "ABomb.hpp"
-# include "Mutex.hpp"
-# include "Condvar.hpp"
-# include "Input.hpp"
-# include "Settings.hpp"
 
 class Input;
 
@@ -26,10 +21,10 @@ class	ACharacter : public ALivingEntity
 {
 public:
   ACharacter(int x, int y, glm::vec4 color, IObject *model,
-	     Condvar &condvar, Mutex &mutex);
+	     t_gameinfo &gameInfo);
   virtual ~ACharacter() = 0;
 
-  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  virtual void	update(t_gameinfo &gameInfo) = 0;
 
   bool		initialize();
   bool		move(Map &map, int dirX, int dirY);

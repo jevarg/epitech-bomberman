@@ -79,6 +79,16 @@ l_Entcit	Container::listEnd() const
   return (_mobileEnt.end());
 }
 
+l_Entit	Container::listBeginMod()
+{
+  return (_mobileEnt.begin());
+}
+
+l_Entit	Container::listEndMod()
+{
+  return (_mobileEnt.end());
+}
+
 void		Container::setEntity(int x, int y, eType type)
 {
   l_Entit	lit = _mobileEnt.begin();

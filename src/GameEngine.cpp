@@ -2,11 +2,12 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
-  : _save(), _lua(), _type(), _texture(), _condvar(), _mutex(),
+  : _save(), _lua(), _type(), _texture(),
     _gameInfo(clock, map, set, input)
 {
+  _gameInfo.mutex = new Mutex;
+  _gameInfo.condvar = new Condvar;
 }
-
 
 GameEngine::~GameEngine()
 {
@@ -67,7 +68,7 @@ bool GameEngine::initialize()
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_type);
-  spawn.spawnEnt(1, 0, _type, all_cam, _condvar, _mutex);
+  spawn.spawnEnt(1, 0, _type, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
@@ -133,7 +134,16 @@ bool GameEngine::update()
   prepareIA(2);
   _gameInfo.input.getInput(_gameInfo.set);
   if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
-    return (false);
+    {
+      v_Contcit end = _gameInfo.map.ContEnd();
+      for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
+	{
+	  l_Entit end_list = (*it)->listEndMod();
+	  for (l_Entit it1 = (*it)->listBeginMod(); it1 != end_list; it1++)
+	    (*it1)->destroy();
+	}
+      return (false);
+    }
   if (_gameInfo.input[DROPBOMB])
     {
       std::cout << "DROP THE BOMB" << std::endl;
@@ -146,14 +156,6 @@ bool GameEngine::update()
   if ((time = _gameInfo.clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_gameInfo.clock);
-  v_Contcit end = _gameInfo.map.ContEnd();
-  for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
-    {
-      l_Entcit end_list = (*it)->listEnd();
-      for (l_Entcit it1 = (*it)->listBegin(); it1 != end_list; it1++)
-	if ((*it1)->update(_gameInfo.clock, _gameInfo.input, _gameInfo.map) == true)
-	  return (true);
-    }
   return (true);
 }
 

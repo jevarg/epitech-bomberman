@@ -3,12 +3,10 @@
 #include "ACharacter.hpp"
 
 ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
-		       Condvar &condvar, Mutex &mutex)
-  : ALivingEntity(x, y, CHARACTER, model, condvar, mutex)
+		       t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, CHARACTER, model, gameInfo)
 /* handle the bomb type at creation */
 {
-  pthread_t         thread;
-
   _bombStock = 1;
   _health = 100;
   _speed = 5;
@@ -16,14 +14,13 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
   _score = 0;
   _orient = NORTH;
   _color = color;
-  if (pthread_create(&thread, NULL, &handle_character_thread, this) != 0)
-    throw (Exception("Can't create Acharacter's thread"));
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
   _model->scale(glm::vec3(0.002, 0.002, 0.002));
 }
 
 ACharacter::~ACharacter()
 {
+  std::cout << "ACharacter death" << std::endl;
 }
 
 bool	ACharacter::updatePosition(Map &map, eAction action)

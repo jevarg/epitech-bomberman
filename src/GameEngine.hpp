@@ -50,6 +50,8 @@ typedef struct	s_gameinfo
   Map	       	&map;
   Input	       	&input;
   Settings     	&set;
+  Mutex		*mutex;
+  Condvar	*condvar;
 }		t_gameinfo;
 
 class GameEngine : public gdl::Game
@@ -79,8 +81,6 @@ private:
   std::map<eType, gdl::Texture *>	_texture;
   Model				*_model;
   Player			*_player;
-  Condvar			_condvar;
-  Mutex				_mutex;
   t_gameinfo			_gameInfo;
 };
 
