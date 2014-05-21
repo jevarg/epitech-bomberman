@@ -13,30 +13,23 @@ end
 
 function check_item_dir(map, cur_x, cur_y, w, cond)
 	for i = 0, cond do
-		if (cur_x + i ~= MAP_XMAX + 1) then
-			if (map[cur_y][cur_x + i] == w) then return true end
-		elseif (cur_x - i ~= 0) then
-			if (map[cur_y][cur_x - i] == w) then return true end
-		elseif (cur_y + i ~= MAP_YMAX + 1) then
-			if (map[cur_y + i][cur_x] == w) then return true end
-		elseif (cur_y - i ~= 0) then
-			if (map[cur_y - i][cur_x] == w) then return true end
-		else
-			return false
-		end
+		if ((cur_x + i ~= MAP_XMAX + 1 and map[cur_y][cur_x + i] == w) or
+			(cur_x - i ~= 0 and map[cur_y][cur_x - i] == w) or
+			(cur_y + i ~= MAP_YMAX + 1 and map[cur_y + i][cur_x] == w) or
+			(cur_y - i ~= 0 and map[cur_y - i][cur_x] == w))
+		then return true
+		else return false end
 	end
 	return false
 end
 
 function take_decision(map, map_nb, entities)
 	if (map[Y][X] == "D") then
-		-- return check_way_out
+		return check_way_out(map_nb, X, Y)
 	else
-		if (check_item_dir(map_nb, X, Y, "O", BOMB_RANGE) == true) then return check_way_out(map_nb, X, Y) end
-		r = check_elem_at(map_nb, X, Y, "P", 1)
-		if (r ~= -1) then return ENUM_ACTION["bomb"] end
-		-- r = check_elem_at(map, X, Y, "B", 1)
-		-- if (r ~= -1) then return ENUM_ACTION["bomb"] end
+		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1) then
+			return ENUM_ACTION["bomb"]
+		end
 		return best_first(map, map_nb, entities)
 	end
 end

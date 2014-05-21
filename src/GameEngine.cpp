@@ -76,8 +76,8 @@ void GameEngine::prepareIA(int level)
 {
   int cnt = 0;
   int aggro[] = {4, 8, 12, 10};
-  for (std::vector<Container *>::const_iterator cont_it = _gameInfo.map.ContBegin() ; cont_it != _gameInfo.map.ContEnd() ; ++cont_it)
-    for (std::list<AEntity *>::const_iterator ent_it = (*cont_it)->listBegin() ; ent_it != (*cont_it)->listEnd() ; ++ent_it)
+  for (std::vector<Container*>::const_iterator cont_it = _gameInfo.map.ContBegin() ; cont_it != _gameInfo.map.ContEnd() ; ++cont_it)
+    for (l_Entcit ent_it = (*cont_it)->listBegin() ; ent_it != (*cont_it)->listEnd() ; ++ent_it)
       {
 	if ((*ent_it)->getType() == CHARACTER)
 	  {
@@ -90,10 +90,12 @@ void GameEngine::prepareIA(int level)
 	      y = 1;
 	    if (x < 1)
 	      x = 1;
-	    for (int i = y ; i < y + (aggro[level - 1] * 2) && i < static_cast<int>(_mapY) - 1 ; ++i)
+	    for (int i = y ; i < y + (aggro[level - 1] * 2) &&
+		   i < static_cast<int>(_mapY) - 1 ; ++i)
 	      {
 		c2 = 1;
-		for (int j = x ; j < x + (aggro[level - 1] * 2) && j < static_cast<int>(_mapX) - 1 ; ++j)
+		for (int j = x ; j < x + (aggro[level - 1] * 2) &&
+		       j < static_cast<int>(_mapX) - 1 ; ++j)
 		  {
 		    if (cnt == 0)
 		      _lua.pushCreateTable((aggro[level - 1] * 2) * (aggro[level - 1] * 2) + 4);

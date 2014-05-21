@@ -102,19 +102,19 @@ function create_map(entities, aggro)
 end
 
 function set_priority(level)
-	if (level == 1) then
-		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
-	elseif (level == 2) then
-		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
-	elseif (level == 3) then
-		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
-	end
-	TYPE_PRIORITY = {
-		["player"] = player,
-		["item"] = item,
-		["box"] = box,
-		["bomb"] = bomb,
-		["wall"] = wall,
-		["free"] = free
-	}
+	-- if (level == 1) then
+	-- 	local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
+	-- elseif (level == 2) then
+	-- 	local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
+	-- elseif (level == 3) then
+	-- 	local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
+	-- end
+	-- TYPE_PRIORITY = {
+	-- 	["player"] = player,
+	-- 	["item"] = item,
+	-- 	["box"] = box,
+	-- 	["bomb"] = bomb,
+	-- 	["wall"] = wall,
+	-- 	["free"] = free
+	-- }
 end

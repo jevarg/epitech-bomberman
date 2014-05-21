@@ -11,8 +11,16 @@ function have_elem(entities, x, y)
 	return 0
 end
 
-function go_out_bomb(map, x, y)
-	-- find way 
+function go_out_danger(map, x, y, nb)
+	-- local tab = {-1, 1, -1, 1}
+	-- for i = 1, 4 do
+	-- 	r = check_elem_at(map, x, y, ".", 1)
+	-- 	if ( ~= -1 or
+	-- 		check_elem_at(map, x, y, "D", 1) ~= -1)
+	-- 	then
+			
+	-- 	end
+	-- end
 end
 
 function random_movement()
@@ -95,7 +103,8 @@ function take_shortest_priority(map, entities)
 	for i = 1, #entities do
 		if (entities[i]["type"] ~= TYPE_PRIORITY["wall"] and
 			entities[i]["type"] ~= TYPE_PRIORITY["free"] and
-			(entities[i]["x"] ~= X or entities[i]["y"] ~= Y)) then
+			(entities[i]["x"] ~= X or entities[i]["y"] ~= Y))
+		then
 			cur_dist, tmp_x, tmp_y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
 			if (cur_dist ~= AGGRO + 1 and tmp_x ~= 0 and tmp_y ~= 0) then
 				if (entities[i]["type"] < t) then
@@ -131,34 +140,33 @@ function check_directions(map, cur_x, cur_y, i_x, i_y)
 	for i = 1, (AGGRO * 2) + 1 do
 		if (nb ~= nil and authorized_entities(map[cur_y][cur_x])) then
 			if (nb + 1 > AGGRO and map[cur_y][cur_x] ~= nb - 1) then return move end
-			if (type(map[cur_y][cur_x]) == "number" and (nb + 1 < tonumber(map[cur_y][cur_x]))) then
-				map[cur_y][cur_x] = nb + 1
-				move = move + 1
-			elseif (map[cur_y][cur_x] == "." or map[cur_y][cur_x] == "B") then
+			if ((type(map[cur_y][cur_x]) == "number" and
+				(nb + 1 < tonumber(map[cur_y][cur_x]))) or
+				(map[cur_y][cur_x] == "." or map[cur_y][cur_x] == "B"))
+			then
 				map[cur_y][cur_x] = nb + 1
 				move = move + 1
 			end
 		end
 		nb = tonumber(map[cur_y][cur_x])
-		cur_x = cur_x + i_x
-		cur_y = cur_y + i_y
-		if (cur_y == 0 or cur_y == MAP_YMAX + 1) then return move end
-		if (cur_x == 0 or cur_x == MAP_XMAX + 1) then return move end
+		cur_x, cur_y = cur_x + i_x, cur_y + i_y
+		if (cur_y == 0 or cur_y == MAP_YMAX + 1 or
+			cur_x == 0 or cur_x == MAP_XMAX + 1)
+		then return move end
 	end
 	return move
 end
 
 function init_direction(map, n1, n2, i_x, i_y, d_x, d_y)
-	local cur_x = n1
-	local cur_y = n2
+	local cur_x, cur_y = n1, n2
 	local move = 0
 
 	for i = 1, AGGRO * 2 do
 		move = move + check_directions(map, cur_x, cur_y, i_x, i_y)
-		cur_x = cur_x + d_x
-		cur_y = cur_y + d_y
-		if (cur_x == MAP_XMAX + 1) then break end
-		if (cur_y == MAP_YMAX + 1) then break end
+		cur_x, cur_y = cur_x + d_x, cur_y + d_y
+		if (cur_x == MAP_XMAX + 1 or
+			cur_y == MAP_YMAX + 1)
+		then break end
 	end
 	return move
 end
@@ -192,7 +200,7 @@ function travel_map(map, cur_x, cur_y)
 	move = move + check_directions(map, cur_x, cur_y, 0, 1)		-- down
 	move = move + check_directions(map, cur_x, cur_y, 1, 0)		-- right
 	move = move + check_directions(map, cur_x, cur_y, -1, 0)	-- left
-	if (move == 0) then	return 0 end
+	if (move == 0) then	return end
 	move = 1
 	while (move == 1) do
 		move = go_all_directions(map, cur_x, cur_y)
