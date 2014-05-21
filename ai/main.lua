@@ -1,6 +1,10 @@
 dofile("ai/global.lua")
 dofile("ai/utils.lua")
+dofile("ai/construct_map.lua")
+dofile("ai/directions.lua")
 dofile("ai/best_first.lua")
+dofile("ai/actions.lua")
+dofile("ai/shortest_priority.lua")
 
 function check_way_out(map, cur_x, cur_y)
 	local w = -1
@@ -21,6 +25,14 @@ function check_item_dir(map, cur_x, cur_y, w, cond)
 		else return false end
 	end
 	return false
+end
+
+function check_elem_at(map, cur_x, cur_y, w, n)
+	if (cur_x + n ~= MAP_XMAX + n and map[cur_y][cur_x + n] == w) then return ENUM_ACTION["right"] end
+	if (cur_x - n ~= 0 and map[cur_y][cur_x - n] == w) then return ENUM_ACTION["left"] end
+	if (cur_y + n ~= MAP_YMAX + n and map[cur_y + n][cur_x] == w) then return ENUM_ACTION["back"] end
+	if (cur_y - n ~= 0 and map[cur_y - n][cur_x] == w) then return ENUM_ACTION["forward"] end
+	return -1
 end
 
 function take_decision(map, map_nb, entities)
