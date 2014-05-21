@@ -80,6 +80,7 @@ bool GameEngine::update()
   t_mouse	mouse;
   t_window	win;
 
+  _gameInfo.condvar->broadcast();
   _gameInfo.input.getInput(_gameInfo.set);
   if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
     {
@@ -100,7 +101,8 @@ bool GameEngine::update()
   if (_gameInfo.input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;
   // if (win.event == WIN_RESIZE) // Seems not to work
-  //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl;
+  //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl
+
   if ((time = _gameInfo.clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(_gameInfo.clock);

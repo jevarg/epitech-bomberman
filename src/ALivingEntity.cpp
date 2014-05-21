@@ -29,6 +29,9 @@ void	ALivingEntity::aliveLoop()
 {
   while (1)
     {
+      _gameInfo.mutex->lock();
+      _gameInfo.condvar->wait(_gameInfo.mutex->getMutexPtr());
+      _gameInfo.mutex->unlock();
       if (_toDestroy)
 	{
 	  int	ret;
