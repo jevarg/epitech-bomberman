@@ -10,8 +10,10 @@ class		ABomb: public ALivingEntity
 public:
   ABomb(int x, int y, IObject *model, t_gameinfo &gameInfo);
   virtual ~ABomb();
+
   void	explode(Map &map);
   void	setFire(int x, int y, eAction direction, int range, Map &map);
+
   virtual void	update(t_gameinfo &gameInfo) = 0;
 
 protected:

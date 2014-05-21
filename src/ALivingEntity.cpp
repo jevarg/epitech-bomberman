@@ -25,6 +25,13 @@ void	*createAliveEntity(void *arg)
   return (NULL);
 }
 
+void	ALivingEntity::destroy(Map &map)
+{
+  map.removeEntityByPtr(this);
+  delete (this);
+  pthread_exit(NULL);
+}
+
 void	ALivingEntity::aliveLoop()
 {
   while (1)
@@ -33,11 +40,7 @@ void	ALivingEntity::aliveLoop()
       _gameInfo.condvar->wait(_gameInfo.mutex->getMutexPtr());
       _gameInfo.mutex->unlock();
       if (_toDestroy)
-	{
-	  int	ret;
-	  pthread_exit(&ret);
-	  break ;
-	}
+	destroy(_gameInfo.map);
       if (_isAlive)
 	update(_gameInfo);
     }

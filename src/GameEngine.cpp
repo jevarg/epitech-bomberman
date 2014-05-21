@@ -89,7 +89,7 @@ bool GameEngine::update()
 	{
 	  l_Entit end_list = (*it)->listEndMod();
 	  for (l_Entit it1 = (*it)->listBeginMod(); it1 != end_list; it1++)
-	    (*it1)->destroy();
+	    (*it1)->setDestroy();
 	}
       return (false);
     }

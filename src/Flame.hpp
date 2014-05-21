@@ -4,14 +4,14 @@
 # include "AEntity.hpp"
 # include "ACharacter.hpp"
 
-class	Flame : public AEntity
+class	Flame : public ALivingEntity
 {
 private:
   Mutex		_mutex;
   Condvar	_condvar;
 
 public:
-  Flame(int x, int y, IObject *model);
+  Flame(int x, int y, IObject *model, t_gameinfo &gameInfo);
   ~Flame();
   void	hurtCharacter(ACharacter *character);
   void	update(t_gameinfo &gameInfo);

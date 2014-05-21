@@ -22,7 +22,7 @@ void	ABomb::setFire(int x, int y, eAction direction, int range, Map &map)
 {
   while (map.getEntity(x, y))
     map.setEntity(x, y, FREE);
-  map.addEntity(new Flame(x, y, NULL)); // add model via singleton here
+  map.addEntity(new Flame(x, y, NULL, _gameInfo)); // add model via singleton here
   switch (direction)
     {
     case UNKNOWN:

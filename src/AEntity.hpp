@@ -44,9 +44,11 @@ public:
   void		setXPos(const int &x);
   void		setYPos(const int &y);
   void		setType(const eType &type);
-  void		destroy();
+  void		setDestroy();
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
+
+  virtual void		destroy(Map &map) = 0;
 protected:
   int		_x;
   int		_y;

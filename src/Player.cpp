@@ -14,7 +14,7 @@ Player::~Player()
   std::cout << "Player death" << std::endl;
 }
 
-void	Player::update(t_gameinfo &gameInfo)
+void	Player::checkInput(t_gameinfo &gameInfo)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
   glm::vec3	dir[4] = {glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, 0.0, -1.0),
@@ -30,4 +30,9 @@ void	Player::update(t_gameinfo &gameInfo)
 	    }
 	}
     }
+}
+
+void	Player::update(t_gameinfo &gameInfo)
+{
+  checkInput(gameInfo);
 }

@@ -9,6 +9,7 @@ public:
   Entity(int x, int y, eType type, IObject *model);
   virtual ~Entity();
 
+  void	destroy(Map &map);
   virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map);
 };
 

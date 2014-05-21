@@ -45,14 +45,14 @@ void	AEntity::setType(const eType &type)
   _type = type;
 }
 
-void	AEntity::destroy()
-{
-  _toDestroy = true;
-}
-
 bool	AEntity::toDestroy() const
 {
   return (_toDestroy);
+}
+
+void	AEntity::setDestroy()
+{
+  _toDestroy = true;
 }
 
 void	AEntity::draw(gdl::AShader &shader, gdl::Clock &clock)

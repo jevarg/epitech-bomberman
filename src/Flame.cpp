@@ -1,7 +1,7 @@
 #include "Flame.hpp"
 
-Flame::Flame(int x, int y, IObject *model)
-  : AEntity(x, y, FLAME, model), _mutex(), _condvar()
+Flame::Flame(int x, int y, IObject *model, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, FLAME, model, gameInfo)
 {
 }
 
