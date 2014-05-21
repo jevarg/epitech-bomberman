@@ -18,9 +18,9 @@ bool  Menu::initialize()
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
    || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
     return (false);
-  // if (!_text.initialize())
-  //   return (false);
-  // _text.write("TEST", 0, 0, 1.0);
+  if (!_text.initialize())
+    return (false);
+  _text.write("TEST", 0, 0, 1.0);
   return (true);
 }
 
@@ -43,9 +43,9 @@ bool  Menu::update()
 void  Menu::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  // _shader.bind();
-  // _shader.setUniform("view", glm::mat4(1));
-  // _text.draw(_shader, _clock);
+  _shader.bind();
+  _shader.setUniform("view", glm::mat4(1));
+  _text.draw(_shader, _clock);
   _win.flush();
 }
 

@@ -3,7 +3,7 @@
 
 GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock &clock,
 		       gdl::BasicShader *shader, Map &map, Settings &set, Input &input)
-  : _win(win), _shader(shader), _save(), _gameInfo(clock, map, set, input) // , _text()
+  : _win(win), _shader(shader), _save(), _text(), _gameInfo(clock, map, set, input)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -27,6 +27,10 @@ bool GameEngine::initialize()
   _mapX = _gameInfo.set.getVar(MAP_HEIGHT);
   _mapY = _gameInfo.set.getVar(MAP_WIDTH);
   _cam.translate(glm::vec3(0, 5, -10));
+
+  if (!_text.initialize())
+    return (false);
+  _text.write("hello", 0, 4, 0.7);
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
@@ -119,7 +123,7 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(*_shader, _gameInfo.clock);
     }
-  // _text.draw(*_shader, *_clock);
+  _text.draw(*_shader, _gameInfo.clock);
   _win->flush();
 }
 

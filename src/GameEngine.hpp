@@ -24,7 +24,7 @@
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "Player.hpp"
-// # include "Text.hpp"
+# include "Text.hpp"
 # include "Condvar.hpp"
 # include "Mutex.hpp"
 
@@ -80,7 +80,7 @@ private:
   std::map<eType, gdl::Texture *>	_texture;
   Model				*_model;
   Player			*_player;
-  // Text				_text;
+  Text				_text;
   t_gameinfo			_gameInfo;
 };
 

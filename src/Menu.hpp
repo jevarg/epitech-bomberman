@@ -6,7 +6,7 @@
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "GameEngine.hpp"
-// # include "Text.hpp"
+# include "Text.hpp"
 
 class Menu
 {
@@ -28,7 +28,7 @@ private:
   gdl::Clock		_clock;
   gdl::BasicShader	_shader;
   bool			_done;
-  // Text			_text;
+  Text			_text;
 };
 
 #endif /* _MENU_HPP_ */
