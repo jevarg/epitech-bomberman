@@ -8,6 +8,7 @@
 # include "Entity.hpp"
 # include "Player.hpp"
 # include "Settings.hpp"
+# include "ModelFactory.hpp"
 
 # define MAXSIZE 10000
 # define SQUARESIZE 10

@@ -17,17 +17,19 @@ Spawn::~Spawn()
 
 void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
 {
+  ModelFactory  &fact = ModelFactory::getInstance();
+
   if (spawn.nbPlayer > spawn.nbIa)
     {
       _map.addEntity(new Player(x, y, spawn.engine.cam[0], glm::vec4(0.0),
-				spawn.engine.type[CHARACTER]->clone(),
+				fact.getModel(CHARACTER),
 				spawn.engine.gameInfo));
       --spawn.nbPlayer;
     }
   else
     {
       _map.addEntity(new Player(x, y, spawn.engine.cam[0], glm::vec4(0.0),
-				spawn.engine.type[CHARACTER]->clone(),
+				fact.getModel(CHARACTER),
 				spawn.engine.gameInfo));
       --spawn.nbIa;
     }

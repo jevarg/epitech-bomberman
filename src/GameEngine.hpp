@@ -26,6 +26,7 @@
 # include "Player.hpp"
 # include "Condvar.hpp"
 # include "Mutex.hpp"
+# include "ModelFactory.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
