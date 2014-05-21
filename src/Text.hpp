@@ -4,6 +4,7 @@
 # include <string>
 # include <Texture.hh>
 # include <Geometry.hh>
+# include "Settings.hpp"
 # include "ATransformation.hpp"
 
 # define FONT "assets/font.tga"
@@ -16,7 +17,7 @@ public:
 
   bool	initialize();
   void	clear();
-  void	draw(gdl::AShader &, gdl::Clock const&) const;
+  void	draw(gdl::AShader &, gdl::Clock const&, Settings &) const;
   void	write(std::string const&, float, float, float);
 
 private:

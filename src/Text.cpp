@@ -26,11 +26,11 @@ void	Text::clear()
     delete _geometry;
 }
 
-void	Text::draw(gdl::AShader &shader, gdl::Clock const& clock) const
+void	Text::draw(gdl::AShader &shader, gdl::Clock const& clock, Settings &set) const
 {
-  _font.bind();
   if (_geometry)
     {
+      _font.bind();
       glDisable(GL_DEPTH_TEST);
       glAlphaFunc(GL_GREATER, 0.1f);
       glEnable(GL_ALPHA_TEST);

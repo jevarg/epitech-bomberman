@@ -25,7 +25,7 @@ bool GameEngine::initialize()
 
   if (!_text.initialize())
     return (false);
-  _text.write("Hello", 0, 4, 2);
+  _text.write("hello", 0, 4, 0.7);
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
@@ -110,7 +110,7 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(*_shader, *_clock);
     }
-  _text.draw(*_shader, *_clock);
+  _text.draw(*_shader, *_clock, _set);
   _win->flush();
 }
 

@@ -45,7 +45,7 @@ void  Menu::draw()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   // _shader.bind();
   // _shader.setUniform("view", glm::mat4(1));
-  _text.draw(_shader, _clock);
+  _text.draw(_shader, _clock, _set);
   _win.flush();
 }
 
