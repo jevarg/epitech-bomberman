@@ -11,7 +11,7 @@ private:
   Condvar	_condvar;
 
 public:
-  Flame(int x, int y, IObject *model, t_gameinfo &gameInfo);
+  Flame(int x, int y, t_gameinfo &gameInfo);
   ~Flame();
   void	hurtCharacter(ACharacter *character);
   void	update(t_gameinfo &gameInfo);

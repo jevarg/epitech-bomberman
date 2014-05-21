@@ -12,8 +12,7 @@ typedef struct s_gameinfo	t_gameinfo;
 class ALivingEntity : public AEntity
 {
 public:
-  ALivingEntity(int x, int y, eType type,
-		IObject *model, t_gameinfo &gameInfo);
+  ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~ALivingEntity() = 0;
 
   void		aliveLoop();

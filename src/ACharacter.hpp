@@ -20,8 +20,7 @@ enum	eDir
 class	ACharacter : public ALivingEntity
 {
 public:
-  ACharacter(int x, int y, glm::vec4 color, IObject *model,
-	     t_gameinfo &gameInfo);
+  ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo);
   virtual ~ACharacter() = 0;
 
   virtual void	update(t_gameinfo &gameInfo) = 0;

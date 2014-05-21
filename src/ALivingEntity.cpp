@@ -1,9 +1,8 @@
 #include "GameEngine.hpp"
 #include "ALivingEntity.hpp"
 
-ALivingEntity::ALivingEntity(int x, int y, eType type,
-			     IObject *model, t_gameinfo &gameInfo) :
-  AEntity(x, y, type, model), _gameInfo(gameInfo)
+ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
+  AEntity(x, y, type), _gameInfo(gameInfo)
 {
   _isAlive = true;
   _toDestroy = false;

@@ -2,9 +2,8 @@
 #include "Input.hpp"
 #include "ACharacter.hpp"
 
-ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
-		       t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, CHARACTER, model, gameInfo)
+ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, CHARACTER, gameInfo)
 /* handle the bomb type at creation */
 {
   _bombStock = 1;

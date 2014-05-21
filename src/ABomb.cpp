@@ -3,8 +3,8 @@
 #include "GameEngine.hpp"
 #include "Flame.hpp"
 
-ABomb::ABomb(int x, int y, IObject *bombModel, t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, BOMB, bombModel, gameInfo)
+ABomb::ABomb(int x, int y, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, BOMB, gameInfo)
 {
 }
 
@@ -22,7 +22,7 @@ void	ABomb::setFire(int x, int y, eAction direction, int range, Map &map)
 {
   while (map.getEntity(x, y))
     map.setEntity(x, y, FREE);
-  map.addEntity(new Flame(x, y, NULL, _gameInfo)); // add model via singleton here
+  map.addEntity(new Flame(x, y, _gameInfo)); // add model via singleton here
   switch (direction)
     {
     case UNKNOWN:

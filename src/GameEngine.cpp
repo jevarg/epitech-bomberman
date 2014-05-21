@@ -83,7 +83,7 @@ bool GameEngine::update()
   if (_gameInfo.input[DROPBOMB])
     {
       std::cout << "DROP THE BOMB" << std::endl;
-      _gameInfo.map.addEntity(new Entity(rand() % 10, rand() % 10, WALL, _obj[WALL]->clone()));
+      _gameInfo.map.addEntity(new Entity(rand() % 10, rand() % 10, WALL));
     }
   if (_gameInfo.input[mouse])
     std::cout << "catched event " << mouse.event << std::endl;

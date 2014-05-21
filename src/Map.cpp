@@ -64,10 +64,10 @@ bool		Map::load(Settings &settings, const std::string &name)
 	  switch (*it)
 	    {
 	    case 'W':
-	      addEntity(new Entity(x, y, WALL, fact.getModel(WALL)));
+	      addEntity(new Entity(x, y, WALL));
 	      break;
 	    case 'B':
-	      addEntity(new Entity(x, y, BOX, fact.getModel(BOX)));
+	      addEntity(new Entity(x, y, BOX));
 	      break;
 	    case ' ':
 	      break;
@@ -264,7 +264,7 @@ void	Map::fillContainers()
     {
       // means there is a block & It's not the border
       if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
-	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], fact.getModel(_map[i])));
+	addEntity(new Entity(i % _mapX, i /_mapX, _map[i]));
     }
   _map.clear();	// erase the temps vector
 }

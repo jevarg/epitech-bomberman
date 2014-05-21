@@ -7,7 +7,7 @@
 class		Bomb: public ABomb
 {
 public:
-  Bomb(int x, int y, IObject *model, t_gameinfo &gameInfo);
+  Bomb(int x, int y, t_gameinfo &gameInfo);
   virtual ~Bomb();
 
   void	update(t_gameinfo &gameInfo);
