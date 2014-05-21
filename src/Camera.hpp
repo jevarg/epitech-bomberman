@@ -13,9 +13,11 @@ public:
 
   void lookAt();
   void translate(glm::vec3 vec);
+  void	setPointView(glm::vec3 vec);
+
   const glm::mat4 &getTransformation() const;
   const glm::mat4 &getProjection() const;
-  void	setPointView(glm::vec3 vec);
+  const glm::vec3 &getPosView() const;
 
 private:
   glm::mat4	_transformation;
