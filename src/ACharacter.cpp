@@ -2,16 +2,18 @@
 #include "Input.hpp"
 #include "ACharacter.hpp"
 
-ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model)
-  : AEntity(x, y, CHARACTER, model), _mutex(), _condvar(), _color(color),
-    _health(1), _isAlive(true), _bombStock(1),
-    _bombType(NORMAL), _speed(5), _range(5), _score(0), _orient(NORTH)
+ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
+		       t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, CHARACTER, model, gameInfo)
+/* handle the bomb type at creation */
 {
-  pthread_t         thread;
-
-  if (pthread_create(&thread, NULL, &handle_character_thread, this) != 0)
-    throw (Exception("Can't create Acharacter's thread"));
-  _thread = thread;
+  _bombStock = 1;
+  _health = 100;
+  _speed = 5;
+  _range = 5;
+  _score = 0;
+  _orient = NORTH;
+  _color = color;
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
   _model->scale(glm::vec3(0.5, 0.5, 0.5));
 }
@@ -68,13 +70,6 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
   return (true);
 }
 
-void	ACharacter::takeDamages(int amount)
-{
-  _health -= amount;
-  if (_health <= 0)
-    _isAlive = false;
-}
-
 bool	ACharacter::initialize()
 {
   return (true);
@@ -85,13 +80,30 @@ int	ACharacter::getScore() const
   return (_score);
 }
 
-bool	ACharacter::isAlive() const
-{
-  return (_isAlive);
-}
-
 void	*handle_character_thread(void *arg)
 {
   (void) arg;
   return (NULL);
+}
+
+int	ACharacter::getSpeed() const
+{
+  return (_speed);
+}
+
+int	ACharacter::getHealth() const
+{
+  return (_health);
+}
+
+void	ACharacter::setSpeed(int speed)
+{
+  _speed = speed;
+}
+
+void	ACharacter::setHealth(int health)
+{
+  _health = health;
+  if (_health <= 0)
+    _isAlive = false;
 }

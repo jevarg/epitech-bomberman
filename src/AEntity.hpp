@@ -5,12 +5,14 @@
 # include <BasicShader.hh>
 # include "IObject.hpp"
 # include "Input.hpp"
+# include "Model.hpp"
 
 enum	eType
   {
     WALL = 0,
-    BOX,
     FREE,
+    BOX,
+    BOMB,
     FLAME,
     CHARACTER,
     GROUND,
@@ -34,7 +36,7 @@ class		AEntity
 public:
   AEntity();
   AEntity(int x, int y, eType type, IObject *model);
-  virtual ~AEntity();
+  virtual ~AEntity() = 0;
 
   int		getXPos() const;
   int		getYPos() const;
@@ -51,5 +53,7 @@ protected:
   eType		_type;
   IObject	*_model;
 };
+
+void	*handle_character_thread(void *arg);
 
 #endif /* !_AENTITY_HPP_ */
