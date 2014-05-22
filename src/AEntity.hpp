@@ -36,8 +36,8 @@ typedef struct	s_entity
 class		AEntity
 {
 public:
-  AEntity();
-  AEntity(int x, int y, eType type);
+  AEntity(t_gameinfo &gameInfo);
+  AEntity(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~AEntity() = 0;
 
   int		getXPos() const;
@@ -56,6 +56,7 @@ protected:
   int		_x;
   int		_y;
   eType		_type;
+  t_gameinfo	&_gameInfo;
   bool		_toDestroy;
   IObject	*_model;
 };

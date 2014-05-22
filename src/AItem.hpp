@@ -14,7 +14,7 @@ enum
 class AItem : public AEntity
 {
 public:
-  AItem(int x, int y, eType type);
+  AItem(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~AItem() = 0;
 
   void	takeDamages(int amount);

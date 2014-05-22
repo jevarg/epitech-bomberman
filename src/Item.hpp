@@ -6,7 +6,7 @@
 class	Item : public AItem
 {
 public:
-  Item(int x, int y, eType type);
+  Item(int x, int y, eType type, t_gameinfo &gameInfo);
   ~Item();
 };
 

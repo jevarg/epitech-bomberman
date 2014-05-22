@@ -25,7 +25,6 @@ public:
   virtual void	die();
 
 protected:
-  t_gameinfo	&_gameInfo;
   pthread_t	_thread;
   bool		_isAlive;
 };

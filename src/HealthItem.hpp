@@ -6,7 +6,7 @@
 class SpeedItem : public AItem
 {
 public:
-  SpeedItem(int x, int y, eType type);
+  SpeedItem(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~SpeedItem();
 
   void	setHealth(ACharacter &ch);

@@ -2,7 +2,7 @@
 #include "ALivingEntity.hpp"
 
 ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
-  AEntity(x, y, type), _gameInfo(gameInfo)
+  AEntity(x, y, type, gameInfo)
 {
   _isAlive = true;
 

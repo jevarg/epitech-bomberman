@@ -68,7 +68,7 @@ bool		Map::load(Settings &settings, const std::string &name,
 	      addEntity(new Entity(x, y, WALL, gameInfo));
 	      break;
 	    case 'B':
-	      addEntity(new Entity(x, y, BOX, gameInfo));
+	      addEntity(new Box(x, y, BOX, gameInfo));
 	      break;
 	    case ' ':
 	      break;
@@ -264,7 +264,12 @@ void	Map::fillContainers(t_gameinfo &_gameInfo)
     {
       // means there is a block & It's not the border
       if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
-	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	{
+	  if (_map[i] == WALL)
+	    addEntity(new Entity(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	  else
+	    addEntity(new Box(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	}
     }
   _map.clear();	// erase the temps vector
 }

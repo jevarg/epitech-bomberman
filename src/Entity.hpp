@@ -12,9 +12,6 @@ public:
 
   void	destroy(Map &map);
   void	takeDamages(int amount);
-
-private:
-  t_gameinfo &_gameInfo;
 };
 
 #endif /* _ENTITY_H_ */

@@ -2,7 +2,7 @@
 #include "Entity.hpp"
 
 Entity::Entity(int x, int y, eType type, t_gameinfo &gameInfo) :
-  AEntity(x, y, type), _gameInfo(gameInfo)
+  AEntity(x, y, type, gameInfo)
 {
 }
 

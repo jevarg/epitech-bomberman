@@ -1,8 +1,8 @@
 #include "Box.hpp"
 #include "ALivingEntity.hpp"
 
-Box::Box(int x, int y, t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, BOX, gameInfo)
+Box::Box(int x, int y, eType type, t_gameinfo &gameInfo)
+  : AEntity(x, y, type, gameInfo)
 {
 }
 
@@ -10,13 +10,11 @@ Box::~Box()
 {
 }
 
-void	Box::update(t_gameinfo &gameInfo)
+void	Box::takeDamages(int)
 {
-
 }
 
-void	Box::die()
+void	Box::destroy(Map &map)
 {
-  // may drop a bonus
-  delete(this);
+  (void)map;
 }
