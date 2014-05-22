@@ -1,3 +1,4 @@
+#include "Input.hpp"
 #include "Cube.hpp"
 
 Cube::Cube(): IObject(), _texture(NULL), _geometry(NULL), _file("")
@@ -123,7 +124,7 @@ bool Cube::initialize()
   return (true);
 }
 
-void Cube::update(gdl::Clock const &, gdl::Input &)
+void Cube::update(gdl::Clock const &, Input &)
 {
 
 }

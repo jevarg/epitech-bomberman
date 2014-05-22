@@ -8,6 +8,7 @@
 # include "Entity.hpp"
 # include "Player.hpp"
 # include "Settings.hpp"
+# include "ModelFactory.hpp"
 
 # define MAXSIZE 10000
 # define SQUARESIZE 10
@@ -21,12 +22,12 @@ public:
   Map(Settings &set);
   ~Map();
 
-  void	createMap(std::map<eType, IObject *> &type);
+  void	createMap(t_gameinfo &gameInfo);
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
-  bool		load(Settings &settings, const std::string&,
-		     std::map<eType, IObject *> &type);
+  bool		load(Settings &settings, const std::string &,
+		     t_gameinfo &gameInfo);
 
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
@@ -56,7 +57,7 @@ private:
 
   bool	checkAccess(short x, short y) const;
   void	fillBox();
-  void	fillContainers(std::map<eType, IObject *> &type);
+  void	fillContainers(t_gameinfo &gameInfo);
   void	display();
 
   int			_mapX;

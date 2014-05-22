@@ -1,10 +1,10 @@
+#include "GameEngine.hpp"
 #include "Map.hpp"
 #include "Input.hpp"
 #include "ACharacter.hpp"
 
-ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
-		       t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, CHARACTER, model, gameInfo)
+ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, CHARACTER, gameInfo)
 /* handle the bomb type at creation */
 {
   _bombStock = 1;
@@ -15,11 +15,12 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
   _orient = NORTH;
   _color = color;
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
-  _model->scale(glm::vec3(0.002, 0.002, 0.002));
+  _model->scale(glm::vec3(0.5, 0.5, 0.5));
 }
 
 ACharacter::~ACharacter()
 {
+  std::cout << "ACharacter death" << std::endl;
 }
 
 bool	ACharacter::updatePosition(Map &map, eAction action)
@@ -68,6 +69,15 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
       map.addEntity(this);
     }
   return (true);
+}
+
+void	ACharacter::dropBomb(t_gameinfo &gameInfo)
+{
+  if (gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL)
+    {
+      gameInfo.map.addEntity(new Bomb(_x, _y, gameInfo));
+      std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
+    }
 }
 
 bool	ACharacter::initialize()

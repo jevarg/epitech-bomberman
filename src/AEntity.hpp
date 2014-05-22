@@ -7,6 +7,8 @@
 # include "Input.hpp"
 # include "Model.hpp"
 
+typedef struct s_gameinfo       t_gameinfo;
+
 enum	eType
   {
     WALL = 0,
@@ -35,7 +37,7 @@ class		AEntity
 {
 public:
   AEntity();
-  AEntity(int x, int y, eType type, IObject *model);
+  AEntity(int x, int y, eType type);
   virtual ~AEntity() = 0;
 
   int		getXPos() const;
@@ -44,13 +46,16 @@ public:
   void		setXPos(const int &x);
   void		setYPos(const int &y);
   void		setType(const eType &type);
+  void		setDestroy();
+  bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
-  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  virtual void	destroy(Map &map) = 0;
 
 protected:
   int		_x;
   int		_y;
   eType		_type;
+  bool		_toDestroy;
   IObject	*_model;
 };
 

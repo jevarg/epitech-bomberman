@@ -1,20 +1,19 @@
 #ifndef FLAME_HPP_
 # define FLAME_HPP_
 
-# include "AEntity.hpp"
+# include "ALivingEntity.hpp"
 # include "ACharacter.hpp"
 
-class	Flame : public AEntity
+class	Flame : public ALivingEntity
 {
 private:
-  Mutex		_mutex;
-  Condvar	_condvar;
+  int	_power;
 
 public:
-  Flame(int x, int y, IObject *model);
+  Flame(int x, int y, int power, t_gameinfo &gameInfo);
   ~Flame();
-  void	hurtCharacter(ACharacter *character);
-  bool	update(gdl::Clock const &clock, Input const &input, Map &map);
+  void	setFire(int x, int y, eDir direction, int range);
+  void	hurtCharacter(ACharacter *character, int power);
+  void	update(t_gameinfo &gameInfo);
 };
-
 #endif /* !FLAME_HPP_ */

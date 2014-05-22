@@ -3,8 +3,8 @@
 #include "GameEngine.hpp"
 
 /* get the fuck out those "model" parameters from constructors */
-Bomb::Bomb(int x, int y, IObject *bombModel)
-  : ABomb(x, y, bombModel)
+Bomb::Bomb(int x, int y, t_gameinfo &gameInfo)
+  : ABomb(x, y, gameInfo)
 {
   _range = 5;
   _power = 1;
@@ -12,4 +12,9 @@ Bomb::Bomb(int x, int y, IObject *bombModel)
 
 Bomb::~Bomb()
 {
+}
+
+void	Bomb::update(t_gameinfo &gameInfo)
+{
+  (void)gameInfo;
 }

@@ -12,22 +12,22 @@ typedef struct s_gameinfo	t_gameinfo;
 class ALivingEntity : public AEntity
 {
 public:
-  ALivingEntity(int x, int y, eType type,
-		IObject *model, t_gameinfo &gameInfo);
+  ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~ALivingEntity() = 0;
 
-  static void	*createAliveEntity(void *arg);
-
   void		aliveLoop();
-
+  void		setDead();
   bool		isAlive() const;
-
-  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  void		destroy(Map &map);
+  virtual void	update(t_gameinfo &gameInfo) = 0;
+  virtual void	die();
 
 protected:
   t_gameinfo	&_gameInfo;
   pthread_t	_thread;
   bool		_isAlive;
 };
+
+void	*createAliveEntity(void *arg);
 
 #endif /* _ALIVINGENTITY_H_ */

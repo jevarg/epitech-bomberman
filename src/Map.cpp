@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cmath>
 #include "Map.hpp"
+#include "Box.hpp"
 
 Map::Map(Settings &set)
 {
@@ -34,7 +35,8 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IObject *> &type)
+bool		Map::load(Settings &settings, const std::string &name,
+			  t_gameinfo &gameInfo)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -63,15 +65,16 @@ bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IOb
 	  switch (*it)
 	    {
 	    case 'W':
-	      addEntity(new Entity(x, y, WALL, type[WALL]->clone()));
+	      addEntity(new Entity(x, y, WALL, gameInfo));
 	      break;
 	    case 'B':
-	      addEntity(new Entity(x, y, BOX, type[BOX]->clone()));
+	      addEntity(new Entity(x, y, BOX, gameInfo));
 	      break;
 	    case ' ':
 	      break;
 	    default:
-	      std::cerr << "Error while loading map on line : " << y << " column : " << x << std::endl;
+	      std::cerr << "Error while loading map on line : " << y
+			<< " column : " << x << std::endl;
 	      return (false);
 	    }
 	  ++x;
@@ -253,7 +256,7 @@ void	Map::fillBox()
     }
 }
 
-void	Map::fillContainers(std::map<eType, IObject *> &type)
+void	Map::fillContainers(t_gameinfo &_gameInfo)
 {
   unsigned int	i;
   unsigned int 	totalsize = (_mapY - 1) * _mapX;
@@ -262,7 +265,7 @@ void	Map::fillContainers(std::map<eType, IObject *> &type)
     {
       // means there is a block & It's not the border
       if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
-	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], type[_map[i]]->clone()));
+	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], _gameInfo));
     }
   _map.clear();	// erase the temps vector
 }
@@ -285,7 +288,7 @@ void	Map::removeEntityByPtr(AEntity *ptr)
 ** Main function
 */
 
-void	Map::createMap(std::map<eType, IObject *> &type)
+void	Map::createMap(t_gameinfo &gameInfo)
 {
   int	posx;
   int	posy;
@@ -301,7 +304,7 @@ void	Map::createMap(std::map<eType, IObject *> &type)
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
-  fillContainers(type);
+  fillContainers(gameInfo);
   display();
 }
 

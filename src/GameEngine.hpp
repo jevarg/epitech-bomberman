@@ -26,6 +26,7 @@
 # include "Player.hpp"
 # include "Condvar.hpp"
 # include "Mutex.hpp"
+# include "ModelFactory.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -36,8 +37,10 @@
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
-# define BOMB_TEXTURE "./assets/box.tga"
-# define FLAME_TEXTURE "./assets/skybox.tga"
+
+# define CHARACTER_MODEL "./assets/steve.fbx"
+# define BOMB_MODEL "./assets/tnt.fbx"
+# define FLAME_MODEL "./assets/skybox.tga"
 
 typedef struct	s_gameinfo
 {
@@ -74,8 +77,6 @@ private:
   Camera			_cam;
   unsigned int			_mapX;
   unsigned int			_mapY;
-  std::map<eType, IObject *>	_type;
-  std::map<eType, gdl::Texture *>	_texture;
   Model				*_model;
   Player			*_player;
   t_gameinfo			_gameInfo;

@@ -1,6 +1,8 @@
+#include "Map.hpp"
 #include "Entity.hpp"
 
-Entity::Entity(int x, int y, eType type, IObject *model) : AEntity(x, y, type, model)
+Entity::Entity(int x, int y, eType type, t_gameinfo &gameInfo) :
+  AEntity(x, y, type), _gameInfo(gameInfo)
 {
 }
 
@@ -8,7 +10,8 @@ Entity::~Entity()
 {
 }
 
-bool	Entity::update(gdl::Clock const &clock, Input const &input, Map &map)
+void	Entity::destroy(Map &map)
 {
-  return (false);
+  map.removeEntityByPtr(this);
+  delete (this);
 }
