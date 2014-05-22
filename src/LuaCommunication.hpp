@@ -21,8 +21,8 @@ public:
   void	pushSetGlobal(const char *name) const;
   void	executeLua(const char *name);
   void	closeState() const;
-  void	getDatas();
   void	popStack() const;
+  int	getDatas();
 
   lua_State* getState() const;
 

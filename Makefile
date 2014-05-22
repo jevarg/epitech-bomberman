@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Tue May 20 18:18:04 2014 jonathan.collinet
+## Last update Wed May 21 22:55:27 2014 jonathan.collinet
 ##
 
 NAME		=	bomberman
@@ -43,6 +43,7 @@ SRC		=	main.cpp \
 			Player.cpp \
 			Map.cpp \
 			Input.cpp \
+			IA.cpp \
 			LuaCommunication.cpp \
 			Spawn.cpp \
 			ModelFactory.cpp

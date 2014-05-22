@@ -6,8 +6,9 @@ AEntity::AEntity()
   _toDestroy = false;
 }
 
-AEntity::AEntity(int x, int y, eType type, IObject *model) : _x(x), _y(y), _type(type), _model(model)
+AEntity::AEntity(int x, int y, eType type) : _x(x), _y(y), _type(type)
 {
+  _model = ModelFactory::getInstance().getModel(_type);
   _model->translate(glm::vec3(x, 0.0, y));
 }
 
@@ -45,14 +46,14 @@ void	AEntity::setType(const eType &type)
   _type = type;
 }
 
-void	AEntity::destroy()
-{
-  _toDestroy = true;
-}
-
 bool	AEntity::toDestroy() const
 {
   return (_toDestroy);
+}
+
+void	AEntity::setDestroy()
+{
+  _toDestroy = true;
 }
 
 void	AEntity::draw(gdl::AShader &shader, gdl::Clock &clock)

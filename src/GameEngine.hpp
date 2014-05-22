@@ -24,9 +24,9 @@
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "Player.hpp"
-# include "LuaCommunication.hpp"
 # include "Condvar.hpp"
 # include "Mutex.hpp"
+# include "ModelFactory.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -65,7 +65,6 @@ public:
   virtual void	draw();
 
 private:
-  void	prepareIA(int);
   void	createDisplayMap();
   void	createDisplayBorder();
 
@@ -76,7 +75,6 @@ private:
   Camera			_cam;
   unsigned int			_mapX;
   unsigned int			_mapY;
-  LuaCommunication		_lua;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
   Model				*_model;

@@ -2,9 +2,8 @@
 #include "Input.hpp"
 #include "ACharacter.hpp"
 
-ACharacter::ACharacter(int x, int y, glm::vec4 color, IObject *model,
-		       t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, CHARACTER, model, gameInfo)
+ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, CHARACTER, gameInfo)
 /* handle the bomb type at creation */
 {
   _bombStock = 1;
@@ -69,6 +68,12 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
       map.addEntity(this);
     }
   return (true);
+}
+
+void	ACharacter::dropBomb(t_gameinfo &gameInfo)
+{
+  std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
+  //  gameInfo.map.addEntity(new Bomb(_x, _y, _obj[WALL]->clone(), t_gameinfo &gameInfo));
 }
 
 bool	ACharacter::initialize()

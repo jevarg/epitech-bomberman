@@ -1,13 +1,4 @@
 function go_out_danger(map, x, y, nb)
-	-- local tab = {-1, 1, -1, 1}
-	-- for i = 1, 4 do
-	-- 	r = check_elem_at(map, x, y, ".", 1)
-	-- 	if ( ~= -1 or
-	-- 		check_elem_at(map, x, y, "D", 1) ~= -1)
-	-- 	then
-			
-	-- 	end
-	-- end
 end
 
 function random_movement()
