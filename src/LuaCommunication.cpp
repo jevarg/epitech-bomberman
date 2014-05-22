@@ -69,10 +69,8 @@ int LuaCommunication::getDatas()
 {
   int res = -1;
 
-  std::cout << "salut jean" << std::endl;
   while(lua_gettop(_luaState))
     {
-      std::cout << "salut jakaka" << std::endl;
       if (lua_type(_luaState, lua_gettop(_luaState)) == LUA_TNUMBER)
 	{
 	  res = lua_tonumber(_luaState, lua_gettop(_luaState));

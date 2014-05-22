@@ -26,7 +26,7 @@ void	IA::update(t_gameinfo &gameInfo)
   std::cout << cnt << std::endl;
   if (cnt != 0)
     {
-      getResultScript(aggro[_level - 1]);
+      updatePosition(gameInfo.map, static_cast<eAction>(getResultScript(aggro[_level - 1])));
     }
 }
 
