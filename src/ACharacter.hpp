@@ -24,7 +24,7 @@ public:
   ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo);
   virtual ~ACharacter() = 0;
 
-  virtual void	update(t_gameinfo &gameInfo) = 0;
+  virtual void	update() = 0;
 
   bool		initialize();
   bool		move(Map &map, int dirX, int dirY);

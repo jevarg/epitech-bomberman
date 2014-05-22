@@ -42,7 +42,7 @@ void	ALivingEntity::aliveLoop()
       if (_toDestroy)
 	destroy(_gameInfo.map);
       if (_isAlive)
-	update(_gameInfo);
+	update();
     }
   pthread_exit(NULL);
 }

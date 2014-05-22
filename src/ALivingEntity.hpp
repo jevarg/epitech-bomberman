@@ -19,7 +19,7 @@ public:
   void		setDead();
   bool		isAlive() const;
   void		destroy(Map &map);
-  virtual void	update(t_gameinfo &gameInfo) = 0;
+  virtual void	update() = 0;
   virtual void	die();
 
 protected:

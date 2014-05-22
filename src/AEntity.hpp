@@ -49,7 +49,6 @@ public:
   void		setDestroy();
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
-  virtual void	update(t_gameinfo &gameInfo) = 0;
   virtual void	die();
   virtual void	destroy(Map &map) = 0;
 

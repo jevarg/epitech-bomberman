@@ -12,7 +12,10 @@ Box::~Box()
 
 void	Box::update(t_gameinfo &gameInfo)
 {
+}
 
+void	Box::update()  // a virer apres le merge qui change la classe mere de Box
+{
 }
 
 void	Box::die()

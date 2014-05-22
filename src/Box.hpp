@@ -10,6 +10,7 @@ public:
   ~Box();
   void	update(t_gameinfo &gameInfo);
   void	die();
+  void	update(); // a virer apres le merge qui change la classe mere de Box
 };
 
 #endif /* _BOX_HPP_ */
