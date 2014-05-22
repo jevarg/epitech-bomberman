@@ -5,7 +5,7 @@
 // Login   <fritsc_h@epitech.net>
 //
 // Started on  Tue May  6 21:55:22 2014 Harold Fritsch
-// Last update Wed May 21 17:46:03 2014 
+// Last update Thu May 22 13:20:20 2014 luc sinet
 //
 
 #ifndef SAVE_HPP_
@@ -27,7 +27,7 @@ public:
   bool	encrypt(std::string &);
   bool	decrypt(std::string &);
   bool	saveGame(Map &, Settings &, const std::string &);
-  bool	loadGame(Map &, Settings &, const std::string &);
+  bool	loadGame(Map &, Settings &, const std::string &, t_gameinfo &gameInfo);
 private:
   ;
 };

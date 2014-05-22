@@ -7,11 +7,11 @@
 class Entity : public AEntity
 {
 public:
-  Entity(int x, int y, eType type);
+  Entity(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~Entity();
 
   void	destroy(Map &map);
-  virtual void	update(t_gameinfo &gameInfo);
+  void	takeDamages(int amount);
 };
 
 #endif /* _ENTITY_H_ */

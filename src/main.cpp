@@ -10,6 +10,7 @@ int	main(int, char **)
     {
       Settings	set;
       set.loadFile(DEFAULT_FILE);
+      set.loadFile(USER_FILE);
 
       Input	input;
       Map	map(set);

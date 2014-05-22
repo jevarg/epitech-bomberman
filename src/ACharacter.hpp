@@ -5,7 +5,7 @@
 
 # include "ALivingEntity.hpp"
 # include "Model.hpp"
-# include "ABomb.hpp"
+# include "Bomb.hpp"
 
 class Input;
 
@@ -33,15 +33,15 @@ public:
 
   int		getScore() const;
   int		getSpeed() const;
-  int		getHealth() const;
   void		setSpeed(int speed);
+  int		getHealth() const;
   void		setHealth(int health);
-
+  void		takeDamages(int amount);
 protected:
   glm::vec4	_color;
-  int		_health;
   int		_bombStock;
   ABomb		*_bomb;
+  int		_health;
   int		_speed;
   int		_range;
   int		_score;

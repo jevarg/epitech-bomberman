@@ -19,11 +19,12 @@ public:
   void		setDead();
   bool		isAlive() const;
   void		destroy(Map &map);
+
   virtual void	update() = 0;
+  virtual void	takeDamages(int amount);
   virtual void	die();
 
 protected:
-  t_gameinfo	&_gameInfo;
   pthread_t	_thread;
   bool		_isAlive;
 };

@@ -18,13 +18,13 @@ varying vec4 fEyePos;
 
 void main(void)
 {
-  mat4 modelRotation = inverse(transpose(model));
-  vec4 transformedNormal = modelRotation * vec4(vNormal.xyz, 0.0);
+//  mat4 modelRotation = inverse(transpose(model));
+//  vec4 transformedNormal = modelRotation * vec4(vNormal.xyz, 0.0);
 
   fEyePos = view * model * vec4(vPosition, 1.0);
   fColor = vColor;
   fUv = vTexCoord;
-  fNormal = normalize(transformedNormal).xyz;
+  fNormal = vNormal;//normalize(transformedNormal).xyz;
 
   gl_Position =  projection * fEyePos;
 }

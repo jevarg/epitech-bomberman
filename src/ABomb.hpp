@@ -13,6 +13,7 @@ public:
 
   void	explode(Map &map);
   void	update();
+  void	takeDamages(int);
 
 protected:
   int		_range;

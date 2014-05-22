@@ -1,3 +1,4 @@
+#include "GameEngine.hpp"
 #include "Map.hpp"
 #include "Input.hpp"
 #include "ACharacter.hpp"
@@ -72,8 +73,11 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
 
 void	ACharacter::dropBomb(t_gameinfo &gameInfo)
 {
-  std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
-  //  gameInfo.map.addEntity(new Bomb(_x, _y, _obj[WALL]->clone(), t_gameinfo &gameInfo));
+  if (gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL)
+    {
+      gameInfo.map.addEntity(new Bomb(_x, _y, gameInfo));
+      std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
+    }
 }
 
 bool	ACharacter::initialize()
@@ -97,14 +101,20 @@ int	ACharacter::getSpeed() const
   return (_speed);
 }
 
-int	ACharacter::getHealth() const
-{
-  return (_health);
-}
-
 void	ACharacter::setSpeed(int speed)
 {
   _speed = speed;
+}
+
+void	ACharacter::takeDamages(int amount)
+{
+  _health -= amount;
+  if (_health < 0)
+    _isAlive = false;
+}
+int	ACharacter::getHealth() const
+{
+  return (_health);
 }
 
 void	ACharacter::setHealth(int health)

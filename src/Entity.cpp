@@ -1,7 +1,8 @@
 #include "Map.hpp"
 #include "Entity.hpp"
 
-Entity::Entity(int x, int y, eType type) : AEntity(x, y, type)
+Entity::Entity(int x, int y, eType type, t_gameinfo &gameInfo) :
+  AEntity(x, y, type, gameInfo)
 {
 }
 
@@ -15,7 +16,6 @@ void	Entity::destroy(Map &map)
   delete (this);
 }
 
-void	Entity::update(t_gameinfo &gameInfo)
+void	Entity::takeDamages(int)
 {
-
 }

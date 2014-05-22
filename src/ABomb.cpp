@@ -22,5 +22,9 @@ void	ABomb::explode(Map &map)
 
 void	ABomb::update()
 {
+}
   
+void	ABomb::takeDamages(int /*amount*/)
+{
+
 }
