@@ -54,7 +54,7 @@ bool	ALivingEntity::isAlive() const
 
 void	ALivingEntity::die()
 {
-  delete(this);
+  delete (this);
 }
 
 void	ALivingEntity::takeDamages(int /*amount*/)
