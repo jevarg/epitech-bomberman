@@ -7,8 +7,8 @@ Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo &gam
   _power = power;
   _range = range;
   _direction = direction;
-  _timeout = 1 * _gameInfo.set.getVar(FPS);
-  _nextFlame = 100 / (1000 / _gameInfo.set.getVar(FPS)); // first nb = delay in ms
+  _timeout = 3 * _gameInfo.set.getVar(FPS);
+  _nextFlame = 1000 / (1000 / _gameInfo.set.getVar(FPS)); // first nb = delay in ms
 }
 
 Flame::~Flame()
@@ -17,9 +17,12 @@ Flame::~Flame()
 
 void	Flame::update()
 {
-  if (--_timeout == 0)
-    this->destroy(_gameInfo.map);
-  if (--_nextFlame == 0)
+  if ((--_timeout) == 0)
+    {
+      this->destroy(_gameInfo.map);
+      return ;
+    }
+  if ((--_nextFlame) == 0 && _range >= 0)
     {
       switch (_direction)
 	{
@@ -31,12 +34,16 @@ void	Flame::update()
 	  break;
 	case NORTH:
 	  setFire(_x, _y - 1, NORTH);
+	  break;
 	case SOUTH:
 	  setFire(_x, _y + 1, SOUTH);
+	  break;
 	case WEST:
 	  setFire(_x - 1, _y, WEST);
+	  break;
 	case EAST:
 	  setFire(_x + 1, _y, EAST);
+	  break;
 	}
     }
 }
@@ -49,13 +56,12 @@ void    Flame::setFire(int x, int y, eDir direction)
 
   if (_gameInfo.map.getEntityIf(x, y, WALL) != NULL)
     return ;
-  newFlame = new Flame(x, y, _power, _range - 1, direction, _gameInfo);
-  _gameInfo.map.addEntity(newFlame);
   if ((character = _gameInfo.map.getEntityIf(x, y, CHARACTER)) != NULL)
-    (_gameInfo.map.getEntityIf(x, y, CHARACTER))->takeDamages(newFlame->_power);
+    (_gameInfo.map.getEntityIf(x, y, CHARACTER))->takeDamages(_power);
   if ((object = _gameInfo.map.getEntityIfNot(x, y, CHARACTER)) != NULL)
-    (_gameInfo.map.getEntityIfNot(x, y, CHARACTER))->takeDamages(newFlame->_power);
-}
+    (_gameInfo.map.getEntityIfNot(x, y, CHARACTER))->takeDamages(_power);
+  newFlame = new Flame(x, y, _power, _range - 1, direction, _gameInfo);
+  _gameInfo.map.addEntity(newFlame);}
 
 void	Flame::hurtCharacter(ACharacter *character, int power)
 {

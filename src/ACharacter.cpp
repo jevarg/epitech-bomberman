@@ -8,7 +8,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
 /* handle the bomb type at creation */
 {
   _bombStock = 1;
-  _health = 100;
+  _health = 1;
   _speed = 5;
   _range = 5;
   _score = 0;

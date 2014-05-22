@@ -20,7 +20,7 @@ void	ABomb::explode()
 
 void	ABomb::update()
 {
-  if (--_timeout == 0)
+  if ((--_timeout) == 0)
     {
       this->explode();
       this->destroy(_gameInfo.map);
