@@ -50,7 +50,8 @@ bool GameEngine::initialize()
 
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
-  fact.addModel(CHARACTER, "./assets/steve.fbx");
+  fact.addModel(CHARACTER, CHARACTER_MODEL);
+  fact.addModel(BOMB, BOMB_MODEL);
 
   Camera *all_cam[1] = { &_cam };
 
