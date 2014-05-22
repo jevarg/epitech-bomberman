@@ -14,7 +14,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
   _orient = NORTH;
   _color = color;
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
-  _model->scale(glm::vec3(0.002, 0.002, 0.002));
+  _model->scale(glm::vec3(0.5, 0.5, 0.5));
 }
 
 ACharacter::~ACharacter()
