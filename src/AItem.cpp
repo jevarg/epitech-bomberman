@@ -43,9 +43,3 @@ void	AItem::takeDamages(int /*amount*/)
   _toDestroy = true;
   destroy(_gameInfo.map);
 }
-
-void	AItem::destroy(Map &map)
-{
-  map.removeEntityByPtr(this);
-  delete (this);
-}
