@@ -18,6 +18,8 @@ public:
 private:
   LuaCommunication _lua;
   int	_level;
+  int	_x;
+  int	_y;
 };
 
 #endif

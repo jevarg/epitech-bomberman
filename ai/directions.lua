@@ -12,6 +12,10 @@ function check_directions(map, cur_x, cur_y, i_x, i_y)
 	local nb = nil
 
 	for i = 1, (AGGRO * 2) + 1 do
+		-- print(i)
+		-- print("now nb is : ", nb)
+		-- print("x, y", cur_x, cur_y)
+		-- print("ix, iy", i_x, i_y)
 		if (nb ~= nil and authorized_entities(map[cur_y][cur_x])) then
 			if (nb + 1 > AGGRO and map[cur_y][cur_x] ~= nb - 1) then return move end
 			if ((type(map[cur_y][cur_x]) == "number" and
@@ -23,7 +27,9 @@ function check_directions(map, cur_x, cur_y, i_x, i_y)
 			end
 		end
 		nb = tonumber(map[cur_y][cur_x])
+		-- print("nb is ", nb)
 		cur_x, cur_y = cur_x + i_x, cur_y + i_y
+		-- print("new x, y", cur_x, cur_y)
 		if (cur_y == 0 or cur_y == MAP_YMAX + 1 or
 			cur_x == 0 or cur_x == MAP_XMAX + 1)
 		then return move end

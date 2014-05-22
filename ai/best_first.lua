@@ -4,7 +4,10 @@ end
 
 function have_elem(entities, x, y)
 	for i = 1, #entities do
-		if (get_abs_dist(entities, x, y, i) <= AGGRO) then
+		if ((entities[i]["type"] == TYPE_PRIORITY["box"] or
+			entities[i]["type"] == TYPE_PRIORITY["item"] or
+			entities[i]["type"] == TYPE_PRIORITY["player"]) and
+			get_abs_dist(entities, x, y, i) <= AGGRO) then
 			return 1
 		end
 	end
@@ -14,7 +17,7 @@ end
 function travel_map(map, cur_x, cur_y)
 	local move = 0
 
-	map[cur_y][cur_x] = "0"
+	map[cur_y][cur_x] = 0
 	move = move + check_directions(map, cur_x, cur_y, 0, -1) 	-- up
 	move = move + check_directions(map, cur_x, cur_y, 0, 1)		-- down
 	move = move + check_directions(map, cur_x, cur_y, 1, 0)		-- right
@@ -33,11 +36,15 @@ function best_first(map, map_nb, entities)
 		travel_map(map_nb, cur_x, cur_y)
 		print("\nFINAL MAP\n")
 		display_map(map_nb)
-		cur_x, cur_y = take_shortest_priority(map_nb, entities)
+		local nx, ny = take_shortest_priority(map_nb, entities)
 		print("\ndirection is : x y : ", cur_x, cur_y)
+		if (cur_x == nx and cur_y == ny) then
+			return ENUM_ACTION["bomb"]
+		else
+			cur_x, cur_y = nx, ny
+		end
 	else
 		cur_x, cur_y = random_movement()
 	end
-	display_map(map)
 	return determine_way(map, cur_x, cur_y)
 end

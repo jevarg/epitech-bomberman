@@ -28,7 +28,8 @@ end
 
 function take_decision(map, map_nb, entities)
 	if (map[Y][X] == "D") then
-		return go_out_danger(map_nb, X, Y, 0)
+		-- run_out_danger(map_nb, X, Y, 0)
+		-- return 
 	else
 		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1) then
 			return ENUM_ACTION["bomb"]
@@ -50,7 +51,5 @@ X, Y = arg["x"], arg["y"]
 BOMB_RANGE = arg["bomb_range"]
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
-MAP_XMAX = AGGRO
-MAP_YMAX = AGGRO
 print("for player in ", X, Y)
 return artificial_intelligence()
