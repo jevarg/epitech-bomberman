@@ -12,8 +12,8 @@ FBXHeaderExtension:  {
 		Month: 05
 		Day: 22
 		Hour: 18
-		Minute: 31
-		Second: 15
+		Minute: 37
+		Second: 37
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2014-05-22 18:31:15:000"
+CreationTime: "2014-05-22 18:37:37:000"
 Creator: "Blender version 2.70 (sub 0)"
 
 ; Object definitions
@@ -1785,8 +1785,8 @@ Takes:  {
 	Current: "Default Take"
 	Take: "Default Take" {
 		FileName: "Default_Take.tak"
-		LocalTime: 0,44261734750
-		ReferenceTime: 0,44261734750
+		LocalTime: 0,55808274250
+		ReferenceTime: 0,55808274250
 
 		;Models animation
 		;----------------------------------------------------
@@ -1826,7 +1826,7 @@ Takes:  {
 							34639618500,0.813789844512939,L,
 							36564041750,0.766312837600708,L,
 							38488465000,0.750000000000000,L,
-							44261734750,0.750000000000000,L
+							55808274250,0.750000000000000,L
 						Color: 0,1,0
 					}
 					Channel: "Z" {
@@ -1870,25 +1870,37 @@ Takes:  {
 					Channel: "X" {
 						Default: 0.750000000000000
 						KeyVer: 4005
-						KeyCount: 1
+						KeyCount: 5
 						Key: 
-							1924423250,0.750000000000000,L
+							0,0.750000000000000,L,
+							48110581250,0.750000000000000,L,
+							50035004500,0.801856696605682,L,
+							53883851000,1.073143362998962,L,
+							55808274250,1.125000000000000,L
 						Color: 1,0,0
 					}
 					Channel: "Y" {
 						Default: 0.750000000000000
 						KeyVer: 4005
-						KeyCount: 1
+						KeyCount: 5
 						Key: 
-							1924423250,0.750000000000000,L
+							0,0.750000000000000,L,
+							48110581250,0.750000000000000,L,
+							50035004500,0.801856696605682,L,
+							53883851000,1.073143362998962,L,
+							55808274250,1.125000000000000,L
 						Color: 0,1,0
 					}
 					Channel: "Z" {
 						Default: 0.750000000000000
 						KeyVer: 4005
-						KeyCount: 1
+						KeyCount: 5
 						Key: 
-							1924423250,0.750000000000000,L
+							0,0.750000000000000,L,
+							48110581250,0.750000000000000,L,
+							50035004500,0.801856696605682,L,
+							53883851000,1.073143362998962,L,
+							55808274250,1.125000000000000,L
 						Color: 0,0,1
 					}
 					LayerType: 3
@@ -2091,7 +2103,7 @@ Version5:  {
 		SnapOnFrames: 0
 		ReferenceTimeIndex: -1
 		TimeLineStartTime: 0
-		TimeLineStopTime: 44261734750
+		TimeLineStopTime: 55808274250
 	}
 	RendererSetting:  {
 		DefaultCamera: "Producer Perspective"
