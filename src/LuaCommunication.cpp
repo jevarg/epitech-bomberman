@@ -74,7 +74,7 @@ int LuaCommunication::getDatas()
       if (lua_type(_luaState, lua_gettop(_luaState)) == LUA_TNUMBER)
 	{
 	  res = lua_tonumber(_luaState, lua_gettop(_luaState));
-	  std::cout << "script returned the number: "
+	  std::cout << "s ret: "
 		    << res << std::endl;
 	  lua_pop(_luaState, 1);
 	}

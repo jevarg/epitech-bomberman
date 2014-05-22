@@ -51,3 +51,8 @@ bool	ALivingEntity::isAlive() const
 {
   return (_isAlive);
 }
+
+void	ALivingEntity::die()
+{
+  delete(this);
+}

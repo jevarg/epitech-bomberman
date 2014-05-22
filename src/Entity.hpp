@@ -2,15 +2,18 @@
 # define _ENTITY_H_
 
 # include "AEntity.hpp"
+# include "GameEngine.hpp"
 
 class Entity : public AEntity
 {
 public:
-  Entity(int x, int y, eType type);
+  Entity(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~Entity();
 
   void	destroy(Map &map);
-  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map);
+
+private:
+  t_gameinfo &_gameInfo;
 };
 
 #endif /* _ENTITY_H_ */

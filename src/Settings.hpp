@@ -9,12 +9,16 @@
 # include "Exception.hpp"
 
 # define DEFAULT_FILE "default.cfg"
+# define USER_FILE "config.cfg"
 # define UNBIND 0
 # define UNKNOWN_KEY -1
+
+typedef	struct	s_cvar	t_cvar;
 
 typedef int keyCode;
 typedef std::vector<std::string>::const_iterator v_instCit;
 typedef std::vector<std::string>::iterator v_instit;
+typedef std::vector<t_cvar *>::iterator v_cvarit;
 typedef std::map<std::string, keyCode>::const_iterator m_keyCit;
 
 enum	eAction
@@ -43,8 +47,21 @@ enum	cvar
     MAP_WIDTH,
     MAP_DENSITY,
     MAP_LINEAR,
+    R_FULLSCREEN,
     R_MIPMAP
   };
+
+typedef	struct	s_cvar
+{
+  s_cvar(const std::string &pname, int pmin_value, int pmax_value, int pdefault_value) :
+    name(pname), min_value(pmin_value), max_value(pmax_value), default_value(pdefault_value)
+  {
+  }
+  std::string	name;
+  int		min_value;
+  int		max_value;
+  int		default_value;
+}		t_cvar;
 
 class	Settings
 {
@@ -70,12 +87,13 @@ private:
   void	parsInst(const std::vector<std::string> &inst);
   void	addKey(const std::string tab[3]);
   void	addCvar(const std::string tab[3]);
+  void	initCvar();
   keyCode	getKeyFromCode(const std::string &) const;
 
   std::vector<std::string>	_actionList;
   std::map<keyCode, eAction>	_keyMap;
 
-  std::vector<std::string>     	_cvarList;
+  std::vector<t_cvar *>     	_cvarList;
   std::map<cvar, int>		_cvarMap;
 
   std::map<std::string, keyCode>	_speKeys;

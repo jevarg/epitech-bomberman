@@ -37,8 +37,10 @@
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
-# define BOMB_TEXTURE "./assets/box.tga"
-# define FLAME_TEXTURE "./assets/skybox.tga"
+
+# define CHARACTER_MODEL "./assets/steve.fbx"
+# define BOMB_MODEL "./assets/tnt.fbx"
+# define FLAME_MODEL "./assets/skybox.tga"
 
 typedef struct	s_gameinfo
 {

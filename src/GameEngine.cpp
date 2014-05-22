@@ -7,6 +7,13 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
+
+  Mutex *mutex = _gameInfo.mutex;
+  pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
+  std::cout << &_gameInfo << " " << mutex
+	    << " " << m
+	    << " " << _gameInfo.condvar << std::endl;
+  getchar();
 }
 
 GameEngine::~GameEngine()
@@ -50,12 +57,13 @@ bool GameEngine::initialize()
 
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
-  fact.addModel(CHARACTER, "./assets/marvin.fbx");
+  fact.addModel(CHARACTER, CHARACTER_MODEL);
+  fact.addModel(BOMB, BOMB_MODEL);
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.createMap();
-  spawn.spawnEnt(1, 1, all_cam, _gameInfo);
+  _gameInfo.map.createMap(_gameInfo);
+  spawn.spawnEnt(0, 1, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }

@@ -8,9 +8,9 @@ AEntity::AEntity()
 
 AEntity::AEntity(int x, int y, eType type) : _x(x), _y(y), _type(type)
 {
+  _toDestroy = false;
   _model = ModelFactory::getInstance().getModel(_type);
   _model->translate(glm::vec3(x, 0.0, y));
-  _toDestroy = false;
 }
 
 AEntity::~AEntity()

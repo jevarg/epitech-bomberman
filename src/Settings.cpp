@@ -12,15 +12,17 @@ Settings::Settings()
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
 
-  _cvarList.push_back("com_maxFps");
-  _cvarList.push_back("cg_fov");
-  _cvarList.push_back("r_windowHeight");
-  _cvarList.push_back("r_windowWidth");
-  _cvarList.push_back("m_mapHeight");
-  _cvarList.push_back("m_mapWidth");
-  _cvarList.push_back("s_mapDensity");
-  _cvarList.push_back("s_mapLinear");
-  _cvarList.push_back("r_mipmap");
+  _cvarList.push_back(new t_cvar ("com_maxFps", 20, 120, 60));
+  _cvarList.push_back(new t_cvar ("cg_fov", 20, 180, 80));
+  _cvarList.push_back(new t_cvar ("r_windowHeight", 480, 1440, 600));
+  _cvarList.push_back(new t_cvar ("r_windowWidth", 640, 2560, 1024));
+  _cvarList.push_back(new t_cvar ("m_mapHeight", 5, 100000, 25));
+  _cvarList.push_back(new t_cvar ("m_mapWidth", 5, 100000, 25));
+  _cvarList.push_back(new t_cvar ("s_mapDensity", 0, 100, 25));
+  _cvarList.push_back(new t_cvar ("s_mapLinear", 0, 100, 25));
+  _cvarList.push_back(new t_cvar ("r_fullScreen", 0, 1, 1));
+  _cvarList.push_back(new t_cvar ("r_mipmap", 0, 1, 1));
+  initCvar();
 
   _speKeys["CAPSLOCK"] = SDLK_CAPSLOCK;
   _speKeys["SPACE"] = SDLK_SPACE;
@@ -96,16 +98,32 @@ bool	Settings::isAscii(const std::string &str) const
   return (str.size() == 1);
 }
 
+void	Settings::initCvar()
+{
+  v_cvarit	listit;
+  v_cvarit	listend = _cvarList.end();
+
+  for (listit = _cvarList.begin(); listit != listend; ++listit)
+    {
+      _cvarMap.insert(std::pair<cvar, int>
+		      (static_cast<cvar>(std::distance(_cvarList.begin(), listit)),
+		       (*listit)->default_value));
+      break ;
+    }
+}
+
 void	Settings::addCvar(const std::string tab[3])
 {
-  v_instit	listit;
-  v_instit	listend = _cvarList.end();
+  v_cvarit	listit;
+  v_cvarit	listend = _cvarList.end();
   int		cvarValue = toNumber(tab[2]);
 
   for (listit = _cvarList.begin(); listit != listend; ++listit)
     {
-      if (*listit == tab[1])
+      if ((*listit)->name == tab[1])
 	{
+	  if (cvarValue > (*listit)->max_value || cvarValue < (*listit)->min_value)
+	    cvarValue = (*listit)->default_value;
 	  _cvarMap.insert(std::pair<cvar, int>
 			  (static_cast<cvar>(std::distance(_cvarList.begin(), listit)),
 			   cvarValue));

@@ -43,7 +43,7 @@ function artificial_intelligence()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
 	fill_dangerous_fields(map_nb)
-	display_map(map)
+	-- display_map(map)
 	return take_decision(map, map_nb, entities)
 end
 
