@@ -12,6 +12,7 @@ public:
 
   void	checkInput(t_gameinfo &gameInfo);
   void	update(t_gameinfo &gameInfo);
+
 private:
   Camera	*_camera;
 };

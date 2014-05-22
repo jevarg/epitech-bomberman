@@ -38,7 +38,6 @@ bool		Map::load(Settings &settings, const std::string &name)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
-  ModelFactory	&fact = ModelFactory::getInstance();
   unsigned int	len = 0;
   int		y = 0;
   int		x = 0;
@@ -258,7 +257,6 @@ void	Map::fillContainers()
 {
   unsigned int	i;
   unsigned int 	totalsize = (_mapY - 1) * _mapX;
-  ModelFactory  &fact = ModelFactory::getInstance();
 
   for (i = _mapX; i < totalsize; ++i)
     {

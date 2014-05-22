@@ -1,3 +1,4 @@
+#include "GameEngine.hpp"
 #include "Map.hpp"
 #include "Input.hpp"
 #include "ACharacter.hpp"
@@ -14,7 +15,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
   _orient = NORTH;
   _color = color;
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
-  _model->scale(glm::vec3(0.002, 0.002, 0.002));
+  _model->scale(glm::vec3(0.5, 0.5, 0.5));
 }
 
 ACharacter::~ACharacter()
@@ -73,7 +74,7 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
 void	ACharacter::dropBomb(t_gameinfo &gameInfo)
 {
   std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
-  //  gameInfo.map.addEntity(new Bomb(_x, _y, _obj[WALL]->clone(), t_gameinfo &gameInfo));
+  gameInfo.map.addEntity(new Bomb(_x, _y, gameInfo));
 }
 
 bool	ACharacter::initialize()

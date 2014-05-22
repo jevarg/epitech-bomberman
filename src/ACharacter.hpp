@@ -5,7 +5,7 @@
 
 # include "ALivingEntity.hpp"
 # include "Model.hpp"
-# include "ABomb.hpp"
+# include "Bomb.hpp"
 
 class Input;
 
