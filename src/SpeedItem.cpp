@@ -10,7 +10,7 @@ SpeedItem::~SpeedItem()
 {
 }
 
-void	SpeedItem::setSpeed(ACharacter &ch) const
+void	SpeedItem::setAttr(ACharacter *ch) const
 {
-  ch.setSpeed(ch.getSpeed() + _amount);
+  ch->setSpeed(ch->getSpeed() + _amount);
 }
