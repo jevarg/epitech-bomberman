@@ -6,6 +6,13 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
+
+  Mutex *mutex = _gameInfo.mutex;
+  pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
+  std::cout << &_gameInfo << " " << mutex
+	    << " " << m
+	    << " " << _gameInfo.condvar << std::endl;
+  getchar();
 }
 
 
