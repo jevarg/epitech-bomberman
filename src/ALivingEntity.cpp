@@ -2,7 +2,7 @@
 #include "ALivingEntity.hpp"
 
 ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
-  ADestructibleEntity(x, y, type), _gameInfo(gameInfo)
+  AEntity(x, y, type), _gameInfo(gameInfo)
 {
   _isAlive = true;
 

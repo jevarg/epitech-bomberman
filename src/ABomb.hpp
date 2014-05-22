@@ -5,7 +5,6 @@
 # include "IObject.hpp"
 # include "Settings.hpp"
 
-
 class		ABomb: public ALivingEntity
 {
 public:

@@ -1,7 +1,7 @@
 #ifndef _ALIVINGENTITY_H_
 # define _ALIVINGENTITY_H_
 
-# include "ADestructibleEntity.hpp"
+# include "AEntity.hpp"
 # include "Mutex.hpp"
 # include "Condvar.hpp"
 # include "Input.hpp"
@@ -9,7 +9,7 @@
 
 typedef struct s_gameinfo	t_gameinfo;
 
-class ALivingEntity : public ADestructibleEntity
+class ALivingEntity : public AEntity
 {
 public:
   ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo);
