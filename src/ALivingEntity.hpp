@@ -22,7 +22,6 @@ public:
   virtual void	update() = 0;
   virtual void 	destroy(Map &map);
   virtual void	takeDamages(int amount);
-  virtual void	destroy(Map &map);
   virtual void	die();
 
 protected:
