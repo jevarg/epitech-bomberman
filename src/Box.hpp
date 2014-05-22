@@ -2,6 +2,8 @@
 # define _BOX_HPP_
 
 # include "AEntity.hpp"
+# include "SpeedItem.hpp"
+# include "HealthItem.hpp"
 
 class	Box : public AEntity
 {
@@ -10,6 +12,7 @@ public:
   ~Box();
 
   void	takeDamages(int amount);
+  void	spawnItem(t_gameinfo &gameInfo);
   void	destroy(Map &map);
 };
 

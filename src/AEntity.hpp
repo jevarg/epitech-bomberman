@@ -16,6 +16,7 @@ enum	eType
     BOX,
     BOMB,
     FLAME,
+    ITEM,
     CHARACTER,
     GROUND,
     UNKNOWNENTITY
