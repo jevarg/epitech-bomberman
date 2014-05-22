@@ -13,6 +13,7 @@ Player::~Player()
   std::cout << "Player death" << std::endl;
 }
 
+
 void	Player::checkInput(t_gameinfo &gameInfo)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};

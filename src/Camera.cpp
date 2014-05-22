@@ -4,7 +4,7 @@
 
 Camera::Camera(): _pos(0.0, 0.0, 0.0), _pos_view(0.0, 0.0, 1.0), _dir(0.0, 1.0, 0.0)
 {
-  _projection = glm::perspective(CFOV, DEF_SIZE_X / DEF_SIZE_Y, 0.1f, 100.0f);
+  _projection = glm::perspective(CFOV, DEF_SIZE_X / DEF_SIZE_Y, 0.1f, 1000.0f);
 }
 
 
@@ -37,4 +37,9 @@ const glm::mat4	&Camera::getProjection() const
 void	Camera::setPointView(glm::vec3 vec)
 {
   _pos_view = vec;
+}
+
+const glm::vec3	&Camera::getPosView() const
+{
+  return (_pos_view);
 }

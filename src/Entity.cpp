@@ -15,7 +15,7 @@ void	Entity::destroy(Map &map)
   delete (this);
 }
 
-bool	Entity::update(gdl::Clock const &clock, Input const &input, Map &map)
+bool	Entity::update(gdl::Clock const &, Input const &, Map &)
 {
   return (false);
 }

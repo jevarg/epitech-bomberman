@@ -11,11 +11,11 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
 
 GameEngine::~GameEngine()
 {
-  while (_obj.size())
-    {
-      delete _obj.back();
-      _obj.pop_back();
-    }
+  // while (_obj.size())
+  //   {
+  //     delete _obj.back();
+  //     _obj.pop_back();
+  //   }
   _win.stop();
 }
 
@@ -39,7 +39,7 @@ bool GameEngine::initialize()
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
-  skybox->scale(glm::vec3(500, 500, 500));
+  skybox->scale(glm::vec3(200, 200, 200));
   _obj.push_back(skybox);
 
   skybox = new Cube(*skybox);
@@ -95,12 +95,12 @@ void GameEngine::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   _cam.lookAt();
+  _shader.setUniform("model", glm::translate(glm::mat4(1.0f), _cam.getPosView()));
   _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
   _shader.bind();
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _gameInfo.clock);
-  //std::cout << " BEGIN "<< std::endl;
   v_Contcit end = _gameInfo.map.ContEnd();
   for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
     {
@@ -111,7 +111,6 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(_shader, _gameInfo.clock);
     }
-  //  std::cout << " END "<< std::endl;
   _win.flush();
 }
 
