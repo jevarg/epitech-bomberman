@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May 22 00:50:59 2014 enzo de gregorio
+## Last update Thu May 22 18:30:27 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -29,6 +29,7 @@ SRC		=	main.cpp \
 			ATransformation.cpp \
 			Container.cpp \
 			AEntity.cpp \
+			ADestructibleEntity.cpp \
 			ALivingEntity.cpp \
 			AItem.cpp \
 			SpeedItem.cpp \

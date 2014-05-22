@@ -6,7 +6,7 @@
 class	Item : public AItem
 {
 public:
-  Item();
+  Item(int x, int y, eType type);
   ~Item();
 };
 

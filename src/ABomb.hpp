@@ -13,6 +13,7 @@ public:
   virtual ~ABomb();
 
   void	explode(Map &map);
+  void	takeDamages(int);
 
   virtual void	update(t_gameinfo &gameInfo) = 0;
 

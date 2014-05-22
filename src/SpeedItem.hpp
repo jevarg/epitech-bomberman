@@ -6,7 +6,7 @@
 class SpeedItem : public AItem
 {
 public:
-  SpeedItem();
+  SpeedItem(int x, int y, eType type);
   virtual ~SpeedItem();
 
   void	setSpeed(ACharacter &ch) const;

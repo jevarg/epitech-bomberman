@@ -1,6 +1,7 @@
 #include "SpeedItem.hpp"
 
-SpeedItem::SpeedItem() : AItem()
+SpeedItem::SpeedItem(int x, int y, eType type) :
+  AItem(x, y, type)
 {
   _amount = SPEED_AMOUNT;
 }

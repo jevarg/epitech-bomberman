@@ -1,7 +1,7 @@
 #ifndef _ALIVINGENTITY_H_
 # define _ALIVINGENTITY_H_
 
-# include "AEntity.hpp"
+# include "ADestructibleEntity.hpp"
 # include "Mutex.hpp"
 # include "Condvar.hpp"
 # include "Input.hpp"
@@ -9,7 +9,7 @@
 
 typedef struct s_gameinfo	t_gameinfo;
 
-class ALivingEntity : public AEntity
+class ALivingEntity : public ADestructibleEntity
 {
 public:
   ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo);
@@ -19,7 +19,9 @@ public:
   void		setDead();
   bool		isAlive() const;
   void		destroy(Map &map);
+
   virtual void	update(t_gameinfo &gameInfo) = 0;
+  virtual void	takeDamages(int amount);
   virtual void	die();
 
 protected:

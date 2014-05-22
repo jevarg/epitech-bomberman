@@ -1,6 +1,7 @@
 #include "Item.hpp"
 
-Item::Item() : AItem()
+Item::Item(int x, int y, eType type) :
+  AItem(x, y, type)
 {
 }
 

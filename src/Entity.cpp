@@ -15,3 +15,7 @@ void	Entity::destroy(Map &map)
   map.removeEntityByPtr(this);
   delete (this);
 }
+
+void	Entity::takeDamages(int)
+{
+}

@@ -11,12 +11,13 @@ enum
     HEALTH_AMOUNT = 20
   };
 
-class AItem
+class AItem : public AEntity
 {
 public:
-  AItem();
+  AItem(int x, int y, eType type);
   virtual ~AItem() = 0;
 
+  void	takeDamages(int amount);
 protected:
   int	_timeout;
   int	_amount;

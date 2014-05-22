@@ -1,6 +1,7 @@
 #include "HealthItem.hpp"
 
-HealthItem::HealthItem() : AItem()
+HealthItem::HealthItem(int x, int y, eType type) :
+  AItem(x, y, type)
 {
   _amount = HEALTH_AMOUNT;
 }

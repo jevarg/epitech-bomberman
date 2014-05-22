@@ -154,7 +154,6 @@ void	Map::genSmallMaze(short x, short y, short pos)
   short	ty;
   bool 	tabdir[4] = {false, false, false, false};
 
-  std::cout << x << " " << y << " " << _mapX << std::endl;
   _map[y * _mapX + x] = FREE;
   if (pos < 4)
     tabdir[pos] = true;

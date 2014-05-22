@@ -2,7 +2,7 @@
 #include "ALivingEntity.hpp"
 
 ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
-  AEntity(x, y, type), _gameInfo(gameInfo)
+  ADestructibleEntity(x, y, type), _gameInfo(gameInfo)
 {
   _isAlive = true;
 
@@ -55,4 +55,9 @@ bool	ALivingEntity::isAlive() const
 void	ALivingEntity::die()
 {
   delete(this);
+}
+
+void	ALivingEntity::takeDamages(int /*amount*/)
+{
+  _toDestroy = true;
 }

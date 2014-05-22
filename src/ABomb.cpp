@@ -18,3 +18,7 @@ void	ABomb::explode(Map &map)
   newFlame->setFire(_x, _y, ALLDIR, _range);
   delete(this);
 }
+
+void	ABomb::takeDamages(int /*amount*/)
+{
+}

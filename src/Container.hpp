@@ -37,8 +37,8 @@ public:
   AEntity	*getEntityIfNot(int, int, eType);
 
 private:
-  std::vector<AEntity *>	_staticEnt;
-  std::list<AEntity *>		_mobileEnt;
+  std::vector<AEntity *>       	_staticEnt;
+  std::list<AEntity *>     	_mobileEnt;
 };
 
 #endif /* _ENTITIE_H_ */

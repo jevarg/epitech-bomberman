@@ -50,6 +50,7 @@ public:
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
   virtual void	destroy(Map &map) = 0;
+  virtual void	takeDamages(int amount) = 0;
 
 protected:
   int		_x;
