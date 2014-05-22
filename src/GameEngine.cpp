@@ -58,6 +58,7 @@ bool GameEngine::initialize()
   fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
   fact.addModel(CHARACTER, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
+  fact.addModel(FLAME, BOMB_MODEL);
 
   Camera *all_cam[1] = { &_cam };
 

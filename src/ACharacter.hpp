@@ -37,6 +37,7 @@ public:
   int		getHealth() const;
   void		setHealth(int health);
   void		takeDamages(int amount);
+
 protected:
   glm::vec4	_color;
   int		_bombStock;

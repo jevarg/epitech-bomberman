@@ -1,71 +1,63 @@
 #include "GameEngine.hpp"
 #include "Flame.hpp"
 
-Flame::Flame(int x, int y, int power, eDir direction, t_gameinfo &gameInfo)
+Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo &gameInfo)
   : ALivingEntity(x, y, FLAME, gameInfo)
 {
   _power = power;
+  _range = range;
+  _direction = direction;
+  _timeout = 1 * _gameInfo.set.getVar(FPS);
+  _nextFlame = 100 / (1000 / _gameInfo.set.getVar(FPS)); // first nb = delay in ms
 }
 
 Flame::~Flame()
 {
 }
 
-/* If bomb doesn't work, think about modifying entity setters (used here) */
-void    Flame::setFire(int x, int y, eDir direction, int range)
+void	Flame::update()
 {
-  Flame *newFlame;
-
-  if (_gameInfo.map.getEntityIf(x, y, WALL))
-    return ;
-  if (direction != ALLDIR)
+  if (--_timeout == 0)
+    this->destroy(_gameInfo.map);
+  if (--_nextFlame == 0)
     {
-      newFlame = new Flame(x, y, _power, ALLDIR, _gameInfo);
-      _gameInfo.map.addEntity(newFlame);
-    }
-  if (_gameInfo.map.getEntityIf(x, y, CHARACTER))
-    {
-      hurtCharacter((ACharacter *)_gameInfo.map.getEntityIf(x, y, CHARACTER), _power);
-      return ;
-    }
-  else if (_gameInfo.map.getEntityIfNot(x, y, CHARACTER))
-    {
-      _gameInfo.map.setEntity(x, y, FREE);
-      return ;
-    }
-  if (range > 0)
-    {
-      switch (direction)
+      switch (_direction)
 	{
-	case ALLDIR: // used "this" here to be explicit between each case //
-	  this->setFire(x, y - 1, NORTH, range - 1);
-	  this->setFire(x, y + 1, SOUTH, range - 1);
-	  this->setFire(x - 1, y, WEST, range - 1);
-	  this->setFire(x + 1, y, EAST, range - 1);
+	case ALLDIR:
+	  setFire(_x, _y - 1, NORTH);
+	  setFire(_x, _y + 1, SOUTH);
+	  setFire(_x - 1, _y, WEST);
+	  setFire(_x + 1, _y, EAST);
 	  break;
 	case NORTH:
-	  newFlame->setFire(x, y - 1, NORTH, range - 1);
-	  break;
+	  setFire(_x, _y - 1, NORTH);
 	case SOUTH:
-	  newFlame->setFire(x, y + 1, SOUTH, range - 1);
-	  break;
+	  setFire(_x, _y + 1, SOUTH);
 	case WEST:
-	  newFlame->setFire(x - 1, y, WEST, range - 1);
-	  break;
+	  setFire(_x - 1, _y, WEST);
 	case EAST:
-	  newFlame->setFire(x + 1, y, EAST, range - 1);
-	  break;
-	default:
-	  break;
+	  setFire(_x + 1, _y, EAST);
 	}
     }
 }
 
-void	Flame::hurtCharacter(ACharacter *character, int power)
+void    Flame::setFire(int x, int y, eDir direction)
 {
-  character->setHealth(character->getHealth() - power);
+  Flame		*newFlame;
+  AEntity	*character;
+  AEntity	*object;
+
+  if (_gameInfo.map.getEntityIf(x, y, WALL) != NULL)
+    return ;
+  newFlame = new Flame(x, y, _power, _range - 1, direction, _gameInfo);
+  _gameInfo.map.addEntity(newFlame);
+  if ((character = _gameInfo.map.getEntityIf(x, y, CHARACTER)) != NULL)
+    (_gameInfo.map.getEntityIf(x, y, CHARACTER))->takeDamages(newFlame->_power);
+  if ((object = _gameInfo.map.getEntityIfNot(x, y, CHARACTER)) != NULL)
+    (_gameInfo.map.getEntityIfNot(x, y, CHARACTER))->takeDamages(newFlame->_power);
 }
 
-void	Flame::update()
+void	Flame::hurtCharacter(ACharacter *character, int power)
 {
+  character->takeDamages(power);
 }
