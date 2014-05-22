@@ -100,11 +100,14 @@ bool GameEngine::update()
 
 void GameEngine::draw()
 {
+  glm::mat4 model = glm::transpose(glm::translate(glm::mat4(1.0f), _cam.getPosView()));
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   _cam.lookAt();
-  _shader.setUniform("model", glm::translate(glm::mat4(1.0f), _cam.getPosView()));
-  _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
+  _shader.setUniform("view", _cam.getTransformation());
+  _shader.setUniform("model", model);
+  _shader.setUniform("inv_model", glm::inverse(model));
   _shader.bind();
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _gameInfo.clock);
