@@ -22,6 +22,7 @@ Settings::Settings()
   _cvarList.push_back(new t_cvar ("s_mapLinear", 0, 100, 25));
   _cvarList.push_back(new t_cvar ("r_fullScreen", 0, 1, 1));
   _cvarList.push_back(new t_cvar ("r_mipmap", 0, 1, 1));
+  initCvar();
 
   _speKeys["CAPSLOCK"] = SDLK_CAPSLOCK;
   _speKeys["SPACE"] = SDLK_SPACE;
@@ -95,6 +96,20 @@ int	Settings::toNumber(const std::string &str) const
 bool	Settings::isAscii(const std::string &str) const
 {
   return (str.size() == 1);
+}
+
+void	Settings::initCvar()
+{
+  v_cvarit	listit;
+  v_cvarit	listend = _cvarList.end();
+
+  for (listit = _cvarList.begin(); listit != listend; ++listit)
+    {
+      _cvarMap.insert(std::pair<cvar, int>
+		      (static_cast<cvar>(std::distance(_cvarList.begin(), listit)),
+		       (*listit)->default_value));
+      break ;
+    }
 }
 
 void	Settings::addCvar(const std::string tab[3])

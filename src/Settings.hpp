@@ -86,6 +86,7 @@ private:
   void	parsInst(const std::vector<std::string> &inst);
   void	addKey(const std::string tab[3]);
   void	addCvar(const std::string tab[3]);
+  void	initCvar();
   keyCode	getKeyFromCode(const std::string &) const;
 
   std::vector<std::string>	_actionList;
