@@ -12,8 +12,8 @@ FBXHeaderExtension:  {
 		Month: 05
 		Day: 22
 		Hour: 18
-		Minute: 18
-		Second: 14
+		Minute: 31
+		Second: 15
 		Millisecond: 0
 	}
 	Creator: "FBX SDK/FBX Plugins build 20070228"
@@ -21,7 +21,7 @@ FBXHeaderExtension:  {
 		FlagPLE: 0
 	}
 }
-CreationTime: "2014-05-22 18:18:14:000"
+CreationTime: "2014-05-22 18:31:15:000"
 Creator: "Blender version 2.70 (sub 0)"
 
 ; Object definitions
@@ -1785,8 +1785,8 @@ Takes:  {
 	Current: "Default Take"
 	Take: "Default Take" {
 		FileName: "Default_Take.tak"
-		LocalTime: 0,59657120750
-		ReferenceTime: 0,59657120750
+		LocalTime: 0,44261734750
+		ReferenceTime: 0,44261734750
 
 		;Models animation
 		;----------------------------------------------------
@@ -1805,9 +1805,28 @@ Takes:  {
 					Channel: "Y" {
 						Default: 0.750000000000000
 						KeyVer: 4005
-						KeyCount: 1
+						KeyCount: 20
 						Key: 
-							1924423250,0.750000000000000,L
+							0,0.750000000000000,L,
+							1924423250,0.818036437034607,L,
+							3848846500,1.009674072265625,L,
+							5773269750,1.255735754966736,L,
+							7697693000,1.447373390197754,L,
+							9622116250,1.515409946441650,L,
+							11546539500,1.447373390197754,L,
+							13470962750,1.255735754966736,L,
+							15395386000,1.009674072265625,L,
+							17319809250,0.818036317825317,L,
+							19244232500,0.750000000000000,L,
+							21168655750,0.786518394947052,L,
+							25017502250,0.977563440799713,L,
+							26941925500,1.014081835746765,L,
+							28866348750,0.997768998146057,L,
+							30790772000,0.950292050838470,L,
+							34639618500,0.813789844512939,L,
+							36564041750,0.766312837600708,L,
+							38488465000,0.750000000000000,L,
+							44261734750,0.750000000000000,L
 						Color: 0,1,0
 					}
 					Channel: "Z" {
@@ -2072,7 +2091,7 @@ Version5:  {
 		SnapOnFrames: 0
 		ReferenceTimeIndex: -1
 		TimeLineStartTime: 0
-		TimeLineStopTime: 59657120750
+		TimeLineStopTime: 44261734750
 	}
 	RendererSetting:  {
 		DefaultCamera: "Producer Perspective"
