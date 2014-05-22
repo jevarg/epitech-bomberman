@@ -101,14 +101,20 @@ int	ACharacter::getSpeed() const
   return (_speed);
 }
 
-int	ACharacter::getHealth() const
-{
-  return (_health);
-}
-
 void	ACharacter::setSpeed(int speed)
 {
   _speed = speed;
+}
+
+void	ACharacter::takeDamages(int amount)
+{
+  _health -= amount;
+  if (_health < 0)
+    _isAlive = false;
+}
+int	ACharacter::getHealth() const
+{
+  return (_health);
 }
 
 void	ACharacter::setHealth(int health)

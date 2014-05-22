@@ -12,7 +12,6 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
   std::cout << &_gameInfo << " " << mutex
 	    << " " << m
 	    << " " << _gameInfo.condvar << std::endl;
-  getchar();
 }
 
 

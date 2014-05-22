@@ -24,7 +24,7 @@ public:
   ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo);
   virtual ~ACharacter() = 0;
 
-  virtual void	update(t_gameinfo &gameInfo) = 0;
+  virtual void	update() = 0;
 
   bool		initialize();
   bool		move(Map &map, int dirX, int dirY);
@@ -33,15 +33,15 @@ public:
 
   int		getScore() const;
   int		getSpeed() const;
-  int		getHealth() const;
   void		setSpeed(int speed);
+  int		getHealth() const;
   void		setHealth(int health);
-
+  void		takeDamages(int amount);
 protected:
   glm::vec4	_color;
-  int		_health;
   int		_bombStock;
   ABomb		*_bomb;
+  int		_health;
   int		_speed;
   int		_range;
   int		_score;

@@ -1,8 +1,8 @@
+#include "GameEngine.hpp"
 #include "Box.hpp"
-#include "ALivingEntity.hpp"
 
-Box::Box(int x, int y, t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, BOX, gameInfo)
+Box::Box(int x, int y, eType type, t_gameinfo &gameInfo)
+  : AEntity(x, y, type, gameInfo)
 {
 }
 
@@ -10,13 +10,19 @@ Box::~Box()
 {
 }
 
-void	Box::update(t_gameinfo &gameInfo)
+void	Box::takeDamages(int)
 {
-
+  spawnItem(_gameInfo);
+  destroy(_gameInfo.map);
 }
 
-void	Box::die()
+void	Box::spawnItem(t_gameinfo &gameInfo)
 {
-  // may drop a bonus
-  delete(this);
+  gameInfo.map.addEntity(new SpeedItem(_x, _y, ITEM, gameInfo));
+}
+
+void	Box::destroy(Map &map)
+{
+  map.removeEntityByPtr(this);
+  delete (this);
 }

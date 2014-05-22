@@ -25,10 +25,7 @@ void		Mutex::unlock()
   pthread_mutex_unlock(&_mutex);
 }
 
-#include <iostream>
-
 pthread_mutex_t	*Mutex::getMutexPtr()
 {
-  std::cout << "Mutex::getMutexPtr: " << this << " " << &_mutex << std::endl;
   return (&_mutex);
 }

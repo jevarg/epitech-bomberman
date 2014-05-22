@@ -2,7 +2,7 @@
 #include "ALivingEntity.hpp"
 
 ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
-  AEntity(x, y, type), _gameInfo(gameInfo)
+  AEntity(x, y, type, gameInfo)
 {
   _isAlive = true;
 
@@ -42,7 +42,7 @@ void	ALivingEntity::aliveLoop()
       if (_toDestroy)
 	destroy(_gameInfo.map);
       if (_isAlive)
-	update(_gameInfo);
+	update();
     }
   pthread_exit(NULL);
 }
@@ -55,4 +55,9 @@ bool	ALivingEntity::isAlive() const
 void	ALivingEntity::die()
 {
   delete(this);
+}
+
+void	ALivingEntity::takeDamages(int /*amount*/)
+{
+  _toDestroy = true;
 }

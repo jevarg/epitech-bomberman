@@ -11,9 +11,7 @@ public:
   virtual ~Entity();
 
   void	destroy(Map &map);
-
-private:
-  t_gameinfo &_gameInfo;
+  void	takeDamages(int amount);
 };
 
 #endif /* _ENTITY_H_ */
