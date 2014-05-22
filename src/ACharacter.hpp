@@ -15,6 +15,7 @@ enum	eDir
     WEST,
     SOUTH,
     EAST,
+    ALLDIR
   };
 
 class	ACharacter : public ALivingEntity

@@ -22,11 +22,12 @@ public:
   Map(Settings &set);
   ~Map();
 
-  void	createMap();
+  void	createMap(t_gameinfo &gameInfo);
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
-  bool		load(Settings &settings, const std::string&);
+  bool		load(Settings &settings, const std::string &,
+		     t_gameinfo &gameInfo);
 
   void	addEntity(AEntity *ent);
   void	removeEntity(int x, int y);
@@ -56,7 +57,7 @@ private:
 
   bool	checkAccess(short x, short y) const;
   void	fillBox();
-  void	fillContainers();
+  void	fillContainers(t_gameinfo &gameInfo);
   void	display();
 
   int			_mapX;

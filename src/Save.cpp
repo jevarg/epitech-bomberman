@@ -99,7 +99,8 @@
   return (true);
 }
 
-bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
+bool		Save::loadGame(Map &map, Settings &settings,
+			       const std::string &name, t_gameinfo &gameInfo)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -153,8 +154,7 @@ bool		Save::loadGame(Map &map, Settings &settings, const std::string &name)
 	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
 	      return (false);
 	    }
-	  eType tmp = static_cast<eType>(type % (GROUND + 1));
-	  map.addEntity(new Entity(x, y, tmp));
+	  map.addEntity(new Entity(x, y, static_cast<eType>(type % (GROUND + 1)), gameInfo));
 	  ++line;
 	}
     }

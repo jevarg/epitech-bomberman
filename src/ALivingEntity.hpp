@@ -18,9 +18,9 @@ public:
   void		aliveLoop();
   void		setDead();
   bool		isAlive() const;
-
   void		destroy(Map &map);
   virtual void	update(t_gameinfo &gameInfo) = 0;
+  virtual void	die();
 
 protected:
   t_gameinfo	&_gameInfo;

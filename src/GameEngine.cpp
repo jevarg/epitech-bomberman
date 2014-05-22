@@ -50,11 +50,11 @@ bool GameEngine::initialize()
 
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
-  fact.addModel(CHARACTER, "./assets/marvin.fbx");
+  fact.addModel(CHARACTER, "./assets/steve.fbx");
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.createMap();
+  _gameInfo.map.createMap(_gameInfo);
   spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);

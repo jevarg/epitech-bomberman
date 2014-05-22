@@ -5,6 +5,7 @@
 # include "IObject.hpp"
 # include "Settings.hpp"
 
+
 class		ABomb: public ALivingEntity
 {
 public:
@@ -12,7 +13,6 @@ public:
   virtual ~ABomb();
 
   void	explode(Map &map);
-  void	setFire(int x, int y, eAction direction, int range, Map &map);
 
   virtual void	update(t_gameinfo &gameInfo) = 0;
 

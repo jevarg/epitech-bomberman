@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Tue May 20 15:06:31 2014 luc sinet
+## Last update Thu May 22 00:50:59 2014 enzo de gregorio
 ##
 
 NAME		=	bomberman
@@ -35,6 +35,7 @@ SRC		=	main.cpp \
 			Entity.cpp \
 			Settings.cpp \
 			Save.cpp \
+			Box.cpp \
 			Item.cpp \
 			ABomb.cpp \
 			Bomb.cpp \

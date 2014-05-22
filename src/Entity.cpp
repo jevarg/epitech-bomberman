@@ -1,7 +1,8 @@
 #include "Map.hpp"
 #include "Entity.hpp"
 
-Entity::Entity(int x, int y, eType type) : AEntity(x, y, type)
+Entity::Entity(int x, int y, eType type, t_gameinfo &gameInfo) :
+  AEntity(x, y, type), _gameInfo(gameInfo)
 {
 }
 
@@ -13,9 +14,4 @@ void	Entity::destroy(Map &map)
 {
   map.removeEntityByPtr(this);
   delete (this);
-}
-
-bool	Entity::update(gdl::Clock const &, Input const &, Map &)
-{
-  return (false);
 }
