@@ -9,6 +9,7 @@
 # include "Exception.hpp"
 
 # define DEFAULT_FILE "default.cfg"
+# define USER_FILE "config.cfg"
 # define UNBIND 0
 # define UNKNOWN_KEY -1
 
