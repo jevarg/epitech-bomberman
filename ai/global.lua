@@ -1,6 +1,9 @@
 X = 0
 Y = 0
 
+X_TMP = 0
+Y_TMP = 0
+
 AGGRO = 0
 LEVEL = 0
 
