@@ -18,15 +18,11 @@ void	IA::update()
   int y = _y - aggro[_level - 1];
   int x = _x - aggro[_level - 1];
 
-  if (y < 1)
-    y = 1;
-  if (x < 1)
-    x = 1;
   pushEntitie(x, y, &cnt, aggro[_level - 1], _gameInfo);
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
-      std::cout << _x << " " << _y << " " << res << std::endl;
+      std::cout << "IA: " << _x << " " << _y << " " << res << std::endl;
       updatePosition(_gameInfo.map, static_cast<eAction>(res));
       getchar();
     }
@@ -46,6 +42,7 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 8);
 	  if (i == _y && j == _x)
 	    {
+	      std::cout << "foudn player" << std::endl;
 	      _lua.pushStringInt("y", c1);
 	      _lua.pushStringInt("x", c2);
 	    }

@@ -26,7 +26,7 @@ ACharacter::~ACharacter()
 bool	ACharacter::updatePosition(Map &map, eAction action)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
-  eDir		tabdir[4] = {SOUTH, NORTH, EAST, WEST};
+  eDir		tabdir[4] = {NORTH, SOUTH, EAST, WEST};
   int		dirX;
   int		dirY;
 
