@@ -1,4 +1,3 @@
-print("lol")
 dofile("ai/global.lua")
 dofile("ai/utils.lua")
 dofile("ai/construct_map.lua")
@@ -30,7 +29,7 @@ end
 function take_decision(map, map_nb, entities)
 	if (map[Y][X] == "D") then
 		-- run_out_danger(map_nb, X, Y, 0)
-		-- return 
+		-- return
 	else
 		display_map(map)
 		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1) then
