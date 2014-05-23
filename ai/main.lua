@@ -48,11 +48,9 @@ function artificial_intelligence()
 	return take_decision(map, map_nb, entities)
 end
 
-print("larger of arg", #arg)
-
 X, Y = arg["x"], arg["y"]
 BOMB_RANGE = arg["bomb_range"]
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
-print("for player in ", X, Y)
+-- print("for player in ", X, Y)
 return artificial_intelligence()
