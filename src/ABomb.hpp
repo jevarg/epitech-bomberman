@@ -9,7 +9,7 @@ class		ABomb: public ALivingEntity
 {
 public:
   ABomb(int x, int y, t_gameinfo &gameInfo);
-  virtual ~ABomb();
+  virtual ~ABomb() = 0;
 
   void	update();
   void	explode();

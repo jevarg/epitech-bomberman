@@ -7,7 +7,7 @@
 class	Flame : public ALivingEntity
 {
 private:
-  int	_power; 
+  int	_power;
   int	_range;
   eDir	_direction;
   int	_timeout;

@@ -41,5 +41,4 @@ void	AItem::update()
 void	AItem::takeDamages(int /*amount*/)
 {
   _toDestroy = true;
-  destroy(_gameInfo.map);
 }
