@@ -8,7 +8,7 @@ Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo &gam
   _range = range;
   _direction = direction;
   _timeout = 3 * _gameInfo.set.getVar(FPS);
-  _nextFlame = 1000 / (1000 / _gameInfo.set.getVar(FPS)); // first nb = delay in ms
+  _nextFlame = 100 / (1000 / _gameInfo.set.getVar(FPS)); // first nb = delay in ms
 }
 
 Flame::~Flame()
