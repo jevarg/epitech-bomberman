@@ -82,6 +82,7 @@ private:
   Player			*_player;
   t_gameinfo			_gameInfo;
   Text				_text;
+  int				_frames;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

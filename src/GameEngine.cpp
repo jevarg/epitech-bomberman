@@ -10,6 +10,7 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
 
   Mutex *mutex = _gameInfo.mutex;
   pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
+  _frames = 0;
   std::cout << &_gameInfo << " " << mutex
 	    << " " << m
 	    << " " << _gameInfo.condvar << std::endl;
@@ -97,10 +98,14 @@ bool GameEngine::update()
   // if (win.event == WIN_RESIZE) // Seems not to work
   //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl
 
-  _text << round((1000 / _gameInfo.clock.getElapsed()) / 1000);
+  _frames++;
 
   if ((time = _gameInfo.clock.getElapsed()) < fps)
-    usleep((fps - time) * 1000);
+    {
+      _text << round(_frames / _gameInfo.clock.getElapsed());
+      _frames = 0;
+      usleep((fps - time) * 1000);
+    }
   _win.updateClock(_gameInfo.clock);
   return (true);
 }
