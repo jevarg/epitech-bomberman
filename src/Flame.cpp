@@ -27,8 +27,9 @@ void		Flame::update()
     }
   for (int i = BOX; i < UNKNOWNENTITY; ++i)
     {
-      if ((ent = _gameInfo.map.getEntityIfNot(_x, _y, static_cast<eType>(i))) != NULL
-	  && ent != this)
+      if (i == FLAME)
+	continue ;
+      if ((ent = _gameInfo.map.getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
 	{
 	  ent->takeDamages(_power);
 	  _range = 0;
@@ -62,7 +63,9 @@ void		Flame::update()
 
 void    Flame::setFire(int x, int y, eDir direction)
 {
-  _gameInfo.map.addEntity(new Flame(x, y, _power, _range - 1, direction, _gameInfo));
+  if (_gameInfo.map.getEntityIf(x, y, FLAME) == NULL)
+    _gameInfo.map.addEntity(new Flame(x, y, _power, _range - 1,
+				      direction, _gameInfo));
 }
 
 void	Flame::hurtCharacter(ACharacter *character, int power)
