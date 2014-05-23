@@ -12,8 +12,9 @@ public:
   ~IA();
 
   virtual void	update(t_gameinfo &gameInfo);
+  void	updatePos(int res);
   void	pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo);
-  int	getResultScript(int aggro);
+  int	getResultScript(int aggro, int orient);
 
 private:
   LuaCommunication _lua;

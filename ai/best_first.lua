@@ -7,7 +7,8 @@ function have_elem(entities, x, y)
 		if ((entities[i]["type"] == TYPE_PRIORITY["box"] or
 			entities[i]["type"] == TYPE_PRIORITY["item"] or
 			entities[i]["type"] == TYPE_PRIORITY["player"]) and
-			get_abs_dist(entities, x, y, i) <= AGGRO) then
+			get_abs_dist(entities, x, y, i) <= AGGRO and
+			entities[i]["x"] ~= x and entities[i]["y"] ~= y) then
 			return 1
 		end
 	end
@@ -32,10 +33,10 @@ end
 function best_first(map, map_nb, entities)
 	local cur_x, cur_y = X, Y
 
-	if (have_elem(entities, cur_x, cur_y)) then
+	if (have_elem(entities, cur_x, cur_y) == 1) then
 		travel_map(map_nb, cur_x, cur_y)
-		-- print("\nFINAL MAP\n")
-		-- display_map(map_nb)
+		print("\nFINAL MAP\n")
+		display_map(map_nb)
 		local nx, ny = take_shortest_priority(map_nb, entities)
 		-- print("\ndirection is : x y : ", cur_x, cur_y)
 		if (cur_x == nx and cur_y == ny) then
@@ -44,7 +45,8 @@ function best_first(map, map_nb, entities)
 			cur_x, cur_y = nx, ny
 		end
 	else
-		cur_x, cur_y = random_movement()
-	end
+		local used_nb = {}
+		cur_x, cur_y = random_movement(map, used_nb)
+	end	
 	return determine_way(map, cur_x, cur_y)
 end

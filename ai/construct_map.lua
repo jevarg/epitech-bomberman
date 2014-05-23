@@ -48,9 +48,9 @@ end
 function create_map(entities, aggro)
 	local map = {}
 
-	for i = 1, aggro * 2 + 1 do
+	for i = 1, aggro * 2 + 2 do
 		table.insert(map, {})
-		for j = 1, aggro * 2 + 1 do
+		for j = 1, aggro * 2 + 2 do
 			table.insert(map[i], " ")
 		end
 	end

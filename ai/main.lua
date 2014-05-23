@@ -1,3 +1,4 @@
+print("lol")
 dofile("ai/global.lua")
 dofile("ai/utils.lua")
 dofile("ai/construct_map.lua")
@@ -31,6 +32,7 @@ function take_decision(map, map_nb, entities)
 		-- run_out_danger(map_nb, X, Y, 0)
 		-- return 
 	else
+		display_map(map)
 		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1) then
 			return ENUM_ACTION["bomb"]
 		end
@@ -43,9 +45,10 @@ function artificial_intelligence()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
 	fill_dangerous_fields(map_nb)
-	-- display_map(map)
 	return take_decision(map, map_nb, entities)
 end
+
+print("larger of arg", #arg)
 
 X, Y = arg["x"], arg["y"]
 BOMB_RANGE = arg["bomb_range"]

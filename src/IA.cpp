@@ -11,6 +11,15 @@ IA::~IA()
 {
 }
 
+void	IA::updatePos(int res)
+{
+  int	tab_x[4] = {0, 0, -1, 1};
+  int	tab_y[4] = {-1, 1, 0, 0};
+
+  _x += tab_x[res];
+  _y += tab_y[res];
+}
+
 void	IA::update(t_gameinfo &gameInfo)
 {
   int cnt = 0;
@@ -23,10 +32,11 @@ void	IA::update(t_gameinfo &gameInfo)
   if (x < 1)
     x = 1;
   pushEntitie(x, y, &cnt, aggro[_level - 1], gameInfo);
-  std::cout << cnt << std::endl;
   if (cnt != 0)
     {
-      updatePosition(gameInfo.map, static_cast<eAction>(getResultScript(aggro[_level - 1])));
+      int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
+      updatePos(res);
+      updatePosition(gameInfo.map, static_cast<eAction>(res));
     }
 }
 
@@ -37,13 +47,13 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
   int x_map = gameInfo.map.getWidth();
   int y_map = gameInfo.map.getHeight();
 
-  for (int i = y ; i < y + (aggro * 2) && i < y_map + 1 ; ++i)
+  for (int i = y ; i < y + (aggro * 2) && i < y_map + 2 ; ++i)
     {
       c2 = 1;
-      for (int j = x ; j < x + (aggro * 2) && j < x_map + 1 ; ++j)
+      for (int j = x ; j < x + (aggro * 2) && j < x_map + 2 ; ++j)
 	{
 	  if (*cnt == 0)
-	    _lua.pushCreateTable((aggro * 2) * (aggro * 2) + 5);
+	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 8);
 	  if (i == _y && j == _x)
 	    {
 	      _lua.pushStringInt("y", c1);
@@ -58,8 +68,9 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
     }
 }
 
-int	IA::getResultScript(int aggro)
+int	IA::getResultScript(int aggro, int orient)
 {
+  _lua.pushStringInt("orientation", orient);
   _lua.pushStringInt("bomb_range", 4);
   _lua.pushStringInt("level", _level);
   _lua.pushStringInt("aggro", aggro);
