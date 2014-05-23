@@ -8,7 +8,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
 /* handle the bomb type at creation */
 {
   _bombStock = 1;
-  _health = 100;
+  _health = 1;
   _speed = 5;
   _range = 5;
   _score = 0;
@@ -122,4 +122,33 @@ void	ACharacter::setHealth(int health)
   _health = health;
   if (_health <= 0)
     _isAlive = false;
+}
+
+int	ACharacter::getBombStock() const
+{
+  return (_bombStock);
+}
+
+void	ACharacter::setBombStock(int bombStock)
+{
+  _bombStock = bombStock;
+}
+
+ABomb	*ACharacter::getBomb() const
+{
+  return (_bomb);
+}
+
+void	ACharacter::setBomb(ABomb *bomb)
+{
+  _bomb = bomb;
+}
+int	ACharacter::getRange() const
+{
+  return (_range);
+}
+
+void	ACharacter::setRange(int range)
+{
+  _range = range;
 }
