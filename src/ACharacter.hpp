@@ -30,13 +30,19 @@ public:
   bool		move(Map &map, int dirX, int dirY);
   bool		updatePosition(Map &map, eAction action);
   void		dropBomb(t_gameinfo &gameInfo);
+  void		takeDamages(int amount);
 
-  int		getScore() const;
-  int		getSpeed() const;
-  void		setSpeed(int speed);
+  int		getBombStock() const;
+  void		setBombStock(int bombStock);
+  ABomb		*getBomb() const;
+  void		setBomb(ABomb *bomb);
   int		getHealth() const;
   void		setHealth(int health);
-  void		takeDamages(int amount);
+  int		getSpeed() const;
+  void		setSpeed(int speed);
+  int		getRange() const;
+  void		setRange(int range);
+  int		getScore() const;
 
 protected:
   glm::vec4	_color;

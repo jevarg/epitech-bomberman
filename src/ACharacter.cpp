@@ -123,3 +123,32 @@ void	ACharacter::setHealth(int health)
   if (_health <= 0)
     _isAlive = false;
 }
+
+int	ACharacter::getBombStock() const
+{
+  return (_bombStock);
+}
+
+void	ACharacter::setBombStock(int bombStock)
+{
+  _bombStock = bombStock;
+}
+
+ABomb	*ACharacter::getBomb() const
+{
+  return (_bomb);
+}
+
+void	ACharacter::setBomb(ABomb *bomb)
+{
+  _bomb = bomb;
+}
+int	ACharacter::getRange() const
+{
+  return (_range);
+}
+
+void	ACharacter::setRange(int range)
+{
+  _range = range;
+}
