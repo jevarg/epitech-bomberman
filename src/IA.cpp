@@ -2,22 +2,13 @@
 #include "IA.hpp"
 
 IA::IA(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
-  : ACharacter(x, y, color, gameInfo), _lua(),
-    _level(2), _x(x), _y(y)
+  : ACharacter(x, y, color, gameInfo), _lua()
 {
+  _level = 2;
 }
 
 IA::~IA()
 {
-}
-
-void	IA::updatePos(int res)
-{
-  int	tab_x[4] = {0, 0, -1, 1};
-  int	tab_y[4] = {-1, 1, 0, 0};
-
-  _x += tab_x[res];
-  _y += tab_y[res];
 }
 
 void	IA::update(t_gameinfo &gameInfo)
@@ -35,8 +26,9 @@ void	IA::update(t_gameinfo &gameInfo)
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
-      updatePos(res);
+      std::cout << _x << " " << _y << " " << res << std::endl;
       updatePosition(gameInfo.map, static_cast<eAction>(res));
+      getchar();
     }
 }
 
@@ -44,13 +36,11 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 {
   int c1 = 1;
   int c2 = 1;
-  int x_map = gameInfo.map.getWidth();
-  int y_map = gameInfo.map.getHeight();
 
-  for (int i = y ; i < y + (aggro * 2) && i < y_map + 2 ; ++i)
+  for (int i = y ; i < y + (aggro * 2); ++i)
     {
       c2 = 1;
-      for (int j = x ; j < x + (aggro * 2) && j < x_map + 2 ; ++j)
+      for (int j = x ; j < x + (aggro * 2); ++j)
 	{
 	  if (*cnt == 0)
 	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 8);

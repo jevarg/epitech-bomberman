@@ -19,13 +19,43 @@ function run_out_danger(map, x, y, nb)
 end
 
 function random_movement(map, used_nb)
-
-	if (#used_nb == 5) then return X, Y end
-
-	local mov = {1, -1, 1, -1}
-	local n = math.random(1, 4)
+	local orient = arg["orientation"] + 1
+	local mov = {1, 1, -1, -1}
+	local tested = {0, 0, 0, 0}
 	local x, y = X, Y
+	local i
 
+	print("orient:" , orient - 1)
+	if (orient == 1 or orient == 3) then y = y + mov[orient] end
+	if (orient == 2 or orient == 4) then x = x + mov[orient] end
+	if (map[y][x] == ".") then
+		return x, y
+	else
+		print ("not true")
+	end	
+	for i = 0, 4 do		
+		x = X
+		y = Y
+		local n = math.random(1, 4)
+		local save = 0
+		print("random value:" , n)
+		local j = 1
+		while (j < 5 and n > 0) do
+			if (tested[j] == 0) then
+				save = j
+				n = n - 1
+			end
+			j = j + 1
+		end
+		tested[save] = 1
+		if (orient == 1 or orient == 3) then y = y + mov[orient]
+		elseif (orient == 2 or orient == 4) then x = x + mov[orient] end
+		if (map[y][x] == ".") then
+			return x, y
+		end
+	end
+	return x, y	
+	--[[
 	if (n == 1 or n == 2) then
 		x = X + mov[n]
 		if (x < 1) then x = 1 end
@@ -41,4 +71,5 @@ function random_movement(map, used_nb)
 		return x, y
 	end
 	return x, y
+	--]]
 end

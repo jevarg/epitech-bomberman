@@ -1,21 +1,11 @@
 function determine_way(map, cur_x, cur_y)
-	local orient = arg["orientation"] + 1
-	local t_orient = {
-	--  NORTH 0
-		{[0] = 0, [1] = 1, [2] = 2, [3] = 3},
-	--  WEST 1 
-		{[0] = 3, [1] = 2, [2] = 0, [3] = 1},
-	--  SOUTH 2
-		{[0] = 1, [1] = 0, [2] = 3, [3] = 2},
-	--  EAST 3
-		{[0] = 2, [1] = 3, [2] = 1, [3] = 0}
-	}
+	print("ab")
 	if (map[cur_y][cur_x] == "B") then return ENUM_ACTION["bomb"] end
-	if (map[cur_y][cur_x] == "P") then return -1 end
-	if (cur_x > X) then return t_orient[orient][ENUM_ACTION["right"]] end
-	if (cur_x < X) then return t_orient[orient][ENUM_ACTION["left"]] end
-	if (cur_y > Y) then return t_orient[orient][ENUM_ACTION["back"]] end
-	if (cur_y < Y) then return t_orient[orient][ENUM_ACTION["forward"]] end
+	if (cur_x > X) then return ENUM_ACTION["right"] end
+	if (cur_x < X) then return ENUM_ACTION["left"] end
+	if (cur_y > Y) then return ENUM_ACTION["back"] end
+	if (cur_y < Y) then return ENUM_ACTION["forward"] end
+	return -1
 end
 
 function get_shortest_distance_of(map, x, y)
