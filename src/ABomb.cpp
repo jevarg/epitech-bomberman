@@ -15,7 +15,7 @@ ABomb::~ABomb()
 
 void	ABomb::explode()
 {
-  Flame	*newFlame = new Flame(_x, _y, _power, _range, ALLDIR, _gameInfo);
+  _gameInfo.map.addEntity(new Flame(_x, _y, _power, _range, ALLDIR, _gameInfo));
   _toDestroy = true;
 }
 
