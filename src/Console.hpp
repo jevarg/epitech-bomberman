@@ -11,11 +11,15 @@ class		Console
 public:
   Console(Settings &set);
   ~Console();
-  std::string	&parseCmd(const std::string &);
+  bool		parseCmd(const std::string &, std::string &);
 
 private:
+  bool		bind(const std::string &, const std::string &, std::string &);
+  bool		set(const std::string &, const std::string &, std::string &);
+  bool		help(const std::string &, const std::string &, std::string &);
+
   Settings	&_set;
-  std::map<std::string, std::string &(Console::*)(const std::string &)> _cmd;
+  std::map<std::string, bool (Console::*)(const std::string &, const std::string &, std::string &)> _cmd;
 };
 
 #endif /* !CONSOLE_HPP_ */
