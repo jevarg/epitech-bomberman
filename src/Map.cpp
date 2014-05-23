@@ -380,21 +380,6 @@ v_Contcit	Map::ContEnd() const
   return (_cont.end());
 }
 
-void		Map::setEntity(int x, int y, eType type)
-{
-  (_cont[getContPos(x, y)])->setEntity(x, y, type);
-}
-
-void		Map::setEntityIf(int x, int y, eType newValue, eType oldValue)
-{
-  (_cont[getContPos(x, y)])->setEntityIf(x, y, newValue, oldValue);
-}
-
-void		Map::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
-{
-  (_cont[getContPos(x, y)])->setEntityIfNot(x, y, newValue, oldValue);
-}
-
 AEntity		*Map::getEntity(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
