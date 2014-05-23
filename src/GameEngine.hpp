@@ -27,6 +27,7 @@
 # include "Condvar.hpp"
 # include "Mutex.hpp"
 # include "ModelFactory.hpp"
+# include "Text.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -80,6 +81,7 @@ private:
   Model				*_model;
   Player			*_player;
   t_gameinfo			_gameInfo;
+  Text				_text;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

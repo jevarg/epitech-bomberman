@@ -15,8 +15,8 @@ Player::~Player()
 
 void	Player::checkInput()
 {
-  eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
-  glm::vec3	dir[4] = {glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, 0.0, -1.0),
+  eAction	tab[4] = {FORWARD, BACK, RIGHT, LEFT};
+  glm::vec3	dir[4] = {glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 0.0, 1.0),
 			  glm::vec3(1.0, 0.0, 0.0), glm::vec3(-1.0, 0.0, 0.0)};
   for (int i = 0; i < 4; ++i)
     {

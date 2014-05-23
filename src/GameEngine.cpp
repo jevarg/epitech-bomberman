@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
@@ -41,7 +42,10 @@ bool GameEngine::initialize()
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
-  _cam.translate(glm::vec3(0, 5, -10));
+  _cam.translate(glm::vec3(0, 5, 10));
+
+  if (!_text.initialize())
+    return (false);
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
@@ -70,7 +74,7 @@ bool GameEngine::initialize()
 
 bool GameEngine::update()
 {
-  int	time;
+  int		time;
   double	fps = (1000 / _gameInfo.set.getVar(FPS));
   t_mouse	mouse;
   t_window	win;
@@ -92,6 +96,8 @@ bool GameEngine::update()
     std::cout << "catched event " << mouse.event << std::endl;
   // if (win.event == WIN_RESIZE) // Seems not to work
   //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl
+
+  _text << round((1000 / _gameInfo.clock.getElapsed()) / 1000);
 
   if ((time = _gameInfo.clock.getElapsed()) < fps)
     usleep((fps - time) * 1000);
@@ -122,6 +128,7 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(_shader, _gameInfo.clock);
     }
+  _text.draw(_shader, _gameInfo.clock);
   _win.flush();
 }
 

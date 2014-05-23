@@ -26,7 +26,7 @@ ACharacter::~ACharacter()
 bool	ACharacter::updatePosition(Map &map, eAction action)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
-  eDir		tabdir[4] = {NORTH, SOUTH, WEST, EAST};
+  eDir		tabdir[4] = {SOUTH, NORTH, EAST, WEST};
   int		dirX;
   int		dirY;
 
@@ -34,8 +34,8 @@ bool	ACharacter::updatePosition(Map &map, eAction action)
     {
       if (tab[i] == action)
 	{
-	  dirX = ((i >= 2) ? ((action == LEFT) ? 1 : -1) : 0);
-	  dirY = ((i < 2) ? ((action == FORWARD) ? 1 : -1) : 0);
+	  dirX = ((i >= 2) ? ((action == LEFT) ? -1 : 1) : 0);
+	  dirY = ((i < 2) ? ((action == FORWARD) ? -1 : 1) : 0);
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * tabdir[i] - 90.0 * _orient);
 	  _orient = tabdir[i];
 	  if (map.checkMapColision(_x + dirX, _y + dirY) == FREE)
