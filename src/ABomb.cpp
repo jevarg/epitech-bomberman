@@ -6,7 +6,7 @@
 ABomb::ABomb(int x, int y, t_gameinfo &gameInfo)
   : ALivingEntity(x, y, BOMB, gameInfo)
 {
-  _timeout = 3 * gameInfo.set.getVar(FPS);
+  _timeout = 1 * gameInfo.set.getVar(FPS);
 }
 
 ABomb::~ABomb()
