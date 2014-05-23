@@ -56,6 +56,7 @@ bool GameEngine::initialize()
 
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
+  fact.addModel(FLAME, new Cube(*skybox), FLAME_TEXTURE);
   fact.addModel(CHARACTER, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
