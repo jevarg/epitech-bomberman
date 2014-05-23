@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May 22 00:50:59 2014 enzo de gregorio
+## Last update Thu May 22 22:45:16 2014 Harold Fritsch
 ##
 
 NAME		=	bomberman
@@ -45,7 +45,8 @@ SRC		=	main.cpp \
 			Map.cpp \
 			Spawn.cpp \
 			Input.cpp \
-			ModelFactory.cpp
+			ModelFactory.cpp \
+			Console.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

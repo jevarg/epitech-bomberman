@@ -1,6 +1,8 @@
 #ifndef _SETTINGS_H_
 # define _SETTINGS_H_
 
+# include <SDL.h>
+# include <string>
 # include <iostream>
 # include <sstream>
 # include <fstream>
