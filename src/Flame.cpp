@@ -15,14 +15,27 @@ Flame::~Flame()
 {
 }
 
-void	Flame::update()
+void		Flame::update()
 {
-  if ((--_timeout) == 0)
+  AEntity	*ent;
+
+  if (_gameInfo.map.getEntityIf(_x, _y, WALL) != NULL ||
+      (--_timeout) == 0)
     {
       _toDestroy = true;
       return ;
     }
-  if ((--_nextFlame) == 0 && _range >= 0)
+  for (int i = BOX; i < UNKNOWNENTITY; ++i)
+    {
+      if (i == FLAME)
+	continue ;
+      if ((ent = _gameInfo.map.getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
+	{
+	  ent->takeDamages(_power);
+	  _range = 0;
+	}
+    }
+  if ((--_nextFlame) == 0 && _range > 0)
     {
       switch (_direction)
 	{
@@ -50,34 +63,9 @@ void	Flame::update()
 
 void    Flame::setFire(int x, int y, eDir direction)
 {
-  Flame		*newFlame;
-  AEntity	*character;
-  AEntity	*object;
-  bool		hit = false;
-
-  if (_gameInfo.map.getEntityIf(x, y, WALL) != NULL)
-    {
-      std::cout << "hit wall" << std::endl;
-      return ;
-    }
-  else
-    {
-      if ((character = _gameInfo.map.getEntityIf(x, y, CHARACTER)) != NULL)
-	{
-	  character->takeDamages(_power);
-	  hit = true;
-	}
-      if ((object = _gameInfo.map.getEntityIfNot(x, y, CHARACTER)) != NULL)
-	{
-	  object->takeDamages(_power);
-	  hit = true;
-	}
-    }
-  if (hit == false)
-    {
-      newFlame = new Flame(x, y, _power, _range - 1, direction, _gameInfo);
-      _gameInfo.map.addEntity(newFlame);
-    }
+  if (_gameInfo.map.getEntityIf(x, y, FLAME) == NULL)
+    _gameInfo.map.addEntity(new Flame(x, y, _power, _range - 1,
+				      direction, _gameInfo));
 }
 
 void	Flame::hurtCharacter(ACharacter *character, int power)

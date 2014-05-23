@@ -15,7 +15,6 @@ ABomb::~ABomb()
 
 void	ABomb::explode()
 {
-  std::cout << _range << std::endl;
   Flame	*newFlame = new Flame(_x, _y, _power, _range, ALLDIR, _gameInfo);
   _toDestroy = true;
 }
