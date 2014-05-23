@@ -13,16 +13,16 @@ Player::~Player()
   std::cout << "Player death" << std::endl;
 }
 
-void	Player::checkInput(t_gameinfo &gameInfo)
+void	Player::checkInput()
 {
-  eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
-  glm::vec3	dir[4] = {glm::vec3(0.0, 0.0, 1.0), glm::vec3(0.0, 0.0, -1.0),
+  eAction	tab[4] = {FORWARD, BACK, RIGHT, LEFT};
+  glm::vec3	dir[4] = {glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 0.0, 1.0),
 			  glm::vec3(1.0, 0.0, 0.0), glm::vec3(-1.0, 0.0, 0.0)};
   for (int i = 0; i < 4; ++i)
     {
-      if (gameInfo.input[tab[i]])
+      if (_gameInfo.input[tab[i]])
 	{
-	  if (updatePosition(gameInfo.map, tab[i]) == true)
+	  if (updatePosition(_gameInfo.map, tab[i]) == true)
 	    {
 	      _camera->translate(dir[i]);
 	      break ;
@@ -30,10 +30,10 @@ void	Player::checkInput(t_gameinfo &gameInfo)
 	}
     }
   if (_gameInfo.input[DROPBOMB])
-    dropBomb(gameInfo);
+    dropBomb(_gameInfo);
 }
 
-void	Player::update(t_gameinfo &gameInfo)
+void	Player::update()
 {
-  checkInput(gameInfo);
+  checkInput();
 }

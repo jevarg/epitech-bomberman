@@ -1,4 +1,5 @@
 #include <iostream>
+#include <cmath>
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
@@ -10,10 +11,10 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
 
   Mutex *mutex = _gameInfo.mutex;
   pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
+  _frames = 0;
   std::cout << &_gameInfo << " " << mutex
 	    << " " << m
 	    << " " << _gameInfo.condvar << std::endl;
-  getchar();
 }
 
 GameEngine::~GameEngine()
@@ -42,7 +43,10 @@ bool GameEngine::initialize()
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
-  _cam.translate(glm::vec3(0, 5, -10));
+  _cam.translate(glm::vec3(0, 5, 10));
+
+  if (!_text.initialize())
+    return (false);
 
   skybox = new Cube(SKY_TEXTURE);
   skybox->initialize();
@@ -57,20 +61,21 @@ bool GameEngine::initialize()
 
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
+  fact.addModel(FLAME, new Cube(*skybox), FLAME_TEXTURE);
   fact.addModel(CHARACTER, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_gameInfo);
-  spawn.spawnEnt(0, 1, all_cam, _gameInfo);
+  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
 
 bool GameEngine::update()
 {
-  int	time;
+  int		time;
   double	fps = (1000 / _gameInfo.set.getVar(FPS));
   t_mouse	mouse;
   t_window	win;
@@ -93,19 +98,28 @@ bool GameEngine::update()
   // if (win.event == WIN_RESIZE) // Seems not to work
   //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl
 
+  _frames++;
+
   if ((time = _gameInfo.clock.getElapsed()) < fps)
-    usleep((fps - time) * 1000);
+    {
+      _text << round(_frames / _gameInfo.clock.getElapsed());
+      _frames = 0;
+      usleep((fps - time) * 1000);
+    }
   _win.updateClock(_gameInfo.clock);
   return (true);
 }
 
 void GameEngine::draw()
 {
+  glm::mat4 model = glm::transpose(glm::translate(glm::mat4(1.0f), _cam.getPosView()));
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   _cam.lookAt();
-  _shader.setUniform("model", glm::translate(glm::mat4(1.0f), _cam.getPosView()));
-  _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("projection", _cam.getProjection());
+  _shader.setUniform("view", _cam.getTransformation());
+  _shader.setUniform("model", model);
+  _shader.setUniform("inv_model", glm::inverse(model));
   _shader.bind();
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _gameInfo.clock);
@@ -119,6 +133,7 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(_shader, _gameInfo.clock);
     }
+  _text.draw(_shader, _gameInfo.clock);
   _win.flush();
 }
 

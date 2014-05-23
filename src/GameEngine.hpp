@@ -16,9 +16,9 @@
 # include "Camera.hpp"
 # include "IObject.hpp"
 # include "Model.hpp"
-# include "AEntity.hpp"
 # include "Save.hpp"
 # include "Container.hpp"
+# include "AEntity.hpp"
 # include "Map.hpp"
 # include "Spawn.hpp"
 # include "Settings.hpp"
@@ -27,6 +27,7 @@
 # include "Condvar.hpp"
 # include "Mutex.hpp"
 # include "ModelFactory.hpp"
+# include "Text.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -36,11 +37,11 @@
 # define WALL_TEXTURE "./assets/wall.tga"
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
+# define FLAME_TEXTURE "./assets/flames.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
 
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
-# define FLAME_MODEL "./assets/skybox.tga"
 
 typedef struct	s_gameinfo
 {
@@ -82,6 +83,8 @@ private:
   Model				*_model;
   Player			*_player;
   t_gameinfo			_gameInfo;
+  Text				_text;
+  int				_frames;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

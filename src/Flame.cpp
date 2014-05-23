@@ -1,73 +1,78 @@
 #include "GameEngine.hpp"
 #include "Flame.hpp"
 
-Flame::Flame(int x, int y, int power, t_gameinfo &gameInfo)
+Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo &gameInfo)
   : ALivingEntity(x, y, FLAME, gameInfo)
 {
   _power = power;
+  _range = range;
+  _direction = direction;
+  _timeout = _gameInfo.set.getVar(FIRETIME)
+    * (_gameInfo.set.getVar(FPS) / 1000.0);
+  _nextFlame = _gameInfo.set.getVar(FIRESPEED)
+    * (_gameInfo.set.getVar(FPS) / 1000.0); // first nb = delay in ms
+  if (_nextFlame <= 0)
+    _nextFlame = 1;
 }
 
 Flame::~Flame()
 {
 }
 
-/* TODO: handle bomb power (via constructor) */
-/* If bomb doesn't work, think about modifying entity setters (used here) */
-void    Flame::setFire(int x, int y, eDir direction, int range)
+void		Flame::update()
 {
-  Flame *newFlame;
+  AEntity	*ent;
 
-  if (_gameInfo.map.getEntityIf(x, y, WALL))
-    return ;
-  if (direction != ALLDIR)
+  if (_gameInfo.map.getEntityIf(_x, _y, WALL) != NULL ||
+      (--_timeout) == 0)
     {
-      newFlame = new Flame(x, y, _power, _gameInfo); // add model via singleton here
-      _gameInfo.map.addEntity(newFlame);
-    }
-  if (_gameInfo.map.getEntityIf(x, y, CHARACTER))
-    {
-      hurtCharacter((ACharacter *)_gameInfo.map.getEntityIf(x, y, CHARACTER), _power);
+      _toDestroy = true;
       return ;
     }
-  else if (_gameInfo.map.getEntityIfNot(x, y, CHARACTER))
+  for (int i = BOX; i < UNKNOWNENTITY; ++i)
     {
-      _gameInfo.map.setEntity(x, y, FREE);
-      return ;
-    }
-  if (range > 0)
-    {
-      switch (direction)
+      if (i == FLAME)
+	continue ;
+      if ((ent = _gameInfo.map.getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
 	{
-	case ALLDIR: // used "this" here to be explicit between each case //
-	  this->setFire(x, y - 1, NORTH, range - 1);
-	  this->setFire(x, y + 1, SOUTH, range - 1);
-	  this->setFire(x - 1, y, WEST, range - 1);
-	  this->setFire(x + 1, y, EAST, range - 1);
+	  ent->takeDamages(_power);
+	  _range = 0;
+	}
+    }
+  if ((--_nextFlame) == 0 && _range > 0)
+    {
+      switch (_direction)
+	{
+	case ALLDIR:
+	  setFire(_x, _y - 1, NORTH);
+	  setFire(_x, _y + 1, SOUTH);
+	  setFire(_x - 1, _y, WEST);
+	  setFire(_x + 1, _y, EAST);
 	  break;
 	case NORTH:
-	  newFlame->setFire(x, y - 1, NORTH, range - 1);
+	  setFire(_x, _y - 1, NORTH);
 	  break;
 	case SOUTH:
-	  newFlame->setFire(x, y + 1, SOUTH, range - 1);
+	  setFire(_x, _y + 1, SOUTH);
 	  break;
 	case WEST:
-	  newFlame->setFire(x - 1, y, WEST, range - 1);
+	  setFire(_x - 1, _y, WEST);
 	  break;
 	case EAST:
-	  newFlame->setFire(x + 1, y, EAST, range - 1);
-	  break;
-	default:
+	  setFire(_x + 1, _y, EAST);
 	  break;
 	}
     }
 }
 
-void	Flame::hurtCharacter(ACharacter *character, int power)
+void    Flame::setFire(int x, int y, eDir direction)
 {
-  character->setHealth(character->getHealth() - power);
+  if (_gameInfo.map.getEntityIf(x, y, FLAME) == NULL)
+    _gameInfo.map.addEntity(new Flame(x, y, _power, _range - 1,
+				      direction, _gameInfo));
 }
 
-void	Flame::update(t_gameinfo &gameInfo)
+void	Flame::hurtCharacter(ACharacter *character, int power)
 {
-  (void)gameInfo;
+  character->takeDamages(power);
 }

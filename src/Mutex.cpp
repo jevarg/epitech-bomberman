@@ -25,8 +25,6 @@ void		Mutex::unlock()
   pthread_mutex_unlock(&_mutex);
 }
 
-#include <iostream>
-
 pthread_mutex_t	*Mutex::getMutexPtr()
 {
   return (&_mutex);

@@ -8,7 +8,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
 /* handle the bomb type at creation */
 {
   _bombStock = 1;
-  _health = 100;
+  _health = 1;
   _speed = 5;
   _range = 5;
   _score = 0;
@@ -26,7 +26,7 @@ ACharacter::~ACharacter()
 bool	ACharacter::updatePosition(Map &map, eAction action)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
-  eDir		tabdir[4] = {NORTH, SOUTH, WEST, EAST};
+  eDir		tabdir[4] = {SOUTH, NORTH, EAST, WEST};
   int		dirX;
   int		dirY;
 
@@ -34,8 +34,8 @@ bool	ACharacter::updatePosition(Map &map, eAction action)
     {
       if (tab[i] == action)
 	{
-	  dirX = ((i >= 2) ? ((action == LEFT) ? 1 : -1) : 0);
-	  dirY = ((i < 2) ? ((action == FORWARD) ? 1 : -1) : 0);
+	  dirX = ((i >= 2) ? ((action == LEFT) ? -1 : 1) : 0);
+	  dirY = ((i < 2) ? ((action == FORWARD) ? -1 : 1) : 0);
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * tabdir[i] - 90.0 * _orient);
 	  _orient = tabdir[i];
 	  if (map.checkMapColision(_x + dirX, _y + dirY) == FREE)
@@ -101,14 +101,20 @@ int	ACharacter::getSpeed() const
   return (_speed);
 }
 
-int	ACharacter::getHealth() const
-{
-  return (_health);
-}
-
 void	ACharacter::setSpeed(int speed)
 {
   _speed = speed;
+}
+
+void	ACharacter::takeDamages(int amount)
+{
+  _health -= amount;
+  if (_health < 0)
+    _isAlive = false;
+}
+int	ACharacter::getHealth() const
+{
+  return (_health);
 }
 
 void	ACharacter::setHealth(int health)
@@ -116,4 +122,33 @@ void	ACharacter::setHealth(int health)
   _health = health;
   if (_health <= 0)
     _isAlive = false;
+}
+
+int	ACharacter::getBombStock() const
+{
+  return (_bombStock);
+}
+
+void	ACharacter::setBombStock(int bombStock)
+{
+  _bombStock = bombStock;
+}
+
+ABomb	*ACharacter::getBomb() const
+{
+  return (_bomb);
+}
+
+void	ACharacter::setBomb(ABomb *bomb)
+{
+  _bomb = bomb;
+}
+int	ACharacter::getRange() const
+{
+  return (_range);
+}
+
+void	ACharacter::setRange(int range)
+{
+  _range = range;
 }

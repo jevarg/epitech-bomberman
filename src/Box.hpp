@@ -1,15 +1,19 @@
 #ifndef _BOX_HPP_
 # define _BOX_HPP_
 
-# include "ALivingEntity.hpp"
+# include "AEntity.hpp"
+# include "SpeedItem.hpp"
+# include "HealthItem.hpp"
 
-class	Box : public ALivingEntity
+class	Box : public AEntity
 {
 public:
-  Box(int x, int y, t_gameinfo &gameInfo);
+  Box(int x, int y, eType type, t_gameinfo &gameInfo);
   ~Box();
-  void	update(t_gameinfo &gameInfo);
-  void	die();
+
+  void	takeDamages(int amount);
+  void	spawnItem(t_gameinfo &gameInfo);
+  void	destroy(Map &map);
 };
 
 #endif /* _BOX_HPP_ */

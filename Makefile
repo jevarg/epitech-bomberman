@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu May 22 19:02:40 2014 jonathan.collinet
+## Last update Fri May 23 23:28:17 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -47,7 +47,8 @@ SRC		=	main.cpp \
 			IA.cpp \
 			LuaCommunication.cpp \
 			Spawn.cpp \
-			ModelFactory.cpp
+			ModelFactory.cpp \
+			Text.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

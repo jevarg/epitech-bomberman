@@ -1,12 +1,13 @@
 #include "Map.hpp"
 #include "AEntity.hpp"
 
-AEntity::AEntity()
+AEntity::AEntity(t_gameinfo &gameInfo) : _gameInfo(gameInfo)
 {
   _toDestroy = false;
 }
 
-AEntity::AEntity(int x, int y, eType type) : _x(x), _y(y), _type(type)
+AEntity::AEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
+  _x(x), _y(y), _type(type), _gameInfo(gameInfo)
 {
   _toDestroy = false;
   _model = ModelFactory::getInstance().getModel(_type);

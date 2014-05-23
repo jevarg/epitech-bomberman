@@ -11,7 +11,7 @@ IA::~IA()
 {
 }
 
-void	IA::update(t_gameinfo &gameInfo)
+void	IA::update()
 {
   int cnt = 0;
   int aggro[] = {4, 8, 12, 10};
@@ -22,12 +22,12 @@ void	IA::update(t_gameinfo &gameInfo)
     y = 1;
   if (x < 1)
     x = 1;
-  pushEntitie(x, y, &cnt, aggro[_level - 1], gameInfo);
+  pushEntitie(x, y, &cnt, aggro[_level - 1], _gameInfo);
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
       std::cout << _x << " " << _y << " " << res << std::endl;
-      updatePosition(gameInfo.map, static_cast<eAction>(res));
+      updatePosition(_gameInfo.map, static_cast<eAction>(res));
       getchar();
     }
 }

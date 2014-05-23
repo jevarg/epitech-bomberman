@@ -3,13 +3,13 @@
 
 # include "AItem.hpp"
 
-class SpeedItem : public AItem
+class HealthItem : public AItem
 {
 public:
-  SpeedItem();
-  virtual ~SpeedItem();
+  HealthItem(int x, int y, eType type, t_gameinfo &gameInfo);
+  virtual ~HealthItem();
 
-  void	setHealth(ACharacter &ch);
+  void	setAttr(ACharacter *ch) const;
 };
 
 #endif /* _HEALTHITEM_H_ */

@@ -11,7 +11,7 @@ public:
      t_gameinfo &gameInfo);
   ~IA();
 
-  void	update(t_gameinfo &gameInfo);
+  void	update();
   void	pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo);
   int	getResultScript(int aggro, int orient);
 

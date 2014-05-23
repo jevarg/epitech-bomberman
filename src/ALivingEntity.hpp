@@ -18,12 +18,13 @@ public:
   void		aliveLoop();
   void		setDead();
   bool		isAlive() const;
-  void		destroy(Map &map);
-  virtual void	update(t_gameinfo &gameInfo) = 0;
+
+  virtual void	update() = 0;
+  virtual void 	destroy(Map &map);
+  virtual void	takeDamages(int amount);
   virtual void	die();
 
 protected:
-  t_gameinfo	&_gameInfo;
   pthread_t	_thread;
   bool		_isAlive;
 };

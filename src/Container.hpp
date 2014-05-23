@@ -5,6 +5,7 @@
 # include <vector>
 # include <list>
 # include "AEntity.hpp"
+# include "Mutex.hpp"
 
 class Container;
 
@@ -29,16 +30,14 @@ public:
   l_Entcit	listEnd() const;
   l_Entit	listBeginMod();
   l_Entit	listEndMod();
-  void		setEntity(int, int, eType);
-  void		setEntityIf(int, int, eType, eType);
-  void		setEntityIfNot(int, int, eType, eType);
   AEntity	*getEntity(int, int);
   AEntity	*getEntityIf(int, int, eType);
   AEntity	*getEntityIfNot(int, int, eType);
 
 private:
-  std::vector<AEntity *>	_staticEnt;
-  std::list<AEntity *>		_mobileEnt;
+  std::vector<AEntity *>       	_staticEnt;
+  std::list<AEntity *>     	_mobileEnt;
+  Mutex				*_mutex;
 };
 
 #endif /* _ENTITIE_H_ */
