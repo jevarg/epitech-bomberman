@@ -10,7 +10,7 @@ HealthItem::~HealthItem()
 {
 }
 
-void	HealthItem::setHealth(ACharacter &ch)
+void	HealthItem::setAttr(ACharacter *ch) const
 {
-  ch.setHealth(ch.getHealth() + _amount);
+  ch->setHealth(ch->getHealth() + _amount);
 }

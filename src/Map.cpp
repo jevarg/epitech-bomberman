@@ -255,11 +255,18 @@ void	Map::fillBox()
     }
 }
 
+/*
+** The entity added at 0,0 is symbolic, in fact it is just usefull
+** for getters returning a pointer to the entity. Because of the way we check colisions
+** no entity will be returned if it's on the border, so we return a pointer to this
+*/
+
 void	Map::fillContainers(t_gameinfo &_gameInfo)
 {
   unsigned int	i;
   unsigned int 	totalsize = (_mapY - 1) * _mapX;
 
+  addEntity(new Entity(0, 0, WALL, _gameInfo));
   for (i = _mapX; i < totalsize; ++i)
     {
       // means there is a block & It's not the border
@@ -373,32 +380,37 @@ v_Contcit	Map::ContEnd() const
   return (_cont.end());
 }
 
-void		Map::setEntity(int x, int y, eType type)
-{
-  (_cont[getContPos(x, y)])->setEntity(x, y, type);
-}
-
-void		Map::setEntityIf(int x, int y, eType newValue, eType oldValue)
-{
-  (_cont[getContPos(x, y)])->setEntityIf(x, y, newValue, oldValue);
-}
-
-void		Map::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
-{
-  (_cont[getContPos(x, y)])->setEntityIfNot(x, y, newValue, oldValue);
-}
-
 AEntity		*Map::getEntity(int x, int y) const
 {
-  return ((_cont[getContPos(x, y)])->getEntity(x, y));
+  unsigned int	pos = getContPos(x, y);
+
+  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntity(x, y));
 }
 
 AEntity		*Map::getEntityIf(int x, int y, eType value) const
 {
-  return ((_cont[getContPos(x, y)])->getEntityIf(x, y, value));
+  unsigned int	pos = getContPos(x, y);
+
+  if ((y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+      && value == WALL)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntityIf(x, y, value));
 }
 
 AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
 {
-  return ((_cont[getContPos(x, y)])->getEntityIfNot(x, y, value));
+  unsigned int	pos = getContPos(x, y);
+
+  if ((y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+      && value != WALL)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntityIfNot(x, y, value));
 }

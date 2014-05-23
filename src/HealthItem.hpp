@@ -9,7 +9,7 @@ public:
   HealthItem(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~HealthItem();
 
-  void	setHealth(ACharacter &ch);
+  void	setAttr(ACharacter *ch) const;
 };
 
 #endif /* _HEALTHITEM_H_ */

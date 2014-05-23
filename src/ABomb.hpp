@@ -9,10 +9,10 @@ class		ABomb: public ALivingEntity
 {
 public:
   ABomb(int x, int y, t_gameinfo &gameInfo);
-  virtual ~ABomb();
+  virtual ~ABomb() = 0;
 
-  void	explode(Map &map);
   void	update();
+  void	explode();
   void	takeDamages(int);
 
 protected:

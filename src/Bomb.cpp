@@ -13,8 +13,3 @@ Bomb::Bomb(int x, int y, t_gameinfo &gameInfo)
 Bomb::~Bomb()
 {
 }
-
-void	Bomb::update(t_gameinfo &gameInfo)
-{
-  (void)gameInfo;
-}

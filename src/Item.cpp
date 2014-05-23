@@ -8,3 +8,8 @@ Item::Item(int x, int y, eType type, t_gameinfo &gameInfo) :
 Item::~Item()
 {
 }
+
+void	Item::setAttr(ACharacter *ch) const
+{
+  (void)ch;
+}

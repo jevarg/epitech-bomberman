@@ -22,6 +22,8 @@ Settings::Settings()
   _cvarList.push_back(new t_cvar ("s_mapLinear", 0, 100, 25));
   _cvarList.push_back(new t_cvar ("r_fullScreen", 0, 1, 1));
   _cvarList.push_back(new t_cvar ("r_mipmap", 0, 1, 1));
+  _cvarList.push_back(new t_cvar ("s_fireSpeed", 0, 100000, 10));
+  _cvarList.push_back(new t_cvar ("s_fireTime", 0, 1000000, 10));
   initCvar();
 
   _speKeys["CAPSLOCK"] = SDLK_CAPSLOCK;
