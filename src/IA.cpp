@@ -22,7 +22,10 @@ void	IA::update()
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
-      updatePosition(_gameInfo.map, static_cast<eAction>(res));
+      if (res == DROPBOMB)
+	dropBomb();
+      else
+	updatePosition(_gameInfo.map, static_cast<eAction>(res));
     }
 }
 

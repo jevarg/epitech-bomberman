@@ -76,11 +76,11 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
   return (true);
 }
 
-void	ACharacter::dropBomb(t_gameinfo &gameInfo)
+void	ACharacter::dropBomb()
 {
-  if (gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL)
+  if (_gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL)
     {
-      gameInfo.map.addEntity(new Bomb(_x, _y, gameInfo));
+      _gameInfo.map.addEntity(new Bomb(_x, _y, _gameInfo));
       std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
     }
 }
