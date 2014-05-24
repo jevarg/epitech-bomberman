@@ -1,12 +1,3 @@
-function determine_way(map, cur_x, cur_y)
-	if (map[cur_y][cur_x] == "B") then return ENUM_ACTION["bomb"] end
-	if (cur_x > X) then return ENUM_ACTION["right"] end
-	if (cur_x < X) then return ENUM_ACTION["left"] end
-	if (cur_y > Y) then return ENUM_ACTION["back"] end
-	if (cur_y < Y) then return ENUM_ACTION["forward"] end
-	return -1
-end
-
 function get_shortest_distance_of(map, x, y)
 	local cur_dist = AGGRO + 1
 	local cur_x, cur_y = 0, 0
@@ -51,6 +42,7 @@ function get_good_way(map, x, y, nb)
 	if (y + 1 < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
 		if (map[y + 1][x] < nb) then return y + 1, x end
 	end
+	print("looooool no return its randomfull youhou")
 end
 
 function take_shortest_priority(map, entities)
@@ -63,6 +55,8 @@ function take_shortest_priority(map, entities)
 	for i = 1, #entities do
 		if (entities[i]["type"] ~= TYPE_PRIORITY["wall"] and
 			entities[i]["type"] ~= TYPE_PRIORITY["free"] and
+			entities[i]["type"] ~= TYPE_PRIORITY["danger"] and
+			entities[i]["type"] ~= TYPE_PRIORITY["bomb"] and
 			(entities[i]["x"] ~= X or entities[i]["y"] ~= Y))
 		then
 			cur_dist, tmp_x, tmp_y = get_shortest_distance_of(map, entities[i]["x"], entities[i]["y"])
@@ -78,8 +72,11 @@ function take_shortest_priority(map, entities)
 			end
 		end
 	end
+	print("looool")
+	if (x == 1000000 and y == 1000000) then print("ca random dur !") ; return random_movement(map) end
 	while (map[y][x] ~= 0 and map[y][x] ~= 1) do
 		y, x = get_good_way(map, x, y, map[y][x])
 	end
+	print("oh my god !")
 	return x, y
 end

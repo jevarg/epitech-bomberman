@@ -2,6 +2,15 @@ function get_abs_dist(entities, x, y, i)
 	return math.abs(entities[i]["x"] - x + entities[i]["y"] - y)
 end
 
+function determine_way(map, cur_x, cur_y)
+	if (map[cur_y][cur_x] == "B") then return ENUM_ACTION["bomb"] end
+	if (cur_x > X) then return ENUM_ACTION["right"] end
+	if (cur_x < X) then return ENUM_ACTION["left"] end
+	if (cur_y > Y) then return ENUM_ACTION["back"] end
+	if (cur_y < Y) then return ENUM_ACTION["forward"] end
+	return -1
+end
+
 function have_elem(entities, x, y)
 	for i = 1, #entities do
 		if ((entities[i]["type"] == TYPE_PRIORITY["box"] or
@@ -35,18 +44,16 @@ function best_first(map, map_nb, entities)
 
 	if (have_elem(entities, cur_x, cur_y) == 1) then
 		travel_map(map_nb, cur_x, cur_y)
-		-- print("\nFINAL MAP\n")
-		-- display_map(map_nb)
+		print("\nFINAL MAP\n")
+		display_map(map_nb)
 		local nx, ny = take_shortest_priority(map_nb, entities)
-		-- print("\ndirection is : x y : ", cur_x, cur_y)
 		if (cur_x == nx and cur_y == ny) then
 			return ENUM_ACTION["bomb"]
 		else
 			cur_x, cur_y = nx, ny
 		end
 	else
-		local used_nb = {}
-		cur_x, cur_y = random_movement(map, used_nb)
+		cur_x, cur_y = random_movement(map)
 	end	
 	return determine_way(map, cur_x, cur_y)
 end
