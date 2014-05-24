@@ -31,7 +31,6 @@ function take_decision(map, map_nb, entities)
 		-- run_out_danger(map_nb, X, Y, 0)
 		-- return
 	else
-		display_map(map)
 		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1) then
 			return ENUM_ACTION["bomb"]
 		end

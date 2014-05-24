@@ -6,6 +6,7 @@
 # include <list>
 # include "AEntity.hpp"
 # include "Mutex.hpp"
+# include "Scopelock.hpp"
 
 class Container;
 
@@ -34,6 +35,7 @@ public:
   AEntity	*getEntityIf(int, int, eType);
   AEntity	*getEntityIfNot(int, int, eType);
 
+  Mutex		*getMutex() const;
 private:
   std::vector<AEntity *>       	_staticEnt;
   std::list<AEntity *>     	_mobileEnt;

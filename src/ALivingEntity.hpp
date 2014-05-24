@@ -20,13 +20,15 @@ public:
   bool		isAlive() const;
 
   virtual void	update() = 0;
-  virtual void 	destroy(Map &map);
-  virtual void	takeDamages(int amount);
   virtual void	die();
+  virtual void 	destroy();
+  virtual void	takeDamages(int amount);
 
 protected:
   pthread_t	_thread;
+  Mutex		*_mutex;
   bool		_isAlive;
+  int		_timedeath;
 };
 
 void	*createAliveEntity(void *arg);

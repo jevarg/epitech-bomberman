@@ -15,8 +15,8 @@ ABomb::~ABomb()
 
 void	ABomb::explode()
 {
+  die();
   _gameInfo.map.addEntity(new Flame(_x, _y, _power, _range, ALLDIR, _gameInfo));
-  _toDestroy = true;
 }
 
 void	ABomb::update()
@@ -27,5 +27,7 @@ void	ABomb::update()
 
 void	ABomb::takeDamages(int /*amount*/)
 {
+  _mutex->lock();
   explode();
+  _mutex->unlock();
 }
