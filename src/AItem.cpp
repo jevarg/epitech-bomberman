@@ -19,7 +19,7 @@ bool	AItem::checkItemColision(Map &map)
   if ((ent = map.getEntityIf(_x, _y, CHARACTER)) == NULL)
     return (false);
   setAttr(dynamic_cast<ACharacter *>(ent));
-  destroy(map);
+  die();
   return (true);
 }
 
@@ -32,13 +32,8 @@ void	AItem::update()
       --_timeout;
       if (_timeout == 0)
 	{
-	  destroy(_gameInfo.map);
+	  die();
 	  return ;
 	}
     }
-}
-
-void	AItem::takeDamages(int /*amount*/)
-{
-  _toDestroy = true;
 }

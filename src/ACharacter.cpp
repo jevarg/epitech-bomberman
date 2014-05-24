@@ -108,14 +108,18 @@ int	ACharacter::getSpeed() const
 
 void	ACharacter::setSpeed(int speed)
 {
+  _mutex->lock();
   _speed = speed;
+  _mutex->unlock();
 }
 
 void	ACharacter::takeDamages(int amount)
 {
+  _mutex->lock();
   _health -= amount;
   if (_health < 0)
-    _isAlive = false;
+    die();
+  _mutex->unlock();
 }
 int	ACharacter::getHealth() const
 {
@@ -124,9 +128,11 @@ int	ACharacter::getHealth() const
 
 void	ACharacter::setHealth(int health)
 {
+  _mutex->lock();
   _health = health;
   if (_health <= 0)
-    _isAlive = false;
+    die();
+  _mutex->unlock();
 }
 
 int	ACharacter::getBombStock() const

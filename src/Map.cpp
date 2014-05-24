@@ -315,6 +315,7 @@ void	Map::createMap(t_gameinfo &gameInfo)
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
+  createContainers();
   fillContainers(gameInfo);
   display();
 }
@@ -341,6 +342,16 @@ void	Map::addEntity(AEntity *ent)
       _cont.push_back(cont);
     }
   _cont[pos]->stockEntity(ent);
+}
+
+
+void	Map::createContainers()
+{
+  for (int y = 0; y < _mapY; y += SQUARESIZE)
+    {
+      for (int x = 0; x < _mapX; x += SQUARESIZE)
+	_cont.push_back(new Container);
+    }
 }
 
 /*

@@ -70,7 +70,7 @@ bool GameEngine::initialize()
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_gameInfo);
-  spawn.spawnEnt(1, 1, all_cam, _gameInfo);
+  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
@@ -128,6 +128,8 @@ void GameEngine::draw()
   v_Contcit end = _gameInfo.map.ContEnd();
   for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
     {
+      Mutex *mutex = (*it)->getMutex();
+      Scopelock	<Mutex>sc(*mutex);
       v_Entcit end_vector = (*it)->vecEnd();
       l_Entcit end_list = (*it)->listEnd();
       for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)

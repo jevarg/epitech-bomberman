@@ -10,9 +10,9 @@ Entity::~Entity()
 {
 }
 
-void	Entity::destroy(Map &map)
+void	Entity::destroy()
 {
-  map.removeEntityByPtr(this);
+  _gameInfo.map.removeEntityByPtr(this);
   delete (this);
 }
 
