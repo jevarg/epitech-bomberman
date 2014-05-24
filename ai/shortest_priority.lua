@@ -1,5 +1,4 @@
 function determine_way(map, cur_x, cur_y)
-	print("ab")
 	if (map[cur_y][cur_x] == "B") then return ENUM_ACTION["bomb"] end
 	if (cur_x > X) then return ENUM_ACTION["right"] end
 	if (cur_x < X) then return ENUM_ACTION["left"] end

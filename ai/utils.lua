@@ -29,6 +29,9 @@ function get_entities()
 	local ent = {}
 	local entities = {}
 	for i = 1, #arg, 3 do
+		if (translate[arg[i]] == TYPE_PRIORITY["player"]) then
+			print("find charac : ", arg[i + 2], arg[i + 1])
+		end
 		table.insert(ent, {["type"] = translate[arg[i]], ["y"] = arg[i + 1], ["x"] = arg[i + 2]})
 	end
 	for i = 1, 8 do

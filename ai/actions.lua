@@ -25,7 +25,6 @@ function random_movement(map, used_nb)
 	local x, y = X, Y
 	local i
 
-	print("orient:" , orient - 1)
 	if (orient == 1 or orient == 3) then y = y + mov[orient] end
 	if (orient == 2 or orient == 4) then x = x + mov[orient] end
 	if (map[y][x] == ".") then
@@ -44,7 +43,6 @@ function random_movement(map, used_nb)
 			end
 			j = j + 1
 		end
-		print("random value:" , save)
 		tested[save] = 1
 		if (save == 1 or save == 3) then y = y + mov[save] end
 		if (save == 2 or save == 4) then x = x + mov[save] end
@@ -53,21 +51,4 @@ function random_movement(map, used_nb)
 		end
 	end
 	return x, y
-	--[[
-	if (n == 1 or n == 2) then
-		x = X + mov[n]
-		if (x < 1) then x = 1 end
-		if (x > MAP_XMAX) then x = MAP_XMAX end
-	else
-		y = Y + mov[n]
-		if (y < 1) then y = 1 end
-		if (y > MAP_YMAX) then y = MAP_YMAX end
-	end
-	if (map[y][x] ~= ".") then
-		table.insert(used_nb, n)
-		x, y = random_movement(map, used_nb)
-		return x, y
-	end
-	return x, y
-	--]]
 end
