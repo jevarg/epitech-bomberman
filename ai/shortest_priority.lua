@@ -42,7 +42,6 @@ function get_good_way(map, x, y, nb)
 	if (y + 1 < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
 		if (map[y + 1][x] < nb) then return y + 1, x end
 	end
-	print("looooool no return its randomfull youhou")
 end
 
 function take_shortest_priority(map, entities)
@@ -72,11 +71,9 @@ function take_shortest_priority(map, entities)
 			end
 		end
 	end
-	print("looool")
-	if (x == 1000000 and y == 1000000) then print("ca random dur !") ; return random_movement(map) end
+	if (x == 1000000 and y == 1000000) then return random_movement(map) end
 	while (map[y][x] ~= 0 and map[y][x] ~= 1) do
 		y, x = get_good_way(map, x, y, map[y][x])
 	end
-	print("oh my god !")
 	return x, y
 end
