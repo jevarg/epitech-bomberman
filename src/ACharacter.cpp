@@ -117,7 +117,7 @@ void	ACharacter::takeDamages(int amount)
 {
   _mutex->lock();
   _health -= amount;
-  if (_health < 0)
+  if (_health <= 0)
     die();
   _mutex->unlock();
 }
