@@ -22,9 +22,7 @@ void	IA::update()
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
-      std::cout << "IA: " << _x << " " << _y << " " << res << std::endl;
       updatePosition(_gameInfo.map, static_cast<eAction>(res));
-      getchar();
     }
 }
 
@@ -42,7 +40,6 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 8);
 	  if (i == _y && j == _x)
 	    {
-	      std::cout << "foudn player" << std::endl;
 	      _lua.pushStringInt("y", c1);
 	      _lua.pushStringInt("x", c2);
 	    }

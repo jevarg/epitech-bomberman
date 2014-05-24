@@ -20,7 +20,7 @@ end
 
 function random_movement(map, used_nb)
 	local orient = arg["orientation"] + 1
-	local mov = {-1, -1, 1, 1}
+	local mov = {1, 1, -1, -1}
 	local tested = {0, 0, 0, 0}
 	local x, y = X, Y
 	local i
@@ -30,10 +30,8 @@ function random_movement(map, used_nb)
 	if (orient == 2 or orient == 4) then x = x + mov[orient] end
 	if (map[y][x] == ".") then
 		return x, y
-	else
-		print ("not true")
-	end	
-	for i = 0, 3 do		
+	end
+	for i = 0, 3 do
 		x = X
 		y = Y
 		local n = math.random(1, 4)
@@ -48,15 +46,13 @@ function random_movement(map, used_nb)
 		end
 		print("random value:" , save)
 		tested[save] = 1
-		if (orient == 1 or orient == 3) then y = y + mov[orient]
-		elseif (orient == 2 or orient == 4) then x = x + mov[orient] end
+		if (save == 1 or save == 3) then y = y + mov[save] end
+		if (save == 2 or save == 4) then x = x + mov[save] end
 		if (map[y][x] == ".") then
 			return x, y
-		else
-			print ("not true")
 		end
 	end
-	return x, y	
+	return x, y
 	--[[
 	if (n == 1 or n == 2) then
 		x = X + mov[n]
