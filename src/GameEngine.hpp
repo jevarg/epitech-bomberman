@@ -39,6 +39,8 @@
 # define BOX_TEXTURE "./assets/box.tga"
 # define FLAME_TEXTURE "./assets/flames.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
+# define HEALTHITEM_TEXTURE "./assets/health_item.tga"
+# define SPEEDITEM_TEXTURE "./assets/speed_item.tga"
 
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"

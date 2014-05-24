@@ -22,6 +22,7 @@ Flame::~Flame()
 void		Flame::update()
 {
   AEntity	*ent;
+  bool		hit = false;
 
   if (_gameInfo.map.getEntityIf(_x, _y, WALL) != NULL ||
       (--_timeout) == 0)
@@ -36,8 +37,11 @@ void		Flame::update()
       if ((ent = _gameInfo.map.getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
 	{
 	  ent->takeDamages(_power);
-	  _range = 0;
+	  _toDestroy = true;
+	  hit = true;
 	}
+      if (hit)
+	return ;
     }
   if ((--_nextFlame) == 0 && _range > 0)
     {
