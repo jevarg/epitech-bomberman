@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Fri May 23 15:37:53 2014 Jean Gravier
+## Last update Fri May 23 23:28:17 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -43,8 +43,10 @@ SRC		=	main.cpp \
 			ACharacter.cpp \
 			Player.cpp \
 			Map.cpp \
-			Spawn.cpp \
 			Input.cpp \
+			IA.cpp \
+			LuaCommunication.cpp \
+			Spawn.cpp \
 			ModelFactory.cpp \
 			Text.cpp
 
@@ -53,7 +55,7 @@ SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
 CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -lSDL2 -lpthread -lm -ldl -p
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -llua -lSDL2 -lpthread -lm -ldl -p
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))

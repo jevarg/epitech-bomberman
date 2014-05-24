@@ -78,6 +78,8 @@ private:
   Camera			_cam;
   unsigned int			_mapX;
   unsigned int			_mapY;
+  std::map<eType, IObject *>	_type;
+  std::map<eType, gdl::Texture *>	_texture;
   Model				*_model;
   Player			*_player;
   t_gameinfo			_gameInfo;
