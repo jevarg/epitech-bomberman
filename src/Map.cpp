@@ -364,7 +364,7 @@ eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
-  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+  if (y <= 0 || y >= _mapY - 1 || x  <= 0 || x >= _mapX - 1)
     return (WALL);
   else if (pos >= _cont.size())
     return (FREE);
