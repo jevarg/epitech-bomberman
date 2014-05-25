@@ -28,7 +28,6 @@ end
 
 function take_decision(map, map_nb, entities)
 	if (arg["bomb"] == 1) then
-		print("oh my god!")
 		local cur_x, cur_y = random_movement(map)
 		return determine_way(map, cur_x, cur_y)
 	else
@@ -43,8 +42,7 @@ function artificial_intelligence()
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
-	fill_dangerous_fields(map_nb)
-	display_map(map)
+	-- fill_dangerous_fields(map_nb)
 	return take_decision(map, map_nb, entities)
 end
 
