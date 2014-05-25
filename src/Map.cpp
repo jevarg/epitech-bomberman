@@ -333,14 +333,14 @@ unsigned int	Map::getContPos(int x, int y) const
 void	Map::addEntity(AEntity *ent)
 {
   unsigned int	pos;
-  Container	*cont;
+  // Container	*cont;
 
   pos = getContPos(ent->getXPos(), ent->getYPos());
-  while (_cont.size() <= pos)
-    {
-      cont = new Container;
-      _cont.push_back(cont);
-    }
+  // while (_cont.size() <= pos)
+  //   {
+  //     cont = new Container;
+  //     _cont.push_back(cont);
+  //   }
   _cont[pos]->stockEntity(ent);
 }
 
