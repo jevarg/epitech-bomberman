@@ -53,6 +53,7 @@ void	Container::removeContBlock(int x, int y)
 
 void	Container::removeContBlockByPtr(AEntity *ptr)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
@@ -156,4 +157,9 @@ AEntity		*Container::getEntityIfNot(int x, int y, eType value)
 	(*vit)->getType() != value)
       return (*vit);
   return (NULL);
+}
+
+Mutex	*Container::getMutex() const
+{
+  return (_mutex);
 }

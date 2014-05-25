@@ -30,7 +30,8 @@ function random_movement(map)
 
 	if (orient == 1 or orient == 3) then y = y + mov[orient] end
 	if (orient == 2 or orient == 4) then x = x + mov[orient] end
-	if (map[y][x] == ".") then return x, y end
+	if (map[y][x] == ".") then return x, y
+	else print("same orient false: " .. map[y][x]) end
 	for i = 0, 3 do
 		x = X
 		y = Y

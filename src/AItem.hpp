@@ -19,7 +19,6 @@ public:
   virtual ~AItem() = 0;
 
   void	update();
-  void	takeDamages(int amount);
   bool	checkItemColision(Map &map);
 
   virtual void	setAttr(ACharacter *ch) const = 0;

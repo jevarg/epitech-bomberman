@@ -48,6 +48,7 @@ public:
 private:
   void	genSmallMaze(short x, short y, short dir);
   void	genBigMaze();
+  void	createContainers();
 
   bool	checkValidPath(int x, int y) const;
   short	getDir(bool *tab, short oldDir) const;

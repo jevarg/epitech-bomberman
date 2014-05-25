@@ -22,8 +22,8 @@ void	IA::update()
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
-      if (res == 4)
-	dropBomb(_gameInfo);
+      if (res == DROPBOMB)
+	dropBomb();
       else
 	updatePosition(_gameInfo.map, static_cast<eAction>(res));
     }
@@ -45,14 +45,9 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 	  if (i == _y && j == _x)
 	    {
 	      if (type == BOMB)
-		{
-		  std::cout << "Mmmmh on a de la bombe par ici" << std::endl;
-		  _lua.pushStringInt("bomb", 1);
-		}
+		_lua.pushStringInt("bomb", 1);
 	      else if (gameInfo.map.getEntityIf(j, i, BOMB) != NULL)
-		{
-		  _lua.pushStringInt("bomb", 1);
-		}
+		_lua.pushStringInt("bomb", 1);
 	      else
 		_lua.pushStringInt("bomb", 0);
 	      _lua.pushStringInt("y", c1);

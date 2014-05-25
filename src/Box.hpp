@@ -13,7 +13,7 @@ public:
 
   void	takeDamages(int amount);
   void	spawnItem(t_gameinfo &gameInfo);
-  void	destroy(Map &map);
+  void	destroy();
 };
 
 #endif /* _BOX_HPP_ */

@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Fri May 23 23:28:17 2014 luc sinet
+## Last update Sat May 24 21:58:49 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -54,8 +54,8 @@ OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -llua -lSDL2 -lpthread -lm -ldl -p
+CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -llua -lSDL2 -lpthread -lm -ldl
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))

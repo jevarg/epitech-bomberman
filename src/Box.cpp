@@ -13,7 +13,7 @@ Box::~Box()
 void	Box::takeDamages(int)
 {
   spawnItem(_gameInfo);
-  destroy(_gameInfo.map);
+  destroy();
 }
 
 void	Box::spawnItem(t_gameinfo &gameInfo)
@@ -21,8 +21,8 @@ void	Box::spawnItem(t_gameinfo &gameInfo)
   gameInfo.map.addEntity(new SpeedItem(_x, _y, SPEEDITEM, gameInfo));
 }
 
-void	Box::destroy(Map &map)
+void	Box::destroy()
 {
-  map.removeEntityByPtr(this);
+  _gameInfo.map.removeEntityByPtr(this);
   delete (this);
 }
