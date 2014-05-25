@@ -12,18 +12,14 @@ Container::~Container()
 
 eType	Container::checkColision(int x, int y) const
 {
+  Scopelock	<Mutex>sc(*_mutex);
   v_Entcit	it = _staticEnt.begin();
   l_Entcit	lit = _mobileEnt.begin();
 
-  _mutex->lock();
   for (v_Entcit end = _staticEnt.end(); it != end; ++it)
     if ((*it)->getXPos() == x && (*it)->getYPos() == y)
-      {
-	_mutex->unlock();
-	return ((*it)->getType());
-      }
-  _mutex->unlock();
-  for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
+      return ((*it)->getType());
+   for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
       return ((*lit)->getType());
   return (FREE);
@@ -31,6 +27,7 @@ eType	Container::checkColision(int x, int y) const
 
 void	Container::stockEntity(AEntity *ent)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   if (ent->getType() == WALL)
     _staticEnt.push_back(ent);
   else
@@ -39,6 +36,7 @@ void	Container::stockEntity(AEntity *ent)
 
 void	Container::removeContBlock(int x, int y)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
@@ -99,17 +97,14 @@ l_Entit	Container::listEndMod()
 
 AEntity		*Container::getEntity(int x, int y)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
   v_Entcit	vit = _staticEnt.begin();
 
   _mutex->lock();
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
-      {
-	_mutex->unlock();
-	return (*lit);
-      }
-  _mutex->unlock();
+      return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y)
       return (*vit);
@@ -118,18 +113,14 @@ AEntity		*Container::getEntity(int x, int y)
 
 AEntity		*Container::getEntityIf(int x, int y, eType value)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
   v_Entcit	vit = _staticEnt.begin();
 
-  _mutex->lock();
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
 	(*lit)->getType() == value)
-      {
-	_mutex->unlock();
-	return (*lit);
-      }
-  _mutex->unlock();
+      return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
 	(*vit)->getType() == value)
@@ -140,18 +131,14 @@ AEntity		*Container::getEntityIf(int x, int y, eType value)
 
 AEntity		*Container::getEntityIfNot(int x, int y, eType value)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
   v_Entcit	vit = _staticEnt.begin();
 
-  _mutex->lock();
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
 	(*lit)->getType() != value)
-      {
-	_mutex->unlock();
-	return (*lit);
-      }
-  _mutex->unlock();
+      return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
 	(*vit)->getType() != value)
