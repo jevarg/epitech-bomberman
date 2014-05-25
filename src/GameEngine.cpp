@@ -129,7 +129,7 @@ void GameEngine::draw()
   for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
     {
       Mutex *mutex = (*it)->getMutex();
-      Scopelock	<Mutex>sc(*mutex);
+      // Scopelock	<Mutex>sc(*mutex);
       v_Entcit end_vector = (*it)->vecEnd();
       l_Entcit end_list = (*it)->listEnd();
       for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)
