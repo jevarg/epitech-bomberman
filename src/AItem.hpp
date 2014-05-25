@@ -5,6 +5,7 @@
 # include "ACharacter.hpp"
 
 # define NO_TIMEOUT -10
+
 enum
   {
     SPEED_AMOUNT = 1,

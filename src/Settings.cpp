@@ -12,7 +12,7 @@ Settings::Settings()
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
 
-  _cvarList.push_back(new t_cvar ("com_maxFps", 20, 300, 60));
+  _cvarList.push_back(new t_cvar ("com_maxFps", 2, 300, 60));
   _cvarList.push_back(new t_cvar ("cg_fov", 20, 180, 80));
   _cvarList.push_back(new t_cvar ("r_windowHeight", 480, 1440, 600));
   _cvarList.push_back(new t_cvar ("r_windowWidth", 640, 2560, 1024));

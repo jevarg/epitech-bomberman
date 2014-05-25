@@ -55,5 +55,6 @@ function best_first(map, map_nb, entities)
 	else
 		cur_x, cur_y = random_movement(map)
 	end	
+	print("return way")
 	return determine_way(map, cur_x, cur_y)
 end

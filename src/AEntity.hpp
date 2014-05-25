@@ -17,6 +17,8 @@ enum	eType
     BOMB,
     FLAME,
     ITEM,
+    SPEEDITEM,
+    HEALTHITEM,
     CHARACTER,
     GROUND,
     UNKNOWNENTITY

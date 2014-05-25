@@ -18,7 +18,7 @@ void	Box::takeDamages(int)
 
 void	Box::spawnItem(t_gameinfo &gameInfo)
 {
-  gameInfo.map.addEntity(new SpeedItem(_x, _y, ITEM, gameInfo));
+  gameInfo.map.addEntity(new SpeedItem(_x, _y, SPEEDITEM, gameInfo));
 }
 
 void	Box::destroy(Map &map)

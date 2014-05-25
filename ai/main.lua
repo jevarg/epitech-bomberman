@@ -27,11 +27,11 @@ function check_elem_at(map, cur_x, cur_y, w, n)
 end
 
 function take_decision(map, map_nb, entities)
-	if (map[Y][X] == "D") then
-		-- run_out_danger(map_nb, X, Y, 0)
-		-- return
+	if (arg["bomb"] == 1) then
+		print("oh my god!")
+		local cur_x, cur_y = random_movement(map)
+		return determine_way(map, cur_x, cur_y)
 	else
-		display_map(map)
 		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1) then
 			return ENUM_ACTION["bomb"]
 		end
@@ -44,6 +44,7 @@ function artificial_intelligence()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
 	fill_dangerous_fields(map_nb)
+	display_map(map)
 	return take_decision(map, map_nb, entities)
 end
 
