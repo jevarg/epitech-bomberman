@@ -84,11 +84,12 @@ public:
   int	toNumber(const std::string &) const;
   bool	isAscii(const std::string &) const;
 
+  bool	addKey(const std::string tab[3]);
+  bool	addCvar(const std::string tab[3]);
+
 private:
   bool	readFile(std::vector<std::string> &inst, const std::string &);
   void	parsInst(const std::vector<std::string> &inst);
-  void	addKey(const std::string tab[3]);
-  void	addCvar(const std::string tab[3]);
   void	initCvar();
   keyCode	getKeyFromCode(const std::string &) const;
 

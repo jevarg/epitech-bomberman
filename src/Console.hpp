@@ -14,12 +14,12 @@ public:
   bool		parseCmd(const std::string &, std::string &);
 
 private:
-  bool		bind(const std::string &, const std::string &, std::string &);
-  bool		set(const std::string &, const std::string &, std::string &);
-  bool		help(const std::string &, const std::string &, std::string &);
+  bool		bind(const std::string &, std::string &, int);
+  bool		set(const std::string &, std::string &, int);
+  bool		help(const std::string &, std::string &, int);
 
   Settings	&_set;
-  std::map<std::string, bool (Console::*)(const std::string &, const std::string &, std::string &)> _cmd;
+  std::map<std::string, bool (Console::*)(const std::string &, std::string &, int)> _cmd;
 };
 
 #endif /* !CONSOLE_HPP_ */

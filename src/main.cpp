@@ -1,4 +1,5 @@
 #include <iostream>
+#include <string>
 #include "GameEngine.hpp"
 #include "Exception.hpp"
 #include "Settings.hpp"
@@ -14,9 +15,9 @@ int	main(int, char **av)
 
       Console	console(set);
       std::string	ret;
-      console.parseCmd(new std::string (av[1]), ret);
+      console.parseCmd(std::string (av[1]), ret);
       std::cout << "ret : " << ret << std::endl;
-      exit(0);
+      return (0);
 
       Input	input;
       Map	map(set);

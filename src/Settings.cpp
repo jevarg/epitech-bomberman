@@ -111,7 +111,7 @@ void	Settings::initCvar()
     }
 }
 
-void	Settings::addCvar(const std::string tab[3])
+bool	Settings::addCvar(const std::string tab[3])
 {
   v_cvarit	listit;
   v_cvarit	listend = _cvarList.end();
@@ -126,9 +126,10 @@ void	Settings::addCvar(const std::string tab[3])
 	  _cvarMap.insert(std::pair<cvar, int>
 			  (static_cast<cvar>(std::distance(_cvarList.begin(), listit)),
 			   cvarValue));
-	  break ;
+	  return (true);
 	}
     }
+  return (false);
 }
 
 /*
@@ -156,7 +157,7 @@ keyCode	Settings::getKeyFromCode(const std::string &str) const
   return ((it == _speKeys.end()) ? UNKNOWN_KEY : it->second);
 }
 
-void	Settings::addKey(const std::string tab[3])
+bool		Settings::addKey(const std::string tab[3])
 {
   v_instit	listit;
   v_instit	listend = _actionList.end();
@@ -174,9 +175,10 @@ void	Settings::addKey(const std::string tab[3])
 	    _keyMap.insert(std::pair<keyCode, eAction>
 			   (boundkey, static_cast<eAction>
 			    (std::distance(_actionList.begin(), listit))));
-	  break ;
+	  return (true);
 	}
     }
+  return (false);
 }
 
 void	Settings::parsInst(const std::vector<std::string> &inst)
