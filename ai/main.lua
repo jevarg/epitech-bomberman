@@ -31,8 +31,12 @@ function take_decision(map, map_nb, entities)
 		local cur_x, cur_y = random_movement(map)
 		return determine_way(map, cur_x, cur_y)
 	else
-		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1) then
+		local item = check_elem_at(map_nb, X, Y, "I", 1)
+		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1 or
+			check_elem_at(map_nb, X, Y, "B", 1) ~= -1) then
 			return ENUM_ACTION["bomb"]
+		elseif (item ~= -1) then
+			return item
 		end
 		return best_first(map, map_nb, entities)
 	end
