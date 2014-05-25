@@ -101,7 +101,6 @@ AEntity		*Container::getEntity(int x, int y)
   l_Entit	lit = _mobileEnt.begin();
   v_Entcit	vit = _staticEnt.begin();
 
-  _mutex->lock();
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
       return (*lit);

@@ -70,7 +70,7 @@ bool GameEngine::initialize()
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_gameInfo);
-  spawn.spawnEnt(1, 1, all_cam, _gameInfo);
+  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
@@ -99,9 +99,7 @@ bool GameEngine::update()
     std::cout << "catched event " << mouse.event << std::endl;
   // if (win.event == WIN_RESIZE) // Seems not to work
   //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl
-
   _frames++;
-
   if ((time = _gameInfo.clock.getElapsed()) < fps)
     {
       _text << round(_frames / _gameInfo.clock.getElapsed());

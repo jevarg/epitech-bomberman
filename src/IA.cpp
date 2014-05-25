@@ -41,15 +41,15 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 	{
 	  int type = gameInfo.map.checkMapColision(j, i);
 	  if (*cnt == 0)
-	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 8);	
+	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 8);
 	  if (i == _y && j == _x)
 	    {
 	      if (type == BOMB)
-		_lua.pushStringInt("bomb", 1);
+	      	_lua.pushStringInt("bomb", 1);
 	      else if (gameInfo.map.getEntityIf(j, i, BOMB) != NULL)
-		_lua.pushStringInt("bomb", 1);
+	      	_lua.pushStringInt("bomb", 1);
 	      else
-		_lua.pushStringInt("bomb", 0);
+	      	_lua.pushStringInt("bomb", 0);
 	      _lua.pushStringInt("y", c1);
 	      _lua.pushStringInt("x", c2);
 	    }
