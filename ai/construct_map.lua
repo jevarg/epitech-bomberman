@@ -4,7 +4,7 @@ function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 	then
 		if (map[cur_y][cur_x + n] == "W" or
 			map[cur_y][cur_x + n] == "D" or
-			map[cur_y][cur_x + n] ~= "P")
+			map[cur_y][cur_x + n] == "P")
 		then
 			block[1] = 1 
 		else
@@ -16,7 +16,7 @@ function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 	then
 		if (map[cur_y][cur_x - n] == "W" or
 			map[cur_y][cur_x - n] == "D" or
-			map[cur_y][cur_x - n] ~= "P")
+			map[cur_y][cur_x - n] == "P")
 		then
 			block[2] = 1 
 		else
@@ -28,7 +28,7 @@ function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 	then
 		if (map[cur_y + n][cur_x] == "W" or
 			map[cur_y + n][cur_x] == "D" or
-			map[cur_y + n][cur_x] ~= "P")
+			map[cur_y + n][cur_x] == "P")
 		then
 			block[3] = 1
 		else
@@ -40,7 +40,7 @@ function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 	then
 		if (map[cur_y - n][cur_x] == "W" or
 			map[cur_y - n][cur_x] == "D" or
-			map[cur_y - n][cur_x] ~= "P")
+			map[cur_y - n][cur_x] == "P")
 		then
 			block[4] = 1
 		else
@@ -100,7 +100,6 @@ function create_map(entities, aggro)
 		if (entities[i]["type"] == TYPE_PRIORITY["box"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "B" end
 		if (entities[i]["type"] == TYPE_PRIORITY["bomb"]) then
-			print("HAVE BOMB")
 			map[entities[i]["y"]][entities[i]["x"]] = "O" end
 	end
 	MAP_XMAX, MAP_YMAX = set_pos_map(map)
