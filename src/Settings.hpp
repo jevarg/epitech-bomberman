@@ -50,7 +50,9 @@ enum	cvar
     MAP_DENSITY,
     MAP_LINEAR,
     R_FULLSCREEN,
-    R_MIPMAP
+    R_MIPMAP,
+    FIRESPEED,
+    FIRETIME
   };
 
 typedef	struct	s_cvar

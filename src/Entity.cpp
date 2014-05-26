@@ -2,7 +2,7 @@
 #include "Entity.hpp"
 
 Entity::Entity(int x, int y, eType type, t_gameinfo &gameInfo) :
-  AEntity(x, y, type), _gameInfo(gameInfo)
+  AEntity(x, y, type, gameInfo)
 {
 }
 
@@ -10,8 +10,12 @@ Entity::~Entity()
 {
 }
 
-void	Entity::destroy(Map &map)
+void	Entity::destroy()
 {
-  map.removeEntityByPtr(this);
+  _gameInfo.map.removeEntityByPtr(this);
   delete (this);
+}
+
+void	Entity::takeDamages(int)
+{
 }

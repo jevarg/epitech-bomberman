@@ -68,7 +68,7 @@ bool		Map::load(Settings &settings, const std::string &name,
 	      addEntity(new Entity(x, y, WALL, gameInfo));
 	      break;
 	    case 'B':
-	      addEntity(new Entity(x, y, BOX, gameInfo));
+	      addEntity(new Box(x, y, BOX, gameInfo));
 	      break;
 	    case ' ':
 	      break;
@@ -154,7 +154,6 @@ void	Map::genSmallMaze(short x, short y, short pos)
   short	ty;
   bool 	tabdir[4] = {false, false, false, false};
 
-  std::cout << x << " " << y << " " << _mapX << std::endl;
   _map[y * _mapX + x] = FREE;
   if (pos < 4)
     tabdir[pos] = true;
@@ -256,16 +255,28 @@ void	Map::fillBox()
     }
 }
 
+/*
+** The entity added at 0,0 is symbolic, in fact it is just usefull
+** for getters returning a pointer to the entity. Because of the way we check colisions
+** no entity will be returned if it's on the border, so we return a pointer to this
+*/
+
 void	Map::fillContainers(t_gameinfo &_gameInfo)
 {
   unsigned int	i;
   unsigned int 	totalsize = (_mapY - 1) * _mapX;
 
+  addEntity(new Entity(0, 0, WALL, _gameInfo));
   for (i = _mapX; i < totalsize; ++i)
     {
       // means there is a block & It's not the border
       if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
-	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	{
+	  if (_map[i] == WALL)
+	    addEntity(new Entity(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	  else
+	    addEntity(new Box(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	}
     }
   _map.clear();	// erase the temps vector
 }
@@ -304,6 +315,7 @@ void	Map::createMap(t_gameinfo &gameInfo)
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
+  createContainers();
   fillContainers(gameInfo);
   display();
 }
@@ -321,15 +333,25 @@ unsigned int	Map::getContPos(int x, int y) const
 void	Map::addEntity(AEntity *ent)
 {
   unsigned int	pos;
-  Container	*cont;
+  // Container	*cont;
 
   pos = getContPos(ent->getXPos(), ent->getYPos());
-  while (_cont.size() <= pos)
-    {
-      cont = new Container;
-      _cont.push_back(cont);
-    }
+  // while (_cont.size() <= pos)
+  //   {
+  //     cont = new Container;
+  //     _cont.push_back(cont);
+  //   }
   _cont[pos]->stockEntity(ent);
+}
+
+
+void	Map::createContainers()
+{
+  for (int y = 0; y < _mapY; y += SQUARESIZE)
+    {
+      for (int x = 0; x < _mapX; x += SQUARESIZE)
+	_cont.push_back(new Container);
+    }
 }
 
 /*
@@ -342,7 +364,7 @@ eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
-  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+  if (y <= 0 || y >= _mapY - 1 || x  <= 0 || x >= _mapX - 1)
     return (WALL);
   else if (pos >= _cont.size())
     return (FREE);
@@ -369,32 +391,37 @@ v_Contcit	Map::ContEnd() const
   return (_cont.end());
 }
 
-void		Map::setEntity(int x, int y, eType type)
-{
-  (_cont[getContPos(x, y)])->setEntity(x, y, type);
-}
-
-void		Map::setEntityIf(int x, int y, eType newValue, eType oldValue)
-{
-  (_cont[getContPos(x, y)])->setEntityIf(x, y, newValue, oldValue);
-}
-
-void		Map::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
-{
-  (_cont[getContPos(x, y)])->setEntityIfNot(x, y, newValue, oldValue);
-}
-
 AEntity		*Map::getEntity(int x, int y) const
 {
-  return ((_cont[getContPos(x, y)])->getEntity(x, y));
+  unsigned int	pos = getContPos(x, y);
+
+  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntity(x, y));
 }
 
 AEntity		*Map::getEntityIf(int x, int y, eType value) const
 {
-  return ((_cont[getContPos(x, y)])->getEntityIf(x, y, value));
+  unsigned int	pos = getContPos(x, y);
+
+  if ((y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+      && value == WALL)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntityIf(x, y, value));
 }
 
 AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
 {
-  return ((_cont[getContPos(x, y)])->getEntityIfNot(x, y, value));
+  unsigned int	pos = getContPos(x, y);
+
+  if ((y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+      && value != WALL)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntityIfNot(x, y, value));
 }

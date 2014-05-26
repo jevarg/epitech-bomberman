@@ -1,22 +1,27 @@
 #ifndef _AITEM_HPP_
 # define _AITEM_HPP_
 
-# include "AEntity.hpp"
+# include "ALivingEntity.hpp"
 # include "ACharacter.hpp"
 
 # define NO_TIMEOUT -10
+
 enum
   {
     SPEED_AMOUNT = 1,
     HEALTH_AMOUNT = 20
   };
 
-class AItem
+class AItem : public ALivingEntity
 {
 public:
-  AItem();
+  AItem(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~AItem() = 0;
 
+  void	update();
+  bool	checkItemColision(Map &map);
+
+  virtual void	setAttr(ACharacter *ch) const = 0;
 protected:
   int	_timeout;
   int	_amount;

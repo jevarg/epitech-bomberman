@@ -16,6 +16,9 @@ enum	eType
     BOX,
     BOMB,
     FLAME,
+    ITEM,
+    SPEEDITEM,
+    HEALTHITEM,
     CHARACTER,
     GROUND,
     UNKNOWNENTITY
@@ -36,8 +39,8 @@ typedef struct	s_entity
 class		AEntity
 {
 public:
-  AEntity();
-  AEntity(int x, int y, eType type);
+  AEntity(t_gameinfo &gameInfo);
+  AEntity(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~AEntity() = 0;
 
   int		getXPos() const;
@@ -49,12 +52,15 @@ public:
   void		setDestroy();
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
-  virtual void	destroy(Map &map) = 0;
+
+  virtual void	destroy() = 0;
+  virtual void	takeDamages(int amount) = 0;
 
 protected:
   int		_x;
   int		_y;
   eType		_type;
+  t_gameinfo	&_gameInfo;
   bool		_toDestroy;
   IObject	*_model;
 };

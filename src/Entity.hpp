@@ -10,10 +10,8 @@ public:
   Entity(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~Entity();
 
-  void	destroy(Map &map);
-
-private:
-  t_gameinfo &_gameInfo;
+  void	destroy();
+  void	takeDamages(int amount);
 };
 
 #endif /* _ENTITY_H_ */

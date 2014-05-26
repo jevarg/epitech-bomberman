@@ -11,7 +11,7 @@ Settings::Settings()
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
 
-  _cvarList.push_back(new t_cvar ("com_maxFps", 20, 120, 60));
+  _cvarList.push_back(new t_cvar ("com_maxFps", 2, 300, 60));
   _cvarList.push_back(new t_cvar ("cg_fov", 20, 180, 80));
   _cvarList.push_back(new t_cvar ("r_windowHeight", 480, 1440, 600));
   _cvarList.push_back(new t_cvar ("r_windowWidth", 640, 2560, 1024));
@@ -21,6 +21,8 @@ Settings::Settings()
   _cvarList.push_back(new t_cvar ("s_mapLinear", 0, 100, 25));
   _cvarList.push_back(new t_cvar ("r_fullScreen", 0, 1, 1));
   _cvarList.push_back(new t_cvar ("r_mipmap", 0, 1, 1));
+  _cvarList.push_back(new t_cvar ("s_fireSpeed", 0, 100000, 10));
+  _cvarList.push_back(new t_cvar ("s_fireTime", 0, 1000000, 10));
   initCvar();
 
   _speKeys["CAPSLOCK"] = SDLK_CAPSLOCK;
@@ -122,10 +124,8 @@ bool	Settings::addCvar(const std::string tab[3])
       if ((*listit)->name == tab[1])
 	{
 	  if (cvarValue > (*listit)->max_value || cvarValue < (*listit)->min_value)
-	    cvarValue = (*listit)->default_value;
-	  _cvarMap.insert(std::pair<cvar, int>
-			  (static_cast<cvar>(std::distance(_cvarList.begin(), listit)),
-			   cvarValue));
+	      cvarValue = (*listit)->default_value;
+	  _cvarMap[static_cast<cvar>(std::distance(_cvarList.begin(), listit))] = cvarValue;
 	  return (true);
 	}
     }

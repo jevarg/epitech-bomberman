@@ -33,9 +33,6 @@ public:
   void	removeEntity(int x, int y);
   void	removeEntityByPtr(AEntity *ptr);
 
-  void		setEntity(int, int, eType);
-  void		setEntityIf(int, int, eType, eType);
-  void		setEntityIfNot(int, int, eType, eType);
   AEntity	*getEntity(int, int) const;
   AEntity	*getEntityIf(int, int, eType) const;
   AEntity	*getEntityIfNot(int, int, eType) const;
@@ -51,6 +48,7 @@ public:
 private:
   void	genSmallMaze(short x, short y, short dir);
   void	genBigMaze();
+  void	createContainers();
 
   bool	checkValidPath(int x, int y) const;
   short	getDir(bool *tab, short oldDir) const;

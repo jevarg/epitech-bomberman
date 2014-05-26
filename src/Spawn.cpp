@@ -1,3 +1,4 @@
+#include "IA.hpp"
 #include "GameEngine.hpp"
 #include "Spawn.hpp"
 
@@ -25,8 +26,8 @@ void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
     }
   else
     {
-      _map.addEntity(new Player(x, y, spawn.engine.cam[0], glm::vec4(0.0),
-				spawn.engine.gameInfo));
+      _map.addEntity(new IA(x, y, glm::vec4(0.0),
+			    spawn.engine.gameInfo));
       --spawn.nbIa;
     }
 }
