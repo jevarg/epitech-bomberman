@@ -7,6 +7,7 @@ Console::Console(Settings &set): _set(set)
   _cmd["bind"] = &Console::bind;
   _cmd["set"] = &Console::set;
   _cmd["help"] = &Console::help;
+  _cmd["import"] = &Console::import;
 }
 
 bool	Console::import(const std::string &arg, std::string &ret, int nbr_space)
@@ -39,7 +40,7 @@ bool	Console::bind(const std::string &arg, std::string &ret, int nbr_space)
     }
   tab[0] = "bind";
   tab[1] = arg.substr(0, arg.find_first_of(' ', 0));
-  tab[2] = arg.substr(arg.find_first_of(' ', 0), arg.length());
+  tab[2] = arg.substr(arg.find_first_of(' ', 0) + 1, arg.length());
   if (_set.addKey(tab) == false)
     {
       ret = "bind " + arg + " : failed to bind " + arg + ".";
@@ -60,7 +61,7 @@ bool	Console::set(const std::string &arg, std::string &ret, int nbr_space)
     }
   tab[0] = "set";
   tab[1] = arg.substr(0, arg.find_first_of(' ', 0));
-  tab[2] = arg.substr(arg.find_first_of(' ', 0), arg.length());
+  tab[2] = arg.substr(arg.find_first_of(' ', 0) + 1, arg.length());
   if (_set.addCvar(tab) == false)
     {
       ret = "set " + arg + " : failed to set " + arg + ".";
@@ -74,8 +75,11 @@ bool	Console::help(const std::string &arg, std::string &ret, int nbr_space)
 {
   (void)arg;
   (void)nbr_space;
-  ret = "This is help.";
-  return (true);  
+  ret = "You can configure manually some features and options about the game.\n";
+  ret += "You can bind a cvar using this syntax : \"bind cvar value\".\n";
+  ret += "You can set a key using this syntax : \"set key action\".\n";
+  ret += "You can import a config file using this syntax : \"import filename\".";
+  return (true);
 }
 
 bool	Console::parseCmd(const std::string &cmdline, std::string &ret)
