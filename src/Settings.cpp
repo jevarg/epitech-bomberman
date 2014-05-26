@@ -226,27 +226,29 @@ bool	Settings::readFile(std::vector<std::string> &inst,
   return (false);
 }
 
-void	Settings::loadFile(const std::string &filename)
+bool	Settings::loadFile(const std::string &filename)
 {
   std::vector<std::string>	inst;
 
-  if (readFile(inst, filename))
+  if (readFile(inst, filename) == true)
     parsInst(inst);
+  else
+    return (false);
+  // std::map<keyCode, eAction>::iterator kit;
+  // std::map<cvar, int>::iterator cit;
 
-  std::map<keyCode, eAction>::iterator kit;
-  std::map<cvar, int>::iterator cit;
+  // for (kit = _keyMap.begin(); kit != _keyMap.end(); ++kit)
+  //   {
+  //     std::cout << kit->first << " => " << kit->second << " => "
+  // 		<<  _actionList[(int)kit->second] << std::endl;
+  //   }
 
-  for (kit = _keyMap.begin(); kit != _keyMap.end(); ++kit)
-    {
-      std::cout << kit->first << " => " << kit->second << " => "
-		<<  _actionList[(int)kit->second] << std::endl;
-    }
-
-  for (cit = _cvarMap.begin(); cit != _cvarMap.end(); ++cit)
-    {
-      std::cout << _cvarList[(int)cit->first] << ": "<< cit->first <<
-	" => " << cit->second << std::endl;
-    }
+  // for (cit = _cvarMap.begin(); cit != _cvarMap.end(); ++cit)
+  //   {
+  //     std::cout << _cvarList[(int)cit->first] << ": "<< cit->first <<
+  // 	" => " << cit->second << std::endl;
+  //   }
+  return (true);
 }
 
 bool	Settings::cvarExist(cvar var) const

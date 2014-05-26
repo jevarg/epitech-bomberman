@@ -71,7 +71,7 @@ public:
   Settings();
   ~Settings();
 
-  void	loadFile(const std::string &);
+  bool	loadFile(const std::string &);
 
   bool	cvarExist(cvar var) const;
   int	getVar(cvar var) const;

@@ -14,6 +14,7 @@ public:
   bool		parseCmd(const std::string &, std::string &);
 
 private:
+  bool		import(const std::string &, std::string &, int);
   bool		bind(const std::string &, std::string &, int);
   bool		set(const std::string &, std::string &, int);
   bool		help(const std::string &, std::string &, int);
