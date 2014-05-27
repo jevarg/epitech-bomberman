@@ -26,6 +26,11 @@ public:
   void setTexture(gdl::Texture *texture);
 
 private:
+
+  void pushVertex();
+  void pushUv();
+  void pushNormal();
+
   gdl::Texture *_texture;
   gdl::Geometry *_geometry;
   std::string _file;
