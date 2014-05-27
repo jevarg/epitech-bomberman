@@ -15,7 +15,7 @@ ABomb::~ABomb()
 
 void	ABomb::explode()
 {
-  die();
+  die(); // importent to die first so no colision with flame
   _gameInfo.map.addEntity(new Flame(_x, _y, _power, _range, ALLDIR, _gameInfo));
 }
 
@@ -27,7 +27,7 @@ void	ABomb::update()
 
 void	ABomb::takeDamages(int /*amount*/)
 {
-  _mutex->lock();
+  if (_isAlive == false)
+    return ;
   explode();
-  _mutex->unlock();
 }

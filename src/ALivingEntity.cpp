@@ -28,13 +28,16 @@ void	*createAliveEntity(void *arg)
 
 void	ALivingEntity::die()
 {
-  _gameInfo.map.removeEntityByPtr(this);
+  Scopelock	<Mutex>sc(*_mutex);
+
+  if (_isAlive == false)	// just because it's not usefull iterating through
+    return ;			// all the containers
   _isAlive = false;
+  _gameInfo.map.removeEntityByPtr(this);
 }
 
 void	ALivingEntity::destroy()
 {
-  _mutex->unlock();
   delete (_mutex);
   delete (this);
   pthread_exit(NULL);
@@ -47,7 +50,6 @@ void	ALivingEntity::aliveLoop()
       _gameInfo.mutex->lock();
       _gameInfo.condvar->wait(_gameInfo.mutex->getMutexPtr());
       _gameInfo.mutex->unlock();
-      _mutex->lock();
       if (_isAlive)
 	update();
       else
@@ -55,7 +57,6 @@ void	ALivingEntity::aliveLoop()
 	  if ((_timedeath =- 1) <= 0)
 	    destroy();
 	}
-      _mutex->unlock();
     }
 }
 
@@ -66,9 +67,7 @@ bool	ALivingEntity::isAlive() const
 
 void	ALivingEntity::takeDamages(int /*amount*/)
 {
-  _mutex->lock();
   if (_isAlive == false)
     return ;
   die();
-  _mutex->unlock();
 }
