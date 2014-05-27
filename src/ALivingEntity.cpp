@@ -8,7 +8,6 @@ ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
   _mutex = new Mutex;
   if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
     throw (Exception("Can't create thread"));
-  _timedeath = gameInfo.set.getVar(FPS); // set to one second
 }
 
 ALivingEntity::~ALivingEntity()
@@ -36,6 +35,11 @@ void	ALivingEntity::die()
   _gameInfo.map.removeEntityByPtr(this);
 }
 
+void	ALivingEntity::setDestroy()
+{
+  die();
+}
+
 void	ALivingEntity::destroy()
 {
   delete (_mutex);
@@ -54,7 +58,7 @@ void	ALivingEntity::aliveLoop()
 	update();
       else
 	{
-	  if ((_timedeath =- 1) <= 0)
+	  if ((_timeDeath =- 1) <= 0)
 	    destroy();
 	}
     }

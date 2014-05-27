@@ -20,9 +20,3 @@ void	Box::spawnItem(t_gameinfo &gameInfo)
 {
   gameInfo.map.addEntity(new SpeedItem(_x, _y, SPEEDITEM, gameInfo));
 }
-
-void	Box::destroy()
-{
-  _gameInfo.map.removeEntityByPtr(this);
-  delete (this);
-}

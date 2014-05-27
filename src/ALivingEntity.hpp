@@ -23,12 +23,12 @@ public:
   virtual void	die();
   virtual void 	destroy();
   virtual void	takeDamages(int amount);
+  void		setDestroy();
 
 protected:
   pthread_t	_thread;
   Mutex		*_mutex;
   bool		_isAlive;
-  int		_timedeath;
 };
 
 void	*createAliveEntity(void *arg);

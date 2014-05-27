@@ -335,6 +335,7 @@ void	Map::addEntity(AEntity *ent)
   unsigned int	pos;
   // Container	*cont;
 
+  std::cout << "Add: " << ent << std::endl;
   pos = getContPos(ent->getXPos(), ent->getYPos());
   // while (_cont.size() <= pos)
   //   {

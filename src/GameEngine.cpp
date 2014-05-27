@@ -8,6 +8,7 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
+  _shutdown = false;
 
   Mutex *mutex = _gameInfo.mutex;
   pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
@@ -70,7 +71,7 @@ bool GameEngine::initialize()
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_gameInfo);
-  spawn.spawnEnt(1, 1, all_cam, _gameInfo);
+  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
@@ -86,12 +87,40 @@ void	GameEngine::mainInput()
       v_Contcit end = _gameInfo.map.ContEnd();
       for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
 	{
-	  l_Entit end_list = (*it)->listEndMod();
-	  for (l_Entit it1 = (*it)->listBeginMod(); it1 != end_list; it1++)
-	    (*it1)->setDestroy();
+	  AEntity *ent;
+	  v_Entit its;
+	  l_Entit itm;
+	  while ((ent = (*it)->listFront()) != NULL)
+	    ent->setDestroy();
+	  while ((ent = (*it)->vecFront()) != NULL)
+	    {
+	      ent->setDestroy();
+	      _collector.push_back(ent);
+	    }
 	}
       return ;
     }
+}
+
+int		GameEngine::clearElements()
+{
+  AEntity	*ent;
+  d_Ait		it = _collector.begin();
+
+  for (d_Ait end = _collector.end(); it != end; ++it)
+    (*it)->decTimeDeath();
+  while (!_collector.empty())
+    {
+      ent = _collector.front();
+      if (ent->getDeathTime() <= 0)
+	{
+	  _collector.pop_front();
+	  delete (ent);
+	}
+      else
+	break ;
+    }
+  return (_collector.size());
 }
 
 bool		GameEngine::update()
@@ -101,6 +130,8 @@ bool		GameEngine::update()
 
   mainInput();
   _gameInfo.condvar->broadcast();
+  if (clearElements() == 0 && _shutdown)
+    return (false);
   _frames++;
   if ((time = _gameInfo.clock.getElapsed()) < fps)
     {
@@ -109,7 +140,7 @@ bool		GameEngine::update()
       usleep((fps - time) * 1000);
     }
   _win.updateClock(_gameInfo.clock);
-  return (!_shutdown);
+  return (true);
 }
 
 void GameEngine::draw()

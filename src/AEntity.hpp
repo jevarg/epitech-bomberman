@@ -49,11 +49,14 @@ public:
   void		setXPos(const int &x);
   void		setYPos(const int &y);
   void		setType(const eType &type);
-  void		setDestroy();
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
+  int		getDeathTime() const;
+  void		decTimeDeath();
 
-  virtual void	destroy() = 0;
+  virtual void	setDestroy();
+  virtual void	destroy();
+
   virtual void	takeDamages(int amount) = 0;
 
 protected:
@@ -62,6 +65,7 @@ protected:
   eType		_type;
   t_gameinfo	&_gameInfo;
   bool		_toDestroy;
+  int		_timeDeath;
   IObject	*_model;
 };
 
