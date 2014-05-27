@@ -48,12 +48,8 @@ bool GameEngine::initialize()
   if (!_text.initialize())
     return (false);
 
-  skybox = new Cube(SKY_TEXTURE);
+  skybox = new Cube(WALL_TEXTURE);
   skybox->initialize();
-  skybox->scale(glm::vec3(200, 200, 200));
-  _obj.push_back(skybox);
-
-  skybox = new Cube(*skybox);
   skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
 			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
   skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
