@@ -8,10 +8,12 @@ AEntity::AEntity(t_gameinfo &gameInfo) : _gameInfo(gameInfo)
 }
 
 AEntity::AEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
-  _x(x), _y(y), _type(type), _gameInfo(gameInfo)
+  _type(type), _gameInfo(gameInfo)
 {
   _toDestroy = false;
   _model = ModelFactory::getInstance().getModel(_type);
+  _x = static_cast<float>(x);
+  _y = static_cast<float>(y);
   _model->translate(glm::vec3(x, 0.0, y));
   _timeDeath = gameInfo.set.getVar(FPS); // set to one second
 }

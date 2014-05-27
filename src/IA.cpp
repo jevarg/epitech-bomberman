@@ -25,7 +25,7 @@ void	IA::update()
       if (res == DROPBOMB)
 	dropBomb();
       else
-	updatePosition(_gameInfo.map, static_cast<eAction>(res));
+	updatePosition(_gameInfo.map, static_cast<eAction>(res), _gameInfo.clock);
     }
 }
 

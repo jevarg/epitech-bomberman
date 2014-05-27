@@ -27,6 +27,7 @@
 # include "Player.hpp"
 # include "Condvar.hpp"
 # include "Mutex.hpp"
+# include "Console.hpp"
 # include "Scopelock.hpp"
 # include "ModelFactory.hpp"
 # include "Text.hpp"

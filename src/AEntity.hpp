@@ -60,8 +60,8 @@ public:
   virtual void	takeDamages(int amount) = 0;
 
 protected:
-  int		_x;
-  int		_y;
+  float		_x;
+  float		_y;
   eType		_type;
   t_gameinfo	&_gameInfo;
   bool		_toDestroy;

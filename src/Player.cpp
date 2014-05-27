@@ -13,8 +13,9 @@ Player::~Player()
   std::cout << "Player death" << std::endl;
 }
 
-void	Player::checkInput()
+bool	Player::checkInput()
 {
+  bool		ret = false;
   eAction	tab[4] = {FORWARD, BACK, RIGHT, LEFT};
   glm::vec3	dir[4] = {glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 0.0, 1.0),
 			  glm::vec3(1.0, 0.0, 0.0), glm::vec3(-1.0, 0.0, 0.0)};
@@ -22,18 +23,25 @@ void	Player::checkInput()
     {
       if (_gameInfo.input[tab[i]])
 	{
-	  if (updatePosition(_gameInfo.map, tab[i]) == true)
+	  if (updatePosition(_gameInfo.map, tab[i], _gameInfo.clock) == true)
 	    {
-	      _camera->translate(dir[i]);
+	      _camera->translate(dir[i] * static_cast<float>(_speed * _gameInfo.clock.getElapsed()));
+	      ret = true;
 	      break ;
 	    }
 	}
     }
   if (_gameInfo.input[DROPBOMB])
     dropBomb();
+  return (ret);
 }
 
 void	Player::update()
 {
-  checkInput();
+  if (checkInput() == false && _anim == RUN)
+    {
+      std::cout << dynamic_cast<Model *>(_model)->getModel()->getAnimationFrameNumber(0) << std::endl;
+      dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(dynamic_cast<Model *>(_model)->getModel()->getAnimationFrameNumber(0), false);
+      _anim = NOTHING;
+    }
 }
