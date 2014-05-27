@@ -4,11 +4,10 @@ Model::Model()
   : IObject()
 {
   _obj = NULL;
-  _texture = NULL;
 }
 
 Model::Model(Model const& model)
-  : IObject(), _obj(model._obj), _texture(model._texture)
+  : IObject(), _obj(model._obj)
 {
 }
 
@@ -35,8 +34,6 @@ void	Model::update(gdl::Clock const &, Input &)
 
 void	Model::draw(gdl::AShader &shader, gdl::Clock const& clock) const
 {
-  if (_texture != NULL)
-    _texture->bind();
   _obj->draw(shader, getTransformation(), clock.getElapsed());
 }
 
@@ -51,15 +48,11 @@ bool		Model::load(std::string const& path)
   return (true);
 }
 
-bool		Model::loadTexture(std::string const& path)
+void		Model::setTexture(gdl::Texture *)
 {
-  if (_texture != NULL)
-    delete _texture;
-  _texture = new gdl::Texture();
-  return (_texture->load(path));
 }
 
-void		Model::setTexture(gdl::Texture *texture)
+gdl::Model	*Model::getModel()
 {
-  _texture = texture;
+  return (_obj);
 }

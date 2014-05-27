@@ -53,7 +53,7 @@ bool	ACharacter::updatePosition(Map &map, eAction action, const gdl::Clock &cloc
 	    case HEALTHITEM:
 	      if (_anim == NOTHING)
 	      	{
-		  dynamic_cast<gdl::Model *>(_model)->setCurrentAnim(0, true);
+		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);
 		  _anim = RUN;
 		}
 	      return (move(map, dirX, dirY));

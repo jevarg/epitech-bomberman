@@ -40,8 +40,8 @@ void	Player::update()
 {
   if (checkInput() == false && _anim == RUN)
     {
-      std::cout << dynamic_cast<gdl::Model *>(_model)->getAnimationFrameNumber(0) << std::endl;
-      // dynamic_cast<gdl::Model *>(_model)->setCurrentAnim(dynamic_cast<gdl::Model *>(_model)->getAnimationFrameNumber(0), false);
+      std::cout << dynamic_cast<Model *>(_model)->getModel()->getAnimationFrameNumber(0) << std::endl;
+      dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(dynamic_cast<Model *>(_model)->getModel()->getAnimationFrameNumber(0), false);
       _anim = NOTHING;
     }
 }
