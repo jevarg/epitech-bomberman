@@ -73,6 +73,7 @@ public:
 private:
   void	createDisplayMap();
   void	createDisplayBorder();
+  void	mainInput();
 
   gdl::SdlContext		_win;
   gdl::BasicShader		_shader;
@@ -87,6 +88,7 @@ private:
   Player			*_player;
   t_gameinfo			_gameInfo;
   Text				_text;
+  bool				_shutdown;
   int				_frames;
 };
 
