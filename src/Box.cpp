@@ -4,6 +4,7 @@
 Box::Box(int x, int y, eType type, t_gameinfo &gameInfo)
   : AEntity(x, y, type, gameInfo)
 {
+  _facto = ItemFactory::getInstance();
 }
 
 Box::~Box()
@@ -19,5 +20,5 @@ void	Box::takeDamages(int)
 
 void	Box::spawnItem(t_gameinfo &gameInfo)
 {
-  gameInfo.map.addEntity(new SpeedItem(_x, _y, SPEEDITEM, gameInfo));
+  gameInfo.map.addEntity(_facto->getItem(SPEEDITEM, _x, _y));
 }

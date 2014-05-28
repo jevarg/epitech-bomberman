@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Mon May 26 12:54:13 2014 Harold Fritsch
+## Last update Wed May 28 22:44:39 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -32,6 +32,7 @@ SRC		=	main.cpp \
 			ALivingEntity.cpp \
 			AItem.cpp \
 			SpeedItem.cpp \
+			HealthItem.cpp \
 			Entity.cpp \
 			Settings.cpp \
 			Save.cpp \
@@ -49,6 +50,7 @@ SRC		=	main.cpp \
 			LuaCommunication.cpp \
 			Spawn.cpp \
 			ModelFactory.cpp \
+			ItemFactory.cpp \
 			Text.cpp
 
 OBJDIR		=	obj/

@@ -31,6 +31,7 @@ GameEngine::~GameEngine()
 bool GameEngine::initialize()
 {
   ModelFactory &fact = ModelFactory::getInstance();
+  ItemFactory *items = ItemFactory::getInstance();
   Cube *skybox;
   Spawn	spawn(_gameInfo.map);
 
@@ -63,6 +64,9 @@ bool GameEngine::initialize()
   fact.addModel(HEALTHITEM, new Cube(*skybox), HEALTHITEM_TEXTURE);
   fact.addModel(CHARACTER, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
+  items->addItem(SPEEDITEM, new SpeedItem(0, 0, _gameInfo));
+  items->addItem(HEALTHITEM, new HealthItem(0, 0, _gameInfo));
+
 
   Camera *all_cam[1] = { &_cam };
 

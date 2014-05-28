@@ -22,6 +22,7 @@ public:
   bool	checkItemColision(Map &map);
 
   virtual void	setAttr(ACharacter *ch) const = 0;
+  virtual AItem	*clone(int x, int y) = 0;
 protected:
   int	_timeout;
   int	_amount;
