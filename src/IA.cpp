@@ -1,3 +1,4 @@
+#include <cmath>
 #include "GameEngine.hpp"
 #include "IA.hpp"
 
@@ -41,8 +42,8 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 	{
 	  int type = gameInfo.map.checkMapColision(j, i);
 	  if (*cnt == 0)
-	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 8);
-	  if (i == _y && j == _x)
+	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 3) + 9);
+	  if (i == std::floor(_y) && j == std::floor(_x))
 	    {
 	      if (type == BOMB)
 	      	_lua.pushStringInt("bomb", 1);
