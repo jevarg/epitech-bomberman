@@ -91,7 +91,7 @@ void	GameEngine::mainInput()
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    {
 	      ent->setDestroy();
-	      _collector.push_back(ent);
+	      _gameInfo.map.pushToCollector(ent);
 	    }
 	}
       return ;
@@ -100,23 +100,7 @@ void	GameEngine::mainInput()
 
 int		GameEngine::clearElements()
 {
-  AEntity	*ent;
-  d_Ait		it = _collector.begin();
-
-  for (d_Ait end = _collector.end(); it != end; ++it)
-    (*it)->decTimeDeath();
-  while (!_collector.empty())
-    {
-      ent = _collector.front();
-      if (ent->getDeathTime() <= 0)
-	{
-	  _collector.pop_front();
-	  delete (ent);
-	}
-      else
-	break ;
-    }
-  return (_collector.size());
+  return (_gameInfo.map.clearElements());
 }
 
 bool		GameEngine::update()

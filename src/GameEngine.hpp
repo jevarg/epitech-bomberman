@@ -48,8 +48,6 @@
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
 
-typedef std::deque<AEntity *>::iterator	d_Ait;
-
 typedef struct	s_gameinfo
 {
   s_gameinfo(gdl::Clock &pclock, Map &pmap, Settings &pset, Input &pinput) :
@@ -94,7 +92,6 @@ private:
   t_gameinfo			_gameInfo;
   Text				_text;
   bool				_shutdown;
-  std::deque<AEntity *>		_collector;
   int				_frames;
 };
 
