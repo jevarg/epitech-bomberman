@@ -1,6 +1,8 @@
 #ifndef _SETTINGS_H_
 # define _SETTINGS_H_
 
+# include <SDL.h>
+# include <string>
 # include <iostream>
 # include <sstream>
 # include <fstream>
@@ -71,7 +73,7 @@ public:
   Settings();
   ~Settings();
 
-  void	loadFile(const std::string &);
+  bool	loadFile(const std::string &);
 
   bool	cvarExist(cvar var) const;
   int	getVar(cvar var) const;
@@ -84,11 +86,12 @@ public:
   int	toNumber(const std::string &) const;
   bool	isAscii(const std::string &) const;
 
+  bool	addKey(const std::string tab[3]);
+  bool	addCvar(const std::string tab[3]);
+
 private:
   bool	readFile(std::vector<std::string> &inst, const std::string &);
   void	parsInst(const std::vector<std::string> &inst);
-  void	addKey(const std::string tab[3]);
-  void	addCvar(const std::string tab[3]);
   void	initCvar();
   keyCode	getKeyFromCode(const std::string &) const;
 

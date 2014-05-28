@@ -5,6 +5,7 @@
 # include <glm/gtc/matrix_transform.hpp>
 # include <vector>
 # include <map>
+# include <deque>
 # include <unistd.h>
 # include <Game.hh>
 # include <BasicShader.hh>
@@ -26,6 +27,7 @@
 # include "Player.hpp"
 # include "Condvar.hpp"
 # include "Mutex.hpp"
+# include "Console.hpp"
 # include "Scopelock.hpp"
 # include "ModelFactory.hpp"
 # include "Text.hpp"
@@ -45,6 +47,8 @@
 
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
+
+typedef std::deque<AEntity *>::iterator	d_Ait;
 
 typedef struct	s_gameinfo
 {
@@ -73,6 +77,8 @@ public:
 private:
   void	createDisplayMap();
   void	createDisplayBorder();
+  void	mainInput();
+  int	clearElements();
 
   gdl::SdlContext		_win;
   gdl::BasicShader		_shader;
@@ -87,6 +93,8 @@ private:
   Player			*_player;
   t_gameinfo			_gameInfo;
   Text				_text;
+  bool				_shutdown;
+  std::deque<AEntity *>		_collector;
   int				_frames;
 };
 

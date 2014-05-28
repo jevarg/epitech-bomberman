@@ -8,6 +8,7 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
+  _shutdown = false;
 
   Mutex *mutex = _gameInfo.mutex;
   pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
@@ -48,12 +49,8 @@ bool GameEngine::initialize()
   if (!_text.initialize())
     return (false);
 
-  skybox = new Cube(SKY_TEXTURE);
+  skybox = new Cube(WALL_TEXTURE);
   skybox->initialize();
-  skybox->scale(glm::vec3(200, 200, 200));
-  _obj.push_back(skybox);
-
-  skybox = new Cube(*skybox);
   skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
 			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
   skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
@@ -75,30 +72,62 @@ bool GameEngine::initialize()
   return (true);
 }
 
-bool GameEngine::update()
+void	GameEngine::mainInput()
 {
-  int		time;
-  double	fps = (1000 / _gameInfo.set.getVar(FPS));
-  t_mouse	mouse;
   t_window	win;
 
   _gameInfo.input.getInput(_gameInfo.set);
-  _gameInfo.condvar->broadcast();
   if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
     {
+      _shutdown = true;
       v_Contcit end = _gameInfo.map.ContEnd();
       for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
 	{
-	  l_Entit end_list = (*it)->listEndMod();
-	  for (l_Entit it1 = (*it)->listBeginMod(); it1 != end_list; it1++)
-	    (*it1)->setDestroy();
+	  AEntity *ent;
+	  v_Entit its;
+	  l_Entit itm;
+	  while ((ent = (*it)->listFront()) != NULL)
+	    ent->setDestroy();
+	  while ((ent = (*it)->vecFront()) != NULL)
+	    {
+	      ent->setDestroy();
+	      _collector.push_back(ent);
+	    }
 	}
-      return (false);
+      return ;
     }
-  if (_gameInfo.input[mouse])
-    std::cout << "catched event " << mouse.event << std::endl;
-  // if (win.event == WIN_RESIZE) // Seems not to work
-  //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl
+}
+
+int		GameEngine::clearElements()
+{
+  AEntity	*ent;
+  d_Ait		it = _collector.begin();
+
+  for (d_Ait end = _collector.end(); it != end; ++it)
+    (*it)->decTimeDeath();
+  while (!_collector.empty())
+    {
+      ent = _collector.front();
+      if (ent->getDeathTime() <= 0)
+	{
+	  _collector.pop_front();
+	  delete (ent);
+	}
+      else
+	break ;
+    }
+  return (_collector.size());
+}
+
+bool		GameEngine::update()
+{
+  int		time;
+  double	fps = (1000 / _gameInfo.set.getVar(FPS));
+
+  mainInput();
+  _gameInfo.condvar->broadcast();
+  if (clearElements() == 0 && _shutdown)
+    return (false);
   _frames++;
   if ((time = _gameInfo.clock.getElapsed()) < fps)
     {
