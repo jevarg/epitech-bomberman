@@ -12,5 +12,6 @@ SpeedItem::~SpeedItem()
 
 void	SpeedItem::setAttr(ACharacter *ch) const
 {
-  ch->setSpeed(ch->getSpeed() + _amount);
+  if (ch->getSpeed() < SPEED_MAX)
+    ch->setSpeed(ch->getSpeed() + _amount);
 }
