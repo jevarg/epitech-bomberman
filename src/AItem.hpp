@@ -9,7 +9,9 @@
 enum
   {
     SPEED_AMOUNT = 1,
-    HEALTH_AMOUNT = 20
+    SPEED_MAX = 15,
+    HEALTH_AMOUNT = 1,
+    HEALTH_MAX = 3
   };
 
 class AItem : public ALivingEntity

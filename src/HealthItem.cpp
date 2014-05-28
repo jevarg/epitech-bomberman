@@ -12,7 +12,8 @@ HealthItem::~HealthItem()
 
 void	HealthItem::setAttr(ACharacter *ch) const
 {
-  ch->setHealth(ch->getHealth() + _amount);
+  if (ch->getHealth() < HEALTH_MAX)
+    ch->setHealth(ch->getHealth() + _amount);
 }
 
 AItem	*HealthItem::clone(int x, int y)
