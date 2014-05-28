@@ -13,6 +13,7 @@ Box::~Box()
 void	Box::takeDamages(int)
 {
   spawnItem(_gameInfo);
+  _gameInfo.map.removeEntityByPtr(this);
   destroy();
 }
 
