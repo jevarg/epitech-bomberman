@@ -6,6 +6,12 @@
 # include "SpeedItem.hpp"
 # include "HealthItem.hpp"
 
+enum
+  {
+    PSPEED = 50,
+    PHEALTH = 50
+  };
+
 class	Box : public AEntity
 {
 public:
@@ -16,6 +22,9 @@ public:
   void	spawnItem(t_gameinfo &gameInfo);
 
 private:
+  int	getpSize(const int *tab, int size) const;
+  int	getMaxProb(const int *tab, int size) const;
+  bool	sameProb(int *tab, int size) const;
   ItemFactory	*_facto;
 };
 
