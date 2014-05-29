@@ -59,15 +59,15 @@ bool GameEngine::initialize()
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
   fact.addModel(FLAME, new Cube(*skybox), FLAME_TEXTURE);
-  fact.addModel(SPEEDITEM, new Cube(*skybox), SPEEDITEM_TEXTURE);
-  fact.addModel(HEALTHITEM, new Cube(*skybox), HEALTHITEM_TEXTURE);
+  fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
+  fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
   fact.addModel(CHARACTER, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_gameInfo);
-  spawn.spawnEnt(1, 1, all_cam, _gameInfo);
+  spawn.spawnEnt(1, 10, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
@@ -91,7 +91,7 @@ void	GameEngine::mainInput()
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    {
 	      ent->setDestroy();
-	      _collector.push_back(ent);
+	      _gameInfo.map.pushToCollector(ent);
 	    }
 	}
       return ;
@@ -100,23 +100,7 @@ void	GameEngine::mainInput()
 
 int		GameEngine::clearElements()
 {
-  AEntity	*ent;
-  d_Ait		it = _collector.begin();
-
-  for (d_Ait end = _collector.end(); it != end; ++it)
-    (*it)->decTimeDeath();
-  while (!_collector.empty())
-    {
-      ent = _collector.front();
-      if (ent->getDeathTime() <= 0)
-	{
-	  _collector.pop_front();
-	  delete (ent);
-	}
-      else
-	break ;
-    }
-  return (_collector.size());
+  return (_gameInfo.map.clearElements());
 }
 
 bool		GameEngine::update()

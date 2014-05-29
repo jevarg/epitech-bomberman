@@ -53,7 +53,6 @@ function run_out_danger(map, x, y)
 		x = x + gotox[way]
 		y = y + gotoy[way]
 	end
-	print("WAY IS : ", way)
 	return x, y
 end
 

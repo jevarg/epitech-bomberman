@@ -35,8 +35,6 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
   int c1 = 1;
   int c2 = 1;
 
-  std::cout << "ia x, y : " << _x << "  " << _y << std::endl;
-  std::cout << "new x, y : " << x << "  " << y << std::endl;
   for (int i = y ; i < y + (aggro * 2) + 1; ++i)
     {
       c2 = 1;

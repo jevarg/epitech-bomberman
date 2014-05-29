@@ -345,6 +345,32 @@ void	Map::addEntity(AEntity *ent)
   _cont[pos]->stockEntity(ent);
 }
 
+void	Map::pushToCollector(AEntity *ent)
+{
+  _collector.push_back(ent);
+}
+
+int	Map::clearElements()
+{
+  AEntity	*ent;
+  d_Ait		it = _collector.begin();
+
+  for (d_Ait end = _collector.end(); it != end; ++it)
+    (*it)->decTimeDeath();
+  while (!_collector.empty())
+    {
+      ent = _collector.front();
+      if (ent->getDeathTime() <= 0)
+	{
+	  _collector.pop_front();
+	  delete (ent);
+	}
+      else
+	break ;
+    }
+  return (_collector.size());
+}
+
 
 void	Map::createContainers()
 {

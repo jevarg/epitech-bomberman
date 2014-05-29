@@ -13,7 +13,8 @@ Box::~Box()
 void	Box::takeDamages(int)
 {
   spawnItem(_gameInfo);
-  destroy();
+  _gameInfo.map.removeEntityByPtr(this);
+  _gameInfo.map.pushToCollector(this);
 }
 
 void	Box::spawnItem(t_gameinfo &gameInfo)

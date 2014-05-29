@@ -49,7 +49,6 @@ function artificial_intelligence()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
 	fill_dangerous_fields(map_nb)
-	display_map(map_nb)
 	local action = take_decision(map, map_nb, entities)
 	if (action == ENUM_ACTION["bomb"]) then
 		local block = {0, 0, 0, 0}
@@ -68,5 +67,4 @@ X, Y = arg["x"], arg["y"]
 BOMB_RANGE = arg["bomb_range"]
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
-print("for player in ", X, Y)
 return artificial_intelligence()
