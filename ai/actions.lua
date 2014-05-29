@@ -1,16 +1,60 @@
-function run_out_danger(map, x, y, nb)
-	if (map[y][x] == ".") then X_TMP, Y_TMP = x, y end
-	if (nb < BOMB_RANGE + 1) then
-		if (y + 1 < MAP_YMAX and map[y + 1][x] ~= "W" and map[y + 1][x] ~= "B") then
-			run_out_danger(map, x, y + 1, nb + 1) end
-		if (y - 1 > 0 and map[y - 1][x] ~= "W" and map[y - 1][x] ~= "B") then
-			run_out_danger(map, x, y - 1, nb + 1) end
-		if (x + 1 < MAP_YMAX and map[y][x + 1] ~= "W" and map[y][x + 1] ~= "B") then
-			run_out_danger(map, x + 1, y, nb + 1) end
-		if (x - 1 > 0 and map[y][x - 1] ~= "W" and map[y][x - 1] ~= "B") then
-			run_out_danger(map, x - 1, y, nb + 1) end
+function can_i_put_bomb(map_nb, x, y, block)
+	local cur_x, cur_y = x, y
+	local way = 0
+	local gotox = {0, 0, -1, 1}
+	local gotoy = {-1, 1, 0, 0}
+
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[1] == 0) then
+			if (cur_y - i > 0 and map_nb[cur_y - i][cur_x] ~= ".") then block[1] = 1
+			elseif (cur_y - i > 0 and map_nb[cur_y - i][cur_x] == ".") then way = 1
+			else break end
+		end
 	end
-	if (X_TMP == 0 and Y_TMP == 0) then X_TMP, Y_TMP = x, y end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[2] == 0) then
+			if (cur_x - i > 0 and map_nb[cur_y][cur_x - i] ~= ".") then block[2] = 1
+			elseif (cur_x - i > 0 and map_nb[cur_y][cur_x - i] == ".") then way = 3
+			else break end
+		end
+	end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[3] == 0) then
+			if (cur_y + i < MAP_YMAX and map_nb[cur_y + i][cur_x] ~= ".") then block[3] = 1
+			elseif (cur_y + i < MAP_YMAX and map_nb[cur_y + i][cur_x] == ".") then way = 2
+			else break end
+		end
+	end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[4] == 0) then
+			if (cur_x + i < MAP_XMAX and map_nb[cur_y][cur_x + i] ~= ".") then block[4] = 1
+			elseif (cur_x + i < MAP_XMAX and map_nb[cur_y][cur_x + i] == ".") then way = 4
+			else break end
+		end
+	end
+	if (way ~= 0) then
+		x = x + gotox[way]
+		y = y + gotoy[way]
+	end
+	return x, y
+end
+
+function run_out_danger(map, x, y)
+	local cur_x, cur_y = x, y
+	local way = 0
+	local gotox = {0, 0, -1, 1}
+	local gotoy = {-1, 1, 0, 0}
+
+	if (cur_y - 1 > 0 and map[cur_y - 1][cur_x] == ".") then way = 1 end
+	if (cur_x - 1 > 0 and map[cur_y][cur_x - 1] == ".") then way = 3 end
+	if (cur_y + 1 < MAP_YMAX and map[cur_y + 1][cur_x] == ".") then way = 2 end
+	if (cur_x + 1 < MAP_XMAX and map[cur_y][cur_x + 1] == ".") then way = 4 end
+	if (way ~= 0) then
+		x = x + gotox[way]
+		y = y + gotoy[way]
+	end
+	print("WAY IS : ", way)
+	return x, y
 end
 
 function random_movement(map)
@@ -22,8 +66,7 @@ function random_movement(map)
 
 	if (orient == 1 or orient == 3) then y = y + mov[orient] end
 	if (orient == 2 or orient == 4) then x = x + mov[orient] end
-	if (map[y][x] == ".") then return x, y
-		else print("else:", map[y][x], x, y, orient) end
+	if (map[y][x] == ".") then return x, y end
 	for i = 0, 3 do
 		x = X
 		y = Y
