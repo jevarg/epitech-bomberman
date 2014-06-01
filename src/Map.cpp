@@ -452,3 +452,25 @@ AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
     return (NULL);
   return ((_cont[pos])->getEntityIfNot(x, y, value));
 }
+
+bool	Map::hasPlayer() const
+{
+  AEntity *foundEnt;
+  int	mapSize = _mapX * _mapY;
+  int	contPos;
+  int	x;
+  int	y;
+
+  for (int i = 0; i < mapSize; ++i)
+    {
+      x = i % _mapX;
+      y = i / _mapX;
+      contPos = getContPos(x, y);
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER)) != NULL)
+	{
+	  if (dynamic_cast<Player *>(foundEnt))
+	    return (true);
+	}
+    }
+  return (false);
+}
