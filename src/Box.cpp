@@ -67,7 +67,7 @@ void	Box::spawnItem(t_gameinfo &gameInfo)
   unsigned int	i;
   int		randnum;
 
-  std::memset(objtab, -1, objsize);
+  std::memset(objtab, -1, sizeof(objtab));
   randnum = std::rand() % 100;
   for (i = 0; i < sizeof(ptab) / sizeof(int); ++i)
     if (randnum <= ptab[i])
