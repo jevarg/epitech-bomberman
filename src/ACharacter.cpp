@@ -7,7 +7,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
   : ALivingEntity(x, y, CHARACTER, gameInfo)
 /* handle the bomb type at creation */
 {
-  _bombStock = 1;
+  _bombStock = 100;
   _health = 1;
   _speed = 5;
   _range = 5;
@@ -51,6 +51,7 @@ bool	ACharacter::updatePosition(Map &map, eAction action, const gdl::Clock &cloc
 	    case FREE:
 	    case SPEEDITEM:
 	    case HEALTHITEM:
+	    case FLAME:
 	      if (_anim == NOTHING)
 	      	{
 		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);

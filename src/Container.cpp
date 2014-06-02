@@ -170,7 +170,6 @@ AEntity		*Container::getEntityIf(int x, int y, eType value)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
 	(*vit)->getType() == value)
       return (*vit);
-
   return (NULL);
 }
 
