@@ -1,7 +1,6 @@
 function authorized_ent_danger(map, cur_x, cur_y, i_y, i_x)
 	if (map[cur_y + i_y][cur_x + i_x] == "W" or
 		map[cur_y + i_y][cur_x + i_x] == "D" or
-		map[cur_y + i_y][cur_x + i_x] == "P" or
 		map[cur_y + i_y][cur_x + i_x] == "I" or
 		map[cur_y + i_y][cur_x + i_x] == "B")
 	then
@@ -95,6 +94,8 @@ function create_map(entities, aggro)
 			map[entities[i]["y"]][entities[i]["x"]] = "O" end
 		if (entities[i]["type"] == TYPE_PRIORITY["item"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "I" end
+		if (entities[i]["type"] == TYPE_PRIORITY["danger"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "D" end
 	end
 	MAP_XMAX, MAP_YMAX = set_pos_map(map)
 	return map
