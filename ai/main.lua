@@ -29,8 +29,11 @@ end
 function take_decision(map, map_nb, entities)
 	if (arg["bomb"] == 1 or
 		check_elem_at(map_nb, X, Y, "D", 1) ~= -1 or
-		check_elem_at(map_nb, X, Y, "O", 1) ~= -1) then
-		local cur_x, cur_y = run_out_danger(map_nb, X, Y)
+		check_elem_at(map_nb, X, Y, "O", 1) ~= -1)
+	then
+		if (arg["bomb"] == 1) then map[Y][X] = "O" end
+		local block = {0, 0, 0, 0}
+		local cur_x, cur_y = run_out_danger(map_nb, X, Y, block)
 		return determine_way(map, cur_x, cur_y)
 	else
 		local item = check_elem_at(map_nb, X, Y, "I", 1)
