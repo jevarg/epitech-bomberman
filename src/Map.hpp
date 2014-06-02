@@ -11,7 +11,7 @@
 # include "ModelFactory.hpp"
 
 # define MAXSIZE 10000
-# define SQUARESIZE 10
+# define SQUARESIZE 100
 # define RAD(x) ((x) * 3.14159265359 / 180)
 
 typedef std::vector<Container *>::const_iterator v_Contcit;
