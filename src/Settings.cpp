@@ -52,7 +52,7 @@ Settings::Settings()
   _speKeys["KP_8"] = SDLK_KP_8;
   _speKeys["KP_9"] = SDLK_KP_9;
   _speKeys["KP_POINT"] = SDLK_PERIOD;
-  
+
   _speKeys["UPARROW"] = SDLK_UP;
   _speKeys["RIGHTARROW"] = SDLK_RIGHT;
   _speKeys["DOWNARROW"] = SDLK_DOWN;

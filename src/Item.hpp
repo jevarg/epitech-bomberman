@@ -6,10 +6,11 @@
 class	Item : public AItem
 {
 public:
-  Item(int x, int y, eType type, t_gameinfo &gameInfo);
+  Item(int x, int y, t_gameinfo &gameInfo);
   ~Item();
 
   void	setAttr(ACharacter *ch) const;
+  AItem	*clone(int x, int y);
 };
 
 #endif /* !ITEM_HPP_ */

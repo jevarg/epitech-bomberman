@@ -6,10 +6,11 @@
 class HealthItem : public AItem
 {
 public:
-  HealthItem(int x, int y, eType type, t_gameinfo &gameInfo);
+  HealthItem(int x, int y, t_gameinfo &gameInfo);
   virtual ~HealthItem();
 
   void	setAttr(ACharacter *ch) const;
+  AItem	*clone(int x, int y);
 };
 
 #endif /* _HEALTHITEM_H_ */

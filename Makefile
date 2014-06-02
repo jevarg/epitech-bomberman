@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Mon May 26 12:54:13 2014 Harold Fritsch
+## Last update Thu May 29 15:32:50 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -32,6 +32,7 @@ SRC		=	main.cpp \
 			ALivingEntity.cpp \
 			AItem.cpp \
 			SpeedItem.cpp \
+			HealthItem.cpp \
 			Entity.cpp \
 			Settings.cpp \
 			Save.cpp \
@@ -49,14 +50,15 @@ SRC		=	main.cpp \
 			LuaCommunication.cpp \
 			Spawn.cpp \
 			ModelFactory.cpp \
+			ItemFactory.cpp \
 			Text.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -llua -lSDL2 -lpthread -lm -ldl
+CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -llua -lSDL2 -lpthread -lm -ldl -p
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))

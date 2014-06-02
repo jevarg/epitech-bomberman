@@ -66,6 +66,7 @@ protected:
   t_gameinfo	&_gameInfo;
   bool		_toDestroy;
   int		_timeDeath;
+  int		_time;
   IObject	*_model;
 };
 

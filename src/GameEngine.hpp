@@ -30,6 +30,9 @@
 # include "Console.hpp"
 # include "Scopelock.hpp"
 # include "ModelFactory.hpp"
+# include "ItemFactory.hpp"
+# include "SpeedItem.hpp"
+# include "HealthItem.hpp"
 # include "Text.hpp"
 
 # define CFPS 60.0f

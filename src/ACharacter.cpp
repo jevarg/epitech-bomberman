@@ -7,7 +7,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
   : ALivingEntity(x, y, CHARACTER, gameInfo)
 /* handle the bomb type at creation */
 {
-  _bombStock = 1;
+  _bombStock = 100;
   _health = 1;
   _speed = 5;
   _range = 5;
@@ -92,9 +92,10 @@ bool	ACharacter::move(Map &map, float dirX, float dirY)
 
 void	ACharacter::dropBomb()
 {
-  if (_gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL)
+  if (_gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL && _bombStock > 0)
     {
-      _gameInfo.map.addEntity(new Bomb(_x, _y, _gameInfo));
+      --(_bombStock);
+      _gameInfo.map.addEntity(new Bomb(_x, _y, this, _gameInfo));
       std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
     }
 }

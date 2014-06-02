@@ -18,10 +18,14 @@ Spawn::~Spawn()
 
 void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
 {
+  int	playerId;
+
   if (spawn.nbPlayer > spawn.nbIa)
     {
+      playerId = (!spawn.engine.gameInfo.map.hasPlayer() && spawn.nbPlayer == 1) ?
+	0 : spawn.nbPlayer;
       _map.addEntity(new Player(x, y, spawn.engine.cam[0], glm::vec4(0.0),
-				spawn.engine.gameInfo));
+				spawn.engine.gameInfo, playerId));
       --spawn.nbPlayer;
     }
   else
