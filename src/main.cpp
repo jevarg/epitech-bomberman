@@ -7,6 +7,10 @@
 
 int	main(int, char **av)
 {
+  int	seed;
+
+  __asm__ volatile ("rdtsc" : "=A" (seed));
+  std::srand(seed);
   try
     {
       Settings	set;

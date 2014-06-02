@@ -24,8 +24,10 @@ int	Box::getpSize(const int *tab, int size) const
   int	psize = 0;
 
   for (int i = 0; i < size; ++i)
-    if (tab[i] != -1)
-      ++psize;
+    {
+      if (tab[i] != -1)
+	++psize;
+    }
   return (psize);
 }
 
@@ -43,7 +45,6 @@ int	Box::getMaxProb(const int *tab, int size) const
 
 bool	Box::sameProb(int *tab, int size) const
 {
-  int	tsize;
   int	num = -1;
 
   for (int i = 0; i < size; ++i)
@@ -53,8 +54,11 @@ bool	Box::sameProb(int *tab, int size) const
       else if (tab[i] != -1 && tab[i] != num)
 	return (false);
     }
-  while ((tsize = getpSize(tab, size)) > 1)
-    tab[std::rand() % tsize] = -1;
+  while (getpSize(tab, size) > 1)
+    {
+      int nb = std::rand() % size;
+      tab[nb] = -1;
+    }
   return (true);
 }
 
@@ -71,12 +75,12 @@ void	Box::spawnItem(t_gameinfo &gameInfo)
   randnum = std::rand() % 100;
   for (i = 0; i < sizeof(ptab) / sizeof(int); ++i)
     if (randnum <= ptab[i])
-      {
-	std::cout << "SAVE: " << ptab[i] << std::endl;
-	objtab[j++] = ptab[i];
-      }
+      objtab[j++] = ptab[i];
   if (objtab[0] == -1)
-    i = getMaxProb(ptab, sizeof(ptab) / sizeof(int));
+    {
+      sameProb(ptab, sizeof(ptab) / sizeof(int));
+      i = getMaxProb(ptab, sizeof(ptab) / sizeof(int));
+    }
   else
     {
       while (getpSize(objtab, objsize) > 1)
@@ -84,7 +88,7 @@ void	Box::spawnItem(t_gameinfo &gameInfo)
 	  randnum = std::rand() % (objtab[getMaxProb(objtab, objsize)] + 1);
 	  for (int i = 0; i < objsize; ++i)
 	    {
-	      if (objtab[i] > randnum)
+	      if (randnum > objtab[i])
 		objtab[i] = -1;
 	    }
 	  if (sameProb(objtab, objsize))

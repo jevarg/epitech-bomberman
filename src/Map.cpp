@@ -305,7 +305,6 @@ void	Map::createMap(t_gameinfo &gameInfo)
   int	posy;
   int	totalsize = _mapX * _mapY;
 
-  std::srand(std::time(NULL));
   for (int i = 0; i < totalsize; ++i)
     _map.push_back(WALL);
   posx = 2 + std::rand() % (_mapX - 3);
