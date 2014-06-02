@@ -10,12 +10,6 @@ Entity::~Entity()
 {
 }
 
-void	Entity::destroy()
-{
-  _gameInfo.map.removeEntityByPtr(this);
-  delete (this);
-}
-
 void	Entity::takeDamages(int)
 {
 }

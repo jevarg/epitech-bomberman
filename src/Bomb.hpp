@@ -2,12 +2,13 @@
 # define BOMB_HPP_
 
 # include "ABomb.hpp"
+# include "ACharacter.hpp"
 # include "IObject.hpp"
 
 class		Bomb: public ABomb
 {
 public:
-  Bomb(int x, int y, t_gameinfo &gameInfo);
+  Bomb(int x, int y, ACharacter *character, t_gameinfo &gameInfo);
   virtual ~Bomb();
 
 private:

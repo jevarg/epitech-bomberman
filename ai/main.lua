@@ -27,12 +27,16 @@ function check_elem_at(map, cur_x, cur_y, w, n)
 end
 
 function take_decision(map, map_nb, entities)
-	if (map[Y][X] == "D") then
-		-- run_out_danger(map_nb, X, Y, 0)
-		-- return
+	if (arg["bomb"] == 1) then
+		local cur_x, cur_y = random_movement(map)
+		return determine_way(map, cur_x, cur_y)
 	else
-		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1) then
+		local item = check_elem_at(map_nb, X, Y, "I", 1)
+		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1 or
+			check_elem_at(map_nb, X, Y, "B", 1) ~= -1) then
 			return ENUM_ACTION["bomb"]
+		elseif (item ~= -1) then
+			return item
 		end
 		return best_first(map, map_nb, entities)
 	end
@@ -43,6 +47,7 @@ function artificial_intelligence()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
 	fill_dangerous_fields(map_nb)
+	display_map(map_nb)
 	return take_decision(map, map_nb, entities)
 end
 
@@ -50,5 +55,5 @@ X, Y = arg["x"], arg["y"]
 BOMB_RANGE = arg["bomb_range"]
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
--- print("for player in ", X, Y)
+print("for player in ", X, Y)
 return artificial_intelligence()

@@ -16,20 +16,6 @@ void	LuaCommunication::pushCreateTable(const int nb)
   lua_createtable(_luaState, nb, 0);
 }
 
-void  LuaCommunication::pushIntString(const int index, const char *val) const
-{
-  lua_pushnumber(_luaState, index);
-  lua_pushstring(_luaState, val);
-  lua_settable(_luaState, -3);
-}
-
-void  LuaCommunication::pushStringString(const char *index, const char *val) const
-{
-  lua_pushstring(_luaState, index);
-  lua_pushstring(_luaState, val);
-  lua_settable(_luaState, -3);
-}
-
 void  LuaCommunication::pushIntInt(const int index, const int val) const
 {
   lua_pushnumber(_luaState, index);
@@ -75,6 +61,7 @@ int LuaCommunication::getDatas()
 	{
 	  res = lua_tonumber(_luaState, lua_gettop(_luaState));
 	  lua_pop(_luaState, 1);
+	  std::cout << "Script returned : " << res << std::endl;
 	}
       else
 	std::cout << "dont return a number" << std::endl;

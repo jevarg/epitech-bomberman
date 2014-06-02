@@ -7,7 +7,7 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
   : ALivingEntity(x, y, CHARACTER, gameInfo)
 /* handle the bomb type at creation */
 {
-  _bombStock = 1;
+  _bombStock = 100;
   _health = 1;
   _speed = 5;
   _range = 5;
@@ -92,9 +92,10 @@ bool	ACharacter::move(Map &map, float dirX, float dirY)
 
 void	ACharacter::dropBomb()
 {
-  if (_gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL)
+  if (_gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL && _bombStock > 0)
     {
-      _gameInfo.map.addEntity(new Bomb(_x, _y, _gameInfo));
+      --(_bombStock);
+      _gameInfo.map.addEntity(new Bomb(_x, _y, this, _gameInfo));
       std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
     }
 }
@@ -122,18 +123,14 @@ int	ACharacter::getSpeed() const
 
 void	ACharacter::setSpeed(int speed)
 {
-  _mutex->lock();
   _speed = speed;
-  _mutex->unlock();
 }
 
 void	ACharacter::takeDamages(int amount)
 {
-  _mutex->lock();
   _health -= amount;
-  if (_health < 0)
+  if (_health <= 0)
     die();
-  _mutex->unlock();
 }
 int	ACharacter::getHealth() const
 {
@@ -142,11 +139,9 @@ int	ACharacter::getHealth() const
 
 void	ACharacter::setHealth(int health)
 {
-  _mutex->lock();
   _health = health;
   if (_health <= 0)
     die();
-  _mutex->unlock();
 }
 
 int	ACharacter::getBombStock() const

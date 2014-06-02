@@ -1,4 +1,3 @@
-#include <SDL.h>
 #include <iterator>
 #include "Settings.hpp"
 
@@ -12,7 +11,7 @@ Settings::Settings()
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
 
-  _cvarList.push_back(new t_cvar ("com_maxFps", 20, 300, 60));
+  _cvarList.push_back(new t_cvar ("com_maxFps", 2, 300, 60));
   _cvarList.push_back(new t_cvar ("cg_fov", 20, 180, 80));
   _cvarList.push_back(new t_cvar ("r_windowHeight", 480, 1440, 600));
   _cvarList.push_back(new t_cvar ("r_windowWidth", 640, 2560, 1024));
@@ -114,7 +113,7 @@ void	Settings::initCvar()
     }
 }
 
-void	Settings::addCvar(const std::string tab[3])
+bool	Settings::addCvar(const std::string tab[3])
 {
   v_cvarit	listit;
   v_cvarit	listend = _cvarList.end();
@@ -127,9 +126,10 @@ void	Settings::addCvar(const std::string tab[3])
 	  if (cvarValue > (*listit)->max_value || cvarValue < (*listit)->min_value)
 	      cvarValue = (*listit)->default_value;
 	  _cvarMap[static_cast<cvar>(std::distance(_cvarList.begin(), listit))] = cvarValue;
-	  break ;
+	  return (true);
 	}
     }
+  return (false);
 }
 
 /*
@@ -137,7 +137,7 @@ void	Settings::addCvar(const std::string tab[3])
 ** As I throw an exception, a try/catch block will be needed
 */
 
-const std::string &Settings::getCodeFromKey(SDL_Keycode key) const
+const std::string	&Settings::getCodeFromKey(SDL_Keycode key) const
 {
   m_keyCit	it = _speKeys.begin();
 
@@ -147,6 +147,7 @@ const std::string &Settings::getCodeFromKey(SDL_Keycode key) const
 	return (it->first);
     }
   throw(Exception("Key not registered"));
+  return (it->first);
 }
 
 keyCode	Settings::getKeyFromCode(const std::string &str) const
@@ -156,7 +157,7 @@ keyCode	Settings::getKeyFromCode(const std::string &str) const
   return ((it == _speKeys.end()) ? UNKNOWN_KEY : it->second);
 }
 
-void	Settings::addKey(const std::string tab[3])
+bool		Settings::addKey(const std::string tab[3])
 {
   v_instit	listit;
   v_instit	listend = _actionList.end();
@@ -174,9 +175,10 @@ void	Settings::addKey(const std::string tab[3])
 	    _keyMap.insert(std::pair<keyCode, eAction>
 			   (boundkey, static_cast<eAction>
 			    (std::distance(_actionList.begin(), listit))));
-	  break ;
+	  return (true);
 	}
     }
+  return (false);
 }
 
 void	Settings::parsInst(const std::vector<std::string> &inst)
@@ -224,27 +226,29 @@ bool	Settings::readFile(std::vector<std::string> &inst,
   return (false);
 }
 
-void	Settings::loadFile(const std::string &filename)
+bool	Settings::loadFile(const std::string &filename)
 {
   std::vector<std::string>	inst;
 
-  if (readFile(inst, filename))
+  if (readFile(inst, filename) == true)
     parsInst(inst);
+  else
+    return (false);
+  // std::map<keyCode, eAction>::iterator kit;
+  // std::map<cvar, int>::iterator cit;
 
-  std::map<keyCode, eAction>::iterator kit;
-  std::map<cvar, int>::iterator cit;
+  // for (kit = _keyMap.begin(); kit != _keyMap.end(); ++kit)
+  //   {
+  //     std::cout << kit->first << " => " << kit->second << " => "
+  // 		<<  _actionList[(int)kit->second] << std::endl;
+  //   }
 
-  for (kit = _keyMap.begin(); kit != _keyMap.end(); ++kit)
-    {
-      std::cout << kit->first << " => " << kit->second << " => "
-		<<  _actionList[(int)kit->second] << std::endl;
-    }
-
-  for (cit = _cvarMap.begin(); cit != _cvarMap.end(); ++cit)
-    {
-      std::cout << _cvarList[(int)cit->first] << ": "<< cit->first <<
-	" => " << cit->second << std::endl;
-    }
+  // for (cit = _cvarMap.begin(); cit != _cvarMap.end(); ++cit)
+  //   {
+  //     std::cout << _cvarList[(int)cit->first] << ": "<< cit->first <<
+  // 	" => " << cit->second << std::endl;
+  //   }
+  return (true);
 }
 
 bool	Settings::cvarExist(cvar var) const

@@ -333,15 +333,42 @@ unsigned int	Map::getContPos(int x, int y) const
 void	Map::addEntity(AEntity *ent)
 {
   unsigned int	pos;
-  Container	*cont;
+  // Container	*cont;
 
+  std::cout << "Add: " << ent << std::endl;
   pos = getContPos(ent->getXPos(), ent->getYPos());
-  while (_cont.size() <= pos)
-    {
-      cont = new Container;
-      _cont.push_back(cont);
-    }
+  // while (_cont.size() <= pos)
+  //   {
+  //     cont = new Container;
+  //     _cont.push_back(cont);
+  //   }
   _cont[pos]->stockEntity(ent);
+}
+
+void	Map::pushToCollector(AEntity *ent)
+{
+  _collector.push_back(ent);
+}
+
+int	Map::clearElements()
+{
+  AEntity	*ent;
+  d_Ait		it = _collector.begin();
+
+  for (d_Ait end = _collector.end(); it != end; ++it)
+    (*it)->decTimeDeath();
+  while (!_collector.empty())
+    {
+      ent = _collector.front();
+      if (ent->getDeathTime() <= 0)
+	{
+	  _collector.pop_front();
+	  delete (ent);
+	}
+      else
+	break ;
+    }
+  return (_collector.size());
 }
 
 
@@ -364,7 +391,7 @@ eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
-  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+  if (y <= 0 || y >= _mapY - 1 || x  <= 0 || x >= _mapX - 1)
     return (WALL);
   else if (pos >= _cont.size())
     return (FREE);
@@ -424,4 +451,26 @@ AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
   else if (pos >= _cont.size())
     return (NULL);
   return ((_cont[pos])->getEntityIfNot(x, y, value));
+}
+
+bool	Map::hasPlayer() const
+{
+  AEntity *foundEnt;
+  int	mapSize = _mapX * _mapY;
+  int	contPos;
+  int	x;
+  int	y;
+
+  for (int i = 0; i < mapSize; ++i)
+    {
+      x = i % _mapX;
+      y = i / _mapX;
+      contPos = getContPos(x, y);
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER)) != NULL)
+	{
+	  if (dynamic_cast<Player *>(foundEnt))
+	    return (true);
+	}
+    }
+  return (false);
 }

@@ -13,7 +13,9 @@ function check_directions(map, cur_x, cur_y, i_x, i_y)
 
 	for i = 1, (AGGRO * 2) + 1 do
 		if (nb ~= nil and authorized_entities(map[cur_y][cur_x])) then
-			if (nb + 1 > AGGRO and map[cur_y][cur_x] ~= nb - 1) then return move end
+			if (nb + 1 > AGGRO and map[cur_y][cur_x] ~= nb - 1) then
+				return move
+			end
 			if ((type(map[cur_y][cur_x]) == "number" and
 				(nb + 1 < tonumber(map[cur_y][cur_x]))) or
 				(map[cur_y][cur_x] == "." or map[cur_y][cur_x] == "B"))

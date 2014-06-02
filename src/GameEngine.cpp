@@ -8,6 +8,7 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
+  _shutdown = false;
 
   Mutex *mutex = _gameInfo.mutex;
   pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
@@ -30,6 +31,7 @@ GameEngine::~GameEngine()
 bool GameEngine::initialize()
 {
   ModelFactory &fact = ModelFactory::getInstance();
+  ItemFactory *items = ItemFactory::getInstance();
   Cube *skybox;
   Spawn	spawn(_gameInfo.map);
 
@@ -58,10 +60,13 @@ bool GameEngine::initialize()
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
   fact.addModel(FLAME, new Cube(*skybox), FLAME_TEXTURE);
-  fact.addModel(SPEEDITEM, new Cube(*skybox), SPEEDITEM_TEXTURE);
-  fact.addModel(HEALTHITEM, new Cube(*skybox), HEALTHITEM_TEXTURE);
+  fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
+  fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
   fact.addModel(CHARACTER, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
+  items->addItem(SPEEDITEM, new SpeedItem(0, 0, _gameInfo));
+  items->addItem(HEALTHITEM, new HealthItem(0, 0, _gameInfo));
+
 
   Camera *all_cam[1] = { &_cam };
 
@@ -71,33 +76,47 @@ bool GameEngine::initialize()
   return (true);
 }
 
-bool GameEngine::update()
+void	GameEngine::mainInput()
 {
-  int		time;
-  double	fps = (1000 / _gameInfo.set.getVar(FPS));
-  t_mouse	mouse;
   t_window	win;
 
   _gameInfo.input.getInput(_gameInfo.set);
-  _gameInfo.condvar->broadcast();
   if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
     {
+      _shutdown = true;
       v_Contcit end = _gameInfo.map.ContEnd();
       for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
 	{
-	  l_Entit end_list = (*it)->listEndMod();
-	  for (l_Entit it1 = (*it)->listBeginMod(); it1 != end_list; it1++)
-	    (*it1)->setDestroy();
+	  AEntity *ent;
+	  v_Entit its;
+	  l_Entit itm;
+	  while ((ent = (*it)->listFront()) != NULL)
+	    ent->setDestroy();
+	  while ((ent = (*it)->vecFront()) != NULL)
+	    {
+	      ent->setDestroy();
+	      _gameInfo.map.pushToCollector(ent);
+	    }
 	}
-      return (false);
+      return ;
     }
-  if (_gameInfo.input[mouse])
-    std::cout << "catched event " << mouse.event << std::endl;
-  // if (win.event == WIN_RESIZE) // Seems not to work
-  //   std::cout << "Resize to: " << win.x << " " << win.y << std::endl
+}
 
+int		GameEngine::clearElements()
+{
+  return (_gameInfo.map.clearElements());
+}
+
+bool		GameEngine::update()
+{
+  int		time;
+  double	fps = (1000 / _gameInfo.set.getVar(FPS));
+
+  mainInput();
+  _gameInfo.condvar->broadcast();
+  if (clearElements() == 0 && _shutdown)
+    return (false);
   _frames++;
-
   if ((time = _gameInfo.clock.getElapsed()) < fps)
     {
       _text << round(_frames / _gameInfo.clock.getElapsed());

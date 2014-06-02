@@ -1,21 +1,16 @@
 function run_out_danger(map, x, y, nb)
-	-- if (map[y][x] == ".") then
-	-- 	return
-	-- end
-	-- if (nb < BOMB_RANGE + 1) then
-	-- 	if (y + 1 < MAP_YMAX and map[y + 1][x] ~= "W" and map[y + 1][x] ~= "B") then
-	-- 		go_out_danger(map, x, y + 1, nb + 1)
-	-- 	end
-	-- 	if (y - 1 > 0 and map[y - 1][x] ~= "W" and map[y - 1][x] ~= "B") then
-	-- 		go_out_danger(map, x, y - 1, nb + 1)
-	-- 	end
-	-- 	if (x + 1 < MAP_YMAX and map[y][x + 1] ~= "W" and map[y][x + 1] ~= "B") then
-	-- 		go_out_danger(map, x + 1, y, nb + 1)
-	-- 	end
-	-- 	if (x - 1 > 0 and map[y][x - 1] ~= "W" and map[y][x - 1] ~= "B") then
-	-- 		go_out_danger(map, x - 1, y, nb + 1)
-	-- 	end
-	-- end
+	if (map[y][x] == ".") then X_TMP, Y_TMP = x, y end
+	if (nb < BOMB_RANGE + 1) then
+		if (y + 1 < MAP_YMAX and map[y + 1][x] ~= "W" and map[y + 1][x] ~= "B") then
+			run_out_danger(map, x, y + 1, nb + 1) end
+		if (y - 1 > 0 and map[y - 1][x] ~= "W" and map[y - 1][x] ~= "B") then
+			run_out_danger(map, x, y - 1, nb + 1) end
+		if (x + 1 < MAP_YMAX and map[y][x + 1] ~= "W" and map[y][x + 1] ~= "B") then
+			run_out_danger(map, x + 1, y, nb + 1) end
+		if (x - 1 > 0 and map[y][x - 1] ~= "W" and map[y][x - 1] ~= "B") then
+			run_out_danger(map, x - 1, y, nb + 1) end
+	end
+	if (X_TMP == 0 and Y_TMP == 0) then X_TMP, Y_TMP = x, y end
 end
 
 function random_movement(map)
@@ -28,7 +23,7 @@ function random_movement(map)
 	if (orient == 1 or orient == 3) then y = y + mov[orient] end
 	if (orient == 2 or orient == 4) then x = x + mov[orient] end
 	if (map[y][x] == ".") then return x, y
-	else print("same orient false: " .. map[y][x]) end
+		else print("else:", map[y][x], x, y, orient) end
 	for i = 0, 3 do
 		x = X
 		y = Y
