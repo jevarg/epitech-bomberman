@@ -35,6 +35,7 @@ void	Text::draw(gdl::AShader &shader, gdl::Clock const&) const
       glDisable(GL_DEPTH_TEST);
       glAlphaFunc(GL_GREATER, 0.1f);
       glEnable(GL_ALPHA_TEST);
+      // shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
       _geometry->draw(shader, getTransformation(), GL_TRIANGLES);
       glDisable(GL_ALPHA_TEST);
       glEnable(GL_DEPTH_TEST);
