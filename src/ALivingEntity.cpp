@@ -71,5 +71,6 @@ bool	ALivingEntity::isAlive() const
 
 void	ALivingEntity::takeDamages(int /*amount*/)
 {
+  _gameInfo.sound.playSound("hurt");
   die();
 }

@@ -2,9 +2,9 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
+GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound)
   : _save(), _type(), _texture(),
-    _gameInfo(clock, map, set, input)
+    _gameInfo(clock, map, set, input, sound)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
