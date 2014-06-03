@@ -2,9 +2,9 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
+GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound)
   : _save(), _type(), _texture(),
-    _gameInfo(clock, map, set, input)
+    _gameInfo(clock, map, set, input, sound)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -45,6 +45,10 @@ bool GameEngine::initialize()
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
+  if (!_textShader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER)
+      || !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER)
+      || !_textShader.build())
+    return (false);
   _cam.translate(glm::vec3(0, 5, 10));
 
   if (!_text.initialize())
@@ -70,7 +74,7 @@ bool GameEngine::initialize()
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_gameInfo);
-  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
+  spawn.spawnEnt(1, 3, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
@@ -133,11 +137,11 @@ void GameEngine::draw()
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   _cam.lookAt();
+  _shader.bind();
   _shader.setUniform("projection", _cam.getProjection());
   _shader.setUniform("view", _cam.getTransformation());
   _shader.setUniform("model", model);
   _shader.setUniform("inv_model", glm::inverse(model));
-  _shader.bind();
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _gameInfo.clock);
   v_Contcit end = _gameInfo.map.ContEnd();
@@ -152,7 +156,10 @@ void GameEngine::draw()
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
 	(*it1)->draw(_shader, _gameInfo.clock);
     }
-  _text.draw(_shader, _gameInfo.clock);
+  _textShader.bind();
+  _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
+  _textShader.setUniform("view", glm::mat4(1));
+  _text.draw(_textShader, _gameInfo.clock);
   _win.flush();
 }
 
