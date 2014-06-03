@@ -83,6 +83,7 @@ private:
 
   gdl::SdlContext		_win;
   gdl::BasicShader		_shader;
+  gdl::BasicShader		_textShader;
   Save				_save;
   std::vector<IObject *>	_obj;
   Camera			_cam;

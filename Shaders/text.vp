@@ -1,0 +1,24 @@
+#version 120
+
+uniform	mat4 projection;
+uniform	mat4 view;
+
+uniform sampler2D fTexture0;
+
+attribute vec3 vPosition;
+attribute vec4 vColor;
+attribute vec3 vNormal;
+attribute vec2 vTexCoord;
+
+varying vec4 fColor;
+varying vec2 fUv;
+
+void main(void)
+{
+  fColor = vColor;
+  fUv = vTexCoord;
+
+  vec2 vertexPosition_homoneneousspace = vec2(vPosition.xy) - vec2(800, 450); // [0..800][0..600] -> [-400..400][-300..300]
+  vertexPosition_homoneneousspace /= vec2(800, 450);
+  gl_Position =  vec4(vertexPosition_homoneneousspace,0,1);
+}
