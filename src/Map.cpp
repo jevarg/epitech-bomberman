@@ -4,6 +4,7 @@
 #include <ctime>
 #include <cmath>
 #include "Map.hpp"
+#include "Box.hpp"
 
 Map::Map(Settings &set)
 {
@@ -34,7 +35,8 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IObject *> &type)
+bool		Map::load(Settings &settings, const std::string &name,
+			  t_gameinfo &gameInfo)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -63,15 +65,16 @@ bool		Map::load(Settings &settings, const std::string &name, std::map<eType, IOb
 	  switch (*it)
 	    {
 	    case 'W':
-	      addEntity(new Entity(x, y, WALL, type[WALL]->clone()));
+	      addEntity(new Entity(x, y, WALL, gameInfo));
 	      break;
 	    case 'B':
-	      addEntity(new Entity(x, y, BOX, type[BOX]->clone()));
+	      addEntity(new Box(x, y, BOX, gameInfo));
 	      break;
 	    case ' ':
 	      break;
 	    default:
-	      std::cerr << "Error while loading map on line : " << y << " column : " << x << std::endl;
+	      std::cerr << "Error while loading map on line : " << y
+			<< " column : " << x << std::endl;
 	      return (false);
 	    }
 	  ++x;
@@ -151,7 +154,6 @@ void	Map::genSmallMaze(short x, short y, short pos)
   short	ty;
   bool 	tabdir[4] = {false, false, false, false};
 
-  std::cout << x << " " << y << " " << _mapX << std::endl;
   _map[y * _mapX + x] = FREE;
   if (pos < 4)
     tabdir[pos] = true;
@@ -253,16 +255,28 @@ void	Map::fillBox()
     }
 }
 
-void	Map::fillContainers(std::map<eType, IObject *> &type)
+/*
+** The entity added at 0,0 is symbolic, in fact it is just usefull
+** for getters returning a pointer to the entity. Because of the way we check colisions
+** no entity will be returned if it's on the border, so we return a pointer to this
+*/
+
+void	Map::fillContainers(t_gameinfo &_gameInfo)
 {
   unsigned int	i;
   unsigned int 	totalsize = (_mapY - 1) * _mapX;
 
+  addEntity(new Entity(0, 0, WALL, _gameInfo));
   for (i = _mapX; i < totalsize; ++i)
     {
       // means there is a block & It's not the border
       if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
-	addEntity(new Entity(i % _mapX, i /_mapX, _map[i], type[_map[i]]->clone()));
+	{
+	  if (_map[i] == WALL)
+	    addEntity(new Entity(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	  else
+	    addEntity(new Box(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	}
     }
   _map.clear();	// erase the temps vector
 }
@@ -285,7 +299,7 @@ void	Map::removeEntityByPtr(AEntity *ptr)
 ** Main function
 */
 
-void	Map::createMap(std::map<eType, IObject *> &type)
+void	Map::createMap(t_gameinfo &gameInfo)
 {
   int	posx;
   int	posy;
@@ -301,7 +315,8 @@ void	Map::createMap(std::map<eType, IObject *> &type)
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
-  fillContainers(type);
+  createContainers();
+  fillContainers(gameInfo);
   display();
 }
 
@@ -318,15 +333,52 @@ unsigned int	Map::getContPos(int x, int y) const
 void	Map::addEntity(AEntity *ent)
 {
   unsigned int	pos;
-  Container	*cont;
+  // Container	*cont;
 
+  std::cout << "Add: " << ent << std::endl;
   pos = getContPos(ent->getXPos(), ent->getYPos());
-  while (_cont.size() <= pos)
-    {
-      cont = new Container;
-      _cont.push_back(cont);
-    }
+  // while (_cont.size() <= pos)
+  //   {
+  //     cont = new Container;
+  //     _cont.push_back(cont);
+  //   }
   _cont[pos]->stockEntity(ent);
+}
+
+void	Map::pushToCollector(AEntity *ent)
+{
+  _collector.push_back(ent);
+}
+
+int	Map::clearElements()
+{
+  AEntity	*ent;
+  d_Ait		it = _collector.begin();
+
+  for (d_Ait end = _collector.end(); it != end; ++it)
+    (*it)->decTimeDeath();
+  while (!_collector.empty())
+    {
+      ent = _collector.front();
+      if (ent->getDeathTime() <= 0)
+	{
+	  _collector.pop_front();
+	  delete (ent);
+	}
+      else
+	break ;
+    }
+  return (_collector.size());
+}
+
+
+void	Map::createContainers()
+{
+  for (int y = 0; y < _mapY; y += SQUARESIZE)
+    {
+      for (int x = 0; x < _mapX; x += SQUARESIZE)
+	_cont.push_back(new Container);
+    }
 }
 
 /*
@@ -339,7 +391,7 @@ eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
-  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+  if (y <= 0 || y >= _mapY - 1 || x  <= 0 || x >= _mapX - 1)
     return (WALL);
   else if (pos >= _cont.size())
     return (FREE);
@@ -366,32 +418,59 @@ v_Contcit	Map::ContEnd() const
   return (_cont.end());
 }
 
-void		Map::setEntity(int x, int y, eType type)
-{
-  (_cont[getContPos(x, y)])->setEntity(x, y, type);
-}
-
-void		Map::setEntityIf(int x, int y, eType newValue, eType oldValue)
-{
-  (_cont[getContPos(x, y)])->setEntityIf(x, y, newValue, oldValue);
-}
-
-void		Map::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
-{
-  (_cont[getContPos(x, y)])->setEntityIfNot(x, y, newValue, oldValue);
-}
-
 AEntity		*Map::getEntity(int x, int y) const
 {
-  return ((_cont[getContPos(x, y)])->getEntity(x, y));
+  unsigned int	pos = getContPos(x, y);
+
+  if (y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntity(x, y));
 }
 
 AEntity		*Map::getEntityIf(int x, int y, eType value) const
 {
-  return ((_cont[getContPos(x, y)])->getEntityIf(x, y, value));
+  unsigned int	pos = getContPos(x, y);
+
+  if ((y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+      && value == WALL)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntityIf(x, y, value));
 }
 
 AEntity		*Map::getEntityIfNot(int x, int y, eType value) const
 {
-  return ((_cont[getContPos(x, y)])->getEntityIfNot(x, y, value));
+  unsigned int	pos = getContPos(x, y);
+
+  if ((y == 0 || y == _mapY - 1 || x  == 0 || x == _mapX - 1)
+      && value != WALL)
+    return ((_cont[0])->getEntity(0, 0));
+  else if (pos >= _cont.size())
+    return (NULL);
+  return ((_cont[pos])->getEntityIfNot(x, y, value));
+}
+
+bool	Map::hasPlayer() const
+{
+  AEntity *foundEnt;
+  int	mapSize = _mapX * _mapY;
+  int	contPos;
+  int	x;
+  int	y;
+
+  for (int i = 0; i < mapSize; ++i)
+    {
+      x = i % _mapX;
+      y = i / _mapX;
+      contPos = getContPos(x, y);
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER)) != NULL)
+	{
+	  if (dynamic_cast<Player *>(foundEnt))
+	    return (true);
+	}
+    }
+  return (false);
 }

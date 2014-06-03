@@ -1,3 +1,4 @@
+#include "IA.hpp"
 #include "GameEngine.hpp"
 #include "Spawn.hpp"
 
@@ -17,18 +18,20 @@ Spawn::~Spawn()
 
 void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
 {
+  int	playerId;
+
   if (spawn.nbPlayer > spawn.nbIa)
     {
+      playerId = (!spawn.engine.gameInfo.map.hasPlayer() && spawn.nbPlayer == 1) ?
+	0 : spawn.nbPlayer;
       _map.addEntity(new Player(x, y, spawn.engine.cam[0], glm::vec4(0.0),
-				spawn.engine.type[CHARACTER]->clone(),
-				spawn.engine.gameInfo));
+				spawn.engine.gameInfo, playerId));
       --spawn.nbPlayer;
     }
   else
     {
-      _map.addEntity(new Player(x, y, spawn.engine.cam[0], glm::vec4(0.0),
-				spawn.engine.type[CHARACTER]->clone(),
-				spawn.engine.gameInfo));
+      _map.addEntity(new IA(x, y, glm::vec4(0.0),
+			    spawn.engine.gameInfo));
       --spawn.nbIa;
     }
 }
@@ -131,10 +134,9 @@ void	Spawn::initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const
   spawn.nbIa = nbIa;
 }
 
-void	Spawn::spawnEnt(int nbPlayer, int nbIa, std::map<eType, IObject *> &type,
-			Camera **cam, t_gameInfo &gameInfo)
+void	Spawn::spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameInfo &gameInfo)
 {
-  t_engine	engine(type, cam, gameInfo);
+  t_engine	engine(cam, gameInfo);
   t_spawn	spawn(engine);
   int	x = 0;
   int	y = 0;

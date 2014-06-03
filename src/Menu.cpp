@@ -1,8 +1,8 @@
 #include "Menu.hpp"
 
-Menu::Menu(Settings &set): _win(), _input(), _set(set), _shader(), _done(false)
+Menu::Menu(Settings &set): _win(), _input(), _set(set), _textShader(), _done(false)
 {
-
+  _frames = 0;
 }
 
 Menu::~Menu()
@@ -15,12 +15,12 @@ bool  Menu::initialize()
 		  SDL_INIT_VIDEO, SDL_WINDOW_OPENGL))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
-  if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
-   || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER) || !_shader.build())
+  if (!_textShader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER) ||
+      !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER) ||
+      !_textShader.build())
     return (false);
   if (!_text.initialize())
     return (false);
-  _text.write("TEST", 0, 0, 1.0);
   return (true);
 }
 
@@ -35,24 +35,31 @@ bool  Menu::update()
     launchGame();
   if (_input[SDLK_ESCAPE]) // || _input.getInput(SDL_QUIT))
     return (false);
+  _frames++;
   if ((time = _clock.getElapsed()) < fps)
-    usleep((fps - time) * 1000);
+    {
+      // _text << round(_frames / _clock.getElapsed());
+      _text.setText("Play", 50.0f, 50.0f, 40.0f);
+      _frames = 0;
+      usleep((fps - time) * 1000);
+    }
   return (true);
 }
 
 void  Menu::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  _shader.bind();
-  _shader.setUniform("view", glm::mat4(1));
-  _text.draw(_shader, _clock);
+  _textShader.bind();
+  _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
+  _textShader.setUniform("view", glm::mat4(1));
+  _text.draw(_textShader, _clock);
   _win.flush();
 }
 
 void	Menu::launchGame()
 {
   Map map(_set);
-  GameEngine eng(&_win, _clock, &_shader, map, _set, _input);
+  GameEngine eng(&_win, _clock, &_textShader, map, _set, _input);
   bool	done = true;
 
   if (!eng.initialize())

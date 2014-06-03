@@ -4,6 +4,7 @@
 # include <string>
 # include <Texture.hh>
 # include <Geometry.hh>
+# include <sstream>
 # include "ATransformation.hpp"
 
 # define FONT "assets/font.tga"
@@ -15,11 +16,27 @@ public:
   virtual ~Text();
 
   bool	initialize();
-  void	clear();
   void	draw(gdl::AShader &, gdl::Clock const&) const;
-  void	write(std::string const&, float, float, float);
+  void	clear();
+
+  void	setText(std::string const&, float, float, float);
+
+  template <typename T>
+  std::string		operator<<(T const& in)
+  {
+    std::stringstream	ss;
+
+    ss << in;
+    setText(ss.str(), _defX, _defY, _defSize);
+
+    return (ss.str());
+  }
 
 private:
+  float				_defX;
+  float				_defY;
+  float				_defSize;
+
   gdl::Texture			_font;
   gdl::Geometry			*_geometry;
 };

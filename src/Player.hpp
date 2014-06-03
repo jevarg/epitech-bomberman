@@ -8,14 +8,17 @@
 class		Player : public ACharacter
 {
 public:
-  Player(int x, int y, Camera *camera, glm::vec4 color, IObject *model,
-	 t_gameinfo &gameInfo);
+  Player(int x, int y, Camera *camera, glm::vec4 color,
+	 t_gameinfo &gameInfo, int id);
   virtual ~Player();
-
-  bool	update(gdl::Clock const &clock, Input const &input, Map &map);
+  bool	checkInput();
+  bool	checkInputSingle();
+  bool	checkInputMulti();
+  void	update();
 
 private:
   Camera	*_camera;
+  int		_id;
 };
 
 #endif /* _PLAYER_HPP_ */

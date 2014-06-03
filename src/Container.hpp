@@ -5,10 +5,13 @@
 # include <vector>
 # include <list>
 # include "AEntity.hpp"
+# include "Mutex.hpp"
+# include "Scopelock.hpp"
 
 class Container;
 
 typedef std::vector<AEntity *>::const_iterator v_Entcit;
+typedef std::vector<AEntity *>::iterator v_Entit;
 typedef std::list<AEntity *>::const_iterator l_Entcit;
 typedef std::list<AEntity *>::iterator l_Entit;
 
@@ -25,18 +28,25 @@ public:
 
   v_Entcit	vecBegin() const;
   v_Entcit	vecEnd() const;
+  v_Entit	vecBeginMod();
+  v_Entit	vecEndMod();
+  AEntity	*vecFront() const;
+  bool		vecEmpty() const;
   l_Entcit	listBegin() const;
   l_Entcit	listEnd() const;
-  void		setEntity(int, int, eType);
-  void		setEntityIf(int, int, eType, eType);
-  void		setEntityIfNot(int, int, eType, eType);
+  l_Entit	listBeginMod();
+  l_Entit	listEndMod();
+  AEntity	*listFront() const;
+  bool		listEmpty() const;
   AEntity	*getEntity(int, int);
   AEntity	*getEntityIf(int, int, eType);
   AEntity	*getEntityIfNot(int, int, eType);
 
+  Mutex		*getMutex() const;
 private:
-  std::vector<AEntity *>	_staticEnt;
-  std::list<AEntity *>		_mobileEnt;
+  std::vector<AEntity *>       	_staticEnt;
+  std::list<AEntity *>     	_mobileEnt;
+  Mutex				*_mutex;
 };
 
 #endif /* _ENTITIE_H_ */

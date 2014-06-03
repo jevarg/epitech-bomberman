@@ -7,6 +7,8 @@
 # include "Input.hpp"
 # include "Model.hpp"
 
+typedef struct s_gameinfo       t_gameinfo;
+
 enum	eType
   {
     WALL = 0,
@@ -14,6 +16,9 @@ enum	eType
     BOX,
     BOMB,
     FLAME,
+    ITEM,
+    SPEEDITEM,
+    HEALTHITEM,
     CHARACTER,
     GROUND,
     UNKNOWNENTITY
@@ -34,8 +39,8 @@ typedef struct	s_entity
 class		AEntity
 {
 public:
-  AEntity();
-  AEntity(int x, int y, eType type, IObject *model);
+  AEntity(t_gameinfo &gameInfo);
+  AEntity(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~AEntity() = 0;
 
   int		getXPos() const;
@@ -44,13 +49,24 @@ public:
   void		setXPos(const int &x);
   void		setYPos(const int &y);
   void		setType(const eType &type);
+  bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
-  virtual bool	update(gdl::Clock const &clock, Input const &input, Map &map) = 0;
+  int		getDeathTime() const;
+  void		decTimeDeath();
+
+  virtual void	setDestroy();
+  virtual void	destroy();
+
+  virtual void	takeDamages(int amount) = 0;
 
 protected:
-  int		_x;
-  int		_y;
+  float		_x;
+  float		_y;
   eType		_type;
+  t_gameinfo	&_gameInfo;
+  bool		_toDestroy;
+  int		_timeDeath;
+  int		_time;
   IObject	*_model;
 };
 

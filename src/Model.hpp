@@ -16,16 +16,19 @@ public:
   virtual ~Model();
 
   bool		initialize();
+  bool		load(std::string const&);
+
   void		update(gdl::Clock const&, Input &);
   void		draw(gdl::AShader &, gdl::Clock const&) const;
-  bool		load(std::string const&);
-  bool		loadTexture(std::string const&);
-  IObject	*clone() const;
+
   void		setTexture(gdl::Texture *);
+
+  IObject	*clone() const;
+
+  gdl::Model	*getModel();
 
 private:
   gdl::Model	*_obj;
-  gdl::Texture	*_texture;
 };
 
 #endif /* !_MODEL_H_ */

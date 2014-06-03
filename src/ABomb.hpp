@@ -1,28 +1,27 @@
 #ifndef ABOMB_HPP_
 # define ABOMB_HPP_
 
-# include "AEntity.hpp"
+# include "ALivingEntity.hpp"
 # include "IObject.hpp"
-# include "Mutex.hpp"
-# include "Condvar.hpp"
 # include "Settings.hpp"
 
-class		ABomb: public AEntity
+class		ACharacter;
+
+class		ABomb: public ALivingEntity
 {
 public:
-  ABomb(int x, int y, IObject *model);
-  virtual ~ABomb();
-  void	explode(Map &map);
-  void	setFire(int x, int y, eAction direction, int range, Map &map);
+  ABomb(int x, int y, ACharacter *character, t_gameinfo &gameInfo);
+  virtual ~ABomb() = 0;
+
+  void	update();
+  void	explode();
+  void	takeDamages(int);
 
 protected:
-  pthread_t	_thread;
-  Mutex		_mutex;
-  Condvar	_condvar;
   int		_range;
   int		_power;
+  int		_timeout;
+  ACharacter	*_character;
 };
-
-void	*handle_bomb_thread(void *arg);
 
 #endif /* ! BOMB_HPP_ */

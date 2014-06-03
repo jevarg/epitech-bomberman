@@ -69,14 +69,14 @@ void	Input::windowEvent(const SDL_Event &event)
       _window.event = WIN_QUIT;
       break ;
     }
-  switch (event.window.event)
+  /*  switch (event.window.event)
     {
     case SDL_WINDOWEVENT_RESIZED:
       _window.event = WIN_RESIZE;
       _window.x = event.window.data1;
       _window.y = event.window.data2;
     break ;
-    }
+    }*/
 }
 
 void	Input::getInput(const Settings &set)

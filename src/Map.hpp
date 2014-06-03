@@ -8,12 +8,14 @@
 # include "Entity.hpp"
 # include "Player.hpp"
 # include "Settings.hpp"
+# include "ModelFactory.hpp"
 
 # define MAXSIZE 10000
-# define SQUARESIZE 10
+# define SQUARESIZE 100
 # define RAD(x) ((x) * 3.14159265359 / 180)
 
 typedef std::vector<Container *>::const_iterator v_Contcit;
+typedef std::deque<AEntity *>::iterator	d_Ait;
 
 class Map
 {
@@ -21,25 +23,26 @@ public:
   Map(Settings &set);
   ~Map();
 
-  void	createMap(std::map<eType, IObject *> &type);
+  void	createMap(t_gameinfo &gameInfo);
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
-  bool		load(Settings &settings, const std::string&,
-		     std::map<eType, IObject *> &type);
+  bool		load(Settings &settings, const std::string &,
+		     t_gameinfo &gameInfo);
 
-  void	addEntity(AEntity *ent);
-  void	removeEntity(int x, int y);
-  void	removeEntityByPtr(AEntity *ptr);
+  void		addEntity(AEntity *ent);
+  void		removeEntity(int x, int y);
+  void		removeEntityByPtr(AEntity *ptr);
+  void		pushToCollector(AEntity *ent);
+  int		clearElements();
 
-  void		setEntity(int, int, eType);
-  void		setEntityIf(int, int, eType, eType);
-  void		setEntityIfNot(int, int, eType, eType);
+
   AEntity	*getEntity(int, int) const;
   AEntity	*getEntityIf(int, int, eType) const;
   AEntity	*getEntityIfNot(int, int, eType) const;
+  bool		hasPlayer() const;
 
-  void	setMobilEnt(int x, int y, eType type);
+  void		setMobilEnt(int x, int y, eType type);
 
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
@@ -50,13 +53,14 @@ public:
 private:
   void	genSmallMaze(short x, short y, short dir);
   void	genBigMaze();
+  void	createContainers();
 
   bool	checkValidPath(int x, int y) const;
   short	getDir(bool *tab, short oldDir) const;
 
   bool	checkAccess(short x, short y) const;
   void	fillBox();
-  void	fillContainers(std::map<eType, IObject *> &type);
+  void	fillContainers(t_gameinfo &gameInfo);
   void	display();
 
   int			_mapX;
@@ -65,6 +69,7 @@ private:
   unsigned short	_linear;
   std::vector<eType>	_map;
   std::vector<Container *>	_cont;
+  std::deque<AEntity *>		_collector;
 };
 
 #endif /* !_MAP_HPP_ */

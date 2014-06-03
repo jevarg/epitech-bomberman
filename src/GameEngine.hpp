@@ -5,6 +5,7 @@
 # include <glm/gtc/matrix_transform.hpp>
 # include <vector>
 # include <map>
+# include <deque>
 # include <unistd.h>
 # include <Game.hh>
 # include <BasicShader.hh>
@@ -16,9 +17,9 @@
 # include "Camera.hpp"
 # include "IObject.hpp"
 # include "Model.hpp"
-# include "AEntity.hpp"
 # include "Save.hpp"
 # include "Container.hpp"
+# include "AEntity.hpp"
 # include "Map.hpp"
 # include "Spawn.hpp"
 # include "Settings.hpp"
@@ -27,6 +28,13 @@
 # include "Text.hpp"
 # include "Condvar.hpp"
 # include "Mutex.hpp"
+# include "Console.hpp"
+# include "Scopelock.hpp"
+# include "ModelFactory.hpp"
+# include "ItemFactory.hpp"
+# include "SpeedItem.hpp"
+# include "HealthItem.hpp"
+# include "Text.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -36,9 +44,13 @@
 # define WALL_TEXTURE "./assets/wall.tga"
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
+# define FLAME_TEXTURE "./assets/flames.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
-# define BOMB_TEXTURE "./assets/box.tga"
-# define FLAME_TEXTURE "./assets/skybox.tga"
+# define HEALTHITEM_MODEL "./assets/health_item.fbx"
+# define SPEEDITEM_MODEL "./assets/speed_item.fbx"
+
+# define CHARACTER_MODEL "./assets/steve.fbx"
+# define BOMB_MODEL "./assets/tnt.fbx"
 
 typedef struct	s_gameinfo
 {
@@ -68,9 +80,12 @@ public:
 private:
   void	createDisplayMap();
   void	createDisplayBorder();
+  void	mainInput();
+  int	clearElements();
 
   gdl::SdlContext		*_win;
-  gdl::BasicShader		*_shader;
+  gdl::BasicShader		_shader;
+  gdl::BasicShader		*_textShader;
   Save				_save;
   std::vector<IObject *>	_obj;
   Camera			_cam;
@@ -82,6 +97,8 @@ private:
   Player			*_player;
   Text				_text;
   t_gameinfo			_gameInfo;
+  bool				_shutdown;
+  int				_frames;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

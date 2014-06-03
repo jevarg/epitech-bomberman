@@ -26,9 +26,10 @@ private:
   Input			_input;
   Settings		_set;
   gdl::Clock		_clock;
-  gdl::BasicShader	_shader;
+  gdl::BasicShader	_textShader;
   bool			_done;
   Text			_text;
+  int			_frames;
 };
 
 #endif /* _MENU_HPP_ */

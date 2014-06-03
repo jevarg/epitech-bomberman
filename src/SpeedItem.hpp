@@ -6,10 +6,11 @@
 class SpeedItem : public AItem
 {
 public:
-  SpeedItem();
+  SpeedItem(int x, int y, t_gameinfo &gameInfo);
   virtual ~SpeedItem();
 
-  void	setSpeed(ACharacter &ch) const;
+  void	setAttr(ACharacter *ch) const;
+  AItem	*clone(int x, int y);
 };
 
 #endif /* _SPEEDITEM_H_ */

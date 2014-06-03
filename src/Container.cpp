@@ -2,21 +2,24 @@
 
 Container::Container()
 {
+  _mutex = new Mutex();
 }
 
 Container::~Container()
 {
+  delete (_mutex);
 }
 
 eType	Container::checkColision(int x, int y) const
 {
+  Scopelock	<Mutex>sc(*_mutex);
   v_Entcit	it = _staticEnt.begin();
   l_Entcit	lit = _mobileEnt.begin();
 
   for (v_Entcit end = _staticEnt.end(); it != end; ++it)
     if ((*it)->getXPos() == x && (*it)->getYPos() == y)
       return ((*it)->getType());
-  for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
+   for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
       return ((*lit)->getType());
   return (FREE);
@@ -24,6 +27,7 @@ eType	Container::checkColision(int x, int y) const
 
 void	Container::stockEntity(AEntity *ent)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   if (ent->getType() == WALL)
     _staticEnt.push_back(ent);
   else
@@ -32,6 +36,7 @@ void	Container::stockEntity(AEntity *ent)
 
 void	Container::removeContBlock(int x, int y)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
@@ -44,16 +49,33 @@ void	Container::removeContBlock(int x, int y)
     }
 }
 
+/*
+** /!\ Never put *lit or *vit to NULL, else this of obj wil be set to NULL
+*/
+
 void	Container::removeContBlockByPtr(AEntity *ptr)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
+  v_Entit	vit = _staticEnt.begin();
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     {
       if (*lit == ptr)
 	{
-	  *lit = NULL;
 	  _mobileEnt.erase(lit);
+	  return ;	       	// Here i consider one object get erased by case.
+	}
+    }
+  /*
+  ** Better check the static position after
+  ** Will normaly only be called on game destruction
+  */
+  for (v_Entit end = _staticEnt.end(); vit != end; ++vit)
+    {
+      if (*vit == ptr)
+	{
+	  _staticEnt.erase(vit);
 	  return ;	       	// Here i consider one object get erased by case.
 	}
     }
@@ -69,6 +91,36 @@ v_Entcit	Container::vecEnd() const
   return (_staticEnt.end());
 }
 
+v_Entit	Container::vecBeginMod()
+{
+  return (_staticEnt.begin());
+}
+
+v_Entit	Container::vecEndMod()
+{
+  return (_staticEnt.end());
+}
+
+AEntity	*Container::vecFront() const
+{
+  return (_staticEnt.empty() ? NULL : _staticEnt.front());
+}
+
+bool	Container::vecEmpty() const
+{
+  return (_staticEnt.empty());
+}
+
+AEntity	*Container::listFront() const
+{
+  return (_mobileEnt.empty() ? NULL : _mobileEnt.front());
+}
+
+bool	Container::listEmpty() const
+{
+  return (_mobileEnt.empty());
+}
+
 l_Entcit	Container::listBegin() const
 {
   return (_mobileEnt.begin());
@@ -79,62 +131,19 @@ l_Entcit	Container::listEnd() const
   return (_mobileEnt.end());
 }
 
-void		Container::setEntity(int x, int y, eType type)
+l_Entit	Container::listBeginMod()
 {
-  l_Entit	lit = _mobileEnt.begin();
-
-  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
-    {
-      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
-	{
-	  if (type == FREE)
-	    _mobileEnt.erase(lit);
-	  else
-	    (*lit)->setType(type);
-	  return ;
-	}
-    }
+  return (_mobileEnt.begin());
 }
 
-void		Container::setEntityIf(int x, int y, eType newValue, eType oldValue)
+l_Entit	Container::listEndMod()
 {
-  l_Entit	lit = _mobileEnt.begin();
-
-  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
-    {
-      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
-	  (*lit)->getType() == oldValue)
-	{
-	  if (newValue == FREE)
-	    _mobileEnt.erase(lit);
-	  else
-	    (*lit)->setType(newValue);
-	  return ;
-	}
-    }
+  return (_mobileEnt.end());
 }
-
-void		Container::setEntityIfNot(int x, int y, eType newValue, eType oldValue)
-{
-  l_Entit	lit = _mobileEnt.begin();
-
-  for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
-    {
-      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
-	  (*lit)->getType() != oldValue)
-	{
-	  if (newValue == FREE)
-	    _mobileEnt.erase(lit);
-	  else
-	    (*lit)->setType(newValue);
-	  return ;
-	}
-    }
-}
-
 
 AEntity		*Container::getEntity(int x, int y)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
   v_Entcit	vit = _staticEnt.begin();
 
@@ -149,6 +158,7 @@ AEntity		*Container::getEntity(int x, int y)
 
 AEntity		*Container::getEntityIf(int x, int y, eType value)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
   v_Entcit	vit = _staticEnt.begin();
 
@@ -165,6 +175,7 @@ AEntity		*Container::getEntityIf(int x, int y, eType value)
 
 AEntity		*Container::getEntityIfNot(int x, int y, eType value)
 {
+  Scopelock	<Mutex>sc(*_mutex);
   l_Entit	lit = _mobileEnt.begin();
   v_Entcit	vit = _staticEnt.begin();
 
@@ -177,4 +188,9 @@ AEntity		*Container::getEntityIfNot(int x, int y, eType value)
 	(*vit)->getType() != value)
       return (*vit);
   return (NULL);
+}
+
+Mutex	*Container::getMutex() const
+{
+  return (_mutex);
 }

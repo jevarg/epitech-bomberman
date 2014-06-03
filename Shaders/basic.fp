@@ -3,6 +3,7 @@
 uniform	mat4 projection;
 uniform	mat4 view;
 uniform	mat4 model;
+uniform mat4 inv_model;
 
 uniform sampler2D fTexture0;
 
@@ -20,7 +21,7 @@ float getFog(float z, float density)
 void main(void)
 {
   /* Density of the fog */
-  float density = 0.05;
+  float density = 0.07;
 
   vec4 fOutColor = texture2D(fTexture0, fUv);
   float factor = getFog(abs(fEyePos.z / fEyePos.w), density);
