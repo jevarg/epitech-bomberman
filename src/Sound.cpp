@@ -19,6 +19,10 @@ Sound::Sound()
 	std::cerr << "Failed to load fuse sound." << std::endl;
       if ((_soundBox["hurt"] = Mix_LoadWAV("./assets/sounds/hurt.wav")) == NULL)
 	std::cerr << "Failed to load hurt sound." << std::endl;
+      if ((_soundBox["pop"] = Mix_LoadWAV("./assets/sounds/pop.wav")) == NULL)
+	std::cerr << "Failed to load pop sound." << std::endl;
+      if ((_soundBox["orb"] = Mix_LoadWAV("./assets/sounds/orb.wav")) == NULL)
+	std::cerr << "Failed to load orb sound." << std::endl;
     }
   catch (std::string err)
     {
@@ -29,6 +33,8 @@ Sound::Sound()
       _soundBox["explosion"] = NULL;
       _soundBox["fuse"] = NULL;
       _soundBox["hurt"] = NULL;
+      _soundBox["pop"] = NULL;
+      _soundBox["orb"] = NULL;
     }
 }
 
