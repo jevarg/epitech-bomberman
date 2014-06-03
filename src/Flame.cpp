@@ -9,9 +9,11 @@ Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo &gam
   _direction = direction;
   _timeout = _gameInfo.set.getVar(FIRETIME)
     * (_gameInfo.set.getVar(FPS) / 1000.0);
+  if (_timeout < 1)
+    _timeout = 1;
   _nextFlame = _gameInfo.set.getVar(FIRESPEED)
     * (_gameInfo.set.getVar(FPS) / 1000.0); // first nb = delay in ms
-  if (_nextFlame <= 0)
+  if (_nextFlame < 1)
     _nextFlame = 1;
 }
 
@@ -25,7 +27,7 @@ void		Flame::update()
   bool		hit = false;
 
   if (_gameInfo.map.getEntityIf(_x, _y, WALL) != NULL ||
-      (--_timeout) == 0)
+      (_timeout -= 1) <= 0)
     {
       die();
       return ;

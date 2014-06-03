@@ -23,7 +23,6 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
 
 ACharacter::~ACharacter()
 {
-  std::cout << "ACharacter death" << std::endl;
 }
 
 bool	ACharacter::updatePosition(Map &map, eAction action, const gdl::Clock &clock)
@@ -172,4 +171,13 @@ int	ACharacter::getRange() const
 void	ACharacter::setRange(int range)
 {
   _range = range;
+}
+
+void	ACharacter::destroy()
+{
+  if (_bombStock < 100)
+    return ;
+  delete (_mutex);
+  delete (this);
+  pthread_exit(NULL);
 }

@@ -70,7 +70,7 @@ bool GameEngine::initialize()
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_gameInfo);
-  spawn.spawnEnt(1, 1, all_cam, _gameInfo);
+  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }
@@ -108,7 +108,7 @@ int		GameEngine::clearElements()
 
 bool		GameEngine::update()
 {
-  int		time;
+  double	time;
   double	fps = (1000 / _gameInfo.set.getVar(FPS));
 
   mainInput();
@@ -120,6 +120,7 @@ bool		GameEngine::update()
     {
       _text << round(_frames / _gameInfo.clock.getElapsed());
       _frames = 0;
+      //      std::cout << "USLEEP " << fps << " " << time << " " << (fps - time) * 1000 << std::endl;
       usleep((fps - time) * 1000);
     }
   _win.updateClock(_gameInfo.clock);

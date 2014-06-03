@@ -20,7 +20,7 @@ public:
   bool		isAlive() const;
 
   virtual void	update() = 0;
-  virtual void	die();
+  virtual bool	die();
   virtual void 	destroy();
   virtual void	takeDamages(int amount);
   void		setDestroy();
