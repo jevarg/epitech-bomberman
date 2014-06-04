@@ -2,6 +2,7 @@ function authorized_ent_danger(map, cur_x, cur_y, i_y, i_x)
 	if (map[cur_y + i_y][cur_x + i_x] == "W" or
 		map[cur_y + i_y][cur_x + i_x] == "D" or
 		map[cur_y + i_y][cur_x + i_x] == "I" or
+		map[cur_y + i_y][cur_x + i_x] == "P" or
 		map[cur_y + i_y][cur_x + i_x] == "B")
 	then
 		return 1
