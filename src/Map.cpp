@@ -35,7 +35,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, const std::string &name,
+bool		Map::load(const std::string &name,
 			  t_gameinfo &gameInfo)
 {
   std::ifstream	file(name.c_str());
@@ -81,8 +81,8 @@ bool		Map::load(Settings &settings, const std::string &name,
 	}
       ++y;
     }
-  settings.setVar(MAP_HEIGHT, y);
-  settings.setVar(MAP_WIDTH, x);
+  gameInfo.set.setVar(MAP_HEIGHT, y);
+  gameInfo.set.setVar(MAP_WIDTH, x);
   return (true);
 }
 
@@ -332,15 +332,15 @@ unsigned int	Map::getContPos(int x, int y) const
 void	Map::addEntity(AEntity *ent)
 {
   unsigned int	pos;
-  // Container	*cont;
+  Container	*cont;
 
   std::cout << "Add: " << ent << std::endl;
   pos = getContPos(ent->getXPos(), ent->getYPos());
-  // while (_cont.size() <= pos)
-  //   {
-  //     cont = new Container;
-  //     _cont.push_back(cont);
-  //   }
+  while (_cont.size() <= pos)
+    {
+      cont = new Container;
+      _cont.push_back(cont);
+    }
   _cont[pos]->stockEntity(ent);
 }
 

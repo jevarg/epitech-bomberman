@@ -73,7 +73,7 @@ bool GameEngine::initialize()
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.createMap(_gameInfo);
+  _gameInfo.map.load("map", _gameInfo);
   spawn.spawnEnt(1, 3, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);

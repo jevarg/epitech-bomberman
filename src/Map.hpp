@@ -27,7 +27,7 @@ public:
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
-  bool		load(Settings &settings, const std::string &,
+  bool		load(const std::string &,
 		     t_gameinfo &gameInfo);
 
   void		addEntity(AEntity *ent);
