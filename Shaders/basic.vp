@@ -1,33 +1,43 @@
-#version 120
+#version 130
 
 uniform	mat4 projection;
 uniform	mat4 view;
 uniform	mat4 model;
-uniform mat4 inv_model;
+
+/* uniform int nbLight;
+   uniform float lightTab[nbLight * 10];*/
 
 uniform sampler2D fTexture0;
 
-attribute vec3 vPosition;
-attribute vec4 vColor;
-attribute vec3 vNormal;
-attribute vec2 vTexCoord;
+in vec3 vPosition;
+in vec4 vColor;
+in vec3 vNormal;
+in vec2 vTexCoord;
 
-varying vec4 fColor;
-varying vec3 fNormal;
-varying vec2 fUv;
-varying vec4 fEyePos;
+out vec4 fColor;
+out vec3 fNormal;
+out vec2 fUv;
+out vec4 fEyePos;
+
+struct Light
+{
+  vec3	pos;
+  vec3	color;
+  vec3	ambient;
+  float	power;
+  float	d;
+};
+
+/* out Light light; */
 
 void main(void)
 {
-//  mat4 modelRotation = inverse(transpose(model));
-//  vec4 transformedNormal = modelRotation * vec4(vNormal.xyz, 0.0);
-
-  vec4 transformedNormal = inv_model * vec4(vNormal.xyz, 0.0);
+  vec4 transformedNormal = inverse(transpose(model)) * vec4(vNormal.xyz, 0.0);
 
   fEyePos = view * model * vec4(vPosition, 1.0);
   fColor = vColor;
   fUv = vTexCoord;
-  fNormal = vNormal;//normalize(transformedNormal).xyz;
+  fNormal = normalize(transformedNormal.xyz);
 
   gl_Position =  projection * fEyePos;
 }

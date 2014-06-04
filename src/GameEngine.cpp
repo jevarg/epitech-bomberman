@@ -41,6 +41,8 @@ bool GameEngine::initialize()
 		  _gameInfo.set.getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
@@ -133,15 +135,11 @@ bool		GameEngine::update()
 
 void GameEngine::draw()
 {
-  glm::mat4 model = glm::transpose(glm::translate(glm::mat4(1.0f), _cam.getPosView()));
-
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   _cam.lookAt();
   _shader.bind();
   _shader.setUniform("projection", _cam.getProjection());
   _shader.setUniform("view", _cam.getTransformation());
-  _shader.setUniform("model", model);
-  _shader.setUniform("inv_model", glm::inverse(model));
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _gameInfo.clock);
   v_Contcit end = _gameInfo.map.ContEnd();
@@ -152,9 +150,9 @@ void GameEngine::draw()
       v_Entcit end_vector = (*it)->vecEnd();
       l_Entcit end_list = (*it)->listEnd();
       for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)
-	(*it1)->draw(_shader, _gameInfo.clock);
+  	(*it1)->draw(_shader, _gameInfo.clock);
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->draw(_shader, _gameInfo.clock);
+  	(*it1)->draw(_shader, _gameInfo.clock);
     }
   _textShader.bind();
   _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
