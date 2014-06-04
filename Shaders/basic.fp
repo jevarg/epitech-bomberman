@@ -1,4 +1,4 @@
-#version 130
+#version 120
 
 uniform	mat4 projection;
 uniform	mat4 view;
@@ -8,10 +8,10 @@ uniform	mat4 model;
 
 uniform sampler2D fTexture0;
 
-in vec4 fColor;
-in vec3 fNormal;
-in vec2 fUv;
-in vec4 fEyePos;
+varying vec4 fColor;
+varying vec3 fNormal;
+varying vec2 fUv;
+varying vec4 fEyePos;
 
 struct Light
 {
