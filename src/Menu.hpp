@@ -3,10 +3,12 @@
 
 # include <Game.hh>
 # include <SdlContext.hh>
+# include <vector>
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "GameEngine.hpp"
 # include "Text.hpp"
+# include "Widget.hpp"
 
 class Menu
 {
@@ -30,6 +32,9 @@ private:
   bool			_done;
   Text			_text;
   int			_frames;
+  std::vector<Widget>	_mainPanel;
+  std::vector<Widget>	_loadPanel;
+  std::vector<Widget>	_optionPanel;
 };
 
 #endif /* _MENU_HPP_ */

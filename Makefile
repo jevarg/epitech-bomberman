@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Tue Jun  3 15:40:46 2014 Jean Gravier
+## Last update Thu Jun  5 22:58:00 2014 enzo de gregorio
 ##
 
 NAME		=	bomberman
@@ -52,7 +52,8 @@ SRC		=	main.cpp \
 			Spawn.cpp \
 			ModelFactory.cpp \
 			ItemFactory.cpp \
-			Text.cpp
+			Text.cpp \
+			Widget.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

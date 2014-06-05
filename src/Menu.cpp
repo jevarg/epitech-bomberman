@@ -22,6 +22,7 @@ bool  Menu::initialize()
   if (!_text.initialize())
     return (false);
   return (true);
+  // fill Panels vectors with Widgets
 }
 
 bool  Menu::update()
