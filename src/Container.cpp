@@ -17,10 +17,12 @@ eType	Container::checkColision(int x, int y) const
   l_Entcit	lit = _mobileEnt.begin();
 
   for (v_Entcit end = _staticEnt.end(); it != end; ++it)
-    if ((*it)->getXPos() == x && (*it)->getYPos() == y)
+    if ((*it)->getXPos() == x && (*it)->getYPos() == y &&
+	(*lit)->toDestroy() == false)
       return ((*it)->getType());
    for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
-    if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
+     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
+	 (*lit)->toDestroy() == false)
       return ((*lit)->getType());
   return (FREE);
 }
@@ -28,6 +30,7 @@ eType	Container::checkColision(int x, int y) const
 void	Container::stockEntity(AEntity *ent)
 {
   Scopelock	<Mutex>sc(*_mutex);
+
   if (ent->getType() == WALL)
     _staticEnt.push_back(ent);
   else
@@ -148,10 +151,12 @@ AEntity		*Container::getEntity(int x, int y)
   v_Entcit	vit = _staticEnt.begin();
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
-    if ((*lit)->getXPos() == x && (*lit)->getYPos() == y)
+    if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
+	(*lit)->toDestroy() == false)
       return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
-    if ((*vit)->getXPos() == x && (*vit)->getYPos() == y)
+    if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
+	(*lit)->toDestroy() == false)
       return (*vit);
   return (NULL);
 }
@@ -164,11 +169,11 @@ AEntity		*Container::getEntityIf(int x, int y, eType value)
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
-	(*lit)->getType() == value)
+	(*lit)->getType() == value && (*lit)->toDestroy() == false)
       return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
-	(*vit)->getType() == value)
+	(*vit)->getType() == value && (*lit)->toDestroy() == false)
       return (*vit);
   return (NULL);
 }
@@ -181,11 +186,11 @@ AEntity		*Container::getEntityIfNot(int x, int y, eType value)
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
-	(*lit)->getType() != value)
+	(*lit)->getType() != value && (*lit)->toDestroy() == false)
       return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
-	(*vit)->getType() != value)
+	(*vit)->getType() != value && (*lit)->toDestroy() == false)
       return (*vit);
   return (NULL);
 }

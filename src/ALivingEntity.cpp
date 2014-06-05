@@ -33,6 +33,7 @@ bool	ALivingEntity::die()
   if (_isAlive == false)	// just because it's not usefull iterating through
     return (false);    		// all the containers
   _isAlive = false;
+  _toDestroy = false;		// AEntitiy equivalent
   _gameInfo.map.removeEntityByPtr(this);
   return (true);
 }
