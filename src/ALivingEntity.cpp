@@ -6,7 +6,6 @@ ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
 {
   _timeDeath = gameInfo.set.getVar(FPS) + 10; // need to overload considering the collector
   _isAlive = true;
-  _mutex = new Mutex;
   if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
     throw (Exception("Can't create thread"));
 }

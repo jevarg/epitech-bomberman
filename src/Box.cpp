@@ -14,10 +14,14 @@ Box::~Box()
 
 void	Box::takeDamages(int)
 {
-  spawnItem(_gameInfo);
-  _gameInfo.map.removeEntityByPtr(this);
-  _gameInfo.map.pushToCollector(this);
-  _gameInfo.sound.playSound("box");
+  if (_toDestroy == true)
+    return ;
+  setDestroy();
+  {
+    Scopelock	<Mutex>sc(*_mutex);
+    spawnItem(_gameInfo);
+    _gameInfo.sound.playSound("box");
+  }
 }
 
 int	Box::getpSize(const int *tab, int size) const

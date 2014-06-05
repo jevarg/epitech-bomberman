@@ -96,10 +96,7 @@ void	GameEngine::mainInput()
 	  while ((ent = (*it)->listFront()) != NULL)
 	    ent->setDestroy();
 	  while ((ent = (*it)->vecFront()) != NULL)
-	    {
-	      ent->setDestroy();
-	      _gameInfo.map.pushToCollector(ent);
-	    }
+	    ent->setDestroy();
 	}
       return ;
     }

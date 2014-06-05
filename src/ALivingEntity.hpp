@@ -2,7 +2,6 @@
 # define _ALIVINGENTITY_H_
 
 # include "AEntity.hpp"
-# include "Mutex.hpp"
 # include "Condvar.hpp"
 # include "Input.hpp"
 # include "Settings.hpp"
@@ -27,7 +26,6 @@ public:
 
 protected:
   pthread_t	_thread;
-  Mutex		*_mutex;
   bool		_isAlive;
 };
 

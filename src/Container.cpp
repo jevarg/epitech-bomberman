@@ -18,7 +18,7 @@ eType	Container::checkColision(int x, int y) const
 
   for (v_Entcit end = _staticEnt.end(); it != end; ++it)
     if ((*it)->getXPos() == x && (*it)->getYPos() == y &&
-	(*lit)->toDestroy() == false)
+	(*it)->toDestroy() == false)
       return ((*it)->getType());
    for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
@@ -156,7 +156,7 @@ AEntity		*Container::getEntity(int x, int y)
       return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
-	(*lit)->toDestroy() == false)
+	(*vit)->toDestroy() == false)
       return (*vit);
   return (NULL);
 }
@@ -173,7 +173,7 @@ AEntity		*Container::getEntityIf(int x, int y, eType value)
       return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
-	(*vit)->getType() == value && (*lit)->toDestroy() == false)
+	(*vit)->getType() == value && (*vit)->toDestroy() == false)
       return (*vit);
   return (NULL);
 }
@@ -190,7 +190,7 @@ AEntity		*Container::getEntityIfNot(int x, int y, eType value)
       return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
-	(*vit)->getType() != value && (*lit)->toDestroy() == false)
+	(*vit)->getType() != value && (*vit)->toDestroy() == false)
       return (*vit);
   return (NULL);
 }
