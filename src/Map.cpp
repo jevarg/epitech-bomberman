@@ -49,10 +49,10 @@ bool		Map::load(const std::string &name,
       std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
       return (false);
     }
-  if (determineMapSize(name, x, y) == false)
-    return (false);
-  _mapX = x;
-  _mapY = y;
+  // if (determineMapSize(name, x, y) == false)
+  //   return (false);
+  _mapX = gameInfo.set.getVar(MAP_WIDTH);
+  _mapY = gameInfo.set.getVar(MAP_HEIGHT);
   createContainers();
   addEntity(new Entity(0, 0, WALL, gameInfo));
   while (std::getline(file, buf))

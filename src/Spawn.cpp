@@ -51,6 +51,7 @@ bool	Spawn::putPlayer(int x, int y, t_spawn &spawn)
     {
       tx = x - (radius + 1);
       ty = y + (radius + 1);
+      std::cout << "tx : " << tx << " ty : " << ty << std::endl;
       dirX = 1;
       dirY = 0;
       do
