@@ -6,6 +6,7 @@
 # include "IObject.hpp"
 # include "Input.hpp"
 # include "Model.hpp"
+# include "Mutex.hpp"
 
 typedef struct s_gameinfo       t_gameinfo;
 
@@ -49,19 +50,25 @@ public:
   void		setXPos(const int &x);
   void		setYPos(const int &y);
   void		setType(const eType &type);
-  void		setDestroy();
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
+  int		getDeathTime() const;
+  void		decTimeDeath();
 
-  virtual void	destroy() = 0;
+  virtual void	setDestroy();
+  virtual void	destroy();
+
   virtual void	takeDamages(int amount) = 0;
 
 protected:
-  int		_x;
-  int		_y;
+  float		_x;
+  float		_y;
   eType		_type;
   t_gameinfo	&_gameInfo;
+  Mutex		*_mutex;
   bool		_toDestroy;
+  int		_timeDeath;
+  int		_time;
   IObject	*_model;
 };
 

@@ -1,27 +1,38 @@
+function authorized_ent_danger(map, cur_x, cur_y, i_y, i_x)
+	if (map[cur_y + i_y][cur_x + i_x] == "W" or
+		map[cur_y + i_y][cur_x + i_x] == "D" or
+		map[cur_y + i_y][cur_x + i_x] == "I" or
+		map[cur_y + i_y][cur_x + i_x] == "B")
+	then
+		return 1
+	end
+	return 0
+end
+
 function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 	if (cur_x + n < MAP_XMAX + 1 and block[1] == 0 and map[cur_y][cur_x + n] ~= "O") then
-		if (map[cur_y][cur_x + n] == "W" or map[cur_y][cur_x + n] == "D" or	map[cur_y][cur_x + n] == "P") then
+		if (authorized_ent_danger(map, cur_x, cur_y, 0, n) == 1) then
 			block[1] = 1 
 		else
 			map[cur_y][cur_x + n] = e
 		end
 	end
 	if (cur_x - n > 0 and block[2] == 0 and map[cur_y][cur_x - n] ~= "O") then
-		if (map[cur_y][cur_x - n] == "W" or	map[cur_y][cur_x - n] == "D" or	map[cur_y][cur_x - n] == "P") then
-			block[2] = 1 
+		if (authorized_ent_danger(map, cur_x, cur_y, 0, n * (-1)) == 1) then
+			block[2] = 1
 		else
 			map[cur_y][cur_x - n] = e
 		end
 	end
 	if (cur_y + n < MAP_YMAX + 1 and block[3] == 0 and map[cur_y + n][cur_x] ~= "O") then
-		if (map[cur_y + n][cur_x] == "W" or	map[cur_y + n][cur_x] == "D" or	map[cur_y + n][cur_x] == "P") then
+		if (authorized_ent_danger(map, cur_x, cur_y, n, 0) == 1) then
 			block[3] = 1
 		else
 			map[cur_y + n][cur_x] = e
 		end
 	end
 	if (cur_y - n > 0 and block[4] == 0 and map[cur_y - n][cur_x] ~= "O") then
-		if (map[cur_y - n][cur_x] == "W" or	map[cur_y - n][cur_x] == "D" or	map[cur_y - n][cur_x] == "P") then
+		if (authorized_ent_danger(map, cur_x, cur_y, n * (-1), 0) == 1) then
 			block[4] = 1
 		else
 			map[cur_y - n][cur_x] = e
@@ -83,6 +94,8 @@ function create_map(entities, aggro)
 			map[entities[i]["y"]][entities[i]["x"]] = "O" end
 		if (entities[i]["type"] == TYPE_PRIORITY["item"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "I" end
+		if (entities[i]["type"] == TYPE_PRIORITY["danger"]) then
+			map[entities[i]["y"]][entities[i]["x"]] = "D" end
 	end
 	MAP_XMAX, MAP_YMAX = set_pos_map(map)
 	return map

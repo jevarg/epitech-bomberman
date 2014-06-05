@@ -7,45 +7,58 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
   : ALivingEntity(x, y, CHARACTER, gameInfo)
 /* handle the bomb type at creation */
 {
-  _bombStock = 1;
+  _bombStock = 100;
   _health = 1;
   _speed = 5;
   _range = 5;
   _score = 0;
   _orient = NORTH;
+  _anim = NOTHING;
   _color = color;
+  _x += 0.5;
+  _y += 0.5;
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
   _model->scale(glm::vec3(0.5, 0.5, 0.5));
 }
 
 ACharacter::~ACharacter()
 {
-  std::cout << "ACharacter death" << std::endl;
 }
 
-bool	ACharacter::updatePosition(Map &map, eAction action)
+bool	ACharacter::updatePosition(Map &map, eAction action, const gdl::Clock &clock)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
   eDir		tabdir[4] = {SOUTH, NORTH, EAST, WEST};
-  int		dirX;
-  int		dirY;
+  float		dirX;
+  float		dirY;
   int		colisionType;
+  float		movement;
 
   for (int i = 0; i < 4; ++i)
     {
       if (tab[i] == action)
 	{
-	  dirX = ((i >= 2) ? ((action == LEFT) ? -1 : 1) : 0);
-	  dirY = ((i < 2) ? ((action == FORWARD) ? -1 : 1) : 0);
+	  movement = clock.getElapsed() * static_cast<float>(_speed);
+	  dirX = ((i >= 2) ? ((action == LEFT) ? -movement : movement) : 0);
+	  dirY = ((i < 2) ? ((action == FORWARD) ? -movement : movement) : 0);
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * tabdir[i] - 90.0 * _orient);
 	  _orient = tabdir[i];
-	  switch ((colisionType = map.checkMapColision(_x + dirX, _y + dirY)))
+	  switch ((colisionType = map.checkMapColision(_x + dirX,
+						       _y + dirY)))
 	    {
+	    case CHARACTER:
 	    case FREE:
 	    case SPEEDITEM:
 	    case HEALTHITEM:
-	      _model->translate(glm::vec3(dirX, 0, dirY));
+	    case FLAME:
+	      if (_anim == NOTHING)
+	      	{
+		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);
+		  _anim = RUN;
+		}
 	      return (move(map, dirX, dirY));
+	      break;
+	    default:
 	      break;
 	    }
 	  break ;
@@ -54,11 +67,12 @@ bool	ACharacter::updatePosition(Map &map, eAction action)
   return (false);
 }
 
-bool	ACharacter::move(Map &map, int dirX, int dirY)
+bool	ACharacter::move(Map &map, float dirX, float dirY)
 {
   unsigned int oldCont;
   unsigned int newCont;
 
+  _model->translate(glm::vec3(dirX, 0.0, dirY));
   oldCont = map.getContPos(_x, _y);
   newCont = map.getContPos(_x + dirX, _y + dirY);
   if (newCont != oldCont) // means the player crossed from contA to contB
@@ -78,9 +92,10 @@ bool	ACharacter::move(Map &map, int dirX, int dirY)
 
 void	ACharacter::dropBomb()
 {
-  if (_gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL)
+  if (_gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL && _bombStock > 0)
     {
-      _gameInfo.map.addEntity(new Bomb(_x, _y, _gameInfo));
+      --(_bombStock);
+      _gameInfo.map.addEntity(new Bomb(_x, _y, this, _gameInfo));
       std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
     }
 }
@@ -108,18 +123,15 @@ int	ACharacter::getSpeed() const
 
 void	ACharacter::setSpeed(int speed)
 {
-  _mutex->lock();
   _speed = speed;
-  _mutex->unlock();
 }
 
 void	ACharacter::takeDamages(int amount)
 {
-  _mutex->lock();
+  _gameInfo.sound.playSound("hurt");
   _health -= amount;
   if (_health <= 0)
     die();
-  _mutex->unlock();
 }
 int	ACharacter::getHealth() const
 {
@@ -128,11 +140,9 @@ int	ACharacter::getHealth() const
 
 void	ACharacter::setHealth(int health)
 {
-  _mutex->lock();
   _health = health;
   if (_health <= 0)
     die();
-  _mutex->unlock();
 }
 
 int	ACharacter::getBombStock() const
@@ -162,4 +172,13 @@ int	ACharacter::getRange() const
 void	ACharacter::setRange(int range)
 {
   _range = range;
+}
+
+void	ACharacter::destroy()
+{
+  if (_bombStock < 100)
+    return ;
+  delete (_mutex);
+  delete (this);
+  pthread_exit(NULL);
 }

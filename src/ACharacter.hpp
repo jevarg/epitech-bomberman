@@ -3,6 +3,7 @@
 
 # include <glm/glm.hpp>
 
+# include <Clock.hh>
 # include "ALivingEntity.hpp"
 # include "Model.hpp"
 # include "Bomb.hpp"
@@ -18,6 +19,12 @@ enum	eDir
     ALLDIR
   };
 
+enum	eAnim
+  {
+    NOTHING = 0,
+    RUN
+  };
+
 class	ACharacter : public ALivingEntity
 {
 public:
@@ -27,8 +34,8 @@ public:
   virtual void	update() = 0;
 
   bool		initialize();
-  bool		move(Map &map, int dirX, int dirY);
-  bool		updatePosition(Map &map, eAction action);
+  bool		move(Map &map, float dirX, float dirY);
+  bool		updatePosition(Map &map, eAction action, const gdl::Clock &clock);
   void		dropBomb();
   void		takeDamages(int amount);
 
@@ -44,6 +51,7 @@ public:
   void		setRange(int range);
   int		getScore() const;
 
+  void		destroy();
 protected:
   glm::vec4	_color;
   int		_bombStock;
@@ -53,6 +61,7 @@ protected:
   int		_range;
   int		_score;
   eDir		_orient;
+  eAnim		_anim;
 };
 
 #endif /* ! ACHARACTER_HPP_ */

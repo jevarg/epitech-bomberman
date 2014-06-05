@@ -4,11 +4,10 @@
 ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
   AEntity(x, y, type, gameInfo)
 {
+  _timeDeath = gameInfo.set.getVar(FPS) + 10; // need to overload considering the collector
   _isAlive = true;
-  _mutex = new Mutex;
   if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
     throw (Exception("Can't create thread"));
-  _timedeath = gameInfo.set.getVar(FPS); // set to one second
 }
 
 ALivingEntity::~ALivingEntity()
@@ -26,15 +25,25 @@ void	*createAliveEntity(void *arg)
   return (NULL);
 }
 
-void	ALivingEntity::die()
+bool	ALivingEntity::die()
 {
-  _gameInfo.map.removeEntityByPtr(this);
+  Scopelock	<Mutex>sc(*_mutex);
+
+  if (_isAlive == false)	// just because it's not usefull iterating through
+    return (false);    		// all the containers
   _isAlive = false;
+  _toDestroy = false;		// AEntitiy equivalent
+  _gameInfo.map.removeEntityByPtr(this);
+  return (true);
+}
+
+void	ALivingEntity::setDestroy()
+{
+  die();
 }
 
 void	ALivingEntity::destroy()
 {
-  _mutex->unlock();
   delete (_mutex);
   delete (this);
   pthread_exit(NULL);
@@ -47,15 +56,13 @@ void	ALivingEntity::aliveLoop()
       _gameInfo.mutex->lock();
       _gameInfo.condvar->wait(_gameInfo.mutex->getMutexPtr());
       _gameInfo.mutex->unlock();
-      _mutex->lock();
       if (_isAlive)
 	update();
       else
 	{
-	  if ((_timedeath =- 1) <= 0)
+	  if ((_timeDeath =- 1) <= 0)
 	    destroy();
 	}
-      _mutex->unlock();
     }
 }
 
@@ -66,9 +73,6 @@ bool	ALivingEntity::isAlive() const
 
 void	ALivingEntity::takeDamages(int /*amount*/)
 {
-  _mutex->lock();
-  if (_isAlive == false)
-    return ;
+  _gameInfo.sound.playSound("hurt");
   die();
-  _mutex->unlock();
 }

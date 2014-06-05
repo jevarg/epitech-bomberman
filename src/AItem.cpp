@@ -6,6 +6,7 @@ AItem::AItem(int x, int y, eType type, t_gameinfo &gameInfo) :
 {
   _timeout = NO_TIMEOUT;
   _amount = 0;
+  gameInfo.sound.playSound("pop");
 }
 
 AItem::~AItem()
@@ -25,6 +26,7 @@ bool	AItem::checkItemColision(Map &map)
 
 void	AItem::update()
 {
+  _model->rotate(glm::vec3(0, 1.0f, 0), 10.0f);
   if (checkItemColision(_gameInfo.map) == true)
     return ;
   if (_timeout != NO_TIMEOUT)

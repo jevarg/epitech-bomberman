@@ -7,13 +7,17 @@
 class		Player : public ACharacter
 {
 public:
-  Player(int x, int y, Camera *camera, glm::vec4 color, t_gameinfo &gameInfo);
+  Player(int x, int y, Camera *camera, glm::vec4 color,
+	 t_gameinfo &gameInfo, int id);
   virtual ~Player();
-  void	checkInput();
+  bool	checkInput();
+  bool	checkInputSingle();
+  bool	checkInputMulti();
   void	update();
 
 private:
   Camera	*_camera;
+  int		_id;
 };
 
 #endif /* _PLAYER_HPP_ */

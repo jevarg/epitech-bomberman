@@ -5,6 +5,7 @@
 # include <glm/gtc/matrix_transform.hpp>
 # include <vector>
 # include <map>
+# include <deque>
 # include <unistd.h>
 # include <Game.hh>
 # include <BasicShader.hh>
@@ -29,7 +30,11 @@
 # include "Console.hpp"
 # include "Scopelock.hpp"
 # include "ModelFactory.hpp"
+# include "ItemFactory.hpp"
+# include "SpeedItem.hpp"
+# include "HealthItem.hpp"
 # include "Text.hpp"
+# include "Sound.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -41,16 +46,16 @@
 # define BOX_TEXTURE "./assets/box.tga"
 # define FLAME_TEXTURE "./assets/flames.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
-# define HEALTHITEM_TEXTURE "./assets/health_item.tga"
-# define SPEEDITEM_TEXTURE "./assets/speed_item.tga"
+# define HEALTHITEM_MODEL "./assets/health_item.fbx"
+# define SPEEDITEM_MODEL "./assets/speed_item.fbx"
 
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
 
 typedef struct	s_gameinfo
 {
-  s_gameinfo(gdl::Clock &pclock, Map &pmap, Settings &pset, Input &pinput) :
-    clock(pclock), map(pmap), input(pinput), set(pset)
+  s_gameinfo(gdl::Clock &pclock, Map &pmap, Settings &pset, Input &pinput, Sound &psound) :
+    clock(pclock), map(pmap), input(pinput), set(pset), sound(psound)
   {
   }
   gdl::Clock   	&clock;
@@ -59,12 +64,13 @@ typedef struct	s_gameinfo
   Settings     	&set;
   Mutex		*mutex;
   Condvar	*condvar;
+  Sound		&sound;
 }		t_gameinfo;
 
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input);
+  GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -74,9 +80,12 @@ public:
 private:
   void	createDisplayMap();
   void	createDisplayBorder();
+  void	mainInput();
+  int	clearElements();
 
   gdl::SdlContext		_win;
   gdl::BasicShader		_shader;
+  gdl::BasicShader		_textShader;
   Save				_save;
   std::vector<IObject *>	_obj;
   Camera			_cam;
@@ -88,6 +97,7 @@ private:
   Player			*_player;
   t_gameinfo			_gameInfo;
   Text				_text;
+  bool				_shutdown;
   int				_frames;
 };
 

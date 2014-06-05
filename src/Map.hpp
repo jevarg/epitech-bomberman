@@ -11,10 +11,11 @@
 # include "ModelFactory.hpp"
 
 # define MAXSIZE 10000
-# define SQUARESIZE 10
+# define SQUARESIZE 8
 # define RAD(x) ((x) * 3.14159265359 / 180)
 
 typedef std::vector<Container *>::const_iterator v_Contcit;
+typedef std::deque<AEntity *>::iterator	d_Ait;
 
 class Map
 {
@@ -26,24 +27,29 @@ public:
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
-  bool		load(Settings &settings, const std::string &,
+  bool		load(const std::string &,
 		     t_gameinfo &gameInfo);
 
-  void	addEntity(AEntity *ent);
-  void	removeEntity(int x, int y);
-  void	removeEntityByPtr(AEntity *ptr);
+  void		addEntity(AEntity *ent);
+  void		removeEntity(int x, int y);
+  void		removeEntityByPtr(AEntity *ptr);
+  void		pushToCollector(AEntity *ent);
+  int		clearElements();
+
 
   AEntity	*getEntity(int, int) const;
   AEntity	*getEntityIf(int, int, eType) const;
   AEntity	*getEntityIfNot(int, int, eType) const;
+  bool		hasPlayer() const;
 
-  void	setMobilEnt(int x, int y, eType type);
+  void		setMobilEnt(int x, int y, eType type);
 
   unsigned int	getWidth() const;
   unsigned int	getHeight() const;
   unsigned int	getContPos(int x, int y) const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
+  bool		determineMapSize(const std::string &, int &, int &);
 
 private:
   void	genSmallMaze(short x, short y, short dir);
@@ -64,6 +70,7 @@ private:
   unsigned short	_linear;
   std::vector<eType>	_map;
   std::vector<Container *>	_cont;
+  std::deque<AEntity *>		_collector;
 };
 
 #endif /* !_MAP_HPP_ */
