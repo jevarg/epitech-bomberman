@@ -53,7 +53,7 @@ void	Text::setText(std::string const& str, float x, float y, float size)
   for (unsigned int i = 0; i < str.length(); ++i)
     {
       if (i > 0.5f)
-	scale = i - 0.5f;
+	scale = i - (0.5f * i);
       UVx = ((str[i] % 16) - 32 % 16) / 16.0f;
       UVy = ((str[i] / 16) - 32 / 16) / 16.0f;
 
