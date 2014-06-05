@@ -34,9 +34,12 @@ bool GameEngine::initialize()
   ItemFactory *items = ItemFactory::getInstance();
   Cube *skybox;
   Spawn	spawn(_gameInfo.map);
+  int	x;
+  int	y;
 
-  _mapX = _gameInfo.set.getVar(MAP_HEIGHT);
-  _mapY = _gameInfo.set.getVar(MAP_WIDTH);
+  _gameInfo.map.determineMapSize("bigmap", x, y);
+  _mapX = x;
+  _mapY = y;
   if (!_win.start(_gameInfo.set.getVar(W_WIDTH),
 		  _gameInfo.set.getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
@@ -73,7 +76,7 @@ bool GameEngine::initialize()
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.load("map", _gameInfo);
+  _gameInfo.map.load("bigmap", _gameInfo);
   spawn.spawnEnt(1, 3, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);

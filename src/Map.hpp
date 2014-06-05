@@ -49,6 +49,7 @@ public:
   unsigned int	getContPos(int x, int y) const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
+  bool		determineMapSize(const std::string &, int &, int &);
 
 private:
   void	genSmallMaze(short x, short y, short dir);
