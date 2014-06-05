@@ -33,10 +33,7 @@ void	Text::draw(gdl::AShader &shader, gdl::Clock const&) const
     {
       _font.bind();
       glDisable(GL_DEPTH_TEST);
-      glAlphaFunc(GL_GREATER, 0.1f);
-      glEnable(GL_ALPHA_TEST);
       _geometry->draw(shader, getTransformation(), GL_TRIANGLES);
-      glDisable(GL_ALPHA_TEST);
       glEnable(GL_DEPTH_TEST);
     }
 }
