@@ -11,7 +11,7 @@
 # include "ModelFactory.hpp"
 
 # define MAXSIZE 10000
-# define SQUARESIZE 100
+# define SQUARESIZE 8
 # define RAD(x) ((x) * 3.14159265359 / 180)
 
 typedef std::vector<Container *>::const_iterator v_Contcit;
@@ -27,7 +27,7 @@ public:
   eType	checkMapColision(int x, int y) const;
 
   bool		save(const std::string&);
-  bool		load(Settings &settings, const std::string &,
+  bool		load(const std::string &,
 		     t_gameinfo &gameInfo);
 
   void		addEntity(AEntity *ent);
@@ -49,6 +49,7 @@ public:
   unsigned int	getContPos(int x, int y) const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
+  bool		determineMapSize(const std::string &, int &, int &);
 
 private:
   void	genSmallMaze(short x, short y, short dir);

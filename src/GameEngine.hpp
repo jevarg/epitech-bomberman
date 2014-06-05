@@ -34,6 +34,7 @@
 # include "SpeedItem.hpp"
 # include "HealthItem.hpp"
 # include "Text.hpp"
+# include "Sound.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -53,8 +54,8 @@
 
 typedef struct	s_gameinfo
 {
-  s_gameinfo(gdl::Clock &pclock, Map &pmap, Settings &pset, Input &pinput) :
-    clock(pclock), map(pmap), input(pinput), set(pset)
+  s_gameinfo(gdl::Clock &pclock, Map &pmap, Settings &pset, Input &pinput, Sound &psound) :
+    clock(pclock), map(pmap), input(pinput), set(pset), sound(psound)
   {
   }
   gdl::Clock   	&clock;
@@ -63,12 +64,13 @@ typedef struct	s_gameinfo
   Settings     	&set;
   Mutex		*mutex;
   Condvar	*condvar;
+  Sound		&sound;
 }		t_gameinfo;
 
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input);
+  GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -83,6 +85,7 @@ private:
 
   gdl::SdlContext		_win;
   gdl::BasicShader		_shader;
+  gdl::BasicShader		_textShader;
   Save				_save;
   std::vector<IObject *>	_obj;
   Camera			_cam;

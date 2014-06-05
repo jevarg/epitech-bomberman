@@ -6,6 +6,7 @@ AItem::AItem(int x, int y, eType type, t_gameinfo &gameInfo) :
 {
   _timeout = NO_TIMEOUT;
   _amount = 0;
+  gameInfo.sound.playSound("pop");
 }
 
 AItem::~AItem()

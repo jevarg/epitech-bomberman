@@ -12,7 +12,6 @@ Player::Player(int x, int y, Camera *camera, glm::vec4 color,
 
 Player::~Player()
 {
-  std::cout << "Player death" << std::endl;
 }
 
 /*
