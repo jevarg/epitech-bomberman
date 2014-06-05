@@ -39,7 +39,7 @@ bool GameEngine::initialize()
 
   _gameInfo.map.determineMapSize("bigmap", x, y);
   _mapX = x;
-  _mapY = y;  
+  _mapY = y;
   _gameInfo.set.setVar(MAP_HEIGHT, y);
   _gameInfo.set.setVar(MAP_WIDTH, x);
   if (!_win.start(_gameInfo.set.getVar(W_WIDTH),
@@ -79,6 +79,7 @@ bool GameEngine::initialize()
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.load("bigmap", _gameInfo);
+  spawn.setSpawnSize(_gameInfo.map.getWidth(), _gameInfo.map.getHeight());
   spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
