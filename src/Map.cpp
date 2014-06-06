@@ -47,6 +47,7 @@ bool		Map::load(const std::string &name,
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     {
       std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
+      throw(Exception("Couldn't load map."));
       return (false);
     }
   // if (determineMapSize(name, x, y) == false)
@@ -63,7 +64,7 @@ bool		Map::load(const std::string &name,
       else
 	if (len != buf.length())
 	  {
-	    std::cerr << "Error while loading map on line : " << y << std::endl;
+	    std::cerr << "Error while loading map on line : " << y + 1 << std::endl;
 	    return (false);
 	  }
       for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
@@ -79,8 +80,9 @@ bool		Map::load(const std::string &name,
 	    case ' ':
 	      break;
 	    default:
-	      std::cerr << "Error while loading map on line : " << y
+	      std::cerr << "Error while loading map on line : " << y + 1
 			<< " column : " << x << std::endl;
+	      throw(Exception("Couldn't load map."));
 	      return (false);
 	    }
 	  ++x;
@@ -104,6 +106,7 @@ bool		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     {
       std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
+      throw(Exception("Couldn't load map."));
       return (false);
     }
   while (std::getline(file, buf))
@@ -114,6 +117,7 @@ bool		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
 	if (len != buf.length())
 	  {
 	    std::cerr << "Error while loading map on line : " << y << std::endl;
+	    throw(Exception("Couldn't load map."));
 	    return (false);
 	  }
       ++y;
@@ -129,6 +133,12 @@ bool		Map::save(const std::string &name)
   std::ofstream	file(name.c_str());
   std::string	buf;
 
+  if ((file.rdstate() && std::ifstream::failbit) != 0)
+    {
+      std::cerr << "Error while saving map, couldn't open : " << name << std::endl;
+      throw(Exception("Couldn't save map."));
+      return (false);
+    }
   for (int y = 0; y < _mapY; ++y)
     {
       buf = "";
