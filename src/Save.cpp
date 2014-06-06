@@ -9,7 +9,7 @@
 #include "GameEngine.hpp"
 #include "Save.hpp"
 #include "Container.hpp"
- #include "Settings.hpp"
+#include "Settings.hpp"
 
  Save::Save()
  {
@@ -154,7 +154,7 @@ bool		Save::loadGame(Map &map, Settings &settings,
 	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
 	      return (false);
 	    }
-	  map.addEntity(new Entity(x, y, static_cast<eType>(type % (GROUND + 1)), gameInfo));
+	  map.addEntity(new Entity(x, y, static_cast<eType>(type % (GROUND + 1)), &gameInfo));
 	  ++line;
 	}
     }

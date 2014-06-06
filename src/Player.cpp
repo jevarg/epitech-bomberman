@@ -2,7 +2,7 @@
 #include "Player.hpp"
 
 Player::Player(int x, int y, Camera *camera, glm::vec4 color,
-	       t_gameinfo &gameInfo, int id)
+	       t_gameinfo *gameInfo, int id)
   : ACharacter(x, y, color, gameInfo), _camera(camera)
 {
   _camera->translate(glm::vec3(x, 0.0, y));
@@ -28,17 +28,18 @@ bool	Player::checkInputSingle()
 
   for (int i = 0; i < 4; ++i)
     {
-      if (_gameInfo.input[tab[i]])
+      if ((*_gameInfo->input)[tab[i]])
 	{
-	  if (updatePosition(_gameInfo.map, tab[i], _gameInfo.clock) == true)
+	  if (updatePosition(_gameInfo->map, tab[i], _gameInfo->clock) == true)
 	    {
-	      _camera->translate(dir[i] * static_cast<float>(_speed * _gameInfo.clock.getElapsed()));
+	      _camera->translate(dir[i] * static_cast<float>
+				 (_speed * _gameInfo->clock->getElapsed()));
 	      ret = true;
 	      break ;
 	    }
 	}
     }
-  if (_gameInfo.input[DROPBOMB])
+  if ((*_gameInfo->input)[DROPBOMB])
     dropBomb();
   return (ret);
 }
@@ -61,18 +62,19 @@ bool	Player::checkInputMulti()
 
   for (int i = pos * 5; i < 4 + pos * 5; ++i)
     {
-      if (_gameInfo.input[keyTab[i]])
+      if ((*_gameInfo->input)[keyTab[i]])
 	{
 	  idx = i > 4 ? i - 5 : i;
-	  if (updatePosition(_gameInfo.map, tab[idx], _gameInfo.clock) == true)
+	  if (updatePosition(_gameInfo->map, tab[idx], _gameInfo->clock) == true)
 	    {
-	      _camera->translate(dir[idx] * static_cast<float>(_speed * _gameInfo.clock.getElapsed()));
+	      _camera->translate(dir[idx] * static_cast<float>
+				 (_speed * _gameInfo->clock->getElapsed()));
 	      ret = true;
 	      break ;
 	    }
 	}
     }
-  if (_gameInfo.input[keyTab[pos * 5 + 4]])
+  if ((*_gameInfo->input)[keyTab[pos * 5 + 4]])
     dropBomb();
   return (ret);
 }

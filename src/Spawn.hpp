@@ -40,7 +40,7 @@ typedef struct	s_spawn
 class Spawn
 {
 public:
-  Spawn(Map &map);
+  Spawn(Map *map);
   virtual ~Spawn();
 
   void	spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameinfo &gameInfo);
@@ -53,7 +53,7 @@ private:
   void	initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const;
   void	spawnCharacter(t_spawn &spawn, int x, int y);
 
-  Map		&_map;
+  Map		*_map;
   int		_mapX;
   int		_mapY;
 };

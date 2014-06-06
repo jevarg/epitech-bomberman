@@ -8,7 +8,7 @@ class		Player : public ACharacter
 {
 public:
   Player(int x, int y, Camera *camera, glm::vec4 color,
-	 t_gameinfo &gameInfo, int id);
+	 t_gameinfo *gameInfo, int id);
   virtual ~Player();
   bool	checkInput();
   bool	checkInputSingle();

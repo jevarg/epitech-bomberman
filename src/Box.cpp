@@ -2,7 +2,7 @@
 #include "GameEngine.hpp"
 #include "Box.hpp"
 
-Box::Box(int x, int y, eType type, t_gameinfo &gameInfo)
+Box::Box(int x, int y, eType type, t_gameinfo *gameInfo)
   : AEntity(x, y, type, gameInfo)
 {
   _facto = ItemFactory::getInstance();
@@ -19,8 +19,8 @@ void	Box::takeDamages(int)
   setDestroy();
   {
     Scopelock	<Mutex>sc(*_mutex);
-    spawnItem(_gameInfo);
-    _gameInfo.sound.playSound("box");
+    spawnItem();
+    _gameInfo->sound->playSound("box");
   }
 }
 
@@ -67,7 +67,7 @@ bool	Box::sameProb(int *tab, int size) const
   return (true);
 }
 
-void	Box::spawnItem(t_gameinfo &gameInfo)
+void	Box::spawnItem()
 {
   int		ptab[] = {PSPEED, PHEALTH}; // needs to be in the same order as AEntity enum
   int		objsize = sizeof(ptab) / sizeof(int);
@@ -101,5 +101,5 @@ void	Box::spawnItem(t_gameinfo &gameInfo)
 	}
       i = getMaxProb(objtab, objsize);
     }
-  gameInfo.map.addEntity(_facto->getItem(static_cast<eType>(SPEEDITEM + i), _x, _y));
+  _gameInfo->map->addEntity(_facto->getItem(static_cast<eType>(SPEEDITEM + i), _x, _y));
 }

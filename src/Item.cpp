@@ -1,6 +1,6 @@
 #include "Item.hpp"
 
-Item::Item(int x, int y, t_gameinfo &gameInfo) :
+Item::Item(int x, int y, t_gameinfo *gameInfo) :
   AItem(x, y, ITEM, gameInfo)
 {
 }

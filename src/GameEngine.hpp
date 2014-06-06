@@ -54,17 +54,17 @@
 
 typedef struct	s_gameinfo
 {
-  s_gameinfo(gdl::Clock &pclock, Map &pmap, Settings &pset, Input &pinput, Sound &psound) :
+  s_gameinfo(gdl::Clock *pclock, Map *pmap, Settings *pset, Input *pinput, Sound *psound) :
     clock(pclock), map(pmap), input(pinput), set(pset), sound(psound)
   {
   }
-  gdl::Clock   	&clock;
-  Map	       	&map;
-  Input	       	&input;
-  Settings     	&set;
+  gdl::Clock   	*clock;
+  Map	       	*map;
+  Input	       	*input;
+  Settings     	*set;
   Mutex		*mutex;
   Condvar	*condvar;
-  Sound		&sound;
+  Sound		*sound;
 }		t_gameinfo;
 
 class GameEngine : public gdl::Game

@@ -4,7 +4,7 @@
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound)
   : _save(), _type(), _texture(),
-    _gameInfo(clock, map, set, input, sound)
+    _gameInfo(&clock, &map, &set, &input, &sound)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -37,13 +37,13 @@ bool GameEngine::initialize()
   int	x;
   int	y;
 
-  _gameInfo.map.determineMapSize("bigmap", x, y);
+  _gameInfo.map->determineMapSize("bigmap", x, y);
   _mapX = x;
   _mapY = y;
-  _gameInfo.set.setVar(MAP_HEIGHT, y);
-  _gameInfo.set.setVar(MAP_WIDTH, x);
-  if (!_win.start(_gameInfo.set.getVar(W_WIDTH),
-		  _gameInfo.set.getVar(W_HEIGHT), "Bomberman"))
+  _gameInfo.set->setVar(MAP_HEIGHT, y);
+  _gameInfo.set->setVar(MAP_WIDTH, x);
+  if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
+		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
@@ -73,13 +73,13 @@ bool GameEngine::initialize()
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
   fact.addModel(CHARACTER, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
-  items->addItem(SPEEDITEM, new SpeedItem(0, 0, _gameInfo));
-  items->addItem(HEALTHITEM, new HealthItem(0, 0, _gameInfo));
+  items->addItem(SPEEDITEM, new SpeedItem(0, 0, &_gameInfo));
+  items->addItem(HEALTHITEM, new HealthItem(0, 0, &_gameInfo));
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.load("bigmap", _gameInfo);
-  spawn.setSpawnSize(_gameInfo.map.getWidth(), _gameInfo.map.getHeight());
+  _gameInfo.map->load("bigmap", _gameInfo);
+  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
   spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
@@ -89,12 +89,13 @@ void	GameEngine::mainInput()
 {
   t_window	win;
 
-  _gameInfo.input.getInput(_gameInfo.set);
-  if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
+  _gameInfo.input->getInput(*(_gameInfo.set));
+  if (((*_gameInfo.input)[win] && win.event == WIN_QUIT) ||
+      (*_gameInfo.input)[SDLK_ESCAPE])
     {
       _shutdown = true;
-      v_Contcit end = _gameInfo.map.ContEnd();
-      for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
+      v_Contcit end = _gameInfo.map->ContEnd();
+      for (v_Contcit it = _gameInfo.map->ContBegin();it != end;it++)
 	{
 	  AEntity *ent;
 	  v_Entit its;
@@ -110,27 +111,27 @@ void	GameEngine::mainInput()
 
 int		GameEngine::clearElements()
 {
-  return (_gameInfo.map.clearElements());
+  return (_gameInfo.map->clearElements());
 }
 
 bool		GameEngine::update()
 {
   double	time;
-  double	fps = (1000 / _gameInfo.set.getVar(FPS));
+  double	fps = (1000 / _gameInfo.set->getVar(FPS));
 
   mainInput();
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
     return (false);
   _frames++;
-  if ((time = _gameInfo.clock.getElapsed()) < fps)
+  if ((time = _gameInfo.clock->getElapsed()) < fps)
     {
-      _text << round(_frames / _gameInfo.clock.getElapsed());
+      _text << round(_frames / _gameInfo.clock->getElapsed());
       _frames = 0;
       //      std::cout << "USLEEP " << fps << " " << time << " " << (fps - time) * 1000 << std::endl;
       usleep((fps - time) * 1000);
     }
-  _win.updateClock(_gameInfo.clock);
+  _win.updateClock(*_gameInfo.clock);
   return (true);
 }
 
@@ -146,23 +147,23 @@ void GameEngine::draw()
   _shader.setUniform("model", model);
   _shader.setUniform("inv_model", glm::inverse(model));
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
-    (*it)->draw(_shader, _gameInfo.clock);
-  v_Contcit end = _gameInfo.map.ContEnd();
-  for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
+    (*it)->draw(_shader, *_gameInfo.clock);
+  v_Contcit end = _gameInfo.map->ContEnd();
+  for (v_Contcit it = _gameInfo.map->ContBegin();it != end;it++)
     {
       Mutex *mutex = (*it)->getMutex();
       Scopelock	<Mutex>sc(*mutex);
       v_Entcit end_vector = (*it)->vecEnd();
       l_Entcit end_list = (*it)->listEnd();
       for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)
-	(*it1)->draw(_shader, _gameInfo.clock);
+	(*it1)->draw(_shader, *_gameInfo.clock);
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->draw(_shader, _gameInfo.clock);
+	(*it1)->draw(_shader, *_gameInfo.clock);
     }
   _textShader.bind();
   _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
   _textShader.setUniform("view", glm::mat4(1));
-  _text.draw(_textShader, _gameInfo.clock);
+  _text.draw(_textShader, *_gameInfo.clock);
   _win.flush();
 }
 

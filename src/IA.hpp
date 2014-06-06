@@ -8,11 +8,11 @@ class		IA : public ACharacter
 {
 public:
   IA(int x, int y, glm::vec4 color,
-     t_gameinfo &gameInfo);
+     t_gameinfo *gameInfo);
   ~IA();
 
   void	update();
-  void	pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo);
+  void	pushEntitie(int x, int y, int *cnt, int aggro);
   int	getResultScript(int aggro, int orient);
 
 private:
