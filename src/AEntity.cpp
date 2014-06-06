@@ -5,6 +5,7 @@ AEntity::AEntity(t_gameinfo &gameInfo) : _gameInfo(gameInfo)
 {
   _toDestroy = false;
   _timeDeath = gameInfo.set.getVar(FPS); // set to one second
+  _mutex = new Mutex;
 }
 
 AEntity::AEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
@@ -16,6 +17,7 @@ AEntity::AEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
   _y = static_cast<float>(y);
   _model->translate(glm::vec3(x, 0.0, y));
   _timeDeath = gameInfo.set.getVar(FPS); // set to one second
+  _mutex = new Mutex;
 }
 
 AEntity::~AEntity()
@@ -59,7 +61,12 @@ bool	AEntity::toDestroy() const
 
 void	AEntity::setDestroy()
 {
+  Scopelock	<Mutex>sc(*_mutex);
+
+  if (_toDestroy == true)
+    return ;
   _toDestroy = true;
+  _gameInfo.map.pushToCollector(this);
   _gameInfo.map.removeEntityByPtr(this);
 }
 
@@ -80,5 +87,6 @@ void	AEntity::decTimeDeath()
 
 void	AEntity::destroy()
 {
+  delete (_mutex);
   delete (this);
 }

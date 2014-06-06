@@ -3,8 +3,9 @@
 #include "GameEngine.hpp"
 
 GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock &clock,
-		       gdl::BasicShader *textShader, Map &map, Settings &set, Input &input)
-  : _win(win), _textShader(textShader), _save(), _text(), _gameInfo(clock, map, set, input)
+		       gdl::BasicShader *textShader, Map &map, Settings &set,
+		       Input &input, Sound &sound)
+  : _win(win), _textShader(textShader), _save(), _text(), _gameInfo(clock, map, set, input, sound)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -25,7 +26,6 @@ GameEngine::~GameEngine()
   //     delete _obj.back();
   //     _obj.pop_back();
   //   }
-  _win->stop();
 }
 
 bool GameEngine::initialize()
@@ -37,8 +37,8 @@ bool GameEngine::initialize()
 
   _mapX = _gameInfo.set.getVar(MAP_HEIGHT);
   _mapY = _gameInfo.set.getVar(MAP_WIDTH);
-  if (!_shader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER)
-      || !_shader.load("./Shaders/text.vp", GL_VERTEX_SHADER)
+  if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
+      || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
   _cam.translate(glm::vec3(0, 5, 10));
@@ -63,10 +63,10 @@ bool GameEngine::initialize()
   items->addItem(SPEEDITEM, new SpeedItem(0, 0, _gameInfo));
   items->addItem(HEALTHITEM, new HealthItem(0, 0, _gameInfo));
 
-
   Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.createMap(_gameInfo);
+  // spawn.setSpawnSize(_gameInfo.map.getWidth(), _gameInfo.map.getHeight());
   spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
@@ -86,14 +86,11 @@ void	GameEngine::mainInput()
 	  AEntity *ent;
 	  v_Entit its;
 	  l_Entit itm;
-	  while ((ent = (*it)->listFront()) != NULL)
+	  /*	  while ((ent = (*it)->listFront()) != NULL)
 	    ent->setDestroy();
 	  while ((ent = (*it)->vecFront()) != NULL)
-	    {
-	      ent->setDestroy();
-	      _gameInfo.map.pushToCollector(ent);
-	    }
-	}
+	    ent->setDestroy();
+	  */}
       return ;
     }
 }
@@ -117,6 +114,7 @@ bool		GameEngine::update()
     {
       _text << round(_frames / _gameInfo.clock.getElapsed());
       _frames = 0;
+      //      std::cout << "USLEEP " << fps << " " << time << " " << (fps - time) * 1000 << std::endl;
       usleep((fps - time) * 1000);
     }
   _win->updateClock(_gameInfo.clock);

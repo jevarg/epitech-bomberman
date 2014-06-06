@@ -2,7 +2,6 @@
 # define _ALIVINGENTITY_H_
 
 # include "AEntity.hpp"
-# include "Mutex.hpp"
 # include "Condvar.hpp"
 # include "Input.hpp"
 # include "Settings.hpp"
@@ -20,14 +19,13 @@ public:
   bool		isAlive() const;
 
   virtual void	update() = 0;
-  virtual void	die();
+  virtual bool	die();
   virtual void 	destroy();
   virtual void	takeDamages(int amount);
   void		setDestroy();
 
 protected:
   pthread_t	_thread;
-  Mutex		*_mutex;
   bool		_isAlive;
 };
 

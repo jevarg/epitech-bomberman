@@ -1,16 +1,131 @@
-function run_out_danger(map, x, y, nb)
-	if (map[y][x] == ".") then X_TMP, Y_TMP = x, y end
-	if (nb < BOMB_RANGE + 1) then
-		if (y + 1 < MAP_YMAX and map[y + 1][x] ~= "W" and map[y + 1][x] ~= "B") then
-			run_out_danger(map, x, y + 1, nb + 1) end
-		if (y - 1 > 0 and map[y - 1][x] ~= "W" and map[y - 1][x] ~= "B") then
-			run_out_danger(map, x, y - 1, nb + 1) end
-		if (x + 1 < MAP_YMAX and map[y][x + 1] ~= "W" and map[y][x + 1] ~= "B") then
-			run_out_danger(map, x + 1, y, nb + 1) end
-		if (x - 1 > 0 and map[y][x - 1] ~= "W" and map[y][x - 1] ~= "B") then
-			run_out_danger(map, x - 1, y, nb + 1) end
+function authorized_put_bomb(point)
+	if (point ~= "." and point ~= "D" and point ~= "I") then
+		return 1
 	end
-	if (X_TMP == 0 and Y_TMP == 0) then X_TMP, Y_TMP = x, y end
+	return 0
+end
+
+function can_i_put_bomb(map_nb, x, y, block)
+	local way = 0
+	local gotox = {0, 0, -1, 1}
+	local gotoy = {-1, 1, 0, 0}
+
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[1] == 0) then
+			if (y - i < 1 or authorized_put_bomb(map_nb[y - 1][x]) == 1) then block[1] = 1
+			elseif (i == BOMB_RANGE and map_nb[y - i][x] == ".") then way = 1 ; break
+			elseif (x - 1 > 0 and map_nb[y - i][x - 1] == ".") then way = 1 ; break
+			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y - i][x + 1] == ".") then way = 1 ; break
+			end
+		else
+			break
+		end
+	end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[2] == 0) then
+			if (x - i < 1 or authorized_put_bomb(map_nb[y][x - i]) == 1) then block[2] = 1
+			elseif (i == BOMB_RANGE and map_nb[y][x - i] == ".") then way = 3 ; break
+			elseif (y - 1 > 0 and map_nb[y - 1][x - i] == ".") then way = 3 ; break
+			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x - i] == ".") then way = 3 ; break
+			end
+		else
+			break
+		end
+	end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[3] == 0) then
+			if (y + i > MAP_YMAX or authorized_put_bomb(map_nb[y + i][x]) == 1) then block[3] = 1
+			elseif (i == BOMB_RANGE and map_nb[y + i][x] == ".") then way = 2 ; break
+			elseif (x - 1 > 0 and map_nb[y + i][x - 1] == ".") then way = 2 ; break
+			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y + i][x + 1] == ".") then way = 2 ; break
+			end
+		else
+			break
+		end
+	end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[4] == 0) then
+			if (x + i > MAP_XMAX or authorized_put_bomb(map_nb[y][x + i]) == 1) then block[4] = 1
+			elseif (i == BOMB_RANGE and map_nb[y][x + i] == ".") then way = 4 ; break
+			elseif (y - 1 > 0 and map_nb[y - 1][x + i] == ".") then way = 4 ; break
+			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x + i] == ".") then way = 4 ; break 
+			end
+		else
+			break
+		end
+	end
+	if (way ~= 0) then
+		x = x + gotox[way]
+		y = y + gotoy[way]
+	end
+	return x, y
+end
+
+function run_out_danger(map_nb, x, y, block)
+	local nb = 50
+	local way = 0
+	local gotox = {0, 0, -1, 1}
+	local gotoy = {-1, 1, 0, 0}
+
+	map_nb = fill_dangerous_fields(map_nb)
+	display_map(map_nb)
+
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[1] == 0) then
+			if (y - i < 1 or authorized_put_bomb(map_nb[y - i][x]) == 1) then block[1] = 1
+			elseif (i == BOMB_RANGE and map_nb[y - i][x] == ".") then if (i < nb) then print("1-salutation1", i) ; nb = i ; way = 1 ; break end
+			elseif (x - 1 > 0 and map_nb[y - i][x - 1] == ".") then if (i < nb) then print("1-salutation2", i) ; nb = i ; way = 1 ; break end
+			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y - i][x + 1] == ".") then if (i < nb) then print("1-salutation3", i) ; nb = i ; way = 1 ; break end
+			end
+		else
+			break
+		end
+	end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[2] == 0) then
+			if (x - i < 1 or authorized_put_bomb(map_nb[y][x - i]) == 1) then block[2] = 1
+			elseif (i == BOMB_RANGE and map_nb[y][x - i] == ".") then if (i < nb) then print("2-salutation1", i) ; nb = i ; way = 3 ; break end
+			elseif (y - 1 > 0 and map_nb[y - 1][x - i] == ".") then if (i < nb) then print("2-salutation2", i) ; nb = i ; way = 3 ; break end
+			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x - i] == ".") then if (i < nb) then print("2-salutation3", i) ; nb = i ; way = 3 ; break end
+			end
+		else
+			break
+		end
+	end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[3] == 0) then
+			if (y + i > MAP_YMAX or authorized_put_bomb(map_nb[y + i][x]) == 1) then block[3] = 1
+			elseif (i == BOMB_RANGE and map_nb[y + i][x] == ".") then if (i < nb) then print("3-salutation1", i) ; nb = i ; way = 2 ; break end
+			elseif (x - 1 > 0 and map_nb[y + i][x - 1] == ".") then if (i < nb) then print("3-salutation2", i) ; nb = i ; way = 2 ; break end
+			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y + i][x + 1] == ".") then if (i < nb) then print("3-salutation3", i) ; nb = i ; way = 2 ; break end
+			end
+		else
+			break
+		end
+	end
+	for i = 1, BOMB_RANGE + 1 do
+		if (block[4] == 0) then
+			if (x + i > MAP_XMAX or authorized_put_bomb(map_nb[y][x + i]) == 1) then block[4] = 1
+			elseif (i == BOMB_RANGE and map_nb[y][x + i] == ".") then if (i < nb) then print("4-salutation1", i) ; nb = i ; way = 4 ; break end
+			elseif (y - 1 > 0 and map_nb[y - 1][x + i] == ".") then if (i < nb) then print("4-salutation2", i) ; nb = i ; way = 4 ; break end
+			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x + i] == ".") then if (i < nb) then print("4-salutation3", i) ; nb = i ; way = 4 ; break end
+			end
+		else
+			break
+		end
+	end
+	print("WAY IS : ", way)
+	if (way ~= 0) then
+		display_map(map_nb)
+		x = x + gotox[way]
+		y = y + gotoy[way]
+	end
+	return x, y
+	-- if (way ~= 0) then
+	-- 	x = x + gotox[way]
+	-- 	y = y + gotoy[way]
+	-- end
+	-- return x, y
 end
 
 function random_movement(map)
@@ -22,8 +137,7 @@ function random_movement(map)
 
 	if (orient == 1 or orient == 3) then y = y + mov[orient] end
 	if (orient == 2 or orient == 4) then x = x + mov[orient] end
-	if (map[y][x] == ".") then return x, y
-		else print("else:", map[y][x], x, y, orient) end
+	if (map[y][x] == ".") then return x, y end
 	for i = 0, 3 do
 		x = X
 		y = Y

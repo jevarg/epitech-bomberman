@@ -8,7 +8,8 @@
 # include "Input.hpp"
 # include "GameEngine.hpp"
 # include "Text.hpp"
-# include "Widget.hpp"
+# include "Sound.hpp"
+/*# include "Widget.hpp"*/
 
 class Menu
 {
@@ -31,10 +32,11 @@ private:
   gdl::BasicShader	_textShader;
   bool			_done;
   Text			_text;
+  Sound			_sound;
   int			_frames;
-  std::vector<Widget>	_mainPanel;
-  std::vector<Widget>	_loadPanel;
-  std::vector<Widget>	_optionPanel;
+  // std::vector<Widget>	_mainPanel;
+  // std::vector<Widget>	_loadPanel;
+  // std::vector<Widget>	_optionPanel;
 };
 
 #endif /* _MENU_HPP_ */

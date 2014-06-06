@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu Jun  5 22:58:00 2014 enzo de gregorio
+## Last update Fri Jun  6 10:35:56 2014 
 ##
 
 NAME		=	bomberman
@@ -53,14 +53,15 @@ SRC		=	main.cpp \
 			ModelFactory.cpp \
 			ItemFactory.cpp \
 			Text.cpp \
-			Widget.cpp
+			Sound.cpp \
+			# Widget.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -llua -lSDL2 -lpthread -lm -ldl -p
+CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lrt -lfbxsdk -llua -lSDL2 -lSDL2_mixer -lpthread -lm -ldl
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))

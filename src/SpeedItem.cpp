@@ -1,3 +1,4 @@
+#include "GameEngine.hpp"
 #include "SpeedItem.hpp"
 
 SpeedItem::SpeedItem(int x, int y, t_gameinfo &gameInfo) :
@@ -14,6 +15,7 @@ void	SpeedItem::setAttr(ACharacter *ch) const
 {
   if (ch->getSpeed() < SPEED_MAX)
     ch->setSpeed(ch->getSpeed() + _amount);
+  _gameInfo.sound.playSound("orb");
 }
 
 AItem	*SpeedItem::clone(int x, int y)
