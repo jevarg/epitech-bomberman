@@ -11,8 +11,7 @@ Menu::~Menu()
 
 bool  Menu::initialize()
 {
-  if (!_win.start(_set.getVar(W_WIDTH), _set.getVar(W_HEIGHT), "Bomberman",
-		  SDL_INIT_VIDEO, SDL_WINDOW_OPENGL))
+  if (!_win.start(_set.getVar(W_WIDTH), _set.getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   if (!_textShader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER) ||
@@ -38,7 +37,6 @@ bool  Menu::update()
   _frames++;
   if ((time = _clock.getElapsed()) < fps)
     {
-      // _text << round(_frames / _clock.getElapsed());
       _text.setText("Play", 50.0f, 50.0f, 40.0f);
       _frames = 0;
       usleep((fps - time) * 1000);

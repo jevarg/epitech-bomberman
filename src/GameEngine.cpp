@@ -25,7 +25,6 @@ GameEngine::~GameEngine()
   //     delete _obj.back();
   //     _obj.pop_back();
   //   }
-  _win->stop();
 }
 
 bool GameEngine::initialize()
@@ -37,8 +36,8 @@ bool GameEngine::initialize()
 
   _mapX = _gameInfo.set.getVar(MAP_HEIGHT);
   _mapY = _gameInfo.set.getVar(MAP_WIDTH);
-  if (!_shader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER)
-      || !_shader.load("./Shaders/text.vp", GL_VERTEX_SHADER)
+  if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
+      || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
   _cam.translate(glm::vec3(0, 5, 10));

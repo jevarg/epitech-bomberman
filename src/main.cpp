@@ -6,7 +6,7 @@
 #include "Settings.hpp"
 #include "Player.hpp"
 
-int	main(int, char **av)
+int	main()
 {
   try
     {

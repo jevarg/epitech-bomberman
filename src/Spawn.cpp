@@ -43,7 +43,7 @@ bool	Spawn::putPlayer(int x, int y, t_spawn &spawn)
   int	radius = 0;
   char	dirX;
   char	dirY;
-  eType	stype;
+  eType	stype = CHARACTER;
   int	maxside = (_mapX > _mapY) ? _mapX : _mapY;
 
   while (((tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1) ||
