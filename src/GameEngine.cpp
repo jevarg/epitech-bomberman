@@ -37,11 +37,13 @@ bool GameEngine::initialize()
   int	x;
   int	y;
 
-  _gameInfo.map.determineMapSize("bigmap", x, y);
-  _mapX = x;
-  _mapY = y;
-  _gameInfo.set.setVar(MAP_HEIGHT, y);
-  _gameInfo.set.setVar(MAP_WIDTH, x);
+  // _gameInfo.map.determineMapSize("bigmap", x, y);
+  // _mapX = x;
+  // _mapY = y;
+  // _gameInfo.set.setVar(MAP_HEIGHT, y);
+  // _gameInfo.set.setVar(MAP_WIDTH, x);
+  _mapX = _gameInfo.set.getVar(MAP_WIDTH);
+  _mapY = _gameInfo.set.getVar(MAP_HEIGHT);
   if (!_win.start(_gameInfo.set.getVar(W_WIDTH),
 		  _gameInfo.set.getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
@@ -78,9 +80,10 @@ bool GameEngine::initialize()
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.load("bigmap", _gameInfo);
+  //  _gameInfo.map.load("bigmap", _gameInfo);
+  _gameInfo.map.createMap(_gameInfo);
   spawn.setSpawnSize(_gameInfo.map.getWidth(), _gameInfo.map.getHeight());
-  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
+  spawn.spawnEnt(1, 10, all_cam, _gameInfo);
   createDisplayBorder();
   return (true);
 }

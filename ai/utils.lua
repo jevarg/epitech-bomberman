@@ -25,6 +25,7 @@ function get_entities()
 		[3] = TYPE_PRIORITY["bomb"],
 		[4] = TYPE_PRIORITY["danger"],
 		[6] = TYPE_PRIORITY["item"],
+		[7] = TYPE_PRIORITY["item"],
 		[8] = TYPE_PRIORITY["player"]
 	}
 	local ent = {}
