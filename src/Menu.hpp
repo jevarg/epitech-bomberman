@@ -7,6 +7,7 @@
 # include "Input.hpp"
 # include "GameEngine.hpp"
 # include "Text.hpp"
+# include "Sound.hpp"
 
 class Menu
 {
@@ -29,6 +30,7 @@ private:
   gdl::BasicShader	_textShader;
   bool			_done;
   Text			_text;
+  Sound			_sound;
   int			_frames;
 };
 

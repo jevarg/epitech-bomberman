@@ -53,6 +53,7 @@ public:
   void		setRange(int range);
   int		getScore() const;
 
+  void		destroy();
 protected:
   glm::vec4	_color;
   int		_bombStock;

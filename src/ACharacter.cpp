@@ -23,7 +23,6 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
 
 ACharacter::~ACharacter()
 {
-  std::cout << "ACharacter death" << std::endl;
 }
 
 bool	ACharacter::updatePosition(Map &map, eAction action, const gdl::Clock &clock)
@@ -51,6 +50,7 @@ bool	ACharacter::updatePosition(Map &map, eAction action, const gdl::Clock &cloc
 	    case FREE:
 	    case SPEEDITEM:
 	    case HEALTHITEM:
+	    case FLAME:
 	      if (_anim == NOTHING)
 	      	{
 		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);
@@ -128,6 +128,7 @@ void	ACharacter::setSpeed(int speed)
 
 void	ACharacter::takeDamages(int amount)
 {
+  _gameInfo.sound.playSound("hurt");
   _health -= amount;
   if (_health <= 0)
     die();
@@ -171,4 +172,13 @@ int	ACharacter::getRange() const
 void	ACharacter::setRange(int range)
 {
   _range = range;
+}
+
+void	ACharacter::destroy()
+{
+  if (_bombStock < 100)
+    return ;
+  delete (_mutex);
+  delete (this);
+  pthread_exit(NULL);
 }

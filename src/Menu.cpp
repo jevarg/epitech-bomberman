@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-Menu::Menu(Settings &set): _win(), _input(), _set(set), _textShader(), _done(false)
+Menu::Menu(Settings &set): _win(), _input(), _set(set), _textShader(), _done(false), _sound()
 {
   _frames = 0;
 }
@@ -59,7 +59,7 @@ void  Menu::draw()
 void	Menu::launchGame()
 {
   Map map(_set);
-  GameEngine eng(&_win, _clock, &_textShader, map, _set, _input);
+  GameEngine eng(&_win, _clock, &_textShader, map, _set, _input, _sound);
   bool	done = true;
 
   if (!eng.initialize())

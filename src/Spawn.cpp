@@ -5,7 +5,7 @@
 Spawn::Spawn(Map &map) : _map(map)
 {
   _mapX = map.getWidth();
-  _mapY = _map.getHeight();
+  _mapY = map.getHeight();
 }
 
 Spawn::~Spawn()
@@ -51,6 +51,7 @@ bool	Spawn::putPlayer(int x, int y, t_spawn &spawn)
     {
       tx = x - (radius + 1);
       ty = y + (radius + 1);
+      std::cout << "radius: " << radius <<  "tx : " << tx << " ty : " << ty << std::endl;
       dirX = 1;
       dirY = 0;
       do
@@ -172,4 +173,10 @@ void	Spawn::spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameInfo &gameInfo)
 	  --spawn.totalPlayer;
 	}
     }
+}
+
+void	Spawn::setSpawnSize(int sx, int sy)
+{
+  _mapX = sx;
+  _mapY = sy;
 }
