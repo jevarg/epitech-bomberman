@@ -20,7 +20,6 @@ void	IA::update()
   double x = _x - aggro[_level - 1];
 
   pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1], _gameInfo);
-  std::cout << "APPEL AU LUA" << std::endl;
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
@@ -29,7 +28,6 @@ void	IA::update()
       else
 	updatePosition(_gameInfo.map, static_cast<eAction>(res), _gameInfo.clock);
     }
-  std::cout << "SORTI DU LUA" << std::endl;
 }
 
 void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
