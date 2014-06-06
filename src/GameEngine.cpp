@@ -37,7 +37,8 @@ bool GameEngine::initialize()
   int	x;
   int	y;
 
-  _gameInfo.map.determineMapSize("bigmap", x, y);
+  if (_gameInfo.map.determineMapSize("bigmap", x, y) == false)
+    throw(Exception("Error while getting map size"));
   _mapX = x;
   _mapY = y;
   _gameInfo.set.setVar(MAP_HEIGHT, y);
@@ -78,7 +79,8 @@ bool GameEngine::initialize()
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.load("bigmap", _gameInfo);
+  if (_gameInfo.map.load("bigmap", _gameInfo) == false)
+    throw(Exception("Error while loading map"));
   spawn.setSpawnSize(_gameInfo.map.getWidth(), _gameInfo.map.getHeight());
   spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();

@@ -63,7 +63,7 @@ bool		Map::load(const std::string &name,
       else
 	if (len != buf.length())
 	  {
-	    std::cerr << "Error while loading map on line : " << y << std::endl;
+	    std::cerr << "Error while loading map on line : " << y + 1 << std::endl;
 	    return (false);
 	  }
       for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
@@ -79,7 +79,7 @@ bool		Map::load(const std::string &name,
 	    case ' ':
 	      break;
 	    default:
-	      std::cerr << "Error while loading map on line : " << y
+	      std::cerr << "Error while loading map on line : " << y + 1
 			<< " column : " << x << std::endl;
 	      return (false);
 	    }
