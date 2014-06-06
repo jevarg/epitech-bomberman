@@ -5,6 +5,7 @@
 # include <Texture.hh>
 # include <Geometry.hh>
 # include <sstream>
+# include <Clock.hh>
 # include "ATransformation.hpp"
 
 # define FONT "assets/font.tga"
