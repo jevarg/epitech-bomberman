@@ -4,7 +4,7 @@
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input)
   : _save(), _type(), _texture(),
-    _gameInfo(clock, map, set, input)
+    _gameInfo(clock, map, set, input), _lights()
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -60,7 +60,8 @@ bool GameEngine::initialize()
   skybox->initialize();
   skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
 			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
-  skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
+  skybox->scale(glm::vec3(_mapX, 0.5, _mapY));
+  skybox->translate(glm::vec3(0.0, -0.25, 0.0));
   _obj.push_back(skybox);
 
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
@@ -73,6 +74,8 @@ bool GameEngine::initialize()
   items->addItem(SPEEDITEM, new SpeedItem(0, 0, _gameInfo));
   items->addItem(HEALTHITEM, new HealthItem(0, 0, _gameInfo));
 
+  _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
+			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
   Camera *all_cam[1] = { &_cam };
 
@@ -140,6 +143,9 @@ void GameEngine::draw()
   _shader.bind();
   _shader.setUniform("projection", _cam.getProjection());
   _shader.setUniform("view", _cam.getTransformation());
+  _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
+  for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
+    (*it)->render(_shader);
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _gameInfo.clock);
   v_Contcit end = _gameInfo.map.ContEnd();

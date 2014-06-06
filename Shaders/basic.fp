@@ -4,10 +4,9 @@ uniform	mat4 projection;
 uniform	mat4 view;
 uniform	mat4 model;
 
-/*uniform int nbLight;*/
-
 uniform sampler2D fTexture0;
 
+varying vec3 fPosition;
 varying vec4 fColor;
 varying vec3 fNormal;
 varying vec2 fUv;
@@ -15,14 +14,18 @@ varying vec4 fEyePos;
 
 struct Light
 {
+  int type;
   vec3	pos;
   vec3	color;
-  vec3	ambient;
   float	power;
-  float	d;
+
+  float C;
+  float L;
+  float E;
 };
 
-/* in Light light[nbLight]; */
+uniform int nbLight;
+uniform Light light[20];
 
 /* Fog Exp2 */
 float getFog(float z, float density)
@@ -32,11 +35,23 @@ float getFog(float z, float density)
 
 vec3 getLight(vec3 Color, vec3 Normal)
 {
-  vec3 l = vec3(0, 1.0, 0);
-  vec3 LightColor = vec3(1.0, 1.0, 1.0);
-  float LightPower = 0.5;
-  float d = 1;
-  return (Color * LightPower * LightColor * clamp(abs(dot(Normal, l)), 0.0, 1.0) / (d * d));
+  int i;
+  vec3 ret = vec3(1.0, 1.0, 1.0);
+
+  for (i = 0;i < nbLight;i++)
+    {
+      vec3 l = (view * vec4(light[i].pos.xyz, 1.0)).xyz + (vec3(0.0, 0.0, 0.0) - fEyePos.xyz);
+      float d = length(l);
+      l = normalize(l);
+      vec3 n = normalize(Normal);
+
+      vec3 fAmbient = vec3(0.1, 0.1, 0.1) * Color;
+      float fDiffuse = clamp(dot(n, l), 0, 1);
+      float fSpec = clamp(dot(normalize(fEyePos.xyz), reflect(-l, n)), 0,1);
+      ret *= fAmbient + (Color * light[i].color * light[i].power * fDiffuse)
+	+ (Color * light[i].color * light[i].power * pow(fSpec, 5));
+    }
+  return (ret);
 }
 
 void main(void)
