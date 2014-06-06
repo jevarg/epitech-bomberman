@@ -37,7 +37,7 @@ bool GameEngine::initialize()
   int	x;
   int	y;
 
-  _gameInfo.map.determineMapSize("bigmap", x, y);
+  _gameInfo.map.determineMapSize("map", x, y);
   _mapX = x;
   _mapY = y;
   _gameInfo.set.setVar(MAP_HEIGHT, y);
@@ -78,7 +78,7 @@ bool GameEngine::initialize()
 
   Camera *all_cam[1] = { &_cam };
 
-  _gameInfo.map.load("bigmap", _gameInfo);
+  _gameInfo.map.load("map", _gameInfo);
   spawn.setSpawnSize(_gameInfo.map.getWidth(), _gameInfo.map.getHeight());
   spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
@@ -117,6 +117,7 @@ bool		GameEngine::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set.getVar(FPS));
+  static int	frame= 0;
 
   mainInput();
   _gameInfo.condvar->broadcast();
@@ -131,6 +132,21 @@ bool		GameEngine::update()
       usleep((fps - time) * 1000);
     }
   _win.updateClock(_gameInfo.clock);
+  ++frame;
+  if (frame == 600)
+    {
+      if (_save.saveGame(_gameInfo.map, _gameInfo.set, "save") == false)
+	std::cout << "failed to save game" << std::endl;
+      else
+	std::cout << "game saved" << std::endl;
+    }
+  if (frame > 600 && frame % 600 == 0)
+    {
+      if (_save.loadGame(_gameInfo.map, _gameInfo.set, "save", _gameInfo) == false)
+	std::cout << "failed to load game" << std::endl;
+      else
+	std::cout << "loaded game successfully" << std::endl;
+    }
   return (true);
 }
 

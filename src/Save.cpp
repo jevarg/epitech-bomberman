@@ -109,11 +109,25 @@ bool		Save::loadGame(Map &map, Settings &settings,
   int		y;
   int		type;
 
+  
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     {
       std::cerr << "Error opening " << name << "\n";
       return (false);
     }
+  v_Contcit end = gameInfo.map.ContEnd();
+  for (v_Contcit it = gameInfo.map.ContBegin();it != end;it++)
+    {
+      AEntity *ent;
+      v_Entit its;
+      l_Entit itm;
+      while ((ent = (*it)->listFront()) != NULL)
+	ent->setDestroy();
+      while ((ent = (*it)->vecFront()) != NULL)
+	ent->setDestroy();
+    }
+  while (gameInfo.map.clearElements() != 0) {;}
+  gameInfo.map.createContainers();
   if (std::getline(file, buf))
     {
       if (this->decrypt(buf) == false)
@@ -158,6 +172,7 @@ bool		Save::loadGame(Map &map, Settings &settings,
 	  ++line;
 	}
     }
+  gameInfo.map.display();
   file.close();
   return (true);
 }
