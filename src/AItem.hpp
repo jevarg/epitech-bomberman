@@ -17,7 +17,7 @@ enum
 class AItem : public ALivingEntity
 {
 public:
-  AItem(int x, int y, eType type, t_gameinfo &gameInfo);
+  AItem(int x, int y, eType type, t_gameinfo &gameInfo, bool thread = true);
   virtual ~AItem() = 0;
 
   void	update();

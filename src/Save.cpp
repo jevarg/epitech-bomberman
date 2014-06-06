@@ -108,6 +108,7 @@ bool		Save::loadGame(Map &map, Settings &settings,
   int		x;
   int		y;
   int		type;
+  EntityFactory	*fact = EntityFactory::getInstance();
 
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     {
@@ -154,7 +155,7 @@ bool		Save::loadGame(Map &map, Settings &settings,
 	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
 	      return (false);
 	    }
-	  map.addEntity(new Entity(x, y, static_cast<eType>(type % (GROUND + 1)), gameInfo));
+	  map.addEntity(fact->getEntity(static_cast<eType>(type % (GROUND + 1)), x, y));
 	  ++line;
 	}
     }

@@ -3,8 +3,8 @@
 #include "Input.hpp"
 #include "ACharacter.hpp"
 
-ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, CHARACTER, gameInfo)
+ACharacter::ACharacter(int x, int y, eType type, t_gameinfo &gameInfo, bool thread)
+  : ALivingEntity(x, y, type, gameInfo, thread)
 /* handle the bomb type at creation */
 {
   _bombStock = 100;
@@ -14,7 +14,6 @@ ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
   _score = 0;
   _orient = NORTH;
   _anim = NOTHING;
-  _color = color;
   _x += 0.5;
   _y += 0.5;
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
@@ -46,7 +45,9 @@ bool	ACharacter::updatePosition(Map &map, eAction action, const gdl::Clock &cloc
 	  switch ((colisionType = map.checkMapColision(_x + dirX,
 						       _y + dirY)))
 	    {
-	    case CHARACTER:
+	    case CHARACTER1:
+	    case CHARACTER2:
+	    case BOT:
 	    case FREE:
 	    case SPEEDITEM:
 	    case HEALTHITEM:

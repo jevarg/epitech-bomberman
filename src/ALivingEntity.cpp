@@ -1,13 +1,14 @@
 #include "GameEngine.hpp"
 #include "ALivingEntity.hpp"
 
-ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
+ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo, bool thread) :
   AEntity(x, y, type, gameInfo)
 {
   _timeDeath = gameInfo.set.getVar(FPS) + 10; // need to overload considering the collector
   _isAlive = true;
-  if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
-    throw (Exception("Can't create thread"));
+  if (thread)
+    if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
+      throw (Exception("Can't create thread"));
 }
 
 ALivingEntity::~ALivingEntity()
@@ -58,7 +59,7 @@ void	ALivingEntity::aliveLoop()
       _gameInfo.mutex->unlock();
       if (_isAlive)
 	update();
-      else
+      else if (_type != CHARACTER1 &&_type != CHARACTER2)
 	{
 	  if ((_timeDeath =- 1) <= 0)
 	    destroy();

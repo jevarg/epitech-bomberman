@@ -2,8 +2,8 @@
 #include "GameEngine.hpp"
 #include "IA.hpp"
 
-IA::IA(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
-  : ACharacter(x, y, color, gameInfo), _lua()
+IA::IA(int x, int y, t_gameinfo &gameInfo, bool thread)
+  : ACharacter(x, y, BOT, gameInfo, thread), _lua()
 {
   _level = 2;
 }
@@ -14,20 +14,20 @@ IA::~IA()
 
 void	IA::update()
 {
-  int cnt = 0;
-  static double aggro[] = {4.0, 8.0, 12.0, 10.0};
-  double y = _y - aggro[_level - 1];
-  double x = _x - aggro[_level - 1];
+  // int cnt = 0;
+  // static double aggro[] = {4.0, 8.0, 12.0, 10.0};
+  // double y = _y - aggro[_level - 1];
+  // double x = _x - aggro[_level - 1];
 
-  pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1], _gameInfo);
-  if (cnt != 0)
-    {
-      int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
-      if (res == DROPBOMB)
-	dropBomb();
-      else
-	updatePosition(_gameInfo.map, static_cast<eAction>(res), _gameInfo.clock);
-    }
+  // pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1], _gameInfo);
+  // if (cnt != 0)
+  //   {
+  //     int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
+  //     if (res == DROPBOMB)
+  // 	dropBomb();
+  //     else
+  // 	updatePosition(_gameInfo.map, static_cast<eAction>(res), _gameInfo.clock);
+  //   }
 }
 
 void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
@@ -72,4 +72,9 @@ int	IA::getResultScript(int aggro, int orient)
   _lua.pushSetGlobal("arg");
   _lua.executeLua("ai/main.lua");
   return (_lua.getDatas());
+}
+
+AEntity *IA::clone(int x, int y)
+{
+  return (new IA(x, y, _gameInfo));
 }

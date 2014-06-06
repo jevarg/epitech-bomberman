@@ -13,3 +13,8 @@ Entity::~Entity()
 void	Entity::takeDamages(int)
 {
 }
+
+AEntity *Entity::clone(int x, int y)
+{
+  return (new Entity(x, y, _type, _gameInfo));
+}

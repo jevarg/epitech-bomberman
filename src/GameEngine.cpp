@@ -25,13 +25,15 @@ GameEngine::~GameEngine()
   //     delete _obj.back();
   //     _obj.pop_back();
   //   }
+  // _player1->destroy();
+  // _player2->destroy();
   _win.stop();
 }
 
 bool GameEngine::initialize()
 {
   ModelFactory &fact = ModelFactory::getInstance();
-  ItemFactory *items = ItemFactory::getInstance();
+  EntityFactory *ent = EntityFactory::getInstance();
   Cube *skybox;
   Spawn	spawn(_gameInfo.map);
   int	x;
@@ -54,7 +56,6 @@ bool GameEngine::initialize()
       || !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER)
       || !_textShader.build())
     return (false);
-  _cam.translate(glm::vec3(0, 5, 10));
 
   if (!_text.initialize())
     return (false);
@@ -71,17 +72,29 @@ bool GameEngine::initialize()
   fact.addModel(FLAME, new Cube(*skybox), FLAME_TEXTURE);
   fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
-  fact.addModel(CHARACTER, CHARACTER_MODEL);
+  fact.addModel(CHARACTER1, CHARACTER_MODEL);
+  fact.addModel(CHARACTER2, CHARACTER_MODEL);
+  fact.addModel(BOT, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
-  items->addItem(SPEEDITEM, new SpeedItem(0, 0, _gameInfo));
-  items->addItem(HEALTHITEM, new HealthItem(0, 0, _gameInfo));
-
-  Camera *all_cam[1] = { &_cam };
 
   _gameInfo.map.load("bigmap", _gameInfo);
   spawn.setSpawnSize(_gameInfo.map.getWidth(), _gameInfo.map.getHeight());
-  spawn.spawnEnt(1, 0, all_cam, _gameInfo);
   createDisplayBorder();
+
+  _player1 = new Player(0, 0, _gameInfo, CHARACTER1);
+  _player2 = new Player(0, 0, _gameInfo, CHARACTER2);
+
+  ent->addEntity(WALL, new Entity(0, 0, WALL, _gameInfo));
+  ent->addEntity(BOX, new Box(0, 0, _gameInfo));
+  ent->addEntity(BOMB, new Bomb(0, 0, NULL, _gameInfo, false));
+  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, _gameInfo, false));
+  ent->addEntity(CHARACTER1, _player1);
+  ent->addEntity(CHARACTER2, _player2);
+  ent->addEntity(BOT, new IA(0, 0, _gameInfo, false));
+  ent->addEntity(SPEEDITEM, new SpeedItem(0, 0, _gameInfo, false));
+  ent->addEntity(HEALTHITEM, new HealthItem(0, 0, _gameInfo, false));
+
+  spawn.spawnEnt(1, 0, _gameInfo);
   return (true);
 }
 
@@ -127,7 +140,6 @@ bool		GameEngine::update()
     {
       _text << round(_frames / _gameInfo.clock.getElapsed());
       _frames = 0;
-      //      std::cout << "USLEEP " << fps << " " << time << " " << (fps - time) * 1000 << std::endl;
       usleep((fps - time) * 1000);
     }
   _win.updateClock(_gameInfo.clock);
@@ -136,15 +148,13 @@ bool		GameEngine::update()
 
 void GameEngine::draw()
 {
-  glm::mat4 model = glm::transpose(glm::translate(glm::mat4(1.0f), _cam.getPosView()));
+  Camera &cam = _player1->getCam();
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  _cam.lookAt();
+  cam.lookAt();
   _shader.bind();
-  _shader.setUniform("projection", _cam.getProjection());
-  _shader.setUniform("view", _cam.getTransformation());
-  _shader.setUniform("model", model);
-  _shader.setUniform("inv_model", glm::inverse(model));
+  _shader.setUniform("projection", cam.getProjection());
+  _shader.setUniform("view", cam.getTransformation());
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
     (*it)->draw(_shader, _gameInfo.clock);
   v_Contcit end = _gameInfo.map.ContEnd();

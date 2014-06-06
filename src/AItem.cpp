@@ -1,8 +1,8 @@
 #include "GameEngine.hpp"
 #include "AItem.hpp"
 
-AItem::AItem(int x, int y, eType type, t_gameinfo &gameInfo) :
-  ALivingEntity(x, y, type, gameInfo)
+AItem::AItem(int x, int y, eType type, t_gameinfo &gameInfo, bool thread) :
+  ALivingEntity(x, y, type, gameInfo, thread)
 {
   _timeout = NO_TIMEOUT;
   _amount = 0;

@@ -30,25 +30,24 @@
 # include "Console.hpp"
 # include "Scopelock.hpp"
 # include "ModelFactory.hpp"
-# include "ItemFactory.hpp"
+# include "EntityFactory.hpp"
 # include "SpeedItem.hpp"
 # include "HealthItem.hpp"
 # include "Text.hpp"
 # include "Sound.hpp"
-
-# define CFPS 60.0f
-# define CFOV 60.0f
-# define DEF_SIZE_X 1600.0f
-# define DEF_SIZE_Y 900.0f
+# include "Flame.hpp"
+# include "Bomb.hpp"
+# include "Box.hpp"
+# include "IA.hpp"
 
 # define WALL_TEXTURE "./assets/wall.tga"
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
 # define FLAME_TEXTURE "./assets/flames.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
+
 # define HEALTHITEM_MODEL "./assets/health_item.fbx"
 # define SPEEDITEM_MODEL "./assets/speed_item.fbx"
-
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
 
@@ -88,7 +87,6 @@ private:
   gdl::BasicShader		_textShader;
   Save				_save;
   std::vector<IObject *>	_obj;
-  Camera			_cam;
   unsigned int			_mapX;
   unsigned int			_mapY;
   std::map<eType, IObject *>	_type;
@@ -99,6 +97,8 @@ private:
   Text				_text;
   bool				_shutdown;
   int				_frames;
+  Player			*_player1;
+  Player			*_player2;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

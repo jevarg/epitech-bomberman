@@ -18,20 +18,19 @@ Spawn::~Spawn()
 
 void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
 {
-  int	playerId;
+  EntityFactory	*fact = EntityFactory::getInstance();
 
   if (spawn.nbPlayer > spawn.nbIa)
     {
-      playerId = (!spawn.engine.gameInfo.map.hasPlayer() && spawn.nbPlayer == 1) ?
-	0 : spawn.nbPlayer;
-      _map.addEntity(new Player(x, y, spawn.engine.cam[0], glm::vec4(0.0),
-				spawn.engine.gameInfo, playerId));
+      if (!spawn.gameInfo.map.hasPlayer() && spawn.nbPlayer == 1)
+	_map.addEntity(fact->getEntity(CHARACTER1, x, y));
+      else
+	_map.addEntity(fact->getEntity(CHARACTER2, x, y));
       --spawn.nbPlayer;
     }
   else
     {
-      _map.addEntity(new IA(x, y, glm::vec4(0.0),
-			    spawn.engine.gameInfo));
+      _map.addEntity(fact->getEntity(BOT, x, y));
       --spawn.nbIa;
     }
 }
@@ -135,10 +134,9 @@ void	Spawn::initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const
   spawn.nbIa = nbIa;
 }
 
-void	Spawn::spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameInfo &gameInfo)
+void	Spawn::spawnEnt(int nbPlayer, int nbIa, t_gameInfo &gameInfo)
 {
-  t_engine	engine(cam, gameInfo);
-  t_spawn	spawn(engine);
+  t_spawn	spawn(gameInfo);
   int	x = 0;
   int	y = 0;
   int	pack;

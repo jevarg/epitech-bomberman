@@ -3,12 +3,13 @@
 #include "GameEngine.hpp"
 #include "Flame.hpp"
 
-ABomb::ABomb(int x, int y, ACharacter *character, t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, BOMB, gameInfo)
+ABomb::ABomb(int x, int y, ACharacter *character, t_gameinfo &gameInfo, bool thread)
+  : ALivingEntity(x, y, BOMB, gameInfo, thread)
 {
   _character = character;
   _timeout = 1 * gameInfo.set.getVar(FPS);
-  _gameInfo.sound.playSound("fuse");
+  if (thread)
+    _gameInfo.sound.playSound("fuse");
 }
 
 ABomb::~ABomb()

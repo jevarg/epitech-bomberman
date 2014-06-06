@@ -75,7 +75,7 @@ bool		Map::load(const std::string &name,
 	      addEntity(new Entity(x, y, WALL, gameInfo));
 	      break;
 	    case 'B':
-	      addEntity(new Box(x, y, BOX, gameInfo));
+	      addEntity(new Box(x, y, gameInfo));
 	      break;
 	    case ' ':
 	      break;
@@ -324,7 +324,7 @@ void	Map::fillContainers(t_gameinfo &_gameInfo)
 	  if (_map[i] == WALL)
 	    addEntity(new Entity(i % _mapX, i /_mapX, _map[i], _gameInfo));
 	  else
-	    addEntity(new Box(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	    addEntity(new Box(i % _mapX, i /_mapX, _gameInfo));
 	}
     }
   _map.clear();	// erase the temps vector

@@ -7,13 +7,13 @@
 class		IA : public ACharacter
 {
 public:
-  IA(int x, int y, glm::vec4 color,
-     t_gameinfo &gameInfo);
+  IA(int x, int y, t_gameinfo &gameInfo, bool thread = true);
   ~IA();
 
   void	update();
   void	pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo);
   int	getResultScript(int aggro, int orient);
+  AEntity *clone(int x, int y);
 
 private:
   LuaCommunication _lua;

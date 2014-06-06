@@ -28,7 +28,7 @@ enum	eAnim
 class	ACharacter : public ALivingEntity
 {
 public:
-  ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo);
+  ACharacter(int x, int y, eType type, t_gameinfo &gameInfo, bool thread = true);
   virtual ~ACharacter() = 0;
 
   virtual void	update() = 0;
@@ -53,7 +53,6 @@ public:
 
   void		destroy();
 protected:
-  glm::vec4	_color;
   int		_bombStock;
   ABomb		*_bomb;
   int		_health;

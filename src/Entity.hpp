@@ -11,6 +11,7 @@ public:
   virtual ~Entity();
 
   void	takeDamages(int amount);
+  AEntity *clone(int x, int y);
 };
 
 #endif /* _ENTITY_H_ */

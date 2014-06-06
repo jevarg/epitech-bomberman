@@ -5,7 +5,7 @@
 // Login   <fritsc_h@epitech.net>
 //
 // Started on  Tue May  6 21:55:22 2014 Harold Fritsch
-// Last update Thu May 22 13:20:20 2014 luc sinet
+// Last update Fri Jun  6 17:57:57 2014 
 //
 
 #ifndef SAVE_HPP_
@@ -16,6 +16,7 @@
 #include "Container.hpp"
 #include "Map.hpp"
 #include "Settings.hpp"
+#include "EntityFactory.hpp"
 
 class	GameEngine;
 

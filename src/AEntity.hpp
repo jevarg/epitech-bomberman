@@ -20,9 +20,12 @@ enum	eType
     ITEM,
     SPEEDITEM,
     HEALTHITEM,
-    CHARACTER,
+    CHARACTER1,
+    CHARACTER2,
+    BOT,
     GROUND,
-    UNKNOWNENTITY
+    UNKNOWNENTITY,
+    CHARACTER
   };
 
 class Map;
@@ -42,7 +45,7 @@ class		AEntity
 public:
   AEntity(t_gameinfo &gameInfo);
   AEntity(int x, int y, eType type, t_gameinfo &gameInfo);
-  virtual ~AEntity() = 0;
+  virtual ~AEntity();
 
   int		getXPos() const;
   int		getYPos() const;
@@ -58,7 +61,8 @@ public:
   virtual void	setDestroy();
   virtual void	destroy();
 
-  virtual void	takeDamages(int amount) = 0;
+  virtual void		takeDamages(int amount) = 0;
+  virtual AEntity	*clone(int x, int y) = 0;
 
 protected:
   float		_x;

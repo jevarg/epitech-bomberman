@@ -1,8 +1,8 @@
 #include "GameEngine.hpp"
 #include "Flame.hpp"
 
-Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo &gameInfo)
-  : ALivingEntity(x, y, FLAME, gameInfo)
+Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo &gameInfo, bool thread)
+  : ALivingEntity(x, y, FLAME, gameInfo, thread)
 {
   _power = power;
   _range = range;
@@ -81,4 +81,9 @@ void    Flame::setFire(int x, int y, eDir direction)
 void	Flame::hurtCharacter(ACharacter *character, int power)
 {
   character->takeDamages(power);
+}
+
+AEntity	*Flame::clone(int x, int y)
+{
+  return (new Flame(x, y, _power, _range, _direction, _gameInfo));
 }

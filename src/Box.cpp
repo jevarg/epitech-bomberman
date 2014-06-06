@@ -2,10 +2,9 @@
 #include "GameEngine.hpp"
 #include "Box.hpp"
 
-Box::Box(int x, int y, eType type, t_gameinfo &gameInfo)
-  : AEntity(x, y, type, gameInfo)
+Box::Box(int x, int y, t_gameinfo &gameInfo)
+  : AEntity(x, y, BOX, gameInfo)
 {
-  _facto = ItemFactory::getInstance();
 }
 
 Box::~Box()
@@ -75,6 +74,7 @@ void	Box::spawnItem(t_gameinfo &gameInfo)
   unsigned int	j = 0;
   unsigned int	i;
   int		randnum;
+  EntityFactory *facto = EntityFactory::getInstance();
 
   std::memset(objtab, -1, sizeof(objtab));
   randnum = std::rand() % 100;
@@ -101,5 +101,10 @@ void	Box::spawnItem(t_gameinfo &gameInfo)
 	}
       i = getMaxProb(objtab, objsize);
     }
-  gameInfo.map.addEntity(_facto->getItem(static_cast<eType>(SPEEDITEM + i), _x, _y));
+  gameInfo.map.addEntity(facto->getEntity(static_cast<eType>(SPEEDITEM + i), _x, _y));
+}
+
+AEntity *Box::clone(int x, int y)
+{
+  return (new Box(x, y, _gameInfo));
 }

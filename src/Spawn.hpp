@@ -8,19 +8,9 @@
 
 typedef struct s_gameinfo	t_gameInfo;
 
-typedef struct			s_engine
-{
-  s_engine(Camera **pcam, t_gameinfo &pgameInfo) :
-    cam(pcam), gameInfo(pgameInfo)
-  {
-  }
-  Camera			**cam;
-  t_gameinfo			&gameInfo;
-}				t_engine;
-
 typedef struct	s_spawn
 {
-  s_spawn(t_engine &pEngine) : engine(pEngine)
+  s_spawn(t_gameinfo &info) : gameInfo(info)
   {
   }
   double       	centerX;
@@ -34,7 +24,7 @@ typedef struct	s_spawn
   int		packSize;
   int		nbPlayer;
   int		nbIa;
-  t_engine	&engine;
+  t_gameinfo	&gameInfo;
 }		t_spawn;
 
 class Spawn
@@ -43,7 +33,7 @@ public:
   Spawn(Map &map);
   virtual ~Spawn();
 
-  void	spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameinfo &gameInfo);
+  void	spawnEnt(int nbPlayer, int nbIa, t_gameinfo &gameInfo);
   void	setSpawnSize(int sx, int sy);
 
 private:

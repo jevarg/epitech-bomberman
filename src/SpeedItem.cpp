@@ -1,8 +1,8 @@
 #include "GameEngine.hpp"
 #include "SpeedItem.hpp"
 
-SpeedItem::SpeedItem(int x, int y, t_gameinfo &gameInfo) :
-  AItem(x, y, SPEEDITEM, gameInfo)
+SpeedItem::SpeedItem(int x, int y, t_gameinfo &gameInfo, bool thread) :
+  AItem(x, y, SPEEDITEM, gameInfo, thread)
 {
   _amount = SPEED_AMOUNT;
 }
