@@ -33,7 +33,6 @@ bool	Player::checkInputSingle()
 	      _camera.translate(dir[i] * static_cast<float>
 				 (_speed * _gameInfo->clock->getElapsed()));
 	      ret = true;
-	      break ;
 	    }
 	}
     }

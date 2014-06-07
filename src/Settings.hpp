@@ -52,7 +52,8 @@ enum	cvar
     R_FULLSCREEN,
     R_MIPMAP,
     FIRESPEED,
-    FIRETIME
+    FIRETIME,
+    R_DEPTHVIEW
   };
 
 typedef	struct	s_cvar

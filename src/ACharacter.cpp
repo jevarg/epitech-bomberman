@@ -32,6 +32,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
   float		dirY;
   int		colisionType;
   float		movement;
+  bool		hasMoved = false;
 
   for (int i = 0; i < 4; ++i)
     {
@@ -58,15 +59,14 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);
 		  _anim = RUN;
 		}
-	      return (move(map, dirX, dirY));
+	      hasMoved = move(map, dirX, dirY);
 	      break;
 	    default:
 	      break;
 	    }
-	  break ;
 	}
     }
-  return (false);
+  return (hasMoved);
 }
 
 bool	ACharacter::move(Map *map, float dirX, float dirY)

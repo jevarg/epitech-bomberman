@@ -38,6 +38,7 @@ void		Flame::update()
 	continue ;
       if ((ent = _gameInfo->map->getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
 	{
+	  std::cout << "FLAME GET HIT" << std::endl;
 	  ent->takeDamages(_power);
 	  die();
 	  hit = true;
@@ -73,8 +74,7 @@ void		Flame::update()
 
 void    Flame::setFire(int x, int y, eDir direction)
 {
-  if (_gameInfo->map->getEntityIf(x, y, FLAME) == NULL)
-    _gameInfo->map->addEntity(new Flame(x, y, _power, _range - 1,
+  _gameInfo->map->addEntity(new Flame(x, y, _power, _range - 1,
 				      direction, _gameInfo));
 }
 
@@ -86,4 +86,14 @@ void	Flame::hurtCharacter(ACharacter *character, int power)
 AEntity	*Flame::clone(int x, int y)
 {
   return (new Flame(x, y, _power, _range, _direction, _gameInfo));
+}
+
+int	Flame::getRange() const
+{
+  return (_range);
+}
+
+eDir	Flame::getDirection() const
+{
+  return (_direction);
 }
