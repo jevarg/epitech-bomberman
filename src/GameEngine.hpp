@@ -30,7 +30,7 @@
 # include "Console.hpp"
 # include "Scopelock.hpp"
 # include "ModelFactory.hpp"
-# include "EntityFactory.hpp"
+# include "ItemFactory.hpp"
 # include "SpeedItem.hpp"
 # include "HealthItem.hpp"
 # include "Text.hpp"
