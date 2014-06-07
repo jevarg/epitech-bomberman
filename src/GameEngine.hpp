@@ -35,6 +35,7 @@
 # include "HealthItem.hpp"
 # include "Text.hpp"
 # include "Sound.hpp"
+# include "Light.hpp"
 
 # define CFPS 60.0f
 # define CFOV 60.0f
@@ -99,6 +100,7 @@ private:
   Text				_text;
   bool				_shutdown;
   int				_frames;
+  std::vector<Light*>		_lights;
 };
 
 #endif /* _GAMEENGINE_HPP_ */
