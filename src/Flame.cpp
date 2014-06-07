@@ -82,3 +82,18 @@ void	Flame::hurtCharacter(ACharacter *character, int power)
 {
   character->takeDamages(power);
 }
+
+AEntity	*Flame::clone(int x, int y)
+{
+  return (new Flame(x, y, _power, _range, _direction, _gameInfo));
+}
+
+int	Flame::getRange() const
+{
+  return (_range);
+}
+
+eDir	Flame::getDirection() const
+{
+  return (_direction);
+}
