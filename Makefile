@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat Jun  7 15:14:31 2014 Jean Gravier
+## Last update Fri Jun  6 17:49:19 2014 
 ##
 
 NAME		=	bomberman
@@ -50,7 +50,7 @@ SRC		=	main.cpp \
 			LuaCommunication.cpp \
 			Spawn.cpp \
 			ModelFactory.cpp \
-			ItemFactory.cpp \
+			EntityFactory.cpp \
 			Text.cpp \
 			Sound.cpp \
 			Light.cpp

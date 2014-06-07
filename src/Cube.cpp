@@ -3,18 +3,15 @@
 
 Cube::Cube(): IObject(), _texture(NULL), _geometry(NULL), _file("")
 {
-
 }
 
 Cube::Cube(const Cube &cpy)
   : IObject(), _texture(cpy._texture), _geometry(cpy._geometry), _file("")
 {
-
 }
 
 Cube::Cube(const std::string &file): IObject(), _texture(NULL), _geometry(NULL), _file(file)
 {
-
 }
 
 Cube::~Cube()
