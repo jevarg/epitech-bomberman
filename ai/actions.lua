@@ -10,9 +10,9 @@ function can_i_put_bomb(map_nb, x, y, block)
 	local gotox = {0, 0, -1, 1}
 	local gotoy = {-1, 1, 0, 0}
 
-	-- print("can i put bomb ?")
+	print("can i put bomb ?")
 	map_nb = fill_dangerous_fields(map_nb)
-	-- display_map(map_nb)
+	display_map(map_nb)
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[1] == 0) then
 			if (y - i < 1 or authorized_put_bomb(map_nb[y - 1][x]) == 1) then block[1] = 1
@@ -72,11 +72,11 @@ function run_out_danger(map_nb, x, y, block)
 	local gotoy = {-1, 1, 0, 0}
 
 
-	-- print("run out danger", x, y)
+	print("run out danger", x, y)
 	if (arg["bomb"] == 1) then map_nb[y][x] = "O" end
 	map_nb = fill_dangerous_fields(map_nb)
 
-	-- display_map(map_nb)
+	display_map(map_nb)
 
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[1] == 0) then

@@ -47,6 +47,9 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 	    {
 	      if (type == BOMB)
 	      	_lua.pushStringInt("bomb", 1);
+	      // else if (type == FLAMME)
+	      // 	{
+	      // 	}
 	      else if (gameInfo.map.getEntityIf(j, i, BOMB) != NULL)
 	      	_lua.pushStringInt("bomb", 1);
 	      else
