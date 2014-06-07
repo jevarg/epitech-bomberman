@@ -9,7 +9,7 @@
 #include "GameEngine.hpp"
 #include "Save.hpp"
 #include "Container.hpp"
- #include "Settings.hpp"
+#include "Settings.hpp"
 
  Save::Save()
  {
@@ -100,7 +100,7 @@
 }
 
 bool		Save::loadGame(Map &map, Settings &settings,
-			       const std::string &name, t_gameinfo &gameInfo)
+			       const std::string &name)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;

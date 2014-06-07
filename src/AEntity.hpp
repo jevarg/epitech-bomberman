@@ -43,8 +43,8 @@ typedef struct	s_entity
 class		AEntity
 {
 public:
-  AEntity(t_gameinfo &gameInfo);
-  AEntity(int x, int y, eType type, t_gameinfo &gameInfo);
+  AEntity(t_gameinfo *gameInfo);
+  AEntity(int x, int y, eType type, t_gameinfo *gameInfo);
   virtual ~AEntity();
 
   int		getXPos() const;
@@ -68,7 +68,7 @@ protected:
   float		_x;
   float		_y;
   eType		_type;
-  t_gameinfo	&_gameInfo;
+  t_gameinfo	*_gameInfo;
   Mutex		*_mutex;
   bool		_toDestroy;
   int		_timeDeath;

@@ -7,11 +7,11 @@
 class		IA : public ACharacter
 {
 public:
-  IA(int x, int y, t_gameinfo &gameInfo, bool thread = true);
+  IA(int x, int y, t_gameinfo *gameInfo, bool thread = true);
   ~IA();
 
   void	update();
-  void	pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo);
+  void	pushEntitie(int x, int y, int *cnt, int aggro);
   int	getResultScript(int aggro, int orient);
   AEntity *clone(int x, int y);
 

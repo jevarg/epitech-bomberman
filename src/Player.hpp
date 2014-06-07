@@ -7,7 +7,7 @@
 class		Player : public ACharacter
 {
 public:
-  Player(int x, int y, t_gameinfo &gameInfo, eType type, bool thread = true);
+  Player(int x, int y, t_gameinfo *gameInfo, eType type, bool thread = true);
   virtual ~Player();
   bool	checkInput();
   bool	checkInputSingle();

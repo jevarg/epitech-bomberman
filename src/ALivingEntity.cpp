@@ -1,10 +1,10 @@
 #include "GameEngine.hpp"
 #include "ALivingEntity.hpp"
 
-ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo, bool thread) :
+ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo *gameInfo, bool thread) :
   AEntity(x, y, type, gameInfo)
 {
-  _timeDeath = gameInfo.set.getVar(FPS) + 10; // need to overload considering the collector
+  _timeDeath = gameInfo->set->getVar(FPS) + 10; // need to overload considering the collector
   _isAlive = true;
   if (thread)
     if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
@@ -34,7 +34,7 @@ bool	ALivingEntity::die()
     return (false);    		// all the containers
   _isAlive = false;
   _toDestroy = false;		// AEntitiy equivalent
-  _gameInfo.map.removeEntityByPtr(this);
+  _gameInfo->map->removeEntityByPtr(this);
   return (true);
 }
 
@@ -54,9 +54,9 @@ void	ALivingEntity::aliveLoop()
 {
   while (1)
     {
-      _gameInfo.mutex->lock();
-      _gameInfo.condvar->wait(_gameInfo.mutex->getMutexPtr());
-      _gameInfo.mutex->unlock();
+      _gameInfo->mutex->lock();
+      _gameInfo->condvar->wait(_gameInfo->mutex->getMutexPtr());
+      _gameInfo->mutex->unlock();
       if (_isAlive)
 	update();
       else if (_type != CHARACTER1 &&_type != CHARACTER2)
@@ -74,6 +74,6 @@ bool	ALivingEntity::isAlive() const
 
 void	ALivingEntity::takeDamages(int /*amount*/)
 {
-  _gameInfo.sound.playSound("hurt");
+  _gameInfo->sound->playSound("hurt");
   die();
 }

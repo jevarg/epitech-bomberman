@@ -2,10 +2,10 @@
 #include "GameEngine.hpp"
 #include "Spawn.hpp"
 
-Spawn::Spawn(Map &map) : _map(map)
+Spawn::Spawn(Map *map) : _map(map)
 {
-  _mapX = map.getWidth();
-  _mapY = map.getHeight();
+  _mapX = map->getWidth();
+  _mapY = map->getHeight();
 }
 
 Spawn::~Spawn()
@@ -22,15 +22,15 @@ void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
 
   if (spawn.nbPlayer > spawn.nbIa)
     {
-      if (!spawn.gameInfo.map.hasPlayer() && spawn.nbPlayer == 1)
-	_map.addEntity(fact->getEntity(CHARACTER1, x, y));
+      if (!spawn.gameInfo.map->hasPlayer() && spawn.nbPlayer == 1)
+	_map->addEntity(fact->getEntity(CHARACTER1, x, y));
       else
-	_map.addEntity(fact->getEntity(CHARACTER2, x, y));
+	_map->addEntity(fact->getEntity(CHARACTER2, x, y));
       --spawn.nbPlayer;
     }
   else
     {
-      _map.addEntity(fact->getEntity(BOT, x, y));
+      _map->addEntity(fact->getEntity(BOT, x, y));
       --spawn.nbIa;
     }
 }
@@ -46,7 +46,7 @@ bool	Spawn::putPlayer(int x, int y, t_spawn &spawn)
   int	maxside = (_mapX > _mapY) ? _mapX : _mapY;
 
   while (((tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1) ||
-	  (stype = _map.checkMapColision(tx, ty)) != FREE) && radius < maxside)
+	  (stype = _map->checkMapColision(tx, ty)) != FREE) && radius < maxside)
     {
       tx = x - (radius + 1);
       ty = y + (radius + 1);
@@ -57,7 +57,7 @@ bool	Spawn::putPlayer(int x, int y, t_spawn &spawn)
 	{
 	  if (!(tx <= 0 || tx >= _mapX - 1 || ty <= 0 || ty >= _mapX - 1))
 	    {
-	      if (_map.checkMapColision(tx, ty) == FREE)
+	      if (_map->checkMapColision(tx, ty) == FREE)
 		break ;
 	    }
 	  tx += dirX;

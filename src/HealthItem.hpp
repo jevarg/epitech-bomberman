@@ -6,7 +6,7 @@
 class HealthItem : public AItem
 {
 public:
-  HealthItem(int x, int y, t_gameinfo &gameInfo, bool thread = true);
+  HealthItem(int x, int y, t_gameinfo *gameInfo, bool thread = true);
   virtual ~HealthItem();
 
   void	setAttr(ACharacter *ch) const;

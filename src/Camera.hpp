@@ -9,7 +9,7 @@ class Input;
 class Camera
 {
 public:
-  Camera(t_gameinfo &gameInfo);
+  Camera(t_gameinfo *gameInfo);
   ~Camera();
 
   void lookAt();

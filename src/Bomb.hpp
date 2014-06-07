@@ -8,7 +8,7 @@
 class		Bomb: public ABomb
 {
 public:
-  Bomb(int x, int y, ACharacter *character, t_gameinfo &gameInfo, bool thread = true);
+  Bomb(int x, int y, ACharacter *character, t_gameinfo *gameInfo, bool thread = true);
   virtual ~Bomb();
   AEntity *clone(int x, int y);
 

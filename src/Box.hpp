@@ -15,11 +15,11 @@ enum
 class	Box : public AEntity
 {
 public:
-  Box(int x, int y, t_gameinfo &gameInfo);
+  Box(int x, int y, t_gameinfo *gameInfo);
   ~Box();
 
   void	takeDamages(int amount);
-  void	spawnItem(t_gameinfo &gameInfo);
+  void	spawnItem();
   AEntity *clone(int x, int y);
 
 private:
