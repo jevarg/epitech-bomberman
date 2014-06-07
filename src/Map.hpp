@@ -51,6 +51,8 @@ public:
   v_Contcit	ContEnd() const;
   bool		determineMapSize(const std::string &, int &, int &);
 
+  const std::vector<Container *>	&getCont() const;
+
 private:
   void	genSmallMaze(short x, short y, short dir);
   void	genBigMaze();

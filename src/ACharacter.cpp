@@ -39,6 +39,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
       if (tab[i] == action)
 	{
 	  movement = clock->getElapsed() * static_cast<float>(_speed);
+	  movement = (movement > 1) ? 1 : movement;
 	  dirX = ((i >= 2) ? ((action == LEFT) ? -movement : movement) : 0);
 	  dirY = ((i < 2) ? ((action == FORWARD) ? -movement : movement) : 0);
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * tabdir[i] - 90.0 * _orient);

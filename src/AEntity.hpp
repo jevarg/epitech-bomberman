@@ -50,13 +50,14 @@ public:
   int		getXPos() const;
   int		getYPos() const;
   eType		getType() const;
+  IObject	*getModel() const;
   void		setXPos(const int &x);
   void		setYPos(const int &y);
   void		setType(const eType &type);
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
   int		getDeathTime() const;
-  void		decTimeDeath();
+   void		decTimeDeath();
   void		setDestroyAttr();
 
   virtual void	setDestroy();

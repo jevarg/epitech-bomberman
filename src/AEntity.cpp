@@ -95,3 +95,8 @@ void	AEntity::destroy()
   delete (_mutex);
   delete (this);
 }
+
+IObject *AEntity::getModel() const
+{
+  return (_model);
+}

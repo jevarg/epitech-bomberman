@@ -34,6 +34,7 @@
 # include "SpeedItem.hpp"
 # include "HealthItem.hpp"
 # include "Text.hpp"
+# include "Light.hpp"
 # include "Sound.hpp"
 # include "Flame.hpp"
 # include "Bomb.hpp"
@@ -77,8 +78,6 @@ public:
   virtual void	draw();
 
 private:
-  void	createDisplayMap();
-  void	createDisplayBorder();
   void	mainInput();
   int	clearElements();
 
@@ -86,17 +85,17 @@ private:
   gdl::BasicShader		_shader;
   gdl::BasicShader		_textShader;
   Save				_save;
-  std::vector<IObject *>	_obj;
+  Cube				*_ground;
   unsigned int			_mapX;
   unsigned int			_mapY;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
-  Model				*_model;
   Player			*_player;
   t_gameinfo			_gameInfo;
   Text				_text;
   bool				_shutdown;
   int				_frames;
+  std::vector<Light*>		_lights;
   Player			*_player1;
   Player			*_player2;
 };

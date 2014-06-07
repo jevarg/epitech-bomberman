@@ -4,7 +4,7 @@
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound)
   : _save(), _type(), _texture(),
-    _gameInfo(&clock, &map, &set, &input, &sound)
+    _gameInfo(&clock, &map, &set, &input, &sound), _lights()
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -20,11 +20,6 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input,
 
 GameEngine::~GameEngine()
 {
-  // while (_obj.size())
-  //   {
-  //     delete _obj.back();
-  //     _obj.pop_back();
-  //   }
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
   _win.stop();
@@ -34,22 +29,20 @@ bool GameEngine::initialize()
 {
   ModelFactory &fact = ModelFactory::getInstance();
   EntityFactory *ent = EntityFactory::getInstance();
-  Cube *skybox;
   Spawn	spawn(_gameInfo.map);
-  int	x;
-  int	y;
 
-  _gameInfo.map->determineMapSize("bigmap", x, y);
+  // _gameInfo.map->determineMapSize("bigmap", x, y);
   // _gameInfo.set->setVar(MAP_WIDTH, x);
   // _gameInfo.set->setVar(MAP_HEIGHT, y);
-  _mapX = _gameInfo.set->getVar(MAP_WIDTH);
-  _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
-  _gameInfo.set->setVar(MAP_HEIGHT, _mapX);
-  _gameInfo.set->setVar(MAP_WIDTH, _mapY);
+  _mapX = _gameInfo.set->getVar(MAP_HEIGHT);
+  _mapY = _gameInfo.set->getVar(MAP_WIDTH);
+
   if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
 		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
@@ -62,16 +55,15 @@ bool GameEngine::initialize()
   if (!_text.initialize())
     return (false);
 
-  skybox = new Cube(WALL_TEXTURE);
-  skybox->initialize();
-  skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
-			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
-  skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
-  _obj.push_back(skybox);
+  _ground = new Cube(WALL_TEXTURE);
+  _ground->initialize();
+  // _ground->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
+  // 			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
+  _ground->scale(glm::vec3(((_mapX < 10) ? _mapX : 10), 1, ((_mapY < 10) ? _mapY : 10)));
 
-  fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
-  fact.addModel(BOX, new Cube(*skybox), BOX_TEXTURE);
-  fact.addModel(FLAME, new Cube(*skybox), FLAME_TEXTURE);
+  fact.addModel(WALL, new Cube(*_ground), WALL_TEXTURE);
+  fact.addModel(BOX, new Cube(*_ground), BOX_TEXTURE);
+  fact.addModel(FLAME, new Cube(*_ground), FLAME_TEXTURE);
   fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
@@ -79,10 +71,12 @@ bool GameEngine::initialize()
   fact.addModel(BOT, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
-  // _gameInfo.map->load("bigmap", _gameInfo);
+  _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
+			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
+
   _gameInfo.map->createMap(_gameInfo);
-  //  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
-  createDisplayBorder();
+  // _gameInfo.map->load("bigmap", _gameInfo);
+  // spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
@@ -157,51 +151,48 @@ bool		GameEngine::update()
 
 void GameEngine::draw()
 {
+  int x = _player1->getXPos(), y = _player1->getYPos(), mapx = _mapX, mapy = _mapY;
   Camera &cam = _player1->getCam();
+  const std::vector<Container *>	&cont = _gameInfo.map->getCont();
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   cam.lookAt();
   _shader.bind();
   _shader.setUniform("projection", cam.getProjection());
   _shader.setUniform("view", cam.getTransformation());
-  for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
-    (*it)->draw(_shader, *_gameInfo.clock);
-  v_Contcit end = _gameInfo.map->ContEnd();
-  for (v_Contcit it = _gameInfo.map->ContBegin();it != end;it++)
-    {
-      Mutex *mutex = (*it)->getMutex();
-      Scopelock	<Mutex>sc(*mutex);
-      v_Entcit end_vector = (*it)->vecEnd();
-      l_Entcit end_list = (*it)->listEnd();
-      for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)
-	(*it1)->draw(_shader, *_gameInfo.clock);
-      for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->draw(_shader, *_gameInfo.clock);
-    }
+  _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
+  for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
+    (*it)->render(_shader);
+  int j = (y > 5) ? y - 5 : 0;
+
+  float groundX = x - 0.5, groundY = y - 0.5;
+
+  if (x + 5 >= mapx)
+    groundX -= (x + 5 - mapx);
+  else if (x - 5 <= 0)
+    groundX += -(x - 5);
+
+  if (y + 5 >= mapy)
+    groundY -= (y + 5 - mapy);
+  else if (y - 5 <= 0)
+    groundY += -(y - 5);
+
+  _ground->setPos(glm::vec3(groundX, -1, groundY));
+  _ground->draw(_shader, *_gameInfo.clock);
+  for (;j <= y + 5 && j < mapy;j++)
+    for (int i = (x > 5) ? x - 5 : 0;i < x + 5 && i < mapx;i++)
+      {
+	AEntity *tmp = _gameInfo.map->getEntity(i, j);
+	if (tmp != NULL)
+	  {
+	    if (tmp->getType() == WALL)
+	      tmp->getModel()->setPos(glm::vec3(i, 0.0, j));
+	    tmp->draw(_shader, *_gameInfo.clock);
+	  }
+      }
   _textShader.bind();
   _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
   _textShader.setUniform("view", glm::mat4(1));
   _text.draw(_textShader, *_gameInfo.clock);
   _win.flush();
-}
-
-void GameEngine::createDisplayBorder()
-{
-  unsigned int	i;
-  ModelFactory &fact = ModelFactory::getInstance();
-
-  for (i = 0; i < _mapX; ++i)
-    {
-      _obj.push_back(fact.getModel(WALL));
-      _obj.back()->translate(glm::vec3(i, 0.0, 0));
-      _obj.push_back(fact.getModel(WALL));
-      _obj.back()->translate(glm::vec3(i, 0.0, (_mapY - 1)));
-    }
-  for (i = 1; i < (_mapY - 1); ++i)
-    {
-      _obj.push_back(fact.getModel(WALL));
-      _obj.back()->translate(glm::vec3((_mapX - 1), 0.0, i));
-      _obj.push_back(fact.getModel(WALL));
-      _obj.back()->translate(glm::vec3(0, 0.0, i));
-    }
 }

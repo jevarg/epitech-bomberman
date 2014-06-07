@@ -24,6 +24,11 @@ void ATransformation::scale(glm::vec3 const& scale)
   _scale *= scale;
 }
 
+void ATransformation::setPos(glm::vec3 const& pos)
+{
+  _position = pos;
+}
+
 const glm::vec3 &ATransformation::getPos() const
 {
   return (_position);
@@ -34,9 +39,13 @@ const glm::mat4 ATransformation::getTransformation() const
   glm::mat4 transform(1);
 
   transform = glm::translate(transform, _position);
-  transform = glm::rotate(transform, _rotation.x, glm::vec3(1, 0, 0));
-  transform = glm::rotate(transform, _rotation.y, glm::vec3(0, 1, 0));
-  transform = glm::rotate(transform, _rotation.z, glm::vec3(0, 0, 1));
-  transform = glm::scale(transform, _scale);
+  if (_rotation.x)
+    transform = glm::rotate(transform, _rotation.x, glm::vec3(1, 0, 0));
+  if (_rotation.y)
+    transform = glm::rotate(transform, _rotation.y, glm::vec3(0, 1, 0));
+  if ( _rotation.z)
+    transform = glm::rotate(transform, _rotation.z, glm::vec3(0, 0, 1));
+  if (_scale != glm::vec3(1.0, 1.0, 1.0))
+    transform = glm::scale(transform, _scale);
   return (transform);
 }
