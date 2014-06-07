@@ -131,18 +131,23 @@ bool		GameEngine::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
+  static double	elapsedTime = 0;
 
   mainInput();
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
     return (false);
   _frames++;
-  if ((time = _gameInfo.clock->getElapsed()) < fps)
+  time = _gameInfo.clock->getElapsed();
+  elapsedTime += time;
+  if (elapsedTime > 0.1)
     {
-      _text << round(_frames / _gameInfo.clock->getElapsed());
+      _text << round(_frames / elapsedTime);
       _frames = 0;
-      usleep((fps - time) * 1000);
+      elapsedTime = 0;
     }
+  if (time < fps)
+    usleep((fps - time) * 1000);
   _win.updateClock(*_gameInfo.clock);
   return (true);
 }
