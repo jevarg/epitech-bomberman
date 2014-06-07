@@ -19,12 +19,7 @@ void	IA::update()
   double y = _y - aggro[_level - 1];
   double x = _x - aggro[_level - 1];
 
-<<<<<<< HEAD
   pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1]);
-=======
-  pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1], _gameInfo);
-  std::cout << "APPEL AU LUA" << std::endl;
->>>>>>> parent of 0f01e83... delte prints
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));

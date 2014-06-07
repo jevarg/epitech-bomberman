@@ -59,12 +59,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);
 		  _anim = RUN;
 		}
-<<<<<<< HEAD
 	      hasMoved = move(map, dirX, dirY);
-=======
-	      std::cout << "CAN MOVE" << std::endl;
-	      return (move(map, dirX, dirY));
->>>>>>> parent of 0f01e83... delte prints
 	      break;
 	    default:
 	      break;
