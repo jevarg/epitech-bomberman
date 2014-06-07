@@ -40,10 +40,12 @@ bool GameEngine::initialize()
   int	y;
 
   _gameInfo.map->determineMapSize("bigmap", x, y);
-  _mapX = x;
-  _mapY = y;
-  _gameInfo.set->setVar(MAP_HEIGHT, y);
-  _gameInfo.set->setVar(MAP_WIDTH, x);
+  // _gameInfo.set->setVar(MAP_WIDTH, x);
+  // _gameInfo.set->setVar(MAP_HEIGHT, y);
+  _mapX = _gameInfo.set->getVar(MAP_WIDTH);
+  _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
+  _gameInfo.set->setVar(MAP_HEIGHT, _mapX);
+  _gameInfo.set->setVar(MAP_WIDTH, _mapY);
   if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
 		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
@@ -77,8 +79,9 @@ bool GameEngine::initialize()
   fact.addModel(BOT, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
-  _gameInfo.map->load("bigmap", _gameInfo);
-  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
+  // _gameInfo.map->load("bigmap", _gameInfo);
+  _gameInfo.map->createMap(_gameInfo);
+  //  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
   createDisplayBorder();
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
