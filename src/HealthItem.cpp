@@ -1,7 +1,8 @@
+#include "GameEngine.hpp"
 #include "HealthItem.hpp"
 
-HealthItem::HealthItem(int x, int y, t_gameinfo &gameInfo) :
-  AItem(x, y, HEALTHITEM, gameInfo)
+HealthItem::HealthItem(int x, int y, t_gameinfo *gameInfo, bool thread) :
+  AItem(x, y, HEALTHITEM, gameInfo, thread)
 {
   _amount = HEALTH_AMOUNT;
 }
@@ -14,6 +15,7 @@ void	HealthItem::setAttr(ACharacter *ch) const
 {
   if (ch->getHealth() < HEALTH_MAX)
     ch->setHealth(ch->getHealth() + _amount);
+  _gameInfo->sound->playSound("eat");
 }
 
 AItem	*HealthItem::clone(int x, int y)

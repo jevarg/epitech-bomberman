@@ -23,7 +23,7 @@ Settings::Settings()
   _cvarList.push_back(new t_cvar ("r_mipmap", 0, 1, 1));
   _cvarList.push_back(new t_cvar ("s_fireSpeed", 0, 100000, 10));
   _cvarList.push_back(new t_cvar ("s_fireTime", 0, 1000000, 10));
-  initCvar();
+  _cvarList.push_back(new t_cvar ("r_depthView", 5, 100, 10));
 
   _speKeys["CAPSLOCK"] = SDLK_CAPSLOCK;
   _speKeys["SPACE"] = SDLK_SPACE;
@@ -79,6 +79,8 @@ Settings::Settings()
   _speKeys["KP_INSERT"] = SDLK_INSERT;
   _speKeys["KP_INSERT"] = SDLK_INSERT;
   _speKeys["KP_INSERT"] = SDLK_INSERT;
+
+  initCvar();
 }
 
 Settings::~Settings()

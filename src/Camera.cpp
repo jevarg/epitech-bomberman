@@ -2,9 +2,12 @@
 #include "Input.hpp"
 #include "Camera.hpp"
 
-Camera::Camera(): _pos(0.0, 0.0, 0.0), _pos_view(0.0, 0.0, 1.0), _dir(0.0, 1.0, 0.0)
+Camera::Camera(t_gameinfo *gameinfo): _pos(0.0, 0.0, 0.0), _pos_view(0.0, 0.0, 1.0), _dir(0.0, 1.0, 0.0)
 {
-  _projection = glm::perspective(CFOV, DEF_SIZE_X / DEF_SIZE_Y, 0.1f, 1000.0f);
+  _projection = glm::perspective(static_cast<float>(gameinfo->set->getVar(FOV)),
+				 static_cast<float>(gameinfo->set->getVar(W_WIDTH))
+				 / static_cast<float>(gameinfo->set->getVar(W_HEIGHT)),
+				 0.1f, 100.0f);
 }
 
 

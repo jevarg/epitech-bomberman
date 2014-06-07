@@ -19,16 +19,21 @@ function check_item_dir(map, cur_x, cur_y, w, cond)
 end
 
 function check_elem_at(map, cur_x, cur_y, w, n)
-	if (cur_x + n ~= MAP_XMAX + n and map[cur_y][cur_x + n] == w) then return ENUM_ACTION["right"] end
 	if (cur_x - n ~= 0 and map[cur_y][cur_x - n] == w) then return ENUM_ACTION["left"] end
-	if (cur_y + n ~= MAP_YMAX + n and map[cur_y + n][cur_x] == w) then return ENUM_ACTION["back"] end
 	if (cur_y - n ~= 0 and map[cur_y - n][cur_x] == w) then return ENUM_ACTION["forward"] end
+	if (cur_x + n ~= MAP_XMAX + n and map[cur_y][cur_x + n] == w) then return ENUM_ACTION["right"] end
+	if (cur_y + n ~= MAP_YMAX + n and map[cur_y + n][cur_x] == w) then return ENUM_ACTION["back"] end
 	return -1
 end
 
 function take_decision(map, map_nb, entities)
-	if (arg["bomb"] == 1) then
-		local cur_x, cur_y = random_movement(map)
+	if (arg["bomb"] == 1 or
+		check_elem_at(map_nb, X, Y, "D", 1) ~= -1 or
+		check_elem_at(map_nb, X, Y, "O", 1) ~= -1)
+	then
+		if (arg["bomb"] == 1) then map[Y][X] = "O" end
+		local block = {0, 0, 0, 0}
+		local cur_x, cur_y = run_out_danger(map_nb, X, Y, block)
 		return determine_way(map, cur_x, cur_y)
 	else
 		local item = check_elem_at(map_nb, X, Y, "I", 1)
@@ -47,13 +52,22 @@ function artificial_intelligence()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
 	fill_dangerous_fields(map_nb)
-	display_map(map_nb)
-	return take_decision(map, map_nb, entities)
+	local action = take_decision(map, map_nb, entities)
+	if (action == ENUM_ACTION["bomb"]) then
+		local block = {0, 0, 0, 0}
+		local cur_x, cur_y = can_i_put_bomb(map_nb, X, Y, block)
+		if (cur_x ~= X or cur_y ~= Y) then
+			return action
+		else
+			cur_x, cur_y = random_movement(map)
+			return determine_way(map, cur_x, cur_y)
+		end
+	end
+	return action
 end
 
 X, Y = arg["x"], arg["y"]
 BOMB_RANGE = arg["bomb_range"]
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
-print("for player in ", X, Y)
 return artificial_intelligence()

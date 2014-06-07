@@ -2,7 +2,6 @@
 # define _ALIVINGENTITY_H_
 
 # include "AEntity.hpp"
-# include "Mutex.hpp"
 # include "Condvar.hpp"
 # include "Input.hpp"
 # include "Settings.hpp"
@@ -12,7 +11,7 @@ typedef struct s_gameinfo	t_gameinfo;
 class ALivingEntity : public AEntity
 {
 public:
-  ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo);
+  ALivingEntity(int x, int y, eType type, t_gameinfo *gameInfo, bool thread = true);
   virtual ~ALivingEntity() = 0;
 
   void		aliveLoop();
@@ -20,14 +19,13 @@ public:
   bool		isAlive() const;
 
   virtual void	update() = 0;
-  virtual void	die();
+  virtual bool	die();
   virtual void 	destroy();
   virtual void	takeDamages(int amount);
   void		setDestroy();
 
 protected:
   pthread_t	_thread;
-  Mutex		*_mutex;
   bool		_isAlive;
 };
 

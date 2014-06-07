@@ -35,7 +35,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(Settings &settings, const std::string &name,
+bool		Map::load(const std::string &name,
 			  t_gameinfo &gameInfo)
 {
   std::ifstream	file(name.c_str());
@@ -47,8 +47,15 @@ bool		Map::load(Settings &settings, const std::string &name,
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     {
       std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
+      throw(Exception("Couldn't load map."));
       return (false);
     }
+  // if (determineMapSize(name, x, y) == false)
+  //   return (false);
+  _mapX = gameInfo.set->getVar(MAP_WIDTH);
+  _mapY = gameInfo.set->getVar(MAP_HEIGHT);
+  createContainers();
+  addEntity(new Entity(0, 0, WALL, &gameInfo));
   while (std::getline(file, buf))
     {
       x = 0;
@@ -57,7 +64,7 @@ bool		Map::load(Settings &settings, const std::string &name,
       else
 	if (len != buf.length())
 	  {
-	    std::cerr << "Error while loading map on line : " << y << std::endl;
+	    std::cerr << "Error while loading map on line : " << y + 1 << std::endl;
 	    return (false);
 	  }
       for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
@@ -65,24 +72,59 @@ bool		Map::load(Settings &settings, const std::string &name,
 	  switch (*it)
 	    {
 	    case 'W':
-	      addEntity(new Entity(x, y, WALL, gameInfo));
+	      addEntity(new Entity(x, y, WALL, &gameInfo));
 	      break;
 	    case 'B':
-	      addEntity(new Box(x, y, BOX, gameInfo));
+	      addEntity(new Box(x, y, &gameInfo));
 	      break;
 	    case ' ':
 	      break;
 	    default:
-	      std::cerr << "Error while loading map on line : " << y
+	      std::cerr << "Error while loading map on line : " << y + 1
 			<< " column : " << x << std::endl;
+	      throw(Exception("Couldn't load map."));
 	      return (false);
 	    }
 	  ++x;
 	}
       ++y;
     }
-  settings.setVar(MAP_HEIGHT, y);
-  settings.setVar(MAP_WIDTH, x);
+  gameInfo.set->setVar(MAP_HEIGHT, y);
+  gameInfo.set->setVar(MAP_WIDTH, x);
+  display();
+  file.close();
+  return (true);
+}
+
+bool		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
+{
+  std::ifstream	file(name.c_str());
+  std::string	buf;
+  unsigned int	len = 0;
+  int		y = 0;
+
+  if ((file.rdstate() && std::ifstream::failbit) != 0)
+    {
+      std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
+      throw(Exception("Couldn't load map."));
+      return (false);
+    }
+  while (std::getline(file, buf))
+    {
+      if (len == 0)
+	len = buf.length();
+      else
+	if (len != buf.length())
+	  {
+	    std::cerr << "Error while loading map on line : " << y << std::endl;
+	    throw(Exception("Couldn't load map."));
+	    return (false);
+	  }
+      ++y;
+    }
+  sizeX = len;
+  sizeY = y;
+  file.close();
   return (true);
 }
 
@@ -91,6 +133,12 @@ bool		Map::save(const std::string &name)
   std::ofstream	file(name.c_str());
   std::string	buf;
 
+  if ((file.rdstate() && std::ifstream::failbit) != 0)
+    {
+      std::cerr << "Error while saving map, couldn't open : " << name << std::endl;
+      throw(Exception("Couldn't save map."));
+      return (false);
+    }
   for (int y = 0; y < _mapY; ++y)
     {
       buf = "";
@@ -110,6 +158,7 @@ bool		Map::save(const std::string &name)
 	}
       file << buf << "\n";
     }
+  file.close();
   return (true);
 }
 
@@ -266,16 +315,16 @@ void	Map::fillContainers(t_gameinfo &_gameInfo)
   unsigned int	i;
   unsigned int 	totalsize = (_mapY - 1) * _mapX;
 
-  addEntity(new Entity(0, 0, WALL, _gameInfo));
+  addEntity(new Entity(0, 0, WALL, &_gameInfo));
   for (i = _mapX; i < totalsize; ++i)
     {
       // means there is a block & It's not the border
       if (_map[i] != FREE && (i % _mapX != 0 && (i + 1) % _mapX != 0))
 	{
 	  if (_map[i] == WALL)
-	    addEntity(new Entity(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	    addEntity(new Entity(i % _mapX, i /_mapX, _map[i], &_gameInfo));
 	  else
-	    addEntity(new Box(i % _mapX, i /_mapX, _map[i], _gameInfo));
+	    addEntity(new Box(i % _mapX, i /_mapX, &_gameInfo));
 	}
     }
   _map.clear();	// erase the temps vector
@@ -305,7 +354,6 @@ void	Map::createMap(t_gameinfo &gameInfo)
   int	posy;
   int	totalsize = _mapX * _mapY;
 
-  std::srand(std::time(NULL));
   for (int i = 0; i < totalsize; ++i)
     _map.push_back(WALL);
   posx = 2 + std::rand() % (_mapX - 3);
@@ -333,15 +381,15 @@ unsigned int	Map::getContPos(int x, int y) const
 void	Map::addEntity(AEntity *ent)
 {
   unsigned int	pos;
-  // Container	*cont;
+  Container	*cont;
 
   std::cout << "Add: " << ent << std::endl;
   pos = getContPos(ent->getXPos(), ent->getYPos());
-  // while (_cont.size() <= pos)
-  //   {
-  //     cont = new Container;
-  //     _cont.push_back(cont);
-  //   }
+  while (_cont.size() <= pos)
+    {
+      cont = new Container;
+      _cont.push_back(cont);
+    }
   _cont[pos]->stockEntity(ent);
 }
 
@@ -473,4 +521,9 @@ bool	Map::hasPlayer() const
 	}
     }
   return (false);
+}
+
+const std::vector<Container *>	&Map::getCont() const
+{
+  return (_cont);
 }

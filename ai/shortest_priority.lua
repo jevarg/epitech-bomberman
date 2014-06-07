@@ -1,8 +1,8 @@
 function determine_way(map, cur_x, cur_y)
 	if (map[cur_y][cur_x] == "B") then return ENUM_ACTION["bomb"] end
-	if (cur_x > X) then return ENUM_ACTION["right"] end
 	if (cur_x < X) then return ENUM_ACTION["left"] end
 	if (cur_y > Y) then return ENUM_ACTION["back"] end
+	if (cur_x > X) then return ENUM_ACTION["right"] end
 	if (cur_y < Y) then return ENUM_ACTION["forward"] end
 	return -1
 end
@@ -17,16 +17,16 @@ function get_shortest_distance_of(map, x, y)
 			cur_x, cur_y = x - 1, y
 		end
 	end
-	if (x + 1 < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
-		if (map[y][x + 1] < cur_dist) then
-			cur_dist = map[y][x + 1]
-			cur_x, cur_y = x + 1, y
-		end
-	end
 	if (y - 1 > 0 and type(map[y - 1][x]) == "number") then
 		if (map[y - 1][x] < cur_dist) then
 			cur_dist = map[y - 1][x]
 			cur_x, cur_y = x, y - 1
+		end
+	end
+	if (x + 1 < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
+		if (map[y][x + 1] < cur_dist) then
+			cur_dist = map[y][x + 1]
+			cur_x, cur_y = x + 1, y
 		end
 	end
 	if (y + 1 < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
@@ -42,11 +42,11 @@ function get_good_way(map, x, y, nb)
 	if (x - 1 > 0 and type(map[y][x - 1]) == "number") then
 		if (map[y][x - 1] < nb) then return y, x - 1 end
 	end
-	if (x + 1 < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
-		if (map[y][x + 1] < nb) then return y, x + 1 end
-	end
 	if (y - 1 > 0 and type(map[y - 1][x]) == "number") then
 		if (map[y - 1][x] < nb) then return y - 1, x end
+	end
+	if (x + 1 < MAP_XMAX + 1 and type(map[y][x + 1]) == "number") then
+		if (map[y][x + 1] < nb) then return y, x + 1 end
 	end
 	if (y + 1 < MAP_YMAX + 1 and type(map[y + 1][x]) == "number") then
 		if (map[y + 1][x] < nb) then return y + 1, x end

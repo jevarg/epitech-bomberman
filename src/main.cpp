@@ -5,8 +5,12 @@
 #include "Settings.hpp"
 #include "Player.hpp"
 
-int	main(int, char **av)
+int	main()
 {
+  int	seed;
+
+  __asm__ volatile ("rdtsc" : "=A" (seed));
+  std::srand(seed);
   try
     {
       Settings	set;
@@ -22,7 +26,8 @@ int	main(int, char **av)
       Input	input;
       Map	map(set);
       gdl::Clock clock;
-      GameEngine eng(clock, map, set, input);
+      Sound	sound;
+      GameEngine eng(clock, map, set, input, sound);
 
       if (!eng.initialize())
 	return (1);
