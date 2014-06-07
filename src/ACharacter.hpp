@@ -28,14 +28,14 @@ enum	eAnim
 class	ACharacter : public ALivingEntity
 {
 public:
-  ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thread = true);
+  ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo);
   virtual ~ACharacter() = 0;
 
   virtual void	update() = 0;
 
   bool		initialize();
-  bool		move(Map *map, float dirX, float dirY);
-  bool		updatePosition(Map *map, eAction action, gdl::Clock *clock);
+  bool		move(Map &map, float dirX, float dirY);
+  bool		updatePosition(Map &map, eAction action, const gdl::Clock &clock);
   void		dropBomb();
   void		takeDamages(int amount);
 
@@ -53,6 +53,7 @@ public:
 
   void		destroy();
 protected:
+  glm::vec4	_color;
   int		_bombStock;
   ABomb		*_bomb;
   int		_health;

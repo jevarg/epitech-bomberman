@@ -8,11 +8,6 @@
 # include "Mutex.hpp"
 # include "Scopelock.hpp"
 
-# define IFCHARACTER(type, val) ((val == CHARACTER) ? (type == CHARACTER1 || type == CHARACTER2 || type == BOT) : (type == val))
-
-# define IFNOTCHARACTER(type, val) ((val == CHARACTER) ? (type != CHARACTER1 && type != CHARACTER2 && type != BOT) : (type != val))
-
-
 class Container;
 
 typedef std::vector<AEntity *>::const_iterator v_Entcit;

@@ -3,8 +3,8 @@
 #include "Input.hpp"
 #include "ACharacter.hpp"
 
-ACharacter::ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thread)
-  : ALivingEntity(x, y, type, gameInfo, thread)
+ACharacter::ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, CHARACTER, gameInfo)
 /* handle the bomb type at creation */
 {
   _bombStock = 100;
@@ -14,6 +14,7 @@ ACharacter::ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thre
   _score = 0;
   _orient = NORTH;
   _anim = NOTHING;
+  _color = color;
   _x += 0.5;
   _y += 0.5;
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
@@ -24,7 +25,7 @@ ACharacter::~ACharacter()
 {
 }
 
-bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
+bool	ACharacter::updatePosition(Map &map, eAction action, const gdl::Clock &clock)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
   eDir		tabdir[4] = {SOUTH, NORTH, EAST, WEST};
@@ -32,24 +33,20 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
   float		dirY;
   int		colisionType;
   float		movement;
-  bool		hasMoved = false;
 
-  std::cout << "entered in updateposition with " << action << std::endl;
   for (int i = 0; i < 4; ++i)
     {
       if (tab[i] == action)
 	{
-	  movement = clock->getElapsed() * static_cast<float>(_speed);
+	  movement = clock.getElapsed() * static_cast<float>(_speed);
 	  dirX = ((i >= 2) ? ((action == LEFT) ? -movement : movement) : 0);
 	  dirY = ((i < 2) ? ((action == FORWARD) ? -movement : movement) : 0);
 	  _model->rotate(glm::vec3(0.0, 1.0, 0.0), 90.0 * tabdir[i] - 90.0 * _orient);
 	  _orient = tabdir[i];
-	  switch ((colisionType = map->checkMapColision(_x + dirX,
+	  switch ((colisionType = map.checkMapColision(_x + dirX,
 						       _y + dirY)))
 	    {
-	    case CHARACTER1:
-	    case CHARACTER2:
-	    case BOT:
+	    case CHARACTER:
 	    case FREE:
 	    case SPEEDITEM:
 	    case HEALTHITEM:
@@ -59,47 +56,46 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);
 		  _anim = RUN;
 		}
-	      hasMoved = move(map, dirX, dirY);
+	      return (move(map, dirX, dirY));
 	      break;
 	    default:
 	      break;
 	    }
+	  break ;
 	}
     }
-  return (hasMoved);
+  return (false);
 }
 
-bool	ACharacter::move(Map *map, float dirX, float dirY)
+bool	ACharacter::move(Map &map, float dirX, float dirY)
 {
   unsigned int oldCont;
   unsigned int newCont;
 
   _model->translate(glm::vec3(dirX, 0.0, dirY));
-  oldCont = map->getContPos(_x, _y);
-  newCont = map->getContPos(_x + dirX, _y + dirY);
+  oldCont = map.getContPos(_x, _y);
+  newCont = map.getContPos(_x + dirX, _y + dirY);
   if (newCont != oldCont) // means the player crossed from contA to contB
     {
       std::cout << "Remove element at old pos" << std::endl;
-      map->removeEntityByPtr(this);
+      map.removeEntityByPtr(this);
     }
-  std::cout << "dirx, diry : " << dirX << " " << dirY << std::endl;
   _y += dirY;
   _x += dirX;
-  std::cout << "Coordonée change : " << _x << " " << _y <<  std::endl;
   if (newCont != oldCont) // now add it to contB
     {
       std::cout << "Add it at new pos" << std::endl;
-      map->addEntity(this);
+      map.addEntity(this);
     }
   return (true);
 }
 
 void	ACharacter::dropBomb()
 {
-  if (_gameInfo->map->getEntityIfNot(_x, _y, CHARACTER) == NULL && _bombStock > 0)
+  if (_gameInfo.map.getEntityIfNot(_x, _y, CHARACTER) == NULL && _bombStock > 0)
     {
       --(_bombStock);
-      _gameInfo->map->addEntity(new Bomb(_x, _y, this, _gameInfo));
+      _gameInfo.map.addEntity(new Bomb(_x, _y, this, _gameInfo));
       std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
     }
 }
@@ -132,7 +128,7 @@ void	ACharacter::setSpeed(int speed)
 
 void	ACharacter::takeDamages(int amount)
 {
-  _gameInfo->sound->playSound("hurt");
+  _gameInfo.sound.playSound("hurt");
   _health -= amount;
   if (_health <= 0)
     die();

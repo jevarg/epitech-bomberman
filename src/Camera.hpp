@@ -3,13 +3,12 @@
 
 # include <glm/glm.hpp>
 
-typedef struct s_gameinfo t_gameinfo;
 class Input;
 
 class Camera
 {
 public:
-  Camera(t_gameinfo *gameInfo);
+  Camera();
   ~Camera();
 
   void lookAt();

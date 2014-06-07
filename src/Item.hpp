@@ -6,7 +6,7 @@
 class	Item : public AItem
 {
 public:
-  Item(int x, int y, t_gameinfo *gameInfo, bool thread = true);
+  Item(int x, int y, t_gameinfo &gameInfo);
   ~Item();
 
   void	setAttr(ACharacter *ch) const;

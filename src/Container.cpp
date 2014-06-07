@@ -169,7 +169,7 @@ AEntity		*Container::getEntityIf(int x, int y, eType value)
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
-	IFCHARACTER((*lit)->getType(), value) && (*lit)->toDestroy() == false)
+	(*lit)->getType() == value && (*lit)->toDestroy() == false)
       return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&
@@ -186,7 +186,7 @@ AEntity		*Container::getEntityIfNot(int x, int y, eType value)
 
   for (l_Entit end = _mobileEnt.end(); lit != end; ++lit)
     if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
-	IFNOTCHARACTER((*lit)->getType(), value) && (*lit)->toDestroy() == false)
+	(*lit)->getType() != value && (*lit)->toDestroy() == false)
       return (*lit);
   for (v_Entcit end = _staticEnt.end(); vit != end; ++vit)
     if ((*vit)->getXPos() == x && (*vit)->getYPos() == y &&

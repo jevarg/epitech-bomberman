@@ -1,18 +1,18 @@
 #include "GameEngine.hpp"
 #include "Flame.hpp"
 
-Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo *gameInfo, bool thread)
-  : ALivingEntity(x, y, FLAME, gameInfo, thread)
+Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo &gameInfo)
+  : ALivingEntity(x, y, FLAME, gameInfo)
 {
   _power = power;
   _range = range;
   _direction = direction;
-  _timeout = _gameInfo->set->getVar(FIRETIME)
-    * (_gameInfo->set->getVar(FPS) / 1000.0);
+  _timeout = _gameInfo.set.getVar(FIRETIME)
+    * (_gameInfo.set.getVar(FPS) / 1000.0);
   if (_timeout < 1)
     _timeout = 1;
-  _nextFlame = _gameInfo->set->getVar(FIRESPEED)
-    * (_gameInfo->set->getVar(FPS) / 1000.0); // first nb = delay in ms
+  _nextFlame = _gameInfo.set.getVar(FIRESPEED)
+    * (_gameInfo.set.getVar(FPS) / 1000.0); // first nb = delay in ms
   if (_nextFlame < 1)
     _nextFlame = 1;
 }
@@ -26,7 +26,7 @@ void		Flame::update()
   AEntity	*ent;
   bool		hit = false;
 
-  if (_gameInfo->map->getEntityIf(_x, _y, WALL) != NULL ||
+  if (_gameInfo.map.getEntityIf(_x, _y, WALL) != NULL ||
       (_timeout -= 1) <= 0)
     {
       die();
@@ -36,9 +36,8 @@ void		Flame::update()
     {
       if (i == FLAME)
 	continue ;
-      if ((ent = _gameInfo->map->getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
+      if ((ent = _gameInfo.map.getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
 	{
-	  std::cout << "FLAME GET HIT" << std::endl;
 	  ent->takeDamages(_power);
 	  die();
 	  hit = true;
@@ -73,22 +72,13 @@ void		Flame::update()
 }
 
 void    Flame::setFire(int x, int y, eDir direction)
-<<<<<<< HEAD
-  _gameInfo->map->addEntity(new Flame(x, y, _power, _range - 1,
-=======
 {
-  if (_gameInfo->map->getEntityIf(x, y, FLAME) == NULL)
-    _gameInfo->map->addEntity(new Flame(x, y, _power, _range - 1,
->>>>>>> parent of c7da52e... revert delts prints
+  if (_gameInfo.map.getEntityIf(x, y, FLAME) == NULL)
+    _gameInfo.map.addEntity(new Flame(x, y, _power, _range - 1,
 				      direction, _gameInfo));
 }
 
 void	Flame::hurtCharacter(ACharacter *character, int power)
 {
   character->takeDamages(power);
-}
-
-AEntity	*Flame::clone(int x, int y)
-{
-  return (new Flame(x, y, _power, _range, _direction, _gameInfo));
 }

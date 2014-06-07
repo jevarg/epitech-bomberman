@@ -7,17 +7,17 @@
 class		Player : public ACharacter
 {
 public:
-  Player(int x, int y, t_gameinfo *gameInfo, eType type, bool thread = true);
+  Player(int x, int y, Camera *camera, glm::vec4 color,
+	 t_gameinfo &gameInfo, int id);
   virtual ~Player();
   bool	checkInput();
   bool	checkInputSingle();
   bool	checkInputMulti();
   void	update();
-  Camera &getCam();
-  AEntity *clone(int x, int y);
 
 private:
-  Camera	_camera;
+  Camera	*_camera;
+  int		_id;
 };
 
 #endif /* _PLAYER_HPP_ */

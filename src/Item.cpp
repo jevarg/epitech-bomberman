@@ -1,7 +1,7 @@
 #include "Item.hpp"
 
-Item::Item(int x, int y, t_gameinfo *gameInfo, bool thread) :
-  AItem(x, y, ITEM, gameInfo, thread)
+Item::Item(int x, int y, t_gameinfo &gameInfo) :
+  AItem(x, y, ITEM, gameInfo)
 {
 }
 
