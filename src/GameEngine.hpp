@@ -33,6 +33,7 @@
 # include "EntityFactory.hpp"
 # include "SpeedItem.hpp"
 # include "HealthItem.hpp"
+# include "StockItem.hpp"
 # include "Text.hpp"
 # include "Light.hpp"
 # include "Sound.hpp"

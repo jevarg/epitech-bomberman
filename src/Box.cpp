@@ -47,6 +47,18 @@ int	Box::getMaxProb(const int *tab, int size) const
   return (max);
 }
 
+int	Box::getMaxProb(const int *tab, const int *pos, int size) const
+{
+  int	max = -1;
+
+  for (int i = 0; i < size; ++i)
+    {
+      if (max == -1 || tab[i] > tab[max])
+	max = i;
+    }
+  return (pos[max]);
+}
+
 bool	Box::sameProb(int *tab, int size) const
 {
   int	num = -1;
@@ -68,19 +80,23 @@ bool	Box::sameProb(int *tab, int size) const
 
 void	Box::spawnItem()
 {
-  int		ptab[] = {PSPEED, PHEALTH}; // needs to be in the same order as AEntity enum
+  int		ptab[] = {PSPEED, PHEALTH, PSTOCK}; // needs to be in the same order as AEntity enum
   int		objsize = sizeof(ptab) / sizeof(int);
   int		objtab[objsize];
+  int		objpos[objsize];
   unsigned int	j = 0;
   unsigned int	i;
   int		randnum;
   EntityFactory *facto = EntityFactory::getInstance();
 
   std::memset(objtab, -1, sizeof(objtab));
-  randnum = std::rand() % 100;
+  randnum = std::rand() % 101;
   for (i = 0; i < sizeof(ptab) / sizeof(int); ++i)
     if (randnum <= ptab[i])
-      objtab[j++] = ptab[i];
+      {
+	objtab[j] = ptab[i];
+	objpos[j++] = i;
+      }
   if (objtab[0] == -1)
     {
       sameProb(ptab, sizeof(ptab) / sizeof(int));
@@ -90,16 +106,19 @@ void	Box::spawnItem()
     {
       while (getpSize(objtab, objsize) > 1)
 	{
-	  randnum = std::rand() % (objtab[getMaxProb(objtab, objsize)] + 1);
+	  randnum = std::rand() % 101;
 	  for (int i = 0; i < objsize; ++i)
 	    {
-	      if (randnum > objtab[i])
-		objtab[i] = -1;
+	      if (randnum > objtab[i] && objtab[i] != -1)
+		{
+		  objtab[i] = -1;
+		  break ;
+		}
 	    }
 	  if (sameProb(objtab, objsize))
 	    break ;
 	}
-      i = getMaxProb(objtab, objsize);
+      i = getMaxProb(objtab, objpos, objsize);
     }
   _gameInfo->map->addEntity(facto->getEntity(static_cast<eType>(SPEEDITEM + i), _x, _y));
 }

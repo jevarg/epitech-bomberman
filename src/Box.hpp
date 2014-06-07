@@ -9,7 +9,8 @@
 enum
   {
     PSPEED = 50,
-    PHEALTH = 50
+    PHEALTH = 50,
+    PSTOCK = 35
   };
 
 class	Box : public AEntity
@@ -25,6 +26,7 @@ public:
 private:
   int	getpSize(const int *tab, int size) const;
   int	getMaxProb(const int *tab, int size) const;
+  int	getMaxProb(const int *tab, const int *pos, int size) const;
   bool	sameProb(int *tab, int size) const;
 };
 

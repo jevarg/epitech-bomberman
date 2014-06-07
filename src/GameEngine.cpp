@@ -66,6 +66,7 @@ bool GameEngine::initialize()
   fact.addModel(FLAME, new Cube(*_ground), FLAME_TEXTURE);
   fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
+  fact.addModel(STOCKITEM, SPEEDITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER_MODEL);
   fact.addModel(BOT, CHARACTER_MODEL);
@@ -90,6 +91,7 @@ bool GameEngine::initialize()
   ent->addEntity(BOT, new IA(0, 0, &_gameInfo, false));
   ent->addEntity(SPEEDITEM, new SpeedItem(0, 0, &_gameInfo, false));
   ent->addEntity(HEALTHITEM, new HealthItem(0, 0, &_gameInfo, false));
+  ent->addEntity(STOCKITEM, new StockItem(0, 0, &_gameInfo, false));
 
   spawn.spawnEnt(1, 0, _gameInfo);
   return (true);

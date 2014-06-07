@@ -33,7 +33,7 @@ void	ABomb::explode()
 void	ABomb::update()
 {
   if ((--_timeout) == 0)
-    this->explode();
+    explode();
 }
 
 void	ABomb::takeDamages(int /*amount*/)

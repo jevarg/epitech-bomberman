@@ -20,6 +20,7 @@ enum	eType
     ITEM,
     SPEEDITEM,
     HEALTHITEM,
+    STOCKITEM,
     CHARACTER1,
     CHARACTER2,
     BOT,
