@@ -91,7 +91,9 @@ function create_map(entities, aggro)
 		if (entities[i]["type"] == TYPE_PRIORITY["wall"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "W" end
 		if (entities[i]["type"] == TYPE_PRIORITY["free"]) then
-			map[entities[i]["y"]][entities[i]["x"]] = "." end
+			if (map[entities[i]["y"]][entities[i]["x"]] ~= "D") then
+				map[entities[i]["y"]][entities[i]["x"]] = "." end
+		end
 		if (entities[i]["type"] == TYPE_PRIORITY["player"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "P" end
 		if (entities[i]["type"] == TYPE_PRIORITY["box"]) then

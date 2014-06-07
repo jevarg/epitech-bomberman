@@ -1,6 +1,7 @@
 #include <cmath>
 #include "GameEngine.hpp"
 #include "IA.hpp"
+#include "Flame.hpp"
 
 IA::IA(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
   : ACharacter(x, y, color, gameInfo), _lua()
@@ -30,6 +31,24 @@ void	IA::update()
     }
 }
 
+void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y, int max_y, int i_x, int i_y, int max_it, t_gameinfo &gameInfo, int *cnt)
+{
+  for (int i = 0 ; i < max_it ; i++)
+    {
+      if (x > min_x && x < max_x && y > min_y && y < max_y &&
+	  gameInfo.map.getEntityIf(x, y, FREE))
+	{
+	  _lua.pushIntInt(++(*cnt), FLAME);
+	  _lua.pushIntInt(++(*cnt), y);
+	  _lua.pushIntInt(++(*cnt), x);
+	}
+      else
+	break;
+      x += i_x;
+      y += i_y;
+    }
+}
+
 void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 {
   int c1 = 1;
@@ -43,13 +62,30 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 	  int type = gameInfo.map.checkMapColision(j, i);
 	  if (*cnt == 0)
 	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 3) + 9);
+	  Flame	*ff;
+	  if ((ff = static_cast<Flame*>(gameInfo.map.getEntityIf(j, i, FLAME))) != NULL)
+	    {
+	      std::cout << "find flame" << std::endl;
+	      int dir = ff->getDirection();
+	      if (dir == ALLDIR)
+	  	{
+		  std::cout << "in alldir" << std::endl;
+	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y, y + (aggro * 2) + 1, 0, -1, ff->getRange(), gameInfo, cnt);
+	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y, y + (aggro * 2) + 1, 0, 1, ff->getRange(), gameInfo, cnt);
+	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y, y + (aggro * 2) + 1, 1, 0, ff->getRange(), gameInfo, cnt);
+	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y, y + (aggro * 2) + 1, -1, 0, ff->getRange(), gameInfo, cnt);
+	  	}
+	      else
+	  	{
+	  	  static int dir_x[4] = {0, -1, 0, 1};
+	  	  static int dir_y[4] = {-1, 0, 1, 0};
+	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y, y + (aggro * 2) + 1, dir_x[dir], dir_y[dir], ff->getRange(), gameInfo, cnt);
+	  	}
+	    }
 	  if (i == std::floor(_y) && j == std::floor(_x))
 	    {
 	      if (type == BOMB)
 	      	_lua.pushStringInt("bomb", 1);
-	      // else if (type == FLAMME)
-	      // 	{
-	      // 	}
 	      else if (gameInfo.map.getEntityIf(j, i, BOMB) != NULL)
 	      	_lua.pushStringInt("bomb", 1);
 	      else
