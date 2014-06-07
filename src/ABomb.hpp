@@ -5,6 +5,8 @@
 # include "IObject.hpp"
 # include "Settings.hpp"
 
+# define MIN_RANGE 2
+
 class		ACharacter;
 
 class		ABomb: public ALivingEntity

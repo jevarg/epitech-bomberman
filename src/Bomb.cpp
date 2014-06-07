@@ -5,7 +5,7 @@
 Bomb::Bomb(int x, int y, ACharacter *character,  t_gameinfo *gameInfo, bool thread)
   : ABomb(x, y, character, gameInfo, thread)
 {
-  _range = 5;
+  _range = MIN_RANGE;
   _power = 1;
 }
 

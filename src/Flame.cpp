@@ -1,5 +1,6 @@
 #include "GameEngine.hpp"
 #include "Flame.hpp"
+#include "ABomb.hpp"
 
 Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo *gameInfo, bool thread)
   : ALivingEntity(x, y, FLAME, gameInfo, thread)
@@ -38,7 +39,6 @@ void		Flame::update()
 	continue ;
       if ((ent = _gameInfo->map->getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
 	{
-	  std::cout << "FLAME GET HIT" << std::endl;
 	  ent->takeDamages(_power);
 	  die();
 	  hit = true;
