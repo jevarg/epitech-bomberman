@@ -4,8 +4,8 @@
 ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
   AEntity(x, y, type, gameInfo)
 {
+  _timeDeath = gameInfo.set.getVar(FPS) + 10; // need to overload considering the collector
   _isAlive = true;
-  _mutex = new Mutex;
   if (pthread_create(&_thread, NULL, &createAliveEntity, this) != 0)
     throw (Exception("Can't create thread"));
 }
@@ -25,14 +25,16 @@ void	*createAliveEntity(void *arg)
   return (NULL);
 }
 
-void	ALivingEntity::die()
+bool	ALivingEntity::die()
 {
   Scopelock	<Mutex>sc(*_mutex);
 
   if (_isAlive == false)	// just because it's not usefull iterating through
-    return ;			// all the containers
+    return (false);    		// all the containers
   _isAlive = false;
+  _toDestroy = true;		// AEntitiy equivalent
   _gameInfo.map.removeEntityByPtr(this);
+  return (true);
 }
 
 void	ALivingEntity::setDestroy()
@@ -71,5 +73,6 @@ bool	ALivingEntity::isAlive() const
 
 void	ALivingEntity::takeDamages(int /*amount*/)
 {
+  _gameInfo.sound.playSound("hurt");
   die();
 }

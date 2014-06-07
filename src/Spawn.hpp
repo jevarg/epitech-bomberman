@@ -43,7 +43,8 @@ public:
   Spawn(Map &map);
   virtual ~Spawn();
 
-void	spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameinfo &gameInfo);
+  void	spawnEnt(int nbPlayer, int nbIa, Camera **cam, t_gameinfo &gameInfo);
+  void	setSpawnSize(int sx, int sy);
 
 private:
   void	*createCharacter(int &nbPlayer, int &nbIa);

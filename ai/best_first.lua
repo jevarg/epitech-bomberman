@@ -44,8 +44,6 @@ function best_first(map, map_nb, entities)
 
 	if (have_elem(entities, cur_x, cur_y) == 1) then
 		travel_map(map_nb, cur_x, cur_y)
-		-- print("\nFINAL MAP\n")
-		-- display_map(map_nb)
 		local nx, ny = take_shortest_priority(map, map_nb, entities)
 		if (cur_x == nx and cur_y == ny) then
 			return ENUM_ACTION["bomb"]

@@ -6,6 +6,7 @@
 # include "IObject.hpp"
 # include "Input.hpp"
 # include "Model.hpp"
+# include "Mutex.hpp"
 
 typedef struct s_gameinfo       t_gameinfo;
 
@@ -64,6 +65,7 @@ protected:
   float		_y;
   eType		_type;
   t_gameinfo	&_gameInfo;
+  Mutex		*_mutex;
   bool		_toDestroy;
   int		_timeDeath;
   int		_time;

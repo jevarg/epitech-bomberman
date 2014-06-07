@@ -7,6 +7,7 @@ Console::Console(Settings &set): _set(set)
   _cmd["bind"] = &Console::bind;
   _cmd["set"] = &Console::set;
   _cmd["help"] = &Console::help;
+  _cmd["import"] = &Console::import;
 }
 
 bool	Console::import(const std::string &arg, std::string &ret, int nbr_space)
