@@ -13,6 +13,8 @@ public:
   void translate(glm::vec3 const &v);
   void rotate(glm::vec3 const& axis, float angle);
   void scale(glm::vec3 const& scale);
+  void setPos(glm::vec3 const& pos);
+
   const glm::vec3 &getPos() const;
   const glm::mat4 getTransformation() const;
 

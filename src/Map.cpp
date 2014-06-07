@@ -522,3 +522,8 @@ bool	Map::hasPlayer() const
     }
   return (false);
 }
+
+const std::vector<Container *>	&Map::getCont() const
+{
+  return (_cont);
+}
