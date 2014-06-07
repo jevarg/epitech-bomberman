@@ -20,9 +20,12 @@ enum	eType
     ITEM,
     SPEEDITEM,
     HEALTHITEM,
-    CHARACTER,
+    CHARACTER1,
+    CHARACTER2,
+    BOT,
     GROUND,
-    UNKNOWNENTITY
+    UNKNOWNENTITY,
+    CHARACTER
   };
 
 class Map;
@@ -40,9 +43,9 @@ typedef struct	s_entity
 class		AEntity
 {
 public:
-  AEntity(t_gameinfo &gameInfo);
-  AEntity(int x, int y, eType type, t_gameinfo &gameInfo);
-  virtual ~AEntity() = 0;
+  AEntity(t_gameinfo *gameInfo);
+  AEntity(int x, int y, eType type, t_gameinfo *gameInfo);
+  virtual ~AEntity();
 
   int		getXPos() const;
   int		getYPos() const;
@@ -54,17 +57,19 @@ public:
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
   int		getDeathTime() const;
   void		decTimeDeath();
+  void		setDestroyAttr();
 
   virtual void	setDestroy();
   virtual void	destroy();
 
-  virtual void	takeDamages(int amount) = 0;
+  virtual void		takeDamages(int amount) = 0;
+  virtual AEntity	*clone(int x, int y) = 0;
 
 protected:
   float		_x;
   float		_y;
   eType		_type;
-  t_gameinfo	&_gameInfo;
+  t_gameinfo	*_gameInfo;
   Mutex		*_mutex;
   bool		_toDestroy;
   int		_timeDeath;

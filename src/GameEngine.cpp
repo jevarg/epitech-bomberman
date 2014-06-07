@@ -4,7 +4,7 @@
 
 GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound)
   : _save(), _type(), _texture(),
-    _gameInfo(clock, map, set, input, sound)
+    _gameInfo(&clock, &map, &set, &input, &sound)
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -25,29 +25,34 @@ GameEngine::~GameEngine()
   //     delete _obj.back();
   //     _obj.pop_back();
   //   }
+  _player1->setDestroyAttr();
+  _player2->setDestroyAttr();
   _win.stop();
 }
 
 bool GameEngine::initialize()
 {
   ModelFactory &fact = ModelFactory::getInstance();
-  ItemFactory *items = ItemFactory::getInstance();
+  EntityFactory *ent = EntityFactory::getInstance();
   Cube *skybox;
   Spawn	spawn(_gameInfo.map);
   int	x;
   int	y;
 
-  // _gameInfo.map.determineMapSize("bigmap", x, y);
-  // _mapX = x;
-  // _mapY = y;
-  // _gameInfo.set.setVar(MAP_HEIGHT, y);
-  // _gameInfo.set.setVar(MAP_WIDTH, x);
-  _mapX = _gameInfo.set.getVar(MAP_WIDTH);
-  _mapY = _gameInfo.set.getVar(MAP_HEIGHT);
-  if (!_win.start(_gameInfo.set.getVar(W_WIDTH),
-		  _gameInfo.set.getVar(W_HEIGHT), "Bomberman"))
+  _gameInfo.map->determineMapSize("bigmap", x, y);
+  // _gameInfo.set->setVar(MAP_WIDTH, x);
+  // _gameInfo.set->setVar(MAP_HEIGHT, y);
+  _mapX = _gameInfo.set->getVar(MAP_WIDTH);
+  _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
+  _gameInfo.set->setVar(MAP_HEIGHT, _mapX);
+  _gameInfo.set->setVar(MAP_WIDTH, _mapY);
+  if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
+		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
+
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   if (!_shader.load("./Shaders/basic.fp", GL_FRAGMENT_SHADER)
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
@@ -56,7 +61,6 @@ bool GameEngine::initialize()
       || !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER)
       || !_textShader.build())
     return (false);
-  _cam.translate(glm::vec3(0, 5, 10));
 
   if (!_text.initialize())
     return (false);
@@ -65,7 +69,8 @@ bool GameEngine::initialize()
   skybox->initialize();
   skybox->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
 			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
-  skybox->scale(glm::vec3(_mapX, 0.0, _mapY));
+  skybox->scale(glm::vec3(_mapX, 0.5, _mapY));
+  skybox->translate(glm::vec3(0.0, -0.25, 0.0));
   _obj.push_back(skybox);
 
   fact.addModel(WALL, new Cube(*skybox), WALL_TEXTURE);
@@ -73,18 +78,30 @@ bool GameEngine::initialize()
   fact.addModel(FLAME, new Cube(*skybox), FLAME_TEXTURE);
   fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
-  fact.addModel(CHARACTER, CHARACTER_MODEL);
+  fact.addModel(CHARACTER1, CHARACTER_MODEL);
+  fact.addModel(CHARACTER2, CHARACTER_MODEL);
+  fact.addModel(BOT, CHARACTER_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
-  items->addItem(SPEEDITEM, new SpeedItem(0, 0, _gameInfo));
-  items->addItem(HEALTHITEM, new HealthItem(0, 0, _gameInfo));
 
-  Camera *all_cam[1] = { &_cam };
-
-  //  _gameInfo.map.load("bigmap", _gameInfo);
-  _gameInfo.map.createMap(_gameInfo);
-  spawn.setSpawnSize(_gameInfo.map.getWidth(), _gameInfo.map.getHeight());
-  spawn.spawnEnt(1, 1, all_cam, _gameInfo);
+  // _gameInfo.map->load("bigmap", _gameInfo);
+  _gameInfo.map->createMap(_gameInfo);
+  //  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
   createDisplayBorder();
+
+  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
+  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
+
+  ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
+  ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
+  ent->addEntity(BOMB, new Bomb(0, 0, NULL, &_gameInfo, false));
+  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, &_gameInfo, false));
+  ent->addEntity(CHARACTER1, _player1);
+  ent->addEntity(CHARACTER2, _player2);
+  ent->addEntity(BOT, new IA(0, 0, &_gameInfo, false));
+  ent->addEntity(SPEEDITEM, new SpeedItem(0, 0, &_gameInfo, false));
+  ent->addEntity(HEALTHITEM, new HealthItem(0, 0, &_gameInfo, false));
+
+  spawn.spawnEnt(1, 1, _gameInfo);
   return (true);
 }
 
@@ -92,12 +109,13 @@ void	GameEngine::mainInput()
 {
   t_window	win;
 
-  _gameInfo.input.getInput(_gameInfo.set);
-  if ((_gameInfo.input[win] && win.event == WIN_QUIT) || _gameInfo.input[SDLK_ESCAPE])
+  _gameInfo.input->getInput(*(_gameInfo.set));
+  if (((*_gameInfo.input)[win] && win.event == WIN_QUIT) ||
+      (*_gameInfo.input)[SDLK_ESCAPE])
     {
       _shutdown = true;
-      v_Contcit end = _gameInfo.map.ContEnd();
-      for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
+      v_Contcit end = _gameInfo.map->ContEnd();
+      for (v_Contcit it = _gameInfo.map->ContBegin();it != end;it++)
 	{
 	  AEntity *ent;
 	  v_Entit its;
@@ -113,59 +131,61 @@ void	GameEngine::mainInput()
 
 int		GameEngine::clearElements()
 {
-  return (_gameInfo.map.clearElements());
+  return (_gameInfo.map->clearElements());
 }
 
 bool		GameEngine::update()
 {
   double	time;
-  double	fps = (1000 / _gameInfo.set.getVar(FPS));
+  double	fps = (1000 / _gameInfo.set->getVar(FPS));
+  static double	elapsedTime = 0;
 
   mainInput();
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
     return (false);
   _frames++;
-  if ((time = _gameInfo.clock.getElapsed()) < fps)
+  time = _gameInfo.clock->getElapsed();
+  elapsedTime += time;
+  if (elapsedTime > 0.1)
     {
-      _text << round(_frames / _gameInfo.clock.getElapsed());
+      _text << round(_frames / elapsedTime);
       _frames = 0;
-      //      std::cout << "USLEEP " << fps << " " << time << " " << (fps - time) * 1000 << std::endl;
-      usleep((fps - time) * 1000);
+      elapsedTime = 0;
     }
-  _win.updateClock(_gameInfo.clock);
+  if (time < fps)
+    usleep((fps - time) * 1000);
+  _win.updateClock(*_gameInfo.clock);
   return (true);
 }
 
 void GameEngine::draw()
 {
-  glm::mat4 model = glm::transpose(glm::translate(glm::mat4(1.0f), _cam.getPosView()));
+  Camera &cam = _player1->getCam();
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-  _cam.lookAt();
+  cam.lookAt();
   _shader.bind();
-  _shader.setUniform("projection", _cam.getProjection());
-  _shader.setUniform("view", _cam.getTransformation());
-  _shader.setUniform("model", model);
-  _shader.setUniform("inv_model", glm::inverse(model));
+  _shader.setUniform("projection", cam.getProjection());
+  _shader.setUniform("view", cam.getTransformation());
   for (std::vector<IObject *>::const_iterator it = _obj.begin(); it != _obj.end(); it++)
-    (*it)->draw(_shader, _gameInfo.clock);
-  v_Contcit end = _gameInfo.map.ContEnd();
-  for (v_Contcit it = _gameInfo.map.ContBegin();it != end;it++)
+    (*it)->draw(_shader, *_gameInfo.clock);
+  v_Contcit end = _gameInfo.map->ContEnd();
+  for (v_Contcit it = _gameInfo.map->ContBegin();it != end;it++)
     {
       Mutex *mutex = (*it)->getMutex();
       Scopelock	<Mutex>sc(*mutex);
       v_Entcit end_vector = (*it)->vecEnd();
       l_Entcit end_list = (*it)->listEnd();
       for (v_Entcit it1 = (*it)->vecBegin();it1 != end_vector;it1++)
-	(*it1)->draw(_shader, _gameInfo.clock);
+	(*it1)->draw(_shader, *_gameInfo.clock);
       for (l_Entcit it1 = (*it)->listBegin();it1 != end_list;it1++)
-	(*it1)->draw(_shader, _gameInfo.clock);
+	(*it1)->draw(_shader, *_gameInfo.clock);
     }
   _textShader.bind();
   _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
   _textShader.setUniform("view", glm::mat4(1));
-  _text.draw(_textShader, _gameInfo.clock);
+  _text.draw(_textShader, *_gameInfo.clock);
   _win.flush();
 }
 

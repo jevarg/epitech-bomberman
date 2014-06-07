@@ -1,14 +1,14 @@
 #include "Map.hpp"
 #include "AEntity.hpp"
 
-AEntity::AEntity(t_gameinfo &gameInfo) : _gameInfo(gameInfo)
+AEntity::AEntity(t_gameinfo *gameInfo) : _gameInfo(gameInfo)
 {
   _toDestroy = false;
-  _timeDeath = gameInfo.set.getVar(FPS); // set to one second
+  _timeDeath = gameInfo->set->getVar(FPS); // set to one second
   _mutex = new Mutex;
 }
 
-AEntity::AEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
+AEntity::AEntity(int x, int y, eType type, t_gameinfo *gameInfo) :
   _type(type), _gameInfo(gameInfo)
 {
   _toDestroy = false;
@@ -16,7 +16,7 @@ AEntity::AEntity(int x, int y, eType type, t_gameinfo &gameInfo) :
   _x = static_cast<float>(x);
   _y = static_cast<float>(y);
   _model->translate(glm::vec3(x, 0.0, y));
-  _timeDeath = gameInfo.set.getVar(FPS); // set to one second
+  _timeDeath = gameInfo->set->getVar(FPS); // set to one second
   _mutex = new Mutex;
 }
 
@@ -59,6 +59,11 @@ bool	AEntity::toDestroy() const
   return (_toDestroy);
 }
 
+void	AEntity::setDestroyAttr()
+{
+  _toDestroy = true;
+}
+
 void	AEntity::setDestroy()
 {
   Scopelock	<Mutex>sc(*_mutex);
@@ -66,8 +71,8 @@ void	AEntity::setDestroy()
   if (_toDestroy == true)
     return ;
   _toDestroy = true;
-  _gameInfo.map.pushToCollector(this);
-  _gameInfo.map.removeEntityByPtr(this);
+  _gameInfo->map->pushToCollector(this);
+  _gameInfo->map->removeEntityByPtr(this);
 }
 
 void	AEntity::draw(gdl::AShader &shader, gdl::Clock &clock)
