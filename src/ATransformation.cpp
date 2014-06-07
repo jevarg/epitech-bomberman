@@ -24,11 +24,6 @@ void ATransformation::scale(glm::vec3 const& scale)
   _scale *= scale;
 }
 
-const glm::vec3 &ATransformation::getPos() const
-{
-  return (_position);
-}
-
 const glm::mat4 ATransformation::getTransformation() const
 {
   glm::mat4 transform(1);

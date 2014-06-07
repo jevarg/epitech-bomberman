@@ -2,8 +2,8 @@
 #include "GameEngine.hpp"
 #include "IA.hpp"
 
-IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
-  : ACharacter(x, y, BOT, gameInfo, thread), _lua()
+IA::IA(int x, int y, glm::vec4 color, t_gameinfo &gameInfo)
+  : ACharacter(x, y, color, gameInfo), _lua()
 {
   _level = 2;
 }
@@ -19,19 +19,18 @@ void	IA::update()
   double y = _y - aggro[_level - 1];
   double x = _x - aggro[_level - 1];
 
-  pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1]);
+  pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1], _gameInfo);
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
       if (res == DROPBOMB)
-  	dropBomb();
+	dropBomb();
       else
-  	updatePosition(_gameInfo->map, static_cast<eAction>(res), _gameInfo->clock);
+	updatePosition(_gameInfo.map, static_cast<eAction>(res), _gameInfo.clock);
     }
-  std::cout << "SORTI DU LUA" << std::endl;
 }
 
-void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
+void	IA::pushEntitie(int x, int y, int *cnt, int aggro, t_gameinfo &gameInfo)
 {
   int c1 = 1;
   int c2 = 1;
@@ -41,14 +40,14 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
       c2 = 1;
       for (int j = x ; j < x + (aggro * 2) + 1; ++j)
 	{
-	  int type = _gameInfo->map->checkMapColision(j, i);
+	  int type = gameInfo.map.checkMapColision(j, i);
 	  if (*cnt == 0)
 	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 3) + 9);
 	  if (i == std::floor(_y) && j == std::floor(_x))
 	    {
 	      if (type == BOMB)
 	      	_lua.pushStringInt("bomb", 1);
-	      else if (_gameInfo->map->getEntityIf(j, i, BOMB) != NULL)
+	      else if (gameInfo.map.getEntityIf(j, i, BOMB) != NULL)
 	      	_lua.pushStringInt("bomb", 1);
 	      else
 	      	_lua.pushStringInt("bomb", 0);
@@ -73,9 +72,4 @@ int	IA::getResultScript(int aggro, int orient)
   _lua.pushSetGlobal("arg");
   _lua.executeLua("ai/main.lua");
   return (_lua.getDatas());
-}
-
-AEntity *IA::clone(int x, int y)
-{
-  return (new IA(x, y, _gameInfo));
 }

@@ -2,8 +2,8 @@
 #include "ABomb.hpp"
 #include "GameEngine.hpp"
 
-Bomb::Bomb(int x, int y, ACharacter *character,  t_gameinfo *gameInfo, bool thread)
-  : ABomb(x, y, character, gameInfo, thread)
+Bomb::Bomb(int x, int y, ACharacter *character,  t_gameinfo &gameInfo)
+  : ABomb(x, y, character, gameInfo)
 {
   _range = 5;
   _power = 1;
@@ -11,9 +11,4 @@ Bomb::Bomb(int x, int y, ACharacter *character,  t_gameinfo *gameInfo, bool thre
 
 Bomb::~Bomb()
 {
-}
-
-AEntity *Bomb::clone(int x, int y)
-{
-  return (new Bomb(x, y, _character, _gameInfo));
 }

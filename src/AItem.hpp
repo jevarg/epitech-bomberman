@@ -17,11 +17,11 @@ enum
 class AItem : public ALivingEntity
 {
 public:
-  AItem(int x, int y, eType type, t_gameinfo *gameInfo, bool thread = true);
+  AItem(int x, int y, eType type, t_gameinfo &gameInfo);
   virtual ~AItem() = 0;
 
   void	update();
-  bool	checkItemColision(const Map *map);
+  bool	checkItemColision(Map &map);
 
   virtual void	setAttr(ACharacter *ch) const = 0;
   virtual AItem	*clone(int x, int y) = 0;
