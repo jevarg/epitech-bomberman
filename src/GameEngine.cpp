@@ -25,8 +25,8 @@ GameEngine::~GameEngine()
   //     delete _obj.back();
   //     _obj.pop_back();
   //   }
-  // _player1->destroy();
-  // _player2->destroy();
+  _player1->setDestroyAttr();
+  _player2->setDestroyAttr();
   _win.stop();
 }
 
