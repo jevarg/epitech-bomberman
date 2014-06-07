@@ -123,9 +123,9 @@ bool		Save::loadGame(Map &map, Settings &settings,
       v_Entit its;
       l_Entit itm;
       while ((ent = (*it)->listFront()) != NULL)
-	ent->setDestroy();
+  	ent->setDestroy();
       while ((ent = (*it)->vecFront()) != NULL)
-	ent->setDestroy();
+  	ent->setDestroy();
     }
   while (gameInfo.map->clearElements() != 0) {;}
   gameInfo.map->createContainers();
@@ -170,6 +170,7 @@ bool		Save::loadGame(Map &map, Settings &settings,
 	      return (false);
 	    }
 	  map.addEntity(fact->getEntity(static_cast<eType>(type % (GROUND + 1)), x, y));
+	  std::cout << "added entity of type : " << type << std::endl;
 	  ++line;
 	}
     }

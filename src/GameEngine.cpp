@@ -132,7 +132,7 @@ bool		GameEngine::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
-  static int	frame = 0;
+  // static int	frame = 0;
   static double	elapsedTime = 0;
 
   mainInput();
@@ -148,21 +148,21 @@ bool		GameEngine::update()
       _frames = 0;
       elapsedTime = 0;
     }
-  ++frame;
-  if (frame == 600)
-    {
-      if (_save.saveGame(*(_gameInfo.map), *(_gameInfo.set), "save") == false)
-	std::cout << "failed to save game" << std::endl;
-      else
-	std::cout << "game saved" << std::endl;
-    }
-  if (frame > 600 && frame % 600 == 0)
-    {
-      if (_save.loadGame(*(_gameInfo.map), *(_gameInfo.set), "save", _gameInfo) == false)
-	std::cout << "failed to load game" << std::endl;
-      else
-	std::cout << "loaded game successfully" << std::endl;
-    }
+  // ++frame;
+  // if (frame == 600)
+  //   {
+  //     if (_save.saveGame(*(_gameInfo.map), *(_gameInfo.set), "save") == false)
+  // 	std::cout << "failed to save game" << std::endl;
+  //     else
+  // 	std::cout << "game saved" << std::endl;
+  //   }
+  // if (frame > 600 && frame % 600 == 0)
+  //   {
+  //     if (_save.loadGame(*(_gameInfo.map), *(_gameInfo.set), "save", _gameInfo) == false)
+  // 	std::cout << "failed to load game" << std::endl;
+  //     else
+  // 	std::cout << "loaded game successfully" << std::endl;
+  //   }
   if (time < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(*_gameInfo.clock);
