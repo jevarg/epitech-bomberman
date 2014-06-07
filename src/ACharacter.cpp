@@ -34,6 +34,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
   float		movement;
   bool		hasMoved = false;
 
+  std::cout << "entered in updateposition with " << action << std::endl;
   for (int i = 0; i < 4; ++i)
     {
       if (tab[i] == action)
@@ -58,7 +59,12 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);
 		  _anim = RUN;
 		}
+<<<<<<< HEAD
 	      hasMoved = move(map, dirX, dirY);
+=======
+	      std::cout << "CAN MOVE" << std::endl;
+	      return (move(map, dirX, dirY));
+>>>>>>> parent of 0f01e83... delte prints
 	      break;
 	    default:
 	      break;
@@ -81,8 +87,10 @@ bool	ACharacter::move(Map *map, float dirX, float dirY)
       std::cout << "Remove element at old pos" << std::endl;
       map->removeEntityByPtr(this);
     }
+  std::cout << "dirx, diry : " << dirX << " " << dirY << std::endl;
   _y += dirY;
   _x += dirX;
+  std::cout << "Coordonée change : " << _x << " " << _y <<  std::endl;
   if (newCont != oldCont) // now add it to contB
     {
       std::cout << "Add it at new pos" << std::endl;
