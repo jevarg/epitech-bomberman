@@ -9,7 +9,7 @@
 #include "GameEngine.hpp"
 #include "Save.hpp"
 #include "Container.hpp"
- #include "Settings.hpp"
+#include "Settings.hpp"
 
  Save::Save()
  {
@@ -108,6 +108,7 @@ bool		Save::loadGame(Map &map, Settings &settings,
   int		x;
   int		y;
   int		type;
+  EntityFactory	*fact = EntityFactory::getInstance();
 
   
   if ((file.rdstate() && std::ifstream::failbit) != 0)
@@ -115,8 +116,8 @@ bool		Save::loadGame(Map &map, Settings &settings,
       std::cerr << "Error opening " << name << "\n";
       return (false);
     }
-  v_Contcit end = gameInfo.map.ContEnd();
-  for (v_Contcit it = gameInfo.map.ContBegin();it != end;it++)
+  v_Contcit end = gameInfo.map->ContEnd();
+  for (v_Contcit it = gameInfo.map->ContBegin();it != end;it++)
     {
       AEntity *ent;
       v_Entit its;
@@ -126,8 +127,8 @@ bool		Save::loadGame(Map &map, Settings &settings,
       while ((ent = (*it)->vecFront()) != NULL)
 	ent->setDestroy();
     }
-  while (gameInfo.map.clearElements() != 0) {;}
-  gameInfo.map.createContainers();
+  while (gameInfo.map->clearElements() != 0) {;}
+  gameInfo.map->createContainers();
   if (std::getline(file, buf))
     {
       if (this->decrypt(buf) == false)
@@ -168,11 +169,11 @@ bool		Save::loadGame(Map &map, Settings &settings,
 	      std::cerr << "Error : invalid savegame file on line : " << line << std::endl;
 	      return (false);
 	    }
-	  map.addEntity(new Entity(x, y, static_cast<eType>(type % (GROUND + 1)), gameInfo));
+	  map.addEntity(fact->getEntity(static_cast<eType>(type % (GROUND + 1)), x, y));
 	  ++line;
 	}
     }
-  gameInfo.map.display();
+  gameInfo.map->display();
   file.close();
   return (true);
 }

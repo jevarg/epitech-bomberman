@@ -8,8 +8,9 @@
 class		Bomb: public ABomb
 {
 public:
-  Bomb(int x, int y, ACharacter *character, t_gameinfo &gameInfo);
+  Bomb(int x, int y, ACharacter *character, t_gameinfo *gameInfo, bool thread = true);
   virtual ~Bomb();
+  AEntity *clone(int x, int y);
 
 private:
   pthread_t	_thread;

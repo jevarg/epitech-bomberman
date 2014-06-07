@@ -53,6 +53,7 @@ public:
 
   void		createContainers();
   void		display();
+  const std::vector<Container *>	&getCont() const;
 
 private:
   void	genSmallMaze(short x, short y, short dir);
