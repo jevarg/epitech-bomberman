@@ -9,6 +9,7 @@
 # include <Clock.hh>
 # include "IObject.hpp"
 # include "Exception.hpp"
+# include "Input.hpp"
 
 class Input;
 

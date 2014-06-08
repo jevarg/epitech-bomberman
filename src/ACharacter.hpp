@@ -5,6 +5,8 @@
 
 # include <Clock.hh>
 # include "ALivingEntity.hpp"
+# include "AEntity.hpp"
+# include "Input.hpp"
 # include "Model.hpp"
 # include "Bomb.hpp"
 

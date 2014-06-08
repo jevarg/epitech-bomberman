@@ -212,7 +212,6 @@ bool	Settings::readFile(std::vector<std::string> &inst,
   std::ifstream file(filename.c_str());
   std::string	line;
 
-  std::cout << "dfrth" << std::endl;
   if (file.is_open())
     {
       while (std::getline(file, line))

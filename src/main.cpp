@@ -1,4 +1,5 @@
 #include <iostream>
+#include "Menu.hpp"
 #include <string>
 #include "GameEngine.hpp"
 #include "Exception.hpp"
@@ -23,17 +24,9 @@ int	main()
       // std::cout << "ret : " << ret << std::endl;
       // return (0);
 
-      Input	input;
-      Map	map(set);
-      gdl::Clock clock;
-      Sound	sound;
-      GameEngine eng(clock, map, set, input, sound);
+      Menu menu(set);
 
-      if (!eng.initialize())
-	return (1);
-      while (eng.update())
-	eng.draw();
-      return (0);
+      menu.launch();
     }
   catch (Exception &e)
     {

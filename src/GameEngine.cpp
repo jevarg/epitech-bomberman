@@ -2,9 +2,11 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound)
-  : _save(), _type(), _texture(),
-    _gameInfo(&clock, &map, &set, &input, &sound), _lights()
+GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
+		       gdl::BasicShader *textShader, Map *map, Settings *set,
+		       Input *input, Sound *sound)
+  : _win(win), _textShader(textShader), _save(),
+    _gameInfo(clock, map, set, input, sound), _lights()
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -22,7 +24,6 @@ GameEngine::~GameEngine()
 {
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
-  _win.stop();
 }
 
 bool GameEngine::initialize()
@@ -38,9 +39,6 @@ bool GameEngine::initialize()
   _mapY = y;
   _gameInfo.set->setVar(MAP_HEIGHT, y);
   _gameInfo.set->setVar(MAP_WIDTH, x);
-  if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
-		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
-    throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -48,14 +46,8 @@ bool GameEngine::initialize()
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
-  if (!_textShader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER)
-      || !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER)
-      || !_textShader.build())
-    return (false);
 
   _hud = new HUD(_textShader);
-  // if (!_text.initialize())
-  //   return (false);
 
   _ground = new Cube(WALL_TEXTURE);
   _ground->initialize();
@@ -119,11 +111,11 @@ void	GameEngine::mainInput()
 	  AEntity *ent;
 	  v_Entit its;
 	  l_Entit itm;
-	  while ((ent = (*it)->listFront()) != NULL)
+	  /*	  while ((ent = (*it)->listFront()) != NULL)
 	    ent->setDestroy();
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
-	}
+	  */}
       return ;
     }
 }
@@ -171,7 +163,7 @@ bool		GameEngine::update()
   
   if (time < fps)
     usleep((fps - time) * 1000);
-  _win.updateClock(*_gameInfo.clock);
+  _win->updateClock(*_gameInfo.clock);
   return (true);
 }
 
@@ -187,6 +179,7 @@ void GameEngine::draw()
   _shader.setUniform("projection", cam.getProjection());
   _shader.setUniform("view", cam.getTransformation());
   _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
+
   for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
     (*it)->render(_shader);
 
@@ -206,6 +199,7 @@ void GameEngine::draw()
   _ground->setScale(glm::vec3((x + 5) < 10 ? x  + 5 : 10, 1.0, (y + 5) < 10 ? y + 5 : 10));
   _ground->setPos(glm::vec3(groundX, -1, groundY));
   _ground->draw(_shader, *_gameInfo.clock);
+
   for (int j = (y > 5) ? y - 5 : 0;j <= y + 5 && j < mapy;j++)
     for (int i = (x > 5) ? x - 5 : 0;i < x + 5 && i < mapx;i++)
       {
@@ -218,5 +212,5 @@ void GameEngine::draw()
 	  }
       }
   _hud->draw(_player1, _gameInfo);
-  _win.flush();
+  _win->flush();
 }

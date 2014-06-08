@@ -13,6 +13,7 @@ Box::~Box()
 
 void	Box::takeDamages(int)
 {
+  _gameInfo->sound->playSound("box");
   if (_toDestroy == true)
     return ;
   setDestroy();

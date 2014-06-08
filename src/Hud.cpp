@@ -1,7 +1,7 @@
 #include "GameEngine.hpp"
 #include "Hud.hpp"
 
-HUD::HUD(gdl::AShader &shader)
+HUD::HUD(gdl::AShader *shader)
   : _shader(shader), _heart(HEART_MODEL), _noHeart(NOHEART_MODEL), _fps()
 {
   _heart.setSize(30, 30);
@@ -28,23 +28,23 @@ void HUD::draw(Player *player, t_gameinfo &gameInfo)
   float x = gameInfo.set->getVar(W_WIDTH), y = gameInfo.set->getVar(W_HEIGHT);
 
   glDisable(GL_DEPTH_TEST);
-  _shader.bind();
-  _shader.setUniform("projection", glm::ortho(0.0f, x, y, 0.0f, -1.0f, 1.0f));
-  _shader.setUniform("view", glm::mat4(1));
-  _fps.draw(_shader, *gameInfo.clock);
+  _shader->bind();
+  _shader->setUniform("projection", glm::ortho(0.0f, x, y, 0.0f, -1.0f, 1.0f));
+  _shader->setUniform("view", glm::mat4(1));
+  _fps.draw(*_shader, *gameInfo.clock);
   for (int i = HEALTH_MAX; i >= 1;i--)
     {
       if (i <= player->getHealth())
 	{
 	  _heart.setPos((3 - i) * 30, 0);
 	  _heart.fillGeometry();
-	  _heart.draw(_shader, *gameInfo.clock);
+	  _heart.draw(*_shader, *gameInfo.clock);
 	}
       else
 	{
 	  _noHeart.setPos((3 - i) * 30, 0);
 	  _noHeart.fillGeometry();
-	  _noHeart.draw(_shader, *gameInfo.clock);
+	  _noHeart.draw(*_shader, *gameInfo.clock);
 	}
     }
   glEnable(GL_DEPTH_TEST);
