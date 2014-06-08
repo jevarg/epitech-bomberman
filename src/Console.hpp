@@ -5,6 +5,7 @@
 # include <map>
 
 # include "Settings.hpp"
+# include "GameEngine.hpp"
 
 class		Console
 {
@@ -12,7 +13,7 @@ public:
   Console(Settings &set);
   ~Console();
   bool		parseCmd(const std::string &, std::string &);
-  bool		aff();
+  bool		aff(gdl::Clock const &clock, gdl::AShader &);
 
 private:
   bool		import(const std::string &, std::string &, int);

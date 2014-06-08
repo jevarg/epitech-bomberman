@@ -10,14 +10,14 @@ Console::Console(Settings &set): _set(set)
   _cmd["import"] = &Console::import;
 }
 
-bool	Console::aff(gld::Clock const &clock)
+bool	Console::aff(gdl::Clock const &clock, gdl::AShader &shader)
 {
   Text	text;
 
   if (text.initialize() == false)
     return (false);
   text.setText("salut la console", 0, 0, 50);
-  text.draw("./Shaders/text.fp", clock);
+  text.draw(shader, clock);
 }
 
 bool	Console::import(const std::string &arg, std::string &ret, int nbr_space)

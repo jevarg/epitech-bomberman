@@ -168,6 +168,7 @@ bool		GameEngine::update()
   //     else
   // 	std::cout << "loaded game successfully" << std::endl;
   //   }
+  
   if (time < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(*_gameInfo.clock);
