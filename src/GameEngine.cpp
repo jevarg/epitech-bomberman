@@ -96,7 +96,7 @@ bool GameEngine::initialize()
   ent->addEntity(STOCKITEM, new StockItem(0, 0, &_gameInfo, false));
   ent->addEntity(RANGEITEM, new RangeItem(0, 0, &_gameInfo, false));
 
-  spawn.spawnEnt(1, 0, _gameInfo);
+  spawn.spawnEnt(1, 1, _gameInfo);
   return (true);
 }
 

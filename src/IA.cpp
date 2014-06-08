@@ -14,7 +14,7 @@ IA::~IA()
 }
 
 void	IA::update()
-{
+{ 
   int cnt = 0;
   static double aggro[] = {4.0, 8.0, 12.0, 10.0};
   double y = _y - aggro[_level - 1];
