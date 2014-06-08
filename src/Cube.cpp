@@ -3,26 +3,19 @@
 
 Cube::Cube(): IObject(), _texture(NULL), _geometry(NULL), _file("")
 {
-
 }
 
 Cube::Cube(const Cube &cpy)
   : IObject(), _texture(cpy._texture), _geometry(cpy._geometry), _file("")
 {
-
 }
 
 Cube::Cube(const std::string &file): IObject(), _texture(NULL), _geometry(NULL), _file(file)
 {
-
 }
 
 Cube::~Cube()
 {
-  // if (_texture)
-  //   delete _texture;
-  // if (_geometry)
-  //   delete _geometry;
 }
 
 bool Cube::initialize()
@@ -42,6 +35,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(1.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(0.0f, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(0.0f, 2.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, -1.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, -1.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, -1.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, -0.5));
   _geometry->pushVertex(glm::vec3(-0.5, 0.5, -0.5));
@@ -49,6 +45,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(1.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(1.0 / 4.0, 2.0 / 3.0));
   _geometry->pushUv(glm::vec2(0.0f, 2.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, -1.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, -1.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, -1.0));
 
   _geometry->pushVertex(glm::vec3(0.5, -0.5, 0.5));
   _geometry->pushVertex(glm::vec3(0.5, -0.5, -0.5));
@@ -56,6 +55,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(1.0f, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(1.0f, 2.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(1.0, 0.0, 0.0));
+  _geometry->pushNormal(glm::vec3(1.0, 0.0, 0.0));
+  _geometry->pushNormal(glm::vec3(1.0, 0.0, 0.0));
 
   _geometry->pushVertex(glm::vec3(0.5, -0.5, 0.5));
   _geometry->pushVertex(glm::vec3(0.5, 0.5, 0.5));
@@ -63,6 +65,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 2.0 / 3.0));
   _geometry->pushUv(glm::vec2(1.0f, 2.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(1.0, 0.0, 0.0));
+  _geometry->pushNormal(glm::vec3(1.0, 0.0, 0.0));
+  _geometry->pushNormal(glm::vec3(1.0, 0.0, 0.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, 0.5));
   _geometry->pushVertex(glm::vec3(0.5, -0.5, 0.5));
@@ -70,6 +75,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 0.0f));
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 0.0f));
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(0.0, -1.0, 0.0));
+  _geometry->pushNormal(glm::vec3(0.0, -1.0, 0.0));
+  _geometry->pushNormal(glm::vec3(0.0, -1.0, 0.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, 0.5));
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, -0.5));
@@ -77,6 +85,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 0.0f));
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 1.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(0.0, -1.0, 0.0));
+  _geometry->pushNormal(glm::vec3(0.0, -1.0, 0.0));
+  _geometry->pushNormal(glm::vec3(0.0, -1.0, 0.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, 0.5));
   _geometry->pushVertex(glm::vec3(0.5, -0.5, 0.5));
@@ -84,6 +95,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(2.0/4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(3.0/4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(3.0/4.0, 2.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, 1.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, 1.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, 1.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, 0.5));
   _geometry->pushVertex(glm::vec3(-0.5, 0.5, 0.5));
@@ -91,6 +105,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, 1.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, 1.0));
+  _geometry->pushNormal(glm::vec3(0.0, 0.0, 1.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, -0.5));
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, 0.5));
@@ -98,6 +115,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(1.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(-1.0, 0.0, 0.0));
+  _geometry->pushNormal(glm::vec3(-1.0, 0.0, 0.0));
+  _geometry->pushNormal(glm::vec3(-1.0, 0.0, 0.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, -0.5, -0.5));
   _geometry->pushVertex(glm::vec3(-0.5, 0.5, -0.5));
@@ -105,6 +125,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(1.0 / 4.0, 1.0 / 3.0));
   _geometry->pushUv(glm::vec2(1.0 / 4.0, 2.0 / 3.0));
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(-1.0, 0.0, 0.0));
+  _geometry->pushNormal(glm::vec3(-1.0, 0.0, 0.0));
+  _geometry->pushNormal(glm::vec3(-1.0, 0.0, 0.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, 0.5, 0.5));
   _geometry->pushVertex(glm::vec3(0.5, 0.5, 0.5));
@@ -112,6 +135,9 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 2.0 / 3.0));
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 3.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(0.0, 1.0, 0.0));
+  _geometry->pushNormal(glm::vec3(0.0, 1.0, 0.0));
+  _geometry->pushNormal(glm::vec3(0.0, 1.0, 0.0));
 
   _geometry->pushVertex(glm::vec3(-0.5, 0.5, 0.5));
   _geometry->pushVertex(glm::vec3(-0.5, 0.5, -0.5));
@@ -119,14 +145,12 @@ bool Cube::initialize()
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 2.0 / 3.0));
   _geometry->pushUv(glm::vec2(2.0 / 4.0, 3.0 / 3.0));
   _geometry->pushUv(glm::vec2(3.0 / 4.0, 3.0 / 3.0));
+  _geometry->pushNormal(glm::vec3(0.0, 1.0, 0.0));
+  _geometry->pushNormal(glm::vec3(0.0, 1.0, 0.0));
+  _geometry->pushNormal(glm::vec3(0.0, 1.0, 0.0));
 
   _geometry->build();
   return (true);
-}
-
-void Cube::update(gdl::Clock const &, Input &)
-{
-
 }
 
 void Cube::draw(gdl::AShader &shader, gdl::Clock const &) const
