@@ -2,6 +2,7 @@ function authorized_ent_danger(map, cur_x, cur_y, i_y, i_x)
 	if (map[cur_y + i_y][cur_x + i_x] == "W" or
 		map[cur_y + i_y][cur_x + i_x] == "D" or
 		map[cur_y + i_y][cur_x + i_x] == "I" or
+		map[cur_y + i_y][cur_x + i_x] == "P" or
 		map[cur_y + i_y][cur_x + i_x] == "B")
 	then
 		return 1
@@ -14,6 +15,7 @@ function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 		if (authorized_ent_danger(map, cur_x, cur_y, 0, n) == 1) then
 			block[1] = 1 
 		else
+			-- print("OK", cur_x + n, cur_y)
 			map[cur_y][cur_x + n] = e
 		end
 	end
@@ -21,6 +23,7 @@ function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 		if (authorized_ent_danger(map, cur_x, cur_y, 0, n * (-1)) == 1) then
 			block[2] = 1
 		else
+			-- print("OK", cur_x - n, cur_y)
 			map[cur_y][cur_x - n] = e
 		end
 	end
@@ -28,6 +31,7 @@ function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 		if (authorized_ent_danger(map, cur_x, cur_y, n, 0) == 1) then
 			block[3] = 1
 		else
+			-- print("OK", cur_x, cur_y + n)
 			map[cur_y + n][cur_x] = e
 		end
 	end
@@ -35,6 +39,7 @@ function put_danger_around_at(map, cur_x, cur_y, n, e, block)
 		if (authorized_ent_danger(map, cur_x, cur_y, n * (-1), 0) == 1) then
 			block[4] = 1
 		else
+			-- print("OK", cur_x, cur_y - n)
 			map[cur_y - n][cur_x] = e
 		end
 	end
@@ -45,6 +50,7 @@ function fill_dangerous_fields(map)
 	for i = 1, #map do
 		for j = 1, #map[i] do
 			if (map[i][j] == "O") then
+				-- print("at", j, i)
 				for k = 1, BOMB_RANGE do
 					put_danger_around_at(map, j, i, k, "D", block)
 				end
@@ -85,7 +91,9 @@ function create_map(entities, aggro)
 		if (entities[i]["type"] == TYPE_PRIORITY["wall"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "W" end
 		if (entities[i]["type"] == TYPE_PRIORITY["free"]) then
-			map[entities[i]["y"]][entities[i]["x"]] = "." end
+			if (map[entities[i]["y"]][entities[i]["x"]] ~= "D") then
+				map[entities[i]["y"]][entities[i]["x"]] = "." end
+		end
 		if (entities[i]["type"] == TYPE_PRIORITY["player"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "P" end
 		if (entities[i]["type"] == TYPE_PRIORITY["box"]) then

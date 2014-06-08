@@ -29,6 +29,11 @@ void ATransformation::setPos(glm::vec3 const& pos)
   _position = pos;
 }
 
+void ATransformation::setScale(glm::vec3 const& scale)
+{
+  _scale = scale;
+}
+
 const glm::vec3 &ATransformation::getPos() const
 {
   return (_position);

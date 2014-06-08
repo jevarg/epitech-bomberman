@@ -168,23 +168,24 @@ void GameEngine::draw()
   _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
   for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
     (*it)->render(_shader);
-  int j = (y > 5) ? y - 5 : 0;
 
   float groundX = x - 0.5, groundY = y - 0.5;
+  // float posX = x - 0.5, posY = y - 0.5;
 
   if (x + 5 >= mapx)
     groundX -= (x + 5 - mapx);
   else if (x - 5 <= 0)
-    groundX += -(x - 5);
+    groundX += (-(x - 5));
 
   if (y + 5 >= mapy)
     groundY -= (y + 5 - mapy);
   else if (y - 5 <= 0)
-    groundY += -(y - 5);
+    groundY += (-(y - 5));
 
+  _ground->setScale(glm::vec3((x + 5) < 10 ? x  + 5 : 10, 1.0, (y + 5) < 10 ? y + 5 : 10));
   _ground->setPos(glm::vec3(groundX, -1, groundY));
   _ground->draw(_shader, *_gameInfo.clock);
-  for (;j <= y + 5 && j < mapy;j++)
+  for (int j = (y > 5) ? y - 5 : 0;j <= y + 5 && j < mapy;j++)
     for (int i = (x > 5) ? x - 5 : 0;i < x + 5 && i < mapx;i++)
       {
 	AEntity *tmp = _gameInfo.map->getEntity(i, j);
@@ -195,14 +196,6 @@ void GameEngine::draw()
 	    tmp->draw(_shader, *_gameInfo.clock);
 	  }
       }
-  // glDisable(GL_DEPTH_TEST);
-  // _textShader.bind();
-  // _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
-  // _textShader.setUniform("view", glm::mat4(1));
-  // _textShader.setUniform("winX", 1600.0f);
-  // _textShader.setUniform("winY", 900.0f);
-  // _text.draw(_textShader, *_gameInfo.clock);
-  // glEnable(GL_DEPTH_TEST);
   _hud->draw(_player1, _gameInfo);
   _win.flush();
 }
