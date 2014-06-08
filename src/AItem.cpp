@@ -26,7 +26,7 @@ bool	AItem::checkItemColision(const Map *map)
 
 void	AItem::update()
 {
-  _model->rotate(glm::vec3(0, 1.0f, 0), 10.0f);
+  _model->rotate(glm::vec3(0, 1.0f, 0), 5.0f);
   if (checkItemColision(_gameInfo->map) == true)
     return ;
   if (_timeout != NO_TIMEOUT)

@@ -18,10 +18,6 @@ struct Light
   vec3	pos;
   vec3	color;
   float	power;
-
-  float C;
-  float L;
-  float E;
 };
 
 uniform int nbLight;
