@@ -9,7 +9,9 @@
 enum
   {
     PSPEED = 50,
-    PHEALTH = 50
+    PHEALTH = 50,
+    PSTOCK = 35,
+    PRANGE = 60
   };
 
 class	Box : public AEntity
@@ -23,9 +25,12 @@ public:
   AEntity *clone(int x, int y);
 
 private:
-  int	getpSize(const int *tab, int size) const;
-  int	getMaxProb(const int *tab, int size) const;
-  bool	sameProb(int *tab, int size) const;
+  int		getpSize(const double *tab, int size) const;
+  double	getMaxProb(const double *tab, int size) const;
+  int		getMinProbPos(const double *tab, int size) const;
+  int		hasSame(double * const tab, int size) const;
+  void		selectSameProb(double * const tab, int size) const;
+  void		scaleToPercent(double * const tab, int size) const;
 };
 
 #endif /* _BOX_HPP_ */

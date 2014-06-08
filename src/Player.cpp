@@ -23,6 +23,7 @@ bool	Player::checkInputSingle()
   glm::vec3	dir[4] = {glm::vec3(0.0, 0.0, -1.0), glm::vec3(0.0, 0.0, 1.0),
 			  glm::vec3(1.0, 0.0, 0.0), glm::vec3(-1.0, 0.0, 0.0)};
   bool		ret = false;
+  float		d;
 
   for (int i = 0; i < 4; ++i)
     {
@@ -30,8 +31,9 @@ bool	Player::checkInputSingle()
 	{
 	  if (updatePosition(_gameInfo->map, tab[i], _gameInfo->clock) == true)
 	    {
-	      _camera.translate(dir[i] * static_cast<float>
-				 (_speed * _gameInfo->clock->getElapsed()));
+	      d = ((_speed * _gameInfo->clock->getElapsed()) > 1 ? 1
+		   : (_speed * _gameInfo->clock->getElapsed()));
+	      _camera.translate(dir[i] * d);
 	      ret = true;
 	    }
 	}

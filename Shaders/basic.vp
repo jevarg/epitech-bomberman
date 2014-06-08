@@ -177,12 +177,5 @@ void main(void)
   fUv = vTexCoord;
   fNormal = normalize(transformedNormal.xyz);
 
-  int i;
-  for (i = 0;i < nbLight;i++)
-    {
-      /* fLight[i].d = vPosition - light[i].pos; */
-      /* light[i].pos = normalize((vec4(light[i].pos, 1.0) * view) + fEyePos).xyz; */
-    }
-
   gl_Position =  projection * fEyePos;
 }

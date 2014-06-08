@@ -53,8 +53,9 @@ bool GameEngine::initialize()
       || !_textShader.build())
     return (false);
 
-  if (!_text.initialize())
-    return (false);
+  _hud = new HUD(_textShader);
+  // if (!_text.initialize())
+  //   return (false);
 
   _ground = new Cube(WALL_TEXTURE);
   _ground->initialize();
@@ -67,6 +68,8 @@ bool GameEngine::initialize()
   fact.addModel(FLAME, new Cube(*_ground), FLAME_TEXTURE);
   fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
+  fact.addModel(STOCKITEM, SPEEDITEM_MODEL);
+  fact.addModel(RANGEITEM, SPEEDITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER_MODEL);
   fact.addModel(BOT, CHARACTER_MODEL);
@@ -94,6 +97,8 @@ bool GameEngine::initialize()
   ent->addEntity(BOT, new IA(0, 0, &_gameInfo, false));
   ent->addEntity(SPEEDITEM, new SpeedItem(0, 0, &_gameInfo, false));
   ent->addEntity(HEALTHITEM, new HealthItem(0, 0, &_gameInfo, false));
+  ent->addEntity(STOCKITEM, new StockItem(0, 0, &_gameInfo, false));
+  ent->addEntity(RANGEITEM, new RangeItem(0, 0, &_gameInfo, false));
 
   spawn.spawnEnt(1, 0, _gameInfo);
   return (true);
@@ -144,7 +149,7 @@ bool		GameEngine::update()
   elapsedTime += time;
   if (elapsedTime > 0.1)
     {
-      _text << round(_frames / elapsedTime);
+      _hud->setFps(round(_frames / elapsedTime));
       _frames = 0;
       elapsedTime = 0;
     }
@@ -183,23 +188,24 @@ void GameEngine::draw()
   _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
   for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
     (*it)->render(_shader);
-  int j = (y > 5) ? y - 5 : 0;
 
   float groundX = x - 0.5, groundY = y - 0.5;
+  // float posX = x - 0.5, posY = y - 0.5;
 
   if (x + 5 >= mapx)
     groundX -= (x + 5 - mapx);
   else if (x - 5 <= 0)
-    groundX += -(x - 5);
+    groundX += (-(x - 5));
 
   if (y + 5 >= mapy)
     groundY -= (y + 5 - mapy);
   else if (y - 5 <= 0)
-    groundY += -(y - 5);
+    groundY += (-(y - 5));
 
+  _ground->setScale(glm::vec3((x + 5) < 10 ? x  + 5 : 10, 1.0, (y + 5) < 10 ? y + 5 : 10));
   _ground->setPos(glm::vec3(groundX, -1, groundY));
   _ground->draw(_shader, *_gameInfo.clock);
-  for (;j <= y + 5 && j < mapy;j++)
+  for (int j = (y > 5) ? y - 5 : 0;j <= y + 5 && j < mapy;j++)
     for (int i = (x > 5) ? x - 5 : 0;i < x + 5 && i < mapx;i++)
       {
 	AEntity *tmp = _gameInfo.map->getEntity(i, j);
@@ -210,9 +216,6 @@ void GameEngine::draw()
 	    tmp->draw(_shader, *_gameInfo.clock);
 	  }
       }
-  _textShader.bind();
-  _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
-  _textShader.setUniform("view", glm::mat4(1));
-  _text.draw(_textShader, *_gameInfo.clock);
+  _hud->draw(_player1, _gameInfo);
   _win.flush();
 }

@@ -33,6 +33,8 @@
 # include "EntityFactory.hpp"
 # include "SpeedItem.hpp"
 # include "HealthItem.hpp"
+# include "StockItem.hpp"
+# include "RangeItem.hpp"
 # include "Text.hpp"
 # include "Light.hpp"
 # include "Sound.hpp"
@@ -40,6 +42,7 @@
 # include "Bomb.hpp"
 # include "Box.hpp"
 # include "IA.hpp"
+# include "Hud.hpp"
 
 # define WALL_TEXTURE "./assets/wall.tga"
 # define SKY_TEXTURE "./assets/skybox.tga"
@@ -92,12 +95,12 @@ private:
   std::map<eType, gdl::Texture *>	_texture;
   Player			*_player;
   t_gameinfo			_gameInfo;
-  Text				_text;
   bool				_shutdown;
   int				_frames;
   std::vector<Light*>		_lights;
   Player			*_player1;
   Player			*_player2;
+  HUD				*_hud;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

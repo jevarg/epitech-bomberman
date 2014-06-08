@@ -27,11 +27,6 @@ bool		Model::initialize()
   return (true);
 }
 
-void	Model::update(gdl::Clock const &, Input &)
-{
-
-}
-
 void	Model::draw(gdl::AShader &shader, gdl::Clock const& clock) const
 {
   _obj->draw(shader, getTransformation(), clock.getElapsed());

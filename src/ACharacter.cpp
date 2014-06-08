@@ -7,10 +7,10 @@ ACharacter::ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thre
   : ALivingEntity(x, y, type, gameInfo, thread)
 /* handle the bomb type at creation */
 {
-  _bombStock = 100;
+  _bombStock = 1;
   _health = 1;
   _speed = 5;
-  _range = 5;
+  _range = 0;
   _score = 0;
   _orient = NORTH;
   _anim = NOTHING;
@@ -53,6 +53,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 	    case FREE:
 	    case SPEEDITEM:
 	    case HEALTHITEM:
+	    case STOCKITEM:
 	    case FLAME:
 	      if (_anim == NOTHING)
 	      	{
@@ -94,11 +95,14 @@ bool	ACharacter::move(Map *map, float dirX, float dirY)
 
 void	ACharacter::dropBomb()
 {
+  ABomb	*bomb;
+
   if (_gameInfo->map->getEntityIfNot(_x, _y, CHARACTER) == NULL && _bombStock > 0)
     {
       --(_bombStock);
-      _gameInfo->map->addEntity(new Bomb(_x, _y, this, _gameInfo));
-      std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
+      bomb = new Bomb(_x, _y, this, _gameInfo);
+      bomb->setRange(bomb->getRange() + _range);
+      _gameInfo->map->addEntity(bomb);
     }
 }
 
@@ -125,7 +129,10 @@ int	ACharacter::getSpeed() const
 
 void	ACharacter::setSpeed(int speed)
 {
-  _speed = speed;
+  if (speed > SPEED_MAX)
+    _speed = SPEED_MAX;
+  else
+    _speed = speed;
 }
 
 void	ACharacter::takeDamages(int amount)
@@ -142,7 +149,10 @@ int	ACharacter::getHealth() const
 
 void	ACharacter::setHealth(int health)
 {
-  _health = health;
+  if (health > HEALTH_MAX)
+    _health = HEALTH_MAX;
+  else
+    _health = health;
   if (_health <= 0)
     die();
 }
@@ -154,7 +164,10 @@ int	ACharacter::getBombStock() const
 
 void	ACharacter::setBombStock(int bombStock)
 {
-  _bombStock = bombStock;
+  if (bombStock > BOMB_MAX)
+    _bombStock = BOMB_MAX;
+  else
+    _bombStock = bombStock;
 }
 
 ABomb	*ACharacter::getBomb() const
@@ -173,7 +186,10 @@ int	ACharacter::getRange() const
 
 void	ACharacter::setRange(int range)
 {
-  _range = range;
+  if (range > RANGE_MAX)
+    _range = RANGE_MAX;
+  else
+    _range = range;
 }
 
 void	ACharacter::destroy()

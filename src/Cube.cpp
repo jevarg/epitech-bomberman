@@ -16,10 +16,6 @@ Cube::Cube(const std::string &file): IObject(), _texture(NULL), _geometry(NULL),
 
 Cube::~Cube()
 {
-  // if (_texture)
-  //   delete _texture;
-  // if (_geometry)
-  //   delete _geometry;
 }
 
 bool Cube::initialize()
@@ -155,11 +151,6 @@ bool Cube::initialize()
 
   _geometry->build();
   return (true);
-}
-
-void Cube::update(gdl::Clock const &, Input &)
-{
-
 }
 
 void Cube::draw(gdl::AShader &shader, gdl::Clock const &) const

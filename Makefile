@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat Jun  7 19:08:01 2014 
+## Last update Sun Jun  8 03:26:39 2014 
 ##
 
 NAME		=	bomberman
@@ -33,6 +33,8 @@ SRC		=	main.cpp \
 			AItem.cpp \
 			SpeedItem.cpp \
 			HealthItem.cpp \
+			StockItem.cpp \
+			RangeItem.cpp \
 			Entity.cpp \
 			Settings.cpp \
 			Save.cpp \
@@ -53,7 +55,9 @@ SRC		=	main.cpp \
 			Text.cpp \
 			Light.cpp \
 			EntityFactory.cpp \
-			Sound.cpp
+			Sound.cpp \
+			Square.cpp \
+			Hud.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

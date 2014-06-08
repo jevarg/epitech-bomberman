@@ -51,8 +51,7 @@ function artificial_intelligence()
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
-	fill_dangerous_fields(map_nb)
-	local action = take_decision(map, map_nb, entities)
+	local action = take_decision(map, fill_dangerous_fields(map_nb), entities)
 	if (action == ENUM_ACTION["bomb"]) then
 		local block = {0, 0, 0, 0}
 		local cur_x, cur_y = can_i_put_bomb(map_nb, X, Y, block)
@@ -67,7 +66,7 @@ function artificial_intelligence()
 end
 
 X, Y = arg["x"], arg["y"]
-BOMB_RANGE = arg["bomb_range"]
+BOMB_RANGE = 25
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
 return artificial_intelligence()

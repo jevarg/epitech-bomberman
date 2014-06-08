@@ -33,7 +33,7 @@ void	ABomb::explode()
 void	ABomb::update()
 {
   if ((--_timeout) == 0)
-    this->explode();
+    explode();
 }
 
 void	ABomb::takeDamages(int /*amount*/)
@@ -41,4 +41,14 @@ void	ABomb::takeDamages(int /*amount*/)
   if (_isAlive == false)
     return ;
   explode();
+}
+
+void	ABomb::setRange(int range)
+{
+  _range = range;
+}
+
+int	ABomb::getRange() const
+{
+  return (_range);
 }
