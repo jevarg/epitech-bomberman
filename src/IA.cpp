@@ -11,6 +11,7 @@ IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
 
 IA::~IA()
 {
+  std::cout << "IA dead" << std::endl;
 }
 
 void	IA::update()
@@ -38,6 +39,7 @@ void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y, int max_y,
       if (x > min_x && x < max_x && y > min_y && y < max_y &&
 	  _gameInfo->map->getEntityIf(x, y, FREE))
 	{
+	  std::cout << "Danger in dir at " << x << " " << y << std::endl;
 	  _lua.pushIntInt(++(*cnt), FLAME);
 	  _lua.pushIntInt(++(*cnt), y);
 	  _lua.pushIntInt(++(*cnt), x);

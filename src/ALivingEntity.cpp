@@ -13,6 +13,7 @@ ALivingEntity::ALivingEntity(int x, int y, eType type, t_gameinfo *gameInfo, boo
 
 ALivingEntity::~ALivingEntity()
 {
+  std::cout << "IA dead" << std::endl;
 }
 
 void	ALivingEntity::setDead()

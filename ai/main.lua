@@ -66,7 +66,6 @@ function artificial_intelligence()
 end
 
 X, Y = arg["x"], arg["y"]
-BOMB_RANGE = 25
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
 return artificial_intelligence()

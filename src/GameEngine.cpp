@@ -31,7 +31,7 @@ bool GameEngine::initialize()
   EntityFactory *ent = EntityFactory::getInstance();
   Spawn	spawn(_gameInfo.map);
 
-  // _gameInfo.map->determineMapSize("bigmap", x, y);
+  // _gameInfo.map->determineMapSize("map", x, y);
   // _gameInfo.set->setVar(MAP_WIDTH, x);
   // _gameInfo.set->setVar(MAP_HEIGHT, y);
   _mapX = _gameInfo.set->getVar(MAP_HEIGHT);
@@ -78,8 +78,8 @@ bool GameEngine::initialize()
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
   _gameInfo.map->createMap(_gameInfo);
-  // _gameInfo.map->load("bigmap", _gameInfo);
-  // spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
+  // _gameInfo.map->load("map", _gameInfo);
+  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);

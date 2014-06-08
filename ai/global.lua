@@ -10,7 +10,7 @@ LEVEL = 0
 MAP_XMAX = 0
 MAP_YMAX = 0
 
-BOMB_RANGE = 25
+BOMB_RANGE = 2
 
 TYPE_PRIORITY = {
 	["player"] = 1,
