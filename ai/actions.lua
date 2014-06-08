@@ -1,8 +1,15 @@
-function authorized_put_bomb(point)
-	if (point ~= "." and point ~= "I" and point ~= "D") then
-		return 1
+function authorized_put_bomb(point, map)
+	if (map[Y][X] == "O") then
+		if (point ~= "." and point ~= "I" and point ~= "D") then
+			return 1
+		end
+		return 0
+	else
+	if (point ~= "." and point ~= "I") then
+			return 1
+		end
+		return 0
 	end
-	return 0
 end
 
 function can_i_put_bomb(map_nb, x, y, block)
@@ -10,12 +17,13 @@ function can_i_put_bomb(map_nb, x, y, block)
 	local gotox = {0, 0, -1, 1}
 	local gotoy = {-1, 1, 0, 0}
 
-	-- print("can i put bomb ?")
 	map_nb = fill_dangerous_fields(map_nb)
+
 	-- display_map(map_nb)
+
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[1] == 0) then
-			if (y - i < 1 or authorized_put_bomb(map_nb[y - 1][x]) == 1) then block[1] = 1
+			if (y - i < 1 or authorized_put_bomb(map_nb[y - 1][x], map_nb) == 1) then block[1] = 1
 			elseif (i == BOMB_RANGE + 1 and map_nb[y - i][x] == ".") then way = 1 ; break
 			elseif (x - 1 > 0 and map_nb[y - i][x - 1] == ".") then way = 1 ; break
 			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y - i][x + 1] == ".") then way = 1 ; break
@@ -26,7 +34,7 @@ function can_i_put_bomb(map_nb, x, y, block)
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[2] == 0) then
-			if (x - i < 1 or authorized_put_bomb(map_nb[y][x - i]) == 1) then block[2] = 1
+			if (x - i < 1 or authorized_put_bomb(map_nb[y][x - i], map_nb) == 1) then block[2] = 1
 			elseif (i == BOMB_RANGE  + 1 and map_nb[y][x - i] == ".") then way = 3 ; break
 			elseif (y - 1 > 0 and map_nb[y - 1][x - i] == ".") then way = 3 ; break
 			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x - i] == ".") then way = 3 ; break
@@ -37,7 +45,7 @@ function can_i_put_bomb(map_nb, x, y, block)
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[3] == 0) then
-			if (y + i > MAP_YMAX or authorized_put_bomb(map_nb[y + i][x]) == 1) then block[3] = 1
+			if (y + i > MAP_YMAX or authorized_put_bomb(map_nb[y + i][x], map_nb) == 1) then block[3] = 1
 			elseif (i == BOMB_RANGE + 1 and map_nb[y + i][x] == ".") then way = 2 ; break
 			elseif (x - 1 > 0 and map_nb[y + i][x - 1] == ".") then way = 2 ; break
 			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y + i][x + 1] == ".") then way = 2 ; break
@@ -48,7 +56,7 @@ function can_i_put_bomb(map_nb, x, y, block)
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[4] == 0) then
-			if (x + i > MAP_XMAX or authorized_put_bomb(map_nb[y][x + i]) == 1) then block[4] = 1
+			if (x + i > MAP_XMAX or authorized_put_bomb(map_nb[y][x + i], map_nb) == 1) then block[4] = 1
 			elseif (i == BOMB_RANGE + 1 and map_nb[y][x + i] == ".") then way = 4 ; break
 			elseif (y - 1 > 0 and map_nb[y - 1][x + i] == ".") then way = 4 ; break
 			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x + i] == ".") then way = 4 ; break 
@@ -80,7 +88,7 @@ function run_out_danger(map_nb, x, y, block)
 
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[1] == 0) then
-			if (y - i < 1 or authorized_put_bomb(map_nb[y - i][x]) == 1) then block[1] = 1
+			if (y - i < 1 or authorized_put_bomb(map_nb[y - i][x], map_nb) == 1) then block[1] = 1
 			elseif (map_nb[y - i][x] == ".") then if (i < nb) then nb = i ; way = 1 ; break end
 			elseif (x - 1 > 0 and map_nb[y - i][x - 1] == ".") then if (i < nb) then nb = i ; way = 1 ; break end
 			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y - i][x + 1] == ".") then if (i < nb) then nb = i ; way = 1 ; break end
@@ -91,7 +99,7 @@ function run_out_danger(map_nb, x, y, block)
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[2] == 0) then
-			if (x - i < 1 or authorized_put_bomb(map_nb[y][x - i]) == 1) then block[2] = 1
+			if (x - i < 1 or authorized_put_bomb(map_nb[y][x - i], map_nb) == 1) then block[2] = 1
 			elseif (map_nb[y][x - i] == ".") then if (i < nb) then nb = i ; way = 3 ; break end
 			elseif (y - 1 > 0 and map_nb[y - 1][x - i] == ".") then if (i < nb) then nb = i ; way = 3 ; break end
 			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x - i] == ".") then if (i < nb) then nb = i ; way = 3 ; break end
@@ -102,7 +110,7 @@ function run_out_danger(map_nb, x, y, block)
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[3] == 0) then
-			if (y + i > MAP_YMAX or authorized_put_bomb(map_nb[y + i][x]) == 1) then block[3] = 1
+			if (y + i > MAP_YMAX or authorized_put_bomb(map_nb[y + i][x], map_nb) == 1) then block[3] = 1
 			elseif (map_nb[y + i][x] == ".") then if (i < nb) then nb = i ; way = 2 ; break end
 			elseif (x - 1 > 0 and map_nb[y + i][x - 1] == ".") then if (i < nb) then nb = i ; way = 2 ; break end
 			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y + i][x + 1] == ".") then if (i < nb) then nb = i ; way = 2 ; break end
@@ -113,7 +121,7 @@ function run_out_danger(map_nb, x, y, block)
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[4] == 0) then
-			if (x + i > MAP_XMAX or authorized_put_bomb(map_nb[y][x + i]) == 1) then block[4] = 1
+			if (x + i > MAP_XMAX or authorized_put_bomb(map_nb[y][x + i], map_nb) == 1) then block[4] = 1
 			elseif (map_nb[y][x + i] == ".") then if (i < nb) then nb = i ; way = 4 ; break end
 			elseif (y - 1 > 0 and map_nb[y - 1][x + i] == ".") then if (i < nb) then nb = i ; way = 4 ; break end
 			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x + i] == ".") then if (i < nb) then nb = i ; way = 4 ; break end
