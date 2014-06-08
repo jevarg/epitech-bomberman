@@ -8,10 +8,10 @@
 
 enum
   {
-    PSPEED = 0,
-    PHEALTH = 0,
-    PSTOCK = 0,
-    PRANGE = 100
+    PSPEED = 25,
+    PHEALTH = 35,
+    PSTOCK = 15,
+    PRANGE = 25
   };
 
 class	Box : public AEntity
