@@ -21,6 +21,7 @@ enum	eType
     SPEEDITEM,
     HEALTHITEM,
     STOCKITEM,
+    RANGEITEM,
     CHARACTER1,
     CHARACTER2,
     BOT,

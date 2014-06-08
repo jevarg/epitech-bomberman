@@ -23,7 +23,7 @@ void	Box::takeDamages(int)
   }
 }
 
-int	Box::getpSize(const int *tab, int size) const
+int	Box::getpSize(const double *tab, int size) const
 {
   int	psize = 0;
 
@@ -35,7 +35,7 @@ int	Box::getpSize(const int *tab, int size) const
   return (psize);
 }
 
-int	Box::getMaxProb(const int *tab, int size) const
+double	Box::getMaxProb(const double *tab, int size) const
 {
   int	max = -1;
 
@@ -44,83 +44,113 @@ int	Box::getMaxProb(const int *tab, int size) const
       if (max == -1 || tab[i] > tab[max])
 	max = i;
     }
-  return (max);
+  return (tab[max]);
 }
 
-int	Box::getMaxProb(const int *tab, const int *pos, int size) const
+int	Box::getMinProbPos(const double *tab, int size) const
 {
-  int	max = -1;
+  int	min = -1;
 
   for (int i = 0; i < size; ++i)
     {
-      if (max == -1 || tab[i] > tab[max])
-	max = i;
+      if (min == -1 || (tab[i] != -1 && tab[i] < tab[min]))
+	min = i;
     }
-  return (pos[max]);
+  return (min);
 }
 
-bool	Box::sameProb(int *tab, int size) const
+int		Box::hasSame(double * const tab, int size) const
 {
-  int	num = -1;
+  double	val;
+  int		spos = -1;
 
   for (int i = 0; i < size; ++i)
     {
-      if (num == -1 && tab[i] != -1)
-	num = tab[i];
-      else if (tab[i] != -1 && tab[i] != num)
-	return (false);
+      val = tab[i];
+      spos = i;
+      for (int j = i + 1; j < size; j++)
+	{
+	  if (tab[j] == val)
+	    return (spos);
+	}
     }
-  while (getpSize(tab, size) > 1)
+  return (-1);
+}
+
+void		Box::selectSameProb(double * const tab, int size) const
+{
+  int		countSame;
+  int		localCount;
+  int		pos;
+  double	val;
+  int		nb;
+
+  while ((pos = hasSame(tab, size)) != -1)
     {
-      int nb = std::rand() % size;
-      tab[nb] = -1;
+      val = -1;
+      countSame = 0;
+      localCount = 0;
+
+      for (int i = pos; i < size; ++i)
+	{
+	  if (val == -1 && tab[i] != -1)
+	    val = tab[i];
+	  if (tab[i] != -1 && tab[i] == val)
+	    ++countSame;
+	}
+      while (countSame > 1)
+	{
+	  nb = 1 + std::rand() % countSame; // Will define witch number will be removed
+	  for (int i = pos; i < size;)
+	    {
+	      if (tab[i] == val)
+		++localCount;
+	      if (localCount == nb)
+		{
+		  tab[i] = -1;
+		  break ;
+		}
+	      ++i;
+	    }
+	  --countSame;
+	}
     }
-  return (true);
+}
+
+void	Box::scaleToPercent(double * const tab, int size) const
+{
+  int		total = 0;
+  double	ratio;
+
+  for (int i = 0; i < size; ++i)
+    total += tab[i];
+  ratio = total / 100.0;
+  for (int i = 0; i < size; ++i)
+    tab[i] /= ratio;
 }
 
 void	Box::spawnItem()
 {
-  int		ptab[] = {PSPEED, PHEALTH, PSTOCK}; // needs to be in the same order as AEntity enum
-  int		objsize = sizeof(ptab) / sizeof(int);
-  int		objtab[objsize];
-  int		objpos[objsize];
-  unsigned int	j = 0;
-  unsigned int	i;
+  // needs to be in the same order as AEntity enum
+  double       	ptab[] = {PSPEED, PHEALTH, PSTOCK, PRANGE};
+  int		size = sizeof(ptab) / sizeof(double);
   int		randnum;
+  double       	start = 0;
   EntityFactory *facto = EntityFactory::getInstance();
 
-  std::memset(objtab, -1, sizeof(objtab));
-  randnum = std::rand() % 101;
-  for (i = 0; i < sizeof(ptab) / sizeof(int); ++i)
-    if (randnum <= ptab[i])
-      {
-	objtab[j] = ptab[i];
-	objpos[j++] = i;
-      }
-  if (objtab[0] == -1)
+  randnum = std::rand() % static_cast<int>(getMaxProb(ptab, size)); // So it can't remove it
+  selectSameProb(ptab, size);
+  scaleToPercent(ptab, size);
+  for (int i = 0; i < size; ++i)
     {
-      sameProb(ptab, sizeof(ptab) / sizeof(int));
-      i = getMaxProb(ptab, sizeof(ptab) / sizeof(int));
-    }
-  else
-    {
-      while (getpSize(objtab, objsize) > 1)
+      if (start + ptab[i] > randnum) // means randnum is in the concerned area
 	{
-	  randnum = std::rand() % 101;
-	  for (int i = 0; i < objsize; ++i)
-	    {
-	      if (randnum > objtab[i] && objtab[i] != -1)
-		{
-		  objtab[i] = -1;
-		  break ;
-		}
-	    }
-	  if (sameProb(objtab, objsize))
-	    break ;
+	  _gameInfo->map->addEntity(facto->getEntity
+				    (static_cast<eType>(SPEEDITEM + i), _x, _y));
+	  break ;
 	}
-      i = getMaxProb(objtab, objpos, objsize);
+      start += ptab[i];
     }
-  _gameInfo->map->addEntity(facto->getEntity(static_cast<eType>(SPEEDITEM + i), _x, _y));
 }
 
 AEntity *Box::clone(int x, int y)

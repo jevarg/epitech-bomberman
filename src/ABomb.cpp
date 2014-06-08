@@ -42,3 +42,13 @@ void	ABomb::takeDamages(int /*amount*/)
     return ;
   explode();
 }
+
+void	ABomb::setRange(int range)
+{
+  _range = range;
+}
+
+int	ABomb::getRange() const
+{
+  return (_range);
+}

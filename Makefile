@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat Jun  7 22:00:53 2014 luc sinet
+## Last update Sat Jun  7 23:40:33 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -34,6 +34,7 @@ SRC		=	main.cpp \
 			SpeedItem.cpp \
 			HealthItem.cpp \
 			StockItem.cpp \
+			RangeItem.cpp \
 			Entity.cpp \
 			Settings.cpp \
 			Save.cpp \

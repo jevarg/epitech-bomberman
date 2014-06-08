@@ -32,7 +32,8 @@ enum
     HEALTH_AMOUNT = 1,
     HEALTH_MAX = 3,
     BOMB_AMOUNT = 1,
-    BOMB_MAX = 3
+    BOMB_MAX = 3,
+    RANGE_MAX = 10
   };
 
 class	ACharacter : public ALivingEntity

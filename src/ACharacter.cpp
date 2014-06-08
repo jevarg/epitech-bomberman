@@ -10,7 +10,7 @@ ACharacter::ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thre
   _bombStock = 1;
   _health = 1;
   _speed = 5;
-  _range = 5;
+  _range = 0;
   _score = 0;
   _orient = NORTH;
   _anim = NOTHING;
@@ -95,11 +95,14 @@ bool	ACharacter::move(Map *map, float dirX, float dirY)
 
 void	ACharacter::dropBomb()
 {
+  ABomb	*bomb;
+
   if (_gameInfo->map->getEntityIfNot(_x, _y, CHARACTER) == NULL && _bombStock > 0)
     {
       --(_bombStock);
-      _gameInfo->map->addEntity(new Bomb(_x, _y, this, _gameInfo));
-      std::cout << "Will drop bomb at pos: " << _x << " " << _y << std::endl;
+      bomb = new Bomb(_x, _y, this, _gameInfo);
+      bomb->setRange(bomb->getRange() + _range);
+      _gameInfo->map->addEntity(bomb);
     }
 }
 
@@ -183,7 +186,10 @@ int	ACharacter::getRange() const
 
 void	ACharacter::setRange(int range)
 {
-  _range = range;
+  if (range > RANGE_MAX)
+    _range = RANGE_MAX;
+  else
+    _range = range;
 }
 
 void	ACharacter::destroy()

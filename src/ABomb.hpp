@@ -18,6 +18,8 @@ public:
   void	update();
   void	explode();
   void	takeDamages(int);
+  int	getRange() const;
+  void	setRange(int range);
 
 protected:
   int		_range;
