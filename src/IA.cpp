@@ -11,7 +11,6 @@ IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
 
 IA::~IA()
 {
-  std::cout << "IA dead" << std::endl;
 }
 
 void	IA::update()
@@ -32,22 +31,31 @@ void	IA::update()
     }
 }
 
-void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y, int max_y, int i_x, int i_y, int max_it, int *cnt)
+void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y,
+			  int max_y, int i_x, int i_y, int max_it, int *cnt)
 {
   for (int i = 0 ; i < max_it ; i++)
     {
+      // std::cout << "x " << x << std::endl;
+      // std::cout << "y " << y << std::endl;
+      // std::cout << "minx " << min_x << std::endl;
+      // std::cout << "miny " << min_y << std::endl;
+      // std::cout << "maxx " << max_x << std::endl;
+      // std::cout << "maxy " << max_y << std::endl;
+      // std::cout << "return of getentity " << _gameInfo->map->getEntityIf(x, y, FREE) << std::endl;
+      // std::cout << std::endl;
       if (x > min_x && x < max_x && y > min_y && y < max_y &&
-	  _gameInfo->map->getEntityIf(x, y, FREE))
+	  _gameInfo->map->getEntityIf(x, y, FREE) == NULL)
 	{
-	  std::cout << "Danger in dir at " << x << " " << y << std::endl;
+	  // std::cout << "Danger in dir at " << x << " " << y << std::endl;
 	  _lua.pushIntInt(++(*cnt), FLAME);
 	  _lua.pushIntInt(++(*cnt), y);
-	  _lua.pushIntInt(++(*cnt), x);
+	  _lua.pushIntInt(++(*cnt), x);	
+	  x += i_x;
+	  y += i_y;
 	}
       else
-	break;
-      x += i_x;
-      y += i_y;
+	return ;
     }
 }
 
@@ -63,29 +71,29 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 	{
 	  int type = _gameInfo->map->checkMapColision(j, i);
 	  if (*cnt == 0)
-	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 3) + 9);
+	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 9);
 	  Flame	*ff;
 	  if ((ff = static_cast<Flame*>(_gameInfo->map->getEntityIf(j, i, FLAME))) != NULL)
 	    {
-	      std::cout << "find flame" << std::endl;
+	      // std::cout << "find flame" << std::endl;
 	      int dir = ff->getDirection();
 	      if (dir == ALLDIR)
 	  	{
-		  std::cout << "in alldir" << std::endl;
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
+		  // std::cout << "in alldir" << std::endl;
+	  	  danger_in_dir(c2, c1 - 1, x, x + (aggro * 2) + 1, y,
 				y + (aggro * 2) + 1, 0, -1, ff->getRange(), cnt);
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
+	  	  danger_in_dir(c2, c1 + 1, x, x + (aggro * 2) + 1, y,
 				y + (aggro * 2) + 1, 0, 1, ff->getRange(), cnt);
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
+	  	  danger_in_dir(c2 + 1, c1, x, x + (aggro * 2) + 1, y,
 				y + (aggro * 2) + 1, 1, 0, ff->getRange(), cnt);
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
+	  	  danger_in_dir(c2 - 1, c1, x, x + (aggro * 2) + 1, y,
 				y + (aggro * 2) + 1, -1, 0, ff->getRange(), cnt);
 	  	}
 	      else
 	  	{
 	  	  static int dir_x[4] = {0, -1, 0, 1};
 	  	  static int dir_y[4] = {-1, 0, 1, 0};
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
+	  	  danger_in_dir(c2, c1, x, x + (aggro * 2) + 1, y,
 				y + (aggro * 2) + 1, dir_x[dir], dir_y[dir], ff->getRange(), cnt);
 	  	}
 	    }
