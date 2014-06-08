@@ -57,13 +57,12 @@ vec3 getLight(vec3 Color, vec3 Normal)
 void main(void)
 {
   /* Density of the fog */
-  float density = 0.07;
+  float density = 0.09;
 
   vec4 fOutColor = texture2D(fTexture0, fUv);
   float factor = getFog(abs(fEyePos.z / fEyePos.w), density);
   vec3 color = getLight(fOutColor.xyz, fNormal);
 
-  gl_FragColor = vec4(color.xyz, fOutColor.w);
   /* Color Fog = vec4(0.7, 0.7, 0.7, 1.0) => grey */
-  /* gl_FragColor = mix(color, vec4(0.7, 0.7, 0.7, color.w), factor); */
+  gl_FragColor = mix(vec4(color.xyz, fOutColor.w), vec4(0.7, 0.7, 0.7, fOutColor.w), factor);
 }
