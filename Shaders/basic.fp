@@ -63,7 +63,7 @@ void main(void)
   float factor = getFog(abs(fEyePos.z / fEyePos.w), density);
   vec3 color = getLight(fOutColor.xyz, fNormal);
 
-  gl_FragColor = vec4(color.xyz, fOutColor.w);
+  gl_FragColor = vec4(fOutColor.xyz, fOutColor.w);
   /* Color Fog = vec4(0.7, 0.7, 0.7, 1.0) => grey */
   /* gl_FragColor = mix(color, vec4(0.7, 0.7, 0.7, color.w), factor); */
 }

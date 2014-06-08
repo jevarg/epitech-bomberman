@@ -52,6 +52,8 @@
 
 # define HEALTHITEM_MODEL "./assets/health_item.fbx"
 # define SPEEDITEM_MODEL "./assets/speed_item.fbx"
+# define STOCKITEM_MODEL "./assets/stock_item.fbx"
+# define RANGEITEM_MODEL "./assets/range_item.fbx"
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
 

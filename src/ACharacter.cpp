@@ -54,6 +54,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 	    case SPEEDITEM:
 	    case HEALTHITEM:
 	    case STOCKITEM:
+	    case RANGEITEM:
 	    case FLAME:
 	      if (_anim == NOTHING)
 	      	{
