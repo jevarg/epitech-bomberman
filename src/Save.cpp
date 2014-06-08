@@ -100,7 +100,7 @@
 }
 
 bool		Save::loadGame(Map &map, Settings &settings,
-			       const std::string &name)
+			       const std::string &name, t_gameinfo &gameInfo)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -110,11 +110,25 @@ bool		Save::loadGame(Map &map, Settings &settings,
   int		type;
   EntityFactory	*fact = EntityFactory::getInstance();
 
+  
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     {
       std::cerr << "Error opening " << name << "\n";
       return (false);
     }
+  v_Contcit end = gameInfo.map->ContEnd();
+  for (v_Contcit it = gameInfo.map->ContBegin();it != end;it++)
+    {
+      AEntity *ent;
+      v_Entit its;
+      l_Entit itm;
+      while ((ent = (*it)->listFront()) != NULL)
+  	ent->setDestroy();
+      while ((ent = (*it)->vecFront()) != NULL)
+  	ent->setDestroy();
+    }
+  while (gameInfo.map->clearElements() != 0) {;}
+  gameInfo.map->createContainers();
   if (std::getline(file, buf))
     {
       if (this->decrypt(buf) == false)
@@ -156,9 +170,11 @@ bool		Save::loadGame(Map &map, Settings &settings,
 	      return (false);
 	    }
 	  map.addEntity(fact->getEntity(static_cast<eType>(type % (GROUND + 1)), x, y));
+	  std::cout << "added entity of type : " << type << std::endl;
 	  ++line;
 	}
     }
+  gameInfo.map->display();
   file.close();
   return (true);
 }

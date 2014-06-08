@@ -4,7 +4,7 @@
 StockItem::StockItem(int x, int y, t_gameinfo *gameInfo, bool thread) :
   AItem(x, y, STOCKITEM, gameInfo, thread)
 {
-  _amount = HEALTH_AMOUNT;
+  _amount = BOMB_AMOUNT;
 }
 
 StockItem::~StockItem()
@@ -14,7 +14,7 @@ StockItem::~StockItem()
 void	StockItem::setAttr(ACharacter *ch) const
 {
   ch->setBombStock(ch->getBombStock() + _amount);
-  // _gameInfo->sound->playSound("eat");
+  _gameInfo->sound->playSound("orb");
 }
 
 AItem	*StockItem::clone(int x, int y)

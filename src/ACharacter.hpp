@@ -33,6 +33,7 @@ enum
     HEALTH_MAX = 3,
     BOMB_AMOUNT = 1,
     BOMB_MAX = 3,
+    RANGE_AMOUNT = 1,
     RANGE_MAX = 10
   };
 

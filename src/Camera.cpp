@@ -46,3 +46,8 @@ const glm::vec3	&Camera::getPosView() const
 {
   return (_pos_view);
 }
+
+void	Camera::setPos(glm::vec3 pos)
+{
+  _pos = pos;
+}
