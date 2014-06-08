@@ -31,18 +31,20 @@ void HUD::draw(Player *player, t_gameinfo &gameInfo)
   _shader.bind();
   _shader.setUniform("projection", glm::ortho(0.0f, x, y, 0.0f, -1.0f, 1.0f));
   _shader.setUniform("view", glm::mat4(1));
+  _shader.setUniform("winX", x);
+  _shader.setUniform("winY", y);
   _fps.draw(_shader, *gameInfo.clock);
-  for (int i = HEALTH_MAX; i >= 1;i--)
+  for (int i = 1; i <= HEALTH_MAX;i++)
     {
       if (i <= player->getHealth())
 	{
-	  _heart.setPos((3 - i) * 30, 0);
+	  _heart.setPos(i * 30, 10);
 	  _heart.fillGeometry();
 	  _heart.draw(_shader, *gameInfo.clock);
 	}
       else
 	{
-	  _noHeart.setPos((3 - i) * 30, 0);
+	  _noHeart.setPos(i * 30, 10);
 	  _noHeart.fillGeometry();
 	  _noHeart.draw(_shader, *gameInfo.clock);
 	}
