@@ -31,48 +31,51 @@
 # include "Console.hpp"
 # include "Scopelock.hpp"
 # include "ModelFactory.hpp"
-# include "ItemFactory.hpp"
+# include "EntityFactory.hpp"
 # include "SpeedItem.hpp"
 # include "HealthItem.hpp"
+# include "StockItem.hpp"
+# include "RangeItem.hpp"
 # include "Text.hpp"
+# include "Light.hpp"
 # include "Sound.hpp"
-
-# define CFPS 60.0f
-# define CFOV 60.0f
-# define DEF_SIZE_X 1600.0f
-# define DEF_SIZE_Y 900.0f
+# include "Flame.hpp"
+# include "Bomb.hpp"
+# include "Box.hpp"
+# include "IA.hpp"
+# include "Hud.hpp"
 
 # define WALL_TEXTURE "./assets/wall.tga"
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
 # define FLAME_TEXTURE "./assets/flames.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
+
 # define HEALTHITEM_MODEL "./assets/health_item.fbx"
 # define SPEEDITEM_MODEL "./assets/speed_item.fbx"
-
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
 
 typedef struct	s_gameinfo
 {
-  s_gameinfo(gdl::Clock &pclock, Map &pmap, Settings &pset, Input &pinput, Sound &psound) :
+  s_gameinfo(gdl::Clock *pclock, Map *pmap, Settings *pset, Input *pinput, Sound *psound) :
     clock(pclock), map(pmap), input(pinput), set(pset), sound(psound)
   {
   }
-  gdl::Clock   	&clock;
-  Map	       	&map;
-  Input	       	&input;
-  Settings     	&set;
+  gdl::Clock   	*clock;
+  Map	       	*map;
+  Input	       	*input;
+  Settings     	*set;
   Mutex		*mutex;
   Condvar	*condvar;
-  Sound		&sound;
+  Sound		*sound;
 }		t_gameinfo;
 
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(gdl::SdlContext *win, gdl::Clock &clock, gdl::BasicShader *shader, Map &map,
-	     Settings &set, Input &input, Sound &sound);
+  GameEngine(gdl::SdlContext *win, gdl::Clock *clock, gdl::BasicShader *shader, Map *map,
+	     Settings *set, Input *input, Sound *sound);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -80,8 +83,6 @@ public:
   virtual void	draw();
 
 private:
-  void	createDisplayMap();
-  void	createDisplayBorder();
   void	mainInput();
   int	clearElements();
 
@@ -89,18 +90,19 @@ private:
   gdl::BasicShader		_shader;
   gdl::BasicShader		*_textShader;
   Save				_save;
-  std::vector<IObject *>	_obj;
-  Camera			_cam;
+  Cube				*_ground;
   unsigned int			_mapX;
   unsigned int			_mapY;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
-  Model				*_model;
   Player			*_player;
-  Text				_text;
   t_gameinfo			_gameInfo;
   bool				_shutdown;
   int				_frames;
+  std::vector<Light*>		_lights;
+  Player			*_player1;
+  Player			*_player2;
+  HUD				*_hud;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

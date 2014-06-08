@@ -27,17 +27,28 @@ enum	eAnim
     RUN
   };
 
+enum
+  {
+    SPEED_AMOUNT = 1,
+    SPEED_MAX = 15,
+    HEALTH_AMOUNT = 1,
+    HEALTH_MAX = 3,
+    BOMB_AMOUNT = 1,
+    BOMB_MAX = 3,
+    RANGE_MAX = 10
+  };
+
 class	ACharacter : public ALivingEntity
 {
 public:
-  ACharacter(int x, int y, glm::vec4 color, t_gameinfo &gameInfo);
+  ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thread = true);
   virtual ~ACharacter() = 0;
 
   virtual void	update() = 0;
 
   bool		initialize();
-  bool		move(Map &map, float dirX, float dirY);
-  bool		updatePosition(Map &map, eAction action, const gdl::Clock &clock);
+  bool		move(Map *map, float dirX, float dirY);
+  bool		updatePosition(Map *map, eAction action, gdl::Clock *clock);
   void		dropBomb();
   void		takeDamages(int amount);
 
@@ -55,7 +66,6 @@ public:
 
   void		destroy();
 protected:
-  glm::vec4	_color;
   int		_bombStock;
   ABomb		*_bomb;
   int		_health;

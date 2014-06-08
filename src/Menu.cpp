@@ -48,17 +48,19 @@ bool  Menu::update()
 void  Menu::draw()
 {
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glDisable(GL_DEPTH_TEST);
   _textShader.bind();
   _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
   _textShader.setUniform("view", glm::mat4(1));
   _text.draw(_textShader, _clock);
+  glEnable(GL_DEPTH_TEST);
   _win.flush();
 }
 
 void	Menu::launchGame()
 {
   Map map(_set);
-  GameEngine eng(&_win, _clock, &_textShader, map, _set, _input, _sound);
+  GameEngine eng(&_win, &_clock, &_textShader, &map, &_set, &_input, &_sound);
   bool	done = true;
 
   if (!eng.initialize())

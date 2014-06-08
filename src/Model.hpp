@@ -18,7 +18,6 @@ public:
   bool		initialize();
   bool		load(std::string const&);
 
-  void		update(gdl::Clock const&, Input &);
   void		draw(gdl::AShader &, gdl::Clock const&) const;
 
   void		setTexture(gdl::Texture *);
