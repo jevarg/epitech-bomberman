@@ -30,13 +30,14 @@ bool GameEngine::initialize()
   ModelFactory &fact = ModelFactory::getInstance();
   EntityFactory *ent = EntityFactory::getInstance();
   Spawn	spawn(_gameInfo.map);
+  int	x;
+  int	y;
 
-  // _gameInfo.map->determineMapSize("bigmap", x, y);
-  // _gameInfo.set->setVar(MAP_WIDTH, x);
-  // _gameInfo.set->setVar(MAP_HEIGHT, y);
-  _mapX = _gameInfo.set->getVar(MAP_HEIGHT);
-  _mapY = _gameInfo.set->getVar(MAP_WIDTH);
-
+  _gameInfo.map->determineMapSize("map", x, y);
+  _mapX = x;
+  _mapY = y;
+  _gameInfo.set->setVar(MAP_HEIGHT, y);
+  _gameInfo.set->setVar(MAP_WIDTH, x);
   if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
 		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
@@ -67,8 +68,8 @@ bool GameEngine::initialize()
   fact.addModel(FLAME, new Cube(*_ground), FLAME_TEXTURE);
   fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
-  fact.addModel(STOCKITEM, SPEEDITEM_MODEL);
-  fact.addModel(RANGEITEM, SPEEDITEM_MODEL);
+  fact.addModel(STOCKITEM, STOCKITEM_MODEL);
+  fact.addModel(RANGEITEM, RANGEITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER_MODEL);
   fact.addModel(BOT, CHARACTER_MODEL);
@@ -77,12 +78,15 @@ bool GameEngine::initialize()
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
-  _gameInfo.map->createMap(_gameInfo);
-  // _gameInfo.map->load("bigmap", _gameInfo);
-  // spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
+  // _gameInfo.map->createMap(_gameInfo);
+  _gameInfo.map->load("map", _gameInfo);
+  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
+
+  // spawn.spawnEnt(1, 0, all_cam, _gameInfo);
+  // createDisplayBorder();
 
   ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
   ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
@@ -133,6 +137,7 @@ bool		GameEngine::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
+  // static int	frame = 0;
   static double	elapsedTime = 0;
 
   mainInput();
@@ -148,6 +153,21 @@ bool		GameEngine::update()
       _frames = 0;
       elapsedTime = 0;
     }
+  // ++frame;
+  // if (frame == 600)
+  //   {
+  //     if (_save.saveGame(*(_gameInfo.map), *(_gameInfo.set), "save") == false)
+  // 	std::cout << "failed to save game" << std::endl;
+  //     else
+  // 	std::cout << "game saved" << std::endl;
+  //   }
+  // if (frame > 600 && frame % 600 == 0)
+  //   {
+  //     if (_save.loadGame(*(_gameInfo.map), *(_gameInfo.set), "save", _gameInfo) == false)
+  // 	std::cout << "failed to load game" << std::endl;
+  //     else
+  // 	std::cout << "loaded game successfully" << std::endl;
+  //   }
   if (time < fps)
     usleep((fps - time) * 1000);
   _win.updateClock(*_gameInfo.clock);

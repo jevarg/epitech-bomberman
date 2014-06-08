@@ -51,12 +51,13 @@ public:
   v_Contcit	ContEnd() const;
   bool		determineMapSize(const std::string &, int &, int &);
 
+  void		createContainers();
+  void		display();
   const std::vector<Container *>	&getCont() const;
 
 private:
   void	genSmallMaze(short x, short y, short dir);
   void	genBigMaze();
-  void	createContainers();
 
   bool	checkValidPath(int x, int y) const;
   short	getDir(bool *tab, short oldDir) const;
@@ -64,7 +65,6 @@ private:
   bool	checkAccess(short x, short y) const;
   void	fillBox();
   void	fillContainers(t_gameinfo &gameInfo);
-  void	display();
 
   int			_mapX;
   int			_mapY;
