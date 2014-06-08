@@ -12,6 +12,7 @@ public:
   Console(Settings &set);
   ~Console();
   bool		parseCmd(const std::string &, std::string &);
+  bool		aff();
 
 private:
   bool		import(const std::string &, std::string &, int);
