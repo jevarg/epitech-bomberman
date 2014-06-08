@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat Jun  7 23:40:33 2014 luc sinet
+## Last update Sun Jun  8 03:26:39 2014 
 ##
 
 NAME		=	bomberman
@@ -55,7 +55,9 @@ SRC		=	main.cpp \
 			Text.cpp \
 			Light.cpp \
 			EntityFactory.cpp \
-			Sound.cpp
+			Sound.cpp \
+			Square.cpp \
+			Hud.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

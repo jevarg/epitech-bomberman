@@ -32,16 +32,13 @@ void	Text::draw(gdl::AShader &shader, gdl::Clock const&) const
   if (_geometry)
     {
       _font.bind();
-      glDisable(GL_DEPTH_TEST);
       _geometry->draw(shader, getTransformation(), GL_TRIANGLES);
-      glEnable(GL_DEPTH_TEST);
     }
 }
 
 void	Text::setText(std::string const& str, float x, float y, float size)
 {
-  float	scale, UVx, UVy;
-  scale = 0;
+  float	scale = 0, UVx, UVy;
 
   if (_geometry)
     delete _geometry;

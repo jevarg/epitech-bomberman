@@ -52,8 +52,9 @@ bool GameEngine::initialize()
       || !_textShader.build())
     return (false);
 
-  if (!_text.initialize())
-    return (false);
+  _hud = new HUD(_textShader);
+  // if (!_text.initialize())
+  //   return (false);
 
   _ground = new Cube(WALL_TEXTURE);
   _ground->initialize();
@@ -143,7 +144,7 @@ bool		GameEngine::update()
   elapsedTime += time;
   if (elapsedTime > 0.1)
     {
-      _text << round(_frames / elapsedTime);
+      _hud->setFps(round(_frames / elapsedTime));
       _frames = 0;
       elapsedTime = 0;
     }
@@ -194,9 +195,14 @@ void GameEngine::draw()
 	    tmp->draw(_shader, *_gameInfo.clock);
 	  }
       }
-  _textShader.bind();
-  _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
-  _textShader.setUniform("view", glm::mat4(1));
-  _text.draw(_textShader, *_gameInfo.clock);
+  // glDisable(GL_DEPTH_TEST);
+  // _textShader.bind();
+  // _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
+  // _textShader.setUniform("view", glm::mat4(1));
+  // _textShader.setUniform("winX", 1600.0f);
+  // _textShader.setUniform("winY", 900.0f);
+  // _text.draw(_textShader, *_gameInfo.clock);
+  // glEnable(GL_DEPTH_TEST);
+  _hud->draw(_player1, _gameInfo);
   _win.flush();
 }

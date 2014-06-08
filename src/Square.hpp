@@ -1,5 +1,5 @@
-#ifndef _CUBE_HPP_
-# define _CUBE_HPP_
+#ifndef _SQUARE_HPP_
+# define _SQUARE_HPP_
 
 # include <iostream>
 # include <glm/glm.hpp>
@@ -10,25 +10,29 @@
 # include "IObject.hpp"
 # include "Exception.hpp"
 
-class Input;
-
-class Cube : public IObject
+class Square : public IObject
 {
 public:
-  Cube();
-  Cube(const std::string &);
-  Cube(const Cube &);
-  virtual ~Cube();
+  Square();
+  Square(const std::string &);
+  Square(const Square &);
+  virtual ~Square();
   virtual bool initialize();
   virtual void draw(gdl::AShader &shader, gdl::Clock const &) const;
   virtual IObject *clone() const;
+
   void setTexture(gdl::Texture *texture);
+  void setPos(int x, int y);
+  void setSize(int x, int y);
+  void setScale(int scale);
+  void fillGeometry();
 
 private:
 
+  int _x, _y, _sizeX, _sizeY, _scale;
   gdl::Texture *_texture;
   gdl::Geometry *_geometry;
   std::string _file;
 };
 
-#endif /* _CUBE_HPP_ */
+#endif /* _SQUARE_HPP_ */
