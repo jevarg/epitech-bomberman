@@ -52,6 +52,7 @@ public:
   void		takeDamages(int amount);
 
   int		getBombStock() const;
+  int		getMaxBomb() const;
   void		setBombStock(int bombStock);
   ABomb		*getBomb() const;
   void		setBomb(ABomb *bomb);
@@ -66,6 +67,7 @@ public:
   void		destroy();
 protected:
   int		_bombStock;
+  int		_maxBomb;
   ABomb		*_bomb;
   int		_health;
   int		_speed;

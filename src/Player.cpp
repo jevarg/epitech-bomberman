@@ -105,6 +105,7 @@ AEntity *Player::clone(int x, int y)
   _camera.setPos(glm::vec3(x, 6.0, y + 7));
   _camera.setPointView(glm::vec3(x, 0.0, y));
   _model->setPos(glm::vec3(x, 0.0, y));
+  _model->translate(glm::vec3(0.0, -0.5, 0.0));
   return (this);
 }
 

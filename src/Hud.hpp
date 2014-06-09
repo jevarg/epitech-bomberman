@@ -8,8 +8,10 @@
 
 typedef struct s_gameinfo t_gameinfo;
 
-# define HEART_MODEL "./assets/heart.tga"
-# define NOHEART_MODEL "./assets/noheart.tga"
+# define STOCK_TEXTURE "./assets/stock.tga"
+# define NOSTOCK_TEXTURE "./assets/nostock.tga"
+# define HEART_TEXTURE "./assets/heart.tga"
+# define NOHEART_TEXTURE "./assets/noheart.tga"
 
 class HUD
 {
@@ -22,6 +24,8 @@ public:
 
 private:
   gdl::AShader &_shader;
+  Square _stock;
+  Square _nostock;
   Square _heart;
   Square _noHeart;
   Text	 _fps;
