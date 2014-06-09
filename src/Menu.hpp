@@ -9,34 +9,32 @@
 # include "GameEngine.hpp"
 # include "Text.hpp"
 # include "Sound.hpp"
-/*# include "Widget.hpp"*/
+# include "AWidget.hpp"
 
 class Menu
 {
 public:
-  Menu(Settings &set);
+  Menu();
   virtual ~Menu();
 
   bool	initialize();
   bool	update();
   void	draw();
   void	launch();
+  void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
 
 private:
   void	launchGame();
 
   gdl::SdlContext	_win;
-  Input			_input;
-  Settings		_set;
-  gdl::Clock		_clock;
   gdl::BasicShader	_textShader;
   bool			_done;
-  Text			_text;
-  Sound			_sound;
+  t_gameinfo		_gameInfo;
   int			_frames;
-  // std::vector<Widget>	_mainPanel;
-  // std::vector<Widget>	_loadPanel;
-  // std::vector<Widget>	_optionPanel;
+  std::vector<AWidget *> *_currentPanel;
+  std::vector<AWidget *> _mainPanel;
+  std::vector<AWidget *> _loadPanel;
+  std::vector<AWidget *> _optionPanel;
 };
 
 #endif /* _MENU_HPP_ */

@@ -43,13 +43,13 @@ void HUD::draw(Player *player, t_gameinfo &gameInfo)
 	{
 	  _heart.setPos(i * 30, 10);
 	  _heart.fillGeometry();
-	  _heart.draw(*_shader, *gameInfo.clock);
+	  _heart.draw(_shader, *gameInfo.clock);
 	}
       else
 	{
 	  _noHeart.setPos(i * 30, 10);
 	  _noHeart.fillGeometry();
-	  _noHeart.draw(*_shader, *gameInfo.clock);
+	  _noHeart.draw(_shader, *gameInfo.clock);
 	}
     }
   for (int i = 0;i < player->getMaxBomb();++i)

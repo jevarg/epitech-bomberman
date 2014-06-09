@@ -16,7 +16,7 @@ typedef struct s_gameinfo t_gameinfo;
 class HUD
 {
 public:
-  HUD(gdl::AShader *shader);
+  HUD(gdl::AShader &shader);
   ~HUD();
 
   void setFps(float fps);

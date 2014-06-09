@@ -35,7 +35,7 @@ bool GameEngine::initialize()
   // _gameInfo.map->determineMapSize("map", x, y);
   _mapX = _gameInfo.set->getVar(MAP_HEIGHT);
   _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
-  if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
+  if (!_win->start(_gameInfo.set->getVar(W_WIDTH),
 		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
@@ -46,7 +46,7 @@ bool GameEngine::initialize()
       || !_shader.build())
     return (false);
 
-  _hud = new HUD(_textShader);
+  _hud = new HUD(*(_textShader));
 
   _ground = new Cube(WALL_TEXTURE);
   _ground->initialize();
