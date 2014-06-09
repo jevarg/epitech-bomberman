@@ -55,7 +55,9 @@ bool GameEngine::initialize()
   _ground->initialize();
   _ground->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
   			      -1, (((float)(_mapY) - 1.0) / 2.0)));
-  _ground->scale(glm::vec3(_mapX, 1.0, _mapY));
+  _ground->scale(glm::vec3(_gameInfo.set->getVar(R_DEPTHVIEW) * 2,
+			   1.0,
+			   _gameInfo.set->getVar(R_DEPTHVIEW) * 2));
 
   fact.addModel(WALL, new Cube(*_ground), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*_ground), BOX_TEXTURE);
@@ -170,6 +172,7 @@ void GameEngine::draw()
   int x = _player1->getXPos(), y = _player1->getYPos(), mapx = _mapX, mapy = _mapY;
   Camera &cam = _player1->getCam();
   int depth_view = _gameInfo.set->getVar(R_DEPTHVIEW);
+  float groundX = x, groundY = y, sizeX = depth_view * 2, sizeY = depth_view * 2;
   const std::vector<Container *>	&cont = _gameInfo.map->getCont();
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -180,23 +183,30 @@ void GameEngine::draw()
   _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
   for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
     (*it)->render(_shader);
-
- //  float groundX = x - 0.5, groundY = y - 0.5;
- // // float posX = x - 0.5, posY = y - 0.5;
-
- //  if (x + depth_view >= mapx)
- //    groundX -= (depth_view - (mapx - x));
- //  else if (x - depth_view <= 0)
- //    groundX += (depth_view - (depth_view - x));
-
- // if (y + depth_view >= mapy)
- //    groundY -= (depth_view - (mapy - y));
- //  else if (y - depth_view <= 0)
- //    groundY += (depth_view - (depth_view - y));
-
- //  _ground->setScale(glm::vec3((x + depth_view) < 10 ? x  + depth_view : 10, 1.0,
- // 			      (y + depth_view) < 10 ? y + depth_view : 10));
- //  _ground->setPos(glm::vec3(groundX, -1, groundY));
+  if (groundX - depth_view < 0)
+    {
+      sizeX -= ABS(groundX - depth_view);
+      groundX = sizeX / 2;
+    }
+  else if (groundX + depth_view > _gameInfo.map->getWidth())
+    {
+      sizeX -= (groundX + depth_view - _gameInfo.map->getWidth());
+      groundX = _gameInfo.map->getWidth() - sizeX / 2;
+    }
+  if (groundY - depth_view < 0)
+    {
+      sizeY -= ABS(groundY - depth_view);
+      groundY = sizeY / 2;
+    }
+  else if (groundY + depth_view > _gameInfo.map->getHeight())
+    {
+      sizeY -= (groundY + depth_view - _gameInfo.map->getHeight());
+      groundY = _gameInfo.map->getHeight() - sizeY / 2;
+    }
+  groundX -= 0.5;
+  groundY -= 0.5;
+  _ground->setScale(glm::vec3(sizeX, 1.0, sizeY));
+  _ground->setPos(glm::vec3(groundX, -1, groundY));
   _ground->draw(_shader, *_gameInfo.clock);
   for (int j = (y > depth_view) ? y - depth_view : 0;j <= y + depth_view && j < mapy;j++)
     for (int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < mapx;i++)
