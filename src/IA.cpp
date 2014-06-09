@@ -36,18 +36,9 @@ void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y,
 {
   for (int i = 0 ; i < max_it ; i++)
     {
-      // std::cout << "x " << x << std::endl;
-      // std::cout << "y " << y << std::endl;
-      // std::cout << "minx " << min_x << std::endl;
-      // std::cout << "miny " << min_y << std::endl;
-      // std::cout << "maxx " << max_x << std::endl;
-      // std::cout << "maxy " << max_y << std::endl;
-      // std::cout << "return of getentity " << _gameInfo->map->getEntityIf(x, y, FREE) << std::endl;
-      // std::cout << std::endl;
       if (x > min_x && x < max_x && y > min_y && y < max_y &&
 	  _gameInfo->map->getEntityIf(x, y, FREE) == NULL)
 	{
-	  // std::cout << "Danger in dir at " << x << " " << y << std::endl;
 	  _lua.pushIntInt(++(*cnt), FLAME);
 	  _lua.pushIntInt(++(*cnt), y);
 	  _lua.pushIntInt(++(*cnt), x);	
@@ -75,11 +66,9 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 	  Flame	*ff;
 	  if ((ff = static_cast<Flame*>(_gameInfo->map->getEntityIf(j, i, FLAME))) != NULL)
 	    {
-	      // std::cout << "find flame" << std::endl;
 	      int dir = ff->getDirection();
 	      if (dir == ALLDIR)
 	  	{
-		  // std::cout << "in alldir" << std::endl;
 	  	  danger_in_dir(c2, c1 - 1, x, x + (aggro * 2) + 1, y,
 				y + (aggro * 2) + 1, 0, -1, ff->getRange(), cnt);
 	  	  danger_in_dir(c2, c1 + 1, x, x + (aggro * 2) + 1, y,
