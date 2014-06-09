@@ -32,12 +32,12 @@ bool GameEngine::initialize()
   EntityFactory *ent = EntityFactory::getInstance();
   Spawn	spawn(_gameInfo.map);
 
-  // _gameInfo.map->determineMapSize("bigmap", x, y);
-  // _gameInfo.set->setVar(MAP_WIDTH, x);
-  // _gameInfo.set->setVar(MAP_HEIGHT, y);
+  // _gameInfo.map->determineMapSize("map", x, y);
   _mapX = _gameInfo.set->getVar(MAP_HEIGHT);
-  _mapY = _gameInfo.set->getVar(MAP_WIDTH);
-
+  _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
+  if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
+		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
+    throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -50,17 +50,17 @@ bool GameEngine::initialize()
 
   _ground = new Cube(WALL_TEXTURE);
   _ground->initialize();
-  // _ground->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
-  // 			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
-  _ground->scale(glm::vec3(((_mapX < 10) ? _mapX : 10), 1, ((_mapY < 10) ? _mapY : 10)));
+  _ground->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
+  			      -1, (((float)(_mapY) - 1.0) / 2.0)));
+  _ground->scale(glm::vec3(_mapX, 1.0, _mapY));
 
   fact.addModel(WALL, new Cube(*_ground), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*_ground), BOX_TEXTURE);
   fact.addModel(FLAME, new Cube(*_ground), FLAME_TEXTURE);
   fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
-  fact.addModel(STOCKITEM, SPEEDITEM_MODEL);
-  fact.addModel(RANGEITEM, SPEEDITEM_MODEL);
+  fact.addModel(STOCKITEM, STOCKITEM_MODEL);
+  fact.addModel(RANGEITEM, RANGEITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER_MODEL);
   fact.addModel(BOT, CHARACTER_MODEL);
@@ -70,7 +70,7 @@ bool GameEngine::initialize()
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
   _gameInfo.map->createMap(_gameInfo);
-  // _gameInfo.map->load("bigmap", _gameInfo);
+  // _gameInfo.map->load("map", _gameInfo);
   // spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
@@ -125,6 +125,7 @@ bool		GameEngine::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
+  // static int	frame = 0;
   static double	elapsedTime = 0;
 
   mainInput();
@@ -140,6 +141,21 @@ bool		GameEngine::update()
       _frames = 0;
       elapsedTime = 0;
     }
+  // ++frame;
+  // if (frame == 600)
+  //   {
+  //     if (_save.saveGame(*(_gameInfo.map), *(_gameInfo.set), "save") == false)
+  // 	std::cout << "failed to save game" << std::endl;
+  //     else
+  // 	std::cout << "game saved" << std::endl;
+  //   }
+  // if (frame > 600 && frame % 600 == 0)
+  //   {
+  //     if (_save.loadGame(*(_gameInfo.map), *(_gameInfo.set), "save", _gameInfo) == false)
+  // 	std::cout << "failed to load game" << std::endl;
+  //     else
+  // 	std::cout << "loaded game successfully" << std::endl;
+  //   }
   if (time < fps)
     usleep((fps - time) * 1000);
   _win->updateClock(*_gameInfo.clock);
@@ -150,6 +166,7 @@ void GameEngine::draw()
 {
   int x = _player1->getXPos(), y = _player1->getYPos(), mapx = _mapX, mapy = _mapY;
   Camera &cam = _player1->getCam();
+  int depth_view = _gameInfo.set->getVar(R_DEPTHVIEW);
   const std::vector<Container *>	&cont = _gameInfo.map->getCont();
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -162,25 +179,25 @@ void GameEngine::draw()
   for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
     (*it)->render(_shader);
 
-  float groundX = x - 0.5, groundY = y - 0.5;
-  // float posX = x - 0.5, posY = y - 0.5;
+ //  float groundX = x - 0.5, groundY = y - 0.5;
+ // // float posX = x - 0.5, posY = y - 0.5;
 
-  if (x + 5 >= mapx)
-    groundX -= (x + 5 - mapx);
-  else if (x - 5 <= 0)
-    groundX += (-(x - 5));
+ //  if (x + depth_view >= mapx)
+ //    groundX -= (depth_view - (mapx - x));
+ //  else if (x - depth_view <= 0)
+ //    groundX += (depth_view - (depth_view - x));
 
-  if (y + 5 >= mapy)
-    groundY -= (y + 5 - mapy);
-  else if (y - 5 <= 0)
-    groundY += (-(y - 5));
+ // if (y + depth_view >= mapy)
+ //    groundY -= (depth_view - (mapy - y));
+ //  else if (y - depth_view <= 0)
+ //    groundY += (depth_view - (depth_view - y));
 
-  _ground->setScale(glm::vec3((x + 5) < 10 ? x  + 5 : 10, 1.0, (y + 5) < 10 ? y + 5 : 10));
-  _ground->setPos(glm::vec3(groundX, -1, groundY));
+ //  _ground->setScale(glm::vec3((x + depth_view) < 10 ? x  + depth_view : 10, 1.0,
+ // 			      (y + depth_view) < 10 ? y + depth_view : 10));
+ //  _ground->setPos(glm::vec3(groundX, -1, groundY));
   _ground->draw(_shader, *_gameInfo.clock);
-
-  for (int j = (y > 5) ? y - 5 : 0;j <= y + 5 && j < mapy;j++)
-    for (int i = (x > 5) ? x - 5 : 0;i < x + 5 && i < mapx;i++)
+  for (int j = (y > depth_view) ? y - depth_view : 0;j <= y + depth_view && j < mapy;j++)
+    for (int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < mapx;i++)
       {
 	AEntity *tmp = _gameInfo.map->getEntity(i, j);
 	if (tmp != NULL)

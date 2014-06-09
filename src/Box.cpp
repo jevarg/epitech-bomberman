@@ -1,4 +1,4 @@
-# include <cstring>
+#include <cstring>
 #include "GameEngine.hpp"
 #include "Box.hpp"
 
@@ -67,6 +67,8 @@ int		Box::hasSame(double * const tab, int size) const
 
   for (int i = 0; i < size; ++i)
     {
+      if (tab[i] == -1)
+	continue ;
       val = tab[i];
       spos = i;
       for (int j = i + 1; j < size; j++)
@@ -150,7 +152,8 @@ void	Box::spawnItem()
 				    (static_cast<eType>(SPEEDITEM + i), _x, _y));
 	  break ;
 	}
-      start += ptab[i];
+      if (ptab[i] != -1)
+	start += ptab[i];
     }
 }
 

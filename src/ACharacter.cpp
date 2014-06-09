@@ -8,6 +8,7 @@ ACharacter::ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thre
 /* handle the bomb type at creation */
 {
   _bombStock = 1;
+  _maxBomb = 1;
   _health = 1;
   _speed = 5;
   _range = 0;
@@ -54,6 +55,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 	    case SPEEDITEM:
 	    case HEALTHITEM:
 	    case STOCKITEM:
+	    case RANGEITEM:
 	    case FLAME:
 	      if (_anim == NOTHING)
 	      	{
@@ -165,9 +167,15 @@ int	ACharacter::getBombStock() const
 void	ACharacter::setBombStock(int bombStock)
 {
   if (bombStock > BOMB_MAX)
-    _bombStock = BOMB_MAX;
+    {
+      _bombStock = BOMB_MAX;
+      _maxBomb = BOMB_MAX;
+    }
   else
-    _bombStock = bombStock;
+    {
+      _bombStock = bombStock;
+      _maxBomb = bombStock;
+    }
 }
 
 ABomb	*ACharacter::getBomb() const
@@ -199,4 +207,9 @@ void	ACharacter::destroy()
   delete (_mutex);
   delete (this);
   pthread_exit(NULL);
+}
+
+int ACharacter::getMaxBomb() const
+{
+  return (_maxBomb);
 }
