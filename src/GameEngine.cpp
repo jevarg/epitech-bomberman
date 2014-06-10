@@ -2,9 +2,11 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound)
-  : _save(), _type(), _texture(),
-    _gameInfo(&clock, &map, &set, &input, &sound), _lights(), _players()
+GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
+		       gdl::BasicShader *textShader, Map *map, Settings *set,
+		       Input *input, Sound *sound)
+  : _win(win), _textShader(textShader), _save(),
+    _gameInfo(clock, map, set, input, sound), _lights(), _players()
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -22,7 +24,7 @@ GameEngine::~GameEngine()
 {
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
-  _win.stop();
+  usleep(1000);
 }
 
 bool GameEngine::initialize()
@@ -34,9 +36,6 @@ bool GameEngine::initialize()
   // _gameInfo.map->determineMapSize("map", x, y);
   _mapX = _gameInfo.set->getVar(MAP_HEIGHT);
   _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
-  if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
-		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
-    throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -44,12 +43,8 @@ bool GameEngine::initialize()
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
-  if (!_textShader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER)
-      || !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER)
-      || !_textShader.build())
-    return (false);
 
-  _hud = new HUD(_textShader);
+  _hud = new HUD(*(_textShader));
 
   _ground = new Cube(WALL_TEXTURE);
   _ground->initialize();
@@ -68,7 +63,7 @@ bool GameEngine::initialize()
   fact.addModel(RANGEITEM, RANGEITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER_MODEL);
-  fact.addModel(BOT, CHARACTER_MODEL);
+  fact.addModel(BOT, BOT_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
@@ -96,8 +91,7 @@ bool GameEngine::initialize()
   // spawn.spawnEnt(1, 0, _gameInfo);
   _players.push_back(_player1);
   // _players.push_back(_player2);
-  spawn.spawnEnt(1, 3, _gameInfo);
-
+  spawn.spawnEnt(1, 5, _gameInfo);
   return (true);
 }
 
@@ -107,7 +101,7 @@ void	GameEngine::mainInput()
 
   _gameInfo.input->getInput(*(_gameInfo.set));
   if (((*_gameInfo.input)[win] && win.event == WIN_QUIT) ||
-      (*_gameInfo.input)[SDLK_ESCAPE])
+      _gameInfo.input->isPressed(SDLK_ESCAPE))
     {
       _shutdown = true;
       v_Contcit end = _gameInfo.map->ContEnd();
@@ -116,11 +110,11 @@ void	GameEngine::mainInput()
 	  AEntity *ent;
 	  v_Entit its;
 	  l_Entit itm;
-	  while ((ent = (*it)->listFront()) != NULL)
+	  /*	  while ((ent = (*it)->listFront()) != NULL)
 	    ent->setDestroy();
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
-	}
+	  */}
       return ;
     }
 }
@@ -165,9 +159,10 @@ bool		GameEngine::update()
   //     else
   // 	std::cout << "loaded game successfully" << std::endl;
   //   }
+
   if (time < fps)
     usleep((fps - time) * 1000);
-  _win.updateClock(*_gameInfo.clock);
+  _win->updateClock(*_gameInfo.clock);
   return (true);
 }
 
@@ -177,10 +172,8 @@ void GameEngine::draw()
   int winX = _gameInfo.set->getVar(W_WIDTH), winY = _gameInfo.set->getVar(W_HEIGHT);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   for (std::vector<Player *>::const_iterator player = _players.begin();player != _players.end();++player)
+  for (std::vector<Player *>::const_iterator player = _players.begin();player != _players.end();++player)
     {
-      // std::cout << "X => " << i * (winX / _players.size()) << " Y => 0 SIZEX => "
-      // 		<< (winX / _players.size()) << " SIZEY => " << winY << std::endl;
       glViewport (i * (winX / _players.size()), 0, (winX / _players.size()), winY);
       ++i;
 
@@ -228,16 +221,17 @@ void GameEngine::draw()
       for (int j = (y > depth_view) ? y - depth_view : 0;j <= y + depth_view && j < mapy;j++)
 	for (int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < mapx;i++)
 	  {
-	    AEntity *tmp = _gameInfo.map->getEntity(i, j);
-	    if (tmp != NULL)
+	    std::vector<AEntity *> elem;
+	    _gameInfo.map->checkFullMapColision(i, j, elem);
+	    for (std::vector<AEntity *>::const_iterator it1 = elem.begin();it1 != elem.end();it1++)
 	      {
-		if (tmp->getType() == WALL)
-		  tmp->getModel()->setPos(glm::vec3(i, 0.0, j));
-		tmp->draw(_shader, *_gameInfo.clock);
+		if ((*it1)->getType() == WALL)
+		  (*it1)->getModel()->setPos(glm::vec3(i, 0.0, j));
+		(*it1)->draw(_shader, *_gameInfo.clock);
 	      }
 	  }
       _hud->draw(*player, _gameInfo);
       glFlush();
     }
-  _win.flush();
+  _win->flush();
 }
