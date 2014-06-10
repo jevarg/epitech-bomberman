@@ -20,6 +20,7 @@ public:
   ~HUD();
 
   void setFps(float fps);
+  void setScore(float score);
   void draw(Player *player, t_gameInfo &gameInfo);
 
 private:
@@ -29,6 +30,7 @@ private:
   Square _heart;
   Square _noHeart;
   Text	 _fps;
+  Text	 _score;
 };
 
 #endif /* _HUD_HPP_ */
