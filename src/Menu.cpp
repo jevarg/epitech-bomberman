@@ -34,13 +34,13 @@ bool  Menu::initialize()
   ImageWidget	*background = new ImageWidget(0, 0, y, x, "./Ressources/Images/background.tga");
 
   _mainPanel.push_back(background);
-  _mainPanel.push_back(new NavigationWidget(x / 4, 500, y / 11.25f, x / 2, "./assets/singleplayer.tga", &_newGamePanel)); 
-  _mainPanel.push_back(new NavigationWidget(x / 4, 400, y / 11.25f, x / 2, "./assets/multiplayers.tga", &_newGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/option.tga", &_loadPanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/option.tga", &_optionPanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, 500, y / 11.25f, x / 2, "./assets/Button/singleplayer_button.tga", &_newGamePanel)); 
+  _mainPanel.push_back(new NavigationWidget(x / 4, 400, y / 11.25f, x / 2, "./assets/Button/multiplayer_button.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/Button/loadgame_button.tga", &_loadGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/Button/options_button.tga", &_optionPanel));
 
   _newGamePanel.push_back(background);
-  _newGamePanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/option.tga", &_importPanel));
+  _newGamePanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/Button/options_button.tga", &_importPanel));
 
   // fill Panels vectors with Widgets
   return (true);
