@@ -10,6 +10,7 @@ Settings::Settings()
   _actionList.push_back("dropBomb");
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
+  _actionList.push_back("console");
 
   _cvarList.push_back(new t_cvar ("com_maxFps", 2, 300, 60));
   _cvarList.push_back(new t_cvar ("cg_fov", 20, 180, 80));
@@ -212,7 +213,6 @@ bool	Settings::readFile(std::vector<std::string> &inst,
   std::ifstream file(filename.c_str());
   std::string	line;
 
-  std::cout << "dfrth" << std::endl;
   if (file.is_open())
     {
       while (std::getline(file, line))

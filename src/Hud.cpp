@@ -24,7 +24,7 @@ void HUD::setFps(float fps)
   std::stringstream ss("");
 
   ss << fps;
-  _fps.setText(ss.str(), 1500.0, 800.0, 50);
+  _fps.setText(std::string("FPS: ") + ss.str(), 1400.0, 800.0, 50);
 }
 
 void HUD::draw(Player *player, t_gameinfo &gameInfo)
@@ -33,7 +33,7 @@ void HUD::draw(Player *player, t_gameinfo &gameInfo)
 
   glDisable(GL_DEPTH_TEST);
   _shader.bind();
-  _shader.setUniform("projection", glm::ortho(0.0f, x, y, 0.0f, -1.0f, 1.0f));
+  _shader.setUniform("projection", glm::ortho(0.0f, x, 0.0f, y, -1.0f, 1.0f));
   _shader.setUniform("view", glm::mat4(1));
   _shader.setUniform("winX", x);
   _shader.setUniform("winY", y);

@@ -56,10 +56,7 @@ void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool stat
 
   _key = event.key.keysym.sym;
   if ((act = set.getActionFromKey(_key)) != UNKNOWN)
-    {
-      std::cout << "action: " << act << " " << state << std::endl;
-      _actionState[act] = state;
-    }
+    _actionState[act] = state;
   if (event.type == SDL_KEYDOWN)
     pressKey(event);
   else
@@ -111,14 +108,14 @@ void	Input::windowEvent(const SDL_Event &event)
       _window.event = WIN_QUIT;
       break ;
     }
-   // switch (event.window.event)
-   //  {
-   //  case SDL_WINDOWEVENT_RESIZED:
-   //    _window.event = WIN_RESIZE;
-   //    _window.x = event.window.data1;
-   //    _window.y = event.window.data2;
-   //  break ;
-   //  }
+  /*  switch (event.window.event
+    {
+    case SDL_WINDOWEVENT_RESIZED:
+      _window.event = WIN_RESIZE;
+      _window.x = event.window.data1;
+      _window.y = event.window.data2;
+    break ;
+    }*/
 }
 
 void	Input::getInput(const Settings &set)

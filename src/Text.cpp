@@ -5,8 +5,8 @@ Text::Text()
   : ATransformation()
 {
   _geometry = NULL;
-  _defX = 1500.0f;
-  _defY = 800.0f;
+  _defX = 0.0f;
+  _defY = 0.0f;
   _defSize = 40.0f;
 }
 
