@@ -411,7 +411,7 @@ int	Map::clearElements()
       if (ent->getDeathTime() <= 0)
 	{
 	  _collector.pop_front();
-	  delete (ent);
+	  ent->destroy();
 	}
       else
 	break ;

@@ -16,11 +16,13 @@ Console::Console(Settings &set, Input &input, gdl::Clock &clock, gdl::AShader &s
 
 void	Console::print(Text &text, int winY)
 {
-  int	y = 0;
+  int	y = 1;
 
-  for (int size = _toPrint.size(); size > (winY / POLICE_SIZE); --size)
-    _toPrint.pop_back();
-  for (std::list<std::string>::iterator it = _toPrint.begin(); it != _toPrint.end(); ++it)
+  text.setText(_buf, 20, 0, POLICE_SIZE);
+  text.draw(_shader, _clock);
+  for (int size = _history.size(); size > (winY / POLICE_SIZE); --size)
+    _history.pop_back();
+  for (std::list<std::string>::iterator it = _history.begin(); it != _history.end(); ++it)
     {
       text.setText(*it, 20, y * POLICE_SIZE, POLICE_SIZE);
       text.draw(_shader, _clock);
@@ -28,61 +30,82 @@ void	Console::print(Text &text, int winY)
     }
 }
 
-bool	Console::aff(gdl::SdlContext const &win, float winX, float winY)
+void	Console::handleClock(const gdl::SdlContext &win, int &frame,
+			     double &time, double fps)
+{
+  time = _clock.getElapsed();
+  if (time < fps)
+    usleep((fps - time) * 1000);
+  frame = (frame >= 100) ? 100 : frame + 1;
+  win.updateClock(_clock);
+}
+
+bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
 {
   Text		text;
-  double	fps = 100.0;
+  double	fps = 1000.0 / 20.0;
+  int		frame = -1;
   double	time;
-  SDL_Keycode	key;
+  Keycode	key = 0;
+  Keycode	save = -1;
 
   if (text.initialize() == false)
     return (false);
-  _toPrint.push_front(">");
-  while (1)
+  _buf.clear();
+  _buf.push_back('>');
+  _shader.bind();
+  _shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f
+						  , 0.0f, -1.0f, 1.0f));
+  _shader.setUniform("view", glm::mat4(1));
+  _shader.setUniform("winX", winX);
+  _shader.setUniform("winY", winY);
+  while (key != 27)
     {
       _input.getInput(_set);
-      _input[&key];
-      win.updateClock(_clock);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-      glDisable(GL_DEPTH_TEST);
-      _shader.bind();
-      _shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
-      _shader.setUniform("view", glm::mat4(1));
-      _shader.setUniform("winX", winX);
-      _shader.setUniform("winY", winY);
-      print(text, static_cast<int>(winY));
-      glEnable(GL_DEPTH_TEST);
-      win.flush();
-
-      if (key == 27)
-	return (true);
-      if (key >= 1073741913 && key <= 1073741922)
-	key = ((key - 1073741912) % 10) + '0';
-      if (key == '\r' || key == 1073741912)
+      l_Keycit beg = _input.getPressedBeg();
+      l_Keycit end = _input.getPressedEnd();
+      if (beg != end)
 	{
-	  if (_buf == "quit")
-	    return (true);
-	  parseCmd(_buf, _ret);
-	  _ret = _buf + ":" + _ret;
-	  _toPrint.front() = _ret;
-	  _buf.clear();
-	  _toPrint.push_front(">");
-	}
-      else if (key > 0 && key < 128)
-	{
-	  std::cout << "key != 0 : " << key << std::endl;
-	  if (key == 8 && _buf.length() > 0)
-	    _buf.erase(_buf.length() - 1, 1);
-	  if (isPrintable(key) == true)
-	    _buf.push_back(static_cast<char>(key));
-	  if (_buf.empty() == true)
-	    _toPrint.front()  = ">";
+	  std::cout << save << " " << *beg << " " << frame << std::endl;
+	  save = *beg;
+	  if (save == key && ((key == '\b' && frame < 2) ||
+			      (key != '\b' && frame >= 0 && frame < 10)))
+	    {
+	      handleClock(win, frame, time, fps);
+	      continue;
+	    }
 	  else
-	    _toPrint.front() = _buf;
+	    frame = 0;
 	}
-      time = _clock.getElapsed();
-      if (time < fps)
-	usleep((fps - time) * 1000);
+      for (; beg != end; ++beg)
+	{
+	  key = *beg;
+	  if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
+	    key = '0' + key - SDLK_KP_0;
+	  if (key == '\r' || key == SDLK_KP_ENTER)
+	    {
+	      _buf.erase(_buf.begin());
+	      std::cout << "buf: [" << _buf << "]" << std::endl;
+	      if (_buf == "quit")
+		return (true);
+	      parseCmd(_buf, _ret);
+	      _ret = _buf + ":" + _ret;
+	      _history.push_front(_ret);
+	      _buf.clear();
+	      _buf.push_back('>');
+	    }
+	  else if (key > 0 && key < 128)
+	    {
+	      if (key == '\b' && _buf.length() > 1)
+		_buf = _buf.substr(0, _buf.length() - 1);
+	      if (isPrintable(key) == true)
+		_buf.push_back(static_cast<char>(key));
+	    }
+	}
+      print(text, static_cast<int>(winY));
+      win.flush();
+      handleClock(win, frame, time, fps);
     }
   return (true);
 }
