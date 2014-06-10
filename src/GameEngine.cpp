@@ -24,7 +24,8 @@ GameEngine::~GameEngine()
 {
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
-  _win.stop();
+  usleep(1000);
+  // _win.stop();
 }
 
 bool GameEngine::initialize()
