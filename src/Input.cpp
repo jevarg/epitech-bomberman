@@ -44,8 +44,6 @@ void	Input::unpressKey(const SDL_Event &event)
 
   if ((it = std::find(_keyPressed.begin(), _keyPressed.end(), _key)) != _keyPressed.end())
     _keyPressed.erase(it);
-  if (_key == event.key.keysym.sym)
-    _key = 0;
 }
 
 void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool state)
@@ -174,6 +172,16 @@ bool	Input::isPressed(Keycode key)
 
   it = std::find(_keyPressed.begin(), _keyPressed.end(), key);
   return (it != _keyPressed.end());
+}
+
+const l_Keycit	Input::getPressedBeg() const
+{
+  return (_keyPressed.begin());
+}
+
+const l_Keycit	Input::getPressedEnd() const
+{
+  return (_keyPressed.end());
 }
 
 void	Input::operator[](SDL_Keycode * const key) const

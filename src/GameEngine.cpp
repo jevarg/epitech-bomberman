@@ -110,11 +110,11 @@ void	GameEngine::mainInput()
 	  AEntity *ent;
 	  v_Entit its;
 	  l_Entit itm;
-	  /*	  while ((ent = (*it)->listFront()) != NULL)
+	  while ((ent = (*it)->listFront()) != NULL)
 	    ent->setDestroy();
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
-	  */}
+	}
       return ;
     }
 }
