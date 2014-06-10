@@ -50,6 +50,7 @@ bool		Menu::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
+  int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
   t_mouse	mouse;
 
   _gameInfo.input->getInput(*(_gameInfo.set));
@@ -57,7 +58,7 @@ bool		Menu::update()
   if (mouse.event == BUTTONUP)
     for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
 	   endit = (*_currentPanel).end(); it != endit ; ++it)
-      if ((*it)->isClicked(mouse.x, mouse.y))
+      if ((*it)->isClicked(x - mouse.x, y - mouse.y))
 	{
 	  (*it)->onClick(_gameInfo, (*this));
 	  break;
