@@ -19,6 +19,8 @@ Menu::~Menu()
 
 bool  Menu::initialize()
 {
+  int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
+  
   if (!_win.start(_gameInfo.set->getVar(W_WIDTH), _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
@@ -26,7 +28,9 @@ bool  Menu::initialize()
       !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER) ||
       !_textShader.build())
     return (false);
-  _mainPanel.push_back(new NavigationWidget(50, 50, 40, 400, "allo", &_loadPanel)); // tmp
+  _mainPanel.push_back(new NavigationWidget(x / 4, 520, y / 11.25f, x / 2, "./assets/singleplayer.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, 400, y / 11.25f, x / 2, "./assets/multiplayers.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, 280, y / 11.25f, x / 2, "./assets/option.tga", &_newGamePanel));
   // fill Panels vectors with Widgets
   return (true);
 }
@@ -53,12 +57,18 @@ bool  Menu::update()
 
 void  Menu::draw()
 {
+  float x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
+
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glDisable(GL_DEPTH_TEST);
-  _textShader.bind();
-  _textShader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
-  _textShader.setUniform("view", glm::mat4(1));
   // draw Widget here (need a draw function first, or may be Square need it)
+  _textShader.bind();
+  _textShader.setUniform("projection", glm::ortho(0.0f, x, 0.0f, y, -1.0f, 1.0f));
+  _textShader.setUniform("view", glm::mat4(1));
+  _textShader.setUniform("winX", x);
+  _textShader.setUniform("winY", y);
+  for (int i = 0; i < 3; ++i)
+    (*_currentPanel)[i]->draw(_textShader, *_gameInfo.clock);
   glEnable(GL_DEPTH_TEST);
   _win.flush();
 }
