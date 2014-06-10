@@ -1,4 +1,5 @@
 #include <cstring>
+#include <cctype>
 #include "Input.hpp"
 
 Input::Input()
@@ -20,6 +21,11 @@ void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool stat
   eAction	act;
 
   _key = event.key.keysym.sym;
+  if (_key < 128 && isalpha(_key))
+    {
+      if(event.key.keysym.mod & KMOD_SHIFT)
+	_key -= 32;
+    }
   if ((act = set.getActionFromKey(_key)) != UNKNOWN)
     _actionState[act] = state;
 }
@@ -132,4 +138,9 @@ bool	Input::operator[](t_window &win) const
 bool	Input::operator[](SDL_Keycode key) const
 {
   return (key == _key);
+}
+
+void	Input::operator[](SDL_Keycode * const key) const
+{
+  *key = _key;
 }

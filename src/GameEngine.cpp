@@ -183,6 +183,7 @@ void GameEngine::draw()
   _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
   for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
     (*it)->render(_shader);
+  sizeY = std::ceil(sizeY);
   if (groundX - depth_view < 0)
     {
       sizeX -= ABS(groundX - depth_view);
@@ -204,7 +205,7 @@ void GameEngine::draw()
       groundY = _gameInfo.map->getHeight() - sizeY / 2;
     }
   groundX -= 0.5;
-  groundY -= 0.5;
+  //groundY -= 0.5;
   _ground->setScale(glm::vec3(sizeX, 1.0, sizeY));
   _ground->setPos(glm::vec3(groundX, -1, groundY));
   _ground->draw(_shader, *_gameInfo.clock);
