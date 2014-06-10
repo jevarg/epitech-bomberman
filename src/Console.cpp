@@ -6,30 +6,40 @@
 
 Console::Console(Settings &set, Input &input, gdl::Clock &clock, gdl::AShader &shader): _set(set), _input(input), _clock(clock), _shader(shader)
 {
+  _buf = "";
+  _ret = "";
   _cmd["bind"] = &Console::bind;
   _cmd["set"] = &Console::set;
   _cmd["help"] = &Console::help;
   _cmd["import"] = &Console::import;
 }
 
+void	Console::print(Text &text, int winY)
+{
+  int	y = 0;
+
+  for (int size = _toPrint.size(); size > (winY / POLICE_SIZE); --size)
+    _toPrint.pop_back();
+  for (std::list<std::string>::iterator it = _toPrint.begin(); it != _toPrint.end(); ++it)
+    {
+      text.setText(*it, 20, y * POLICE_SIZE, POLICE_SIZE);
+      text.draw(_shader, _clock);
+      ++y;
+    }
+}
+
 bool	Console::aff(gdl::SdlContext const &win, float winX, float winY)
 {
+  Text		text;
   double	fps = 100.0;
   double	time;
-  Text		text;
   SDL_Keycode	key;
 
-  _buf = "";
-  _ret = "";
   if (text.initialize() == false)
-    {
-      std::cout << "returned false" << std::endl;
-      return (false);
-    }
-  text.setText(">", 100, 600, POLICE_SIZE);
+    return (false);
+  _toPrint.push_front(">");
   while (1)
     {
-      _oldBufLen = _buf.length();
       _input.consoleInput(_set);
       _input[&key];
       win.updateClock(_clock);
@@ -40,22 +50,23 @@ bool	Console::aff(gdl::SdlContext const &win, float winX, float winY)
       _shader.setUniform("view", glm::mat4(1));
       _shader.setUniform("winX", winX);
       _shader.setUniform("winY", winY);
-      text.draw(_shader, _clock);
+      print(text, static_cast<int>(winY));
       glEnable(GL_DEPTH_TEST);
       win.flush();
+
       if (key == 27)
 	return (true);
       if (key >= 1073741913 && key <= 1073741922)
 	key = ((key - 1073741912) % 10) + '0';
-      if (key)
-	printf("key : %d\n", key);
-      if (key == '\r')
+      if (key == '\r' || key == 1073741912)
 	{
 	  if (_buf == "quit")
 	    return (true);
 	  parseCmd(_buf, _ret);
+	  _ret = _buf + ":" + _ret;
+	  _toPrint.front() = _ret;
 	  _buf.clear();
-	  text.setText(_ret, 100, 600, POLICE_SIZE);
+	  _toPrint.push_front(">");
 	}
       else if (key > 0 && key < 128)
 	{
@@ -65,11 +76,9 @@ bool	Console::aff(gdl::SdlContext const &win, float winX, float winY)
 	  if (isPrintable(key) == true)
 	    _buf.push_back(static_cast<char>(key));
 	  if (_buf.empty() == true)
-	    text.setText(">", 100, 600, POLICE_SIZE);
+	    _toPrint.front()  = ">";
 	  else
-	    text.setText(_buf, 100, 600, POLICE_SIZE);
-	  if (_buf.length() != _oldBufLen)
-	    std::cout << "buf changed : " << _buf << std::endl;
+	    _toPrint.front() = _buf;
 	}
       time = _clock.getElapsed();
       if (time < fps)
@@ -118,7 +127,7 @@ bool	Console::bind(const std::string &arg, std::string &ret, int nbr_space)
   tab[2] = arg.substr(arg.find_first_of(' ', 0) + 1, arg.length());
   if (_set.addKey(tab) == false)
     {
-      ret = "bind " + arg + " : failed to bind " + arg + ".";
+      ret = arg + " : failed to bind " + arg + ".";
       return (false);
     }
   ret = "Success.";
@@ -131,7 +140,7 @@ bool	Console::set(const std::string &arg, std::string &ret, int nbr_space)
 
   if (nbr_space < 2)
     {
-      ret = "set " + arg + " : not enough arguments.";
+      ret = arg + " not enough arguments.";
       return (false);
     }
   tab[0] = "set";
@@ -139,7 +148,7 @@ bool	Console::set(const std::string &arg, std::string &ret, int nbr_space)
   tab[2] = arg.substr(arg.find_first_of(' ', 0) + 1, arg.length());
   if (_set.addCvar(tab) == false)
     {
-      ret = "set " + arg + " : failed to set " + arg + ".";
+      ret = arg + " failed to set " + arg + ".";
       return (false);
     }
   ret = "Success.";
@@ -150,6 +159,7 @@ bool	Console::help(const std::string &arg, std::string &ret, int nbr_space)
 {
   (void)arg;
   (void)nbr_space;
+
   ret = "You can configure manually some features and options about the game.\n";
   ret += "You can bind a cvar using this syntax : \"bind cvar value\".\n";
   ret += "You can set a key using this syntax : \"set key action\".\n";
@@ -174,12 +184,12 @@ bool	Console::parseCmd(const std::string &cmdline, std::string &ret)
     cmd = cmdline;
   if (_cmd.find(cmd) == _cmd.end())
     {
-      ret = cmd + ": unknown command.";
+      ret = ": unknown command.";
       return (false);
     }
   if (nbr_space > 2)
     {
-      ret = cmd + ": too many arguments.";
+      ret = ": too many arguments.";
       return (false);
     }
   ptr = _cmd[cmd];

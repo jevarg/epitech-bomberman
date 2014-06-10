@@ -98,6 +98,8 @@ void	Input::consoleInput(const Settings &set)
 	case SDL_KEYDOWN:	  
 	  keyboardInput(set, event, event.type == SDL_KEYDOWN);
 	  break ;
+	case SDL_KEYUP:
+	  break ;
 	case SDL_QUIT:
 	  windowEvent(event);
 	  break ;
