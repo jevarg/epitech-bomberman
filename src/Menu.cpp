@@ -11,7 +11,8 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
   _gameInfo.set->loadFile(DEFAULT_FILE);
   _gameInfo.set->loadFile(USER_FILE);
   _currentPanel = &_mainPanel;
-  _console = new Console(*_gameInfo.set);
+  _console = new Console(*_gameInfo.set, *_gameInfo.input, *_gameInfo.clock, _textShader);
+  //    _console->aff(*_gameInfo.clock, _textShader, _win, *_gameInfo.input);
 }
 
 Menu::~Menu()
@@ -42,7 +43,8 @@ bool  Menu::update()
   if ((*(_gameInfo.input))[LAUNCHGAME])
     launchGame();
   if ((*(_gameInfo.input))[SDLK_F1])
-    _console->aff(*_gameInfo.clock, _textShader, _win, *_gameInfo.input);
+    _console->aff(_win, 1600.0f, 900.0f);
+    // _console->aff(*_gameInfo.clock, _textShader, _win, *_gameInfo.input);
   if ((*(_gameInfo.input))[SDLK_ESCAPE]) // || _gameInfo.input->getInput(SDL_QUIT))
     return (false);
   _frames++;

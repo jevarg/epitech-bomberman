@@ -4,7 +4,7 @@
 
 # define POLICE_SIZE (30)
 
-Console::Console(Settings &set): _set(set)
+Console::Console(Settings &set, Input &input, gdl::Clock &clock, gdl::AShader &shader): _set(set), _input(input), _clock(clock), _shader(shader)
 {
   _cmd["bind"] = &Console::bind;
   _cmd["set"] = &Console::set;
@@ -12,7 +12,7 @@ Console::Console(Settings &set): _set(set)
   _cmd["import"] = &Console::import;
 }
 
-bool	Console::aff(gdl::Clock &clock, gdl::AShader &shader, gdl::SdlContext const &win, Input input)
+bool	Console::aff(gdl::SdlContext const &win, float winX, float winY)
 {
   double	fps = 100.0;
   double	time;
@@ -30,15 +30,17 @@ bool	Console::aff(gdl::Clock &clock, gdl::AShader &shader, gdl::SdlContext const
   while (1)
     {
       _oldBufLen = _buf.length();
-      input.getInput(_set);
-      input[&key];
-      win.updateClock(clock);
+      _input.consoleInput(_set);
+      _input[&key];
+      win.updateClock(_clock);
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       glDisable(GL_DEPTH_TEST);
-      shader.bind();
-      shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
-      shader.setUniform("view", glm::mat4(1));
-      text.draw(shader, clock);
+      _shader.bind();
+      _shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f, 0.0f, -1.0f, 1.0f));
+      _shader.setUniform("view", glm::mat4(1));
+      _shader.setUniform("winX", winX);
+      _shader.setUniform("winY", winY);
+      text.draw(_shader, _clock);
       glEnable(GL_DEPTH_TEST);
       win.flush();
       if (key == 27)
@@ -69,7 +71,7 @@ bool	Console::aff(gdl::Clock &clock, gdl::AShader &shader, gdl::SdlContext const
 	  if (_buf.length() != _oldBufLen)
 	    std::cout << "buf changed : " << _buf << std::endl;
 	}
-      time = clock.getElapsed();
+      time = _clock.getElapsed();
       if (time < fps)
 	usleep((fps - time) * 1000);
     }

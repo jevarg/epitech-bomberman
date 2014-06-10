@@ -75,7 +75,7 @@ void	Input::windowEvent(const SDL_Event &event)
       _window.event = WIN_QUIT;
       break ;
     }
-  /*  switch (event.window.event)
+  /*  switch (event.window.event
     {
     case SDL_WINDOWEVENT_RESIZED:
       _window.event = WIN_RESIZE;
@@ -83,6 +83,26 @@ void	Input::windowEvent(const SDL_Event &event)
       _window.y = event.window.data2;
     break ;
     }*/
+}
+
+void	Input::consoleInput(const Settings &set)
+{
+  SDL_Event	event;
+
+  _window.event = WIN_NONE;
+  _key = SDLK_UNKNOWN;
+  while (SDL_PollEvent(&event))
+    {
+      switch (event.type)
+	{
+	case SDL_KEYDOWN:	  
+	  keyboardInput(set, event, event.type == SDL_KEYDOWN);
+	  break ;
+	case SDL_QUIT:
+	  windowEvent(event);
+	  break ;
+	}
+    }
 }
 
 void	Input::getInput(const Settings &set)

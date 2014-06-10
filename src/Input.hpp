@@ -43,6 +43,7 @@ public:
   ~Input();
 
   void	getInput(const Settings &set);
+  void	consoleInput(const Settings &set);
   bool	operator[](eAction act) const;
   bool	operator[](t_mouse &key) const;
   bool	operator[](t_window &win) const;

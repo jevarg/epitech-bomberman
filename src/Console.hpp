@@ -10,10 +10,10 @@
 class		Console
 {
 public:
-  Console(Settings &set);
+  Console(Settings &set, Input &input, gdl::Clock &clock, gdl::AShader &shader);
   ~Console();
   bool		parseCmd(const std::string &, std::string &);
-  bool		aff(gdl::Clock &clock, gdl::AShader &, gdl::SdlContext const&, Input);
+  bool		aff(gdl::SdlContext const&, float x, float y);
 
 private:
   bool		import(const std::string &, std::string &, int);
@@ -24,8 +24,10 @@ private:
   bool		isPrintable(char key);
 
   Settings	&_set;
+  Input		&_input;
+  gdl::Clock	&_clock;
+  gdl::AShader	&_shader;
   std::map<std::string, bool (Console::*)(const std::string &, std::string &, int)> _cmd;
-
   std::string	_buf;
   std::string	_ret;
   unsigned int	_oldBufLen;
