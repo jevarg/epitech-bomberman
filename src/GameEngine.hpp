@@ -104,6 +104,7 @@ private:
   std::vector<Light*>		_lights;
   Player			*_player1;
   Player			*_player2;
+  std::vector<Player *>		_players;
   HUD				*_hud;
 };
 
