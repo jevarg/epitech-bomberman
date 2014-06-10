@@ -68,7 +68,7 @@ bool GameEngine::initialize()
   fact.addModel(RANGEITEM, RANGEITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER_MODEL);
-  fact.addModel(BOT, CHARACTER_MODEL);
+  fact.addModel(BOT, BOT_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
@@ -93,7 +93,7 @@ bool GameEngine::initialize()
   ent->addEntity(STOCKITEM, new StockItem(0, 0, &_gameInfo, false));
   ent->addEntity(RANGEITEM, new RangeItem(0, 0, &_gameInfo, false));
 
-  spawn.spawnEnt(1, 0, _gameInfo);
+  spawn.spawnEnt(1, 1, _gameInfo);
   return (true);
 }
 
