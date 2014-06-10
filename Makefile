@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sun Jun  8 03:26:39 2014 
+## Last update Mon Jun  9 21:18:04 2014 enzo de gregorio
 ##
 
 NAME		=	bomberman
@@ -46,6 +46,7 @@ SRC		=	main.cpp \
 			ACharacter.cpp \
 			Player.cpp \
 			Map.cpp \
+			Menu.cpp \
 			Input.cpp \
 			Console.cpp \
 			IA.cpp \
@@ -57,14 +58,16 @@ SRC		=	main.cpp \
 			EntityFactory.cpp \
 			Sound.cpp \
 			Square.cpp \
-			Hud.cpp
+			Hud.cpp \
+			AWidget.cpp \
+			NavigationWidget.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
 CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2 -lSDL2_mixer -lpthread -lm -ldl -lrt
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2_mixer -lSDL2 -lpthread -lm -ldl -p -lrt
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))

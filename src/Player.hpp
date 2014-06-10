@@ -3,6 +3,7 @@
 
 # include "ACharacter.hpp"
 # include "Camera.hpp"
+# include "Input.hpp"
 
 class		Player : public ACharacter
 {

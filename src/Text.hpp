@@ -5,6 +5,7 @@
 # include <Texture.hh>
 # include <Geometry.hh>
 # include <sstream>
+# include <Clock.hh>
 # include "ATransformation.hpp"
 
 # define FONT "assets/font.tga"
@@ -16,7 +17,6 @@ public:
   virtual ~Text();
 
   bool	initialize();
-
   void	draw(gdl::AShader &, gdl::Clock const&) const;
   void	clear();
 
@@ -37,6 +37,7 @@ private:
   float				_defX;
   float				_defY;
   float				_defSize;
+
   gdl::Texture			_font;
   gdl::Geometry			*_geometry;
 };

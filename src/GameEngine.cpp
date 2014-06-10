@@ -2,9 +2,11 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound)
-  : _save(), _type(), _texture(),
-    _gameInfo(&clock, &map, &set, &input, &sound), _lights(), _players()
+GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
+		       gdl::BasicShader *textShader, Map *map, Settings *set,
+		       Input *input, Sound *sound)
+  : _win(win), _textShader(textShader), _save(),
+    _gameInfo(clock, map, set, input, sound), _lights(), _players()
 {
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
@@ -22,7 +24,6 @@ GameEngine::~GameEngine()
 {
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
-  _win.stop();
 }
 
 bool GameEngine::initialize()
@@ -34,7 +35,7 @@ bool GameEngine::initialize()
   // _gameInfo.map->determineMapSize("map", x, y);
   _mapX = _gameInfo.set->getVar(MAP_HEIGHT);
   _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
-  if (!_win.start(_gameInfo.set->getVar(W_WIDTH),
+  if (!_win->start(_gameInfo.set->getVar(W_WIDTH),
 		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
@@ -44,12 +45,8 @@ bool GameEngine::initialize()
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
-  if (!_textShader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER)
-      || !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER)
-      || !_textShader.build())
-    return (false);
 
-  _hud = new HUD(_textShader);
+  _hud = new HUD(*(_textShader));
 
   _ground = new Cube(WALL_TEXTURE);
   _ground->initialize();
@@ -116,11 +113,11 @@ void	GameEngine::mainInput()
 	  AEntity *ent;
 	  v_Entit its;
 	  l_Entit itm;
-	  while ((ent = (*it)->listFront()) != NULL)
+	  /*	  while ((ent = (*it)->listFront()) != NULL)
 	    ent->setDestroy();
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
-	}
+	  */}
       return ;
     }
 }
@@ -167,7 +164,7 @@ bool		GameEngine::update()
   //   }
   if (time < fps)
     usleep((fps - time) * 1000);
-  _win.updateClock(*_gameInfo.clock);
+  _win->updateClock(*_gameInfo.clock);
   return (true);
 }
 
@@ -177,7 +174,7 @@ void GameEngine::draw()
   int winX = _gameInfo.set->getVar(W_WIDTH), winY = _gameInfo.set->getVar(W_HEIGHT);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-   for (std::vector<Player *>::const_iterator player = _players.begin();player != _players.end();++player)
+  for (std::vector<Player *>::const_iterator player = _players.begin();player != _players.end();++player)
     {
       // std::cout << "X => " << i * (winX / _players.size()) << " Y => 0 SIZEX => "
       // 		<< (winX / _players.size()) << " SIZEY => " << winY << std::endl;
@@ -239,5 +236,5 @@ void GameEngine::draw()
       _hud->draw(*player, _gameInfo);
       glFlush();
     }
-  _win.flush();
+  _win->flush();
 }
