@@ -96,7 +96,7 @@ bool GameEngine::initialize()
   // spawn.spawnEnt(1, 0, _gameInfo);
   _players.push_back(_player1);
   // _players.push_back(_player2);
-  spawn.spawnEnt(1, 1, _gameInfo);
+  spawn.spawnEnt(1, 3, _gameInfo);
 
   return (true);
 }

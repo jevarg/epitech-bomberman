@@ -37,12 +37,11 @@ void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y,
   for (int i = 0 ; i < max_it ; i++)
     {
       if (x > min_x && x < max_x && y > min_y && y < max_y &&
-	  _gameInfo->map->getEntityIf(x, y, FREE) == NULL)
+	  _gameInfo->map->getEntityIf(x, y, FREE) != NULL)
 	{
-	  std::cout << "insert flame at : " << FLAME << x << " " << y << std::endl;
 	  _lua.pushIntInt(++(*cnt), FLAME);
 	  _lua.pushIntInt(++(*cnt), y);
-	  _lua.pushIntInt(++(*cnt), x);	
+	  _lua.pushIntInt(++(*cnt), x);
 	  x += i_x;
 	  y += i_y;
 	}

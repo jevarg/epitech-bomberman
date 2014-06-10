@@ -10,13 +10,13 @@ function authorized_put_bomb(point, map, boolean)
 	return 0
 end
 
-function search_safe_place(map_nb, x, y, block, boolean)
+function search_safe_place(map_nb, x, y, block, boolean, cond)
 	local nb = 50
 	local way = 0
 	local gotox = {0, 0, -1, 1}
 	local gotoy = {-1, 1, 0, 0}
 
-	for i = 1, BOMB_RANGE + 1 do
+	for i = 1, cond do
 		if (block[1] == 0) then
 			if (y - i < 1 or authorized_put_bomb(map_nb[y - i][x], map_nb, boolean) == 1) then block[1] = 1
 			elseif (map_nb[y - i][x] == ".") then if (i < nb) then nb = i ; way = 1 ; break end
@@ -25,7 +25,7 @@ function search_safe_place(map_nb, x, y, block, boolean)
 			end
 		else break end
 	end
-	for i = 1, BOMB_RANGE + 1 do
+	for i = 1, cond do
 		if (block[2] == 0) then
 			if (x - i < 1 or authorized_put_bomb(map_nb[y][x - i], map_nb, boolean) == 1) then block[2] = 1
 			elseif (map_nb[y][x - i] == ".") then if (i < nb) then nb = i ; way = 3 ; break end
@@ -34,7 +34,7 @@ function search_safe_place(map_nb, x, y, block, boolean)
 			end
 		else break end
 	end
-	for i = 1, BOMB_RANGE + 1 do
+	for i = 1, cond do
 		if (block[3] == 0) then
 			if (y + i > MAP_YMAX or authorized_put_bomb(map_nb[y + i][x], map_nb, boolean) == 1) then block[3] = 1
 			elseif (map_nb[y + i][x] == ".") then if (i < nb) then nb = i ; way = 2 ; break end
@@ -43,7 +43,7 @@ function search_safe_place(map_nb, x, y, block, boolean)
 			end
 		else break end
 	end
-	for i = 1, BOMB_RANGE + 1 do
+	for i = 1, cond do
 		if (block[4] == 0) then
 			if (x + i > MAP_XMAX or authorized_put_bomb(map_nb[y][x + i], map_nb, boolean) == 1) then block[4] = 1
 			elseif (map_nb[y][x + i] == ".") then if (i < nb) then nb = i ; way = 4 ; break end
@@ -52,6 +52,7 @@ function search_safe_place(map_nb, x, y, block, boolean)
 			end
 		else break end
 	end
+	-- display_map(map_nb)
 	-- print("WAY IS : ", way)
 	if (way ~= 0) then
 		x = x + gotox[way]
@@ -61,15 +62,12 @@ function search_safe_place(map_nb, x, y, block, boolean)
 end
 
 function can_i_put_bomb(map_nb, x, y, block)
-	print("can i put bomb ?")
+	-- print("can i put bomb ?")
 	local way = 0
 	local gotox = {0, 0, -1, 1}
 	local gotoy = {-1, 1, 0, 0}
 
 	map_nb = fill_dangerous_fields(map_nb)
-
-	-- display_map(map_nb)
-
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[1] == 0) then
 			if (y - i < 1 or authorized_put_bomb(map_nb[y - 1][x], map_nb, false) == 1) then block[1] = 1
@@ -120,9 +118,10 @@ function run_out_danger(map_nb, x, y, block)
 	map_nb = fill_dangerous_fields(map_nb)
 	-- display_map(map_nb)
 	local tmpx, tmpy = 0, 0
-	tmpx, tmpy = search_safe_place(map_nb, x, y, block, false)
+	tmpx, tmpy = search_safe_place(map_nb, x, y, block, false, BOMB_RANGE + 1)
 	if (tmpx == x and tmpy == y) then
-		return search_safe_place(map_nb, x, y, block, true)
+		-- print("i can search a better place")
+		return search_safe_place(map_nb, x, y, block, true, BOMB_RANGE)
 	end
 	return tmpx, tmpy
 end

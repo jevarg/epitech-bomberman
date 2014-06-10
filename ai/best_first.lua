@@ -53,7 +53,7 @@ function best_first(map, map_nb, entities)
 			end
 	else
 		-- print("je display parceque la random oO")
-		display_map(map_nb)
+		-- display_map(map_nb)
 		cur_x, cur_y = random_movement(map) end
 	return determine_way(map, cur_x, cur_y)
 end
