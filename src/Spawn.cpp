@@ -22,7 +22,7 @@ void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
 
   if (spawn.nbPlayer > spawn.nbIa)
     {
-      if (!spawn.gameInfo.map->hasPlayer() && spawn.nbPlayer == 1)
+      if (!spawn.gameInfo.map->hasPlayer())
 	_map->addEntity(fact->getEntity(CHARACTER1, x, y));
       else
 	_map->addEntity(fact->getEntity(CHARACTER2, x, y));

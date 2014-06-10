@@ -57,6 +57,8 @@
 # define CHARACTER_MODEL "./assets/steve.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
 
+# define ABS(x) (((x) < 0) ? (-(x)) : (x))
+
 typedef struct	s_gameinfo
 {
   s_gameinfo(gdl::Clock *pclock, Map *pmap, Settings *pset, Input *pinput, Sound *psound) :
@@ -102,6 +104,7 @@ private:
   std::vector<Light*>		_lights;
   Player			*_player1;
   Player			*_player2;
+  std::vector<Player *>		_players;
   HUD				*_hud;
 };
 
