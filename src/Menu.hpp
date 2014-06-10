@@ -10,6 +10,7 @@
 # include "Text.hpp"
 # include "Sound.hpp"
 # include "AWidget.hpp"
+# include "Console.hpp"
 
 class Menu
 {
@@ -31,6 +32,7 @@ private:
   bool			_done;
   t_gameinfo		_gameInfo;
   int			_frames;
+  Console		*_console;
   std::vector<AWidget *> *_currentPanel;
   std::vector<AWidget *> _mainPanel;
   std::vector<AWidget *> _newGamePanel;

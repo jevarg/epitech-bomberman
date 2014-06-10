@@ -1,5 +1,6 @@
 #include "GameEngine.hpp"
 #include "Hud.hpp"
+
 HUD::HUD(gdl::AShader &shader)
   : _shader(shader), _stock(STOCK_TEXTURE), _nostock(NOSTOCK_TEXTURE),
     _heart(HEART_TEXTURE), _noHeart(NOHEART_TEXTURE), _fps()
@@ -23,7 +24,7 @@ void HUD::setFps(float fps)
   std::stringstream ss("");
 
   ss << fps;
-  _fps.setText(ss.str(), 1500.0, 800.0, 50);
+  _fps.setText(std::string("FPS: ") + ss.str(), 1400.0, 800.0, 50);
 }
 
 void HUD::draw(Player *player, t_gameinfo &gameInfo)

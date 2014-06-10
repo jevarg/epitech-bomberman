@@ -2,7 +2,11 @@
 # define _INPUT_H_
 
 # include <SDL.h>
+# include <list>
+# include <algorithm>
 # include "Settings.hpp"
+# include "Mutex.hpp"
+# include "Scopelock.hpp"
 
 enum	eMouse
   {
@@ -36,6 +40,9 @@ typedef struct	s_window
   int		y;
 }		t_window;
 
+typedef std::list<SDL_Keycode>::const_iterator	l_Keycit;
+typedef std::list<SDL_Keycode>::iterator       	l_Keyit;
+
 class Input
 {
 public:
@@ -43,18 +50,23 @@ public:
   ~Input();
 
   void	getInput(const Settings &set);
+  bool	isPressed(Keycode key);
   bool	operator[](eAction act) const;
   bool	operator[](t_mouse &key) const;
   bool	operator[](t_window &win) const;
-  bool	operator[](SDL_Keycode key) const;
-  void	operator[](SDL_Keycode * const key) const;
+  void	operator[](Keycode * const key) const;
 
 private:
   void	keyboardInput(const Settings &set, const SDL_Event &event, bool state);
   void	mouseInput(const SDL_Event &event);
   void	windowEvent(const SDL_Event &event);
+  void	pressKey(const SDL_Event &event);
+  void	unpressKey(const SDL_Event &event);
+
+  Mutex				_mutex;
   std::vector<bool>		_actionState;
-  SDL_Keycode			_key;
+  std::list<Keycode>		_keyPressed;
+  Keycode			_key;
   t_mouse			_mouse;
   t_window			_window;
 };
