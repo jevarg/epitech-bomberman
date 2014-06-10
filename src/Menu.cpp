@@ -1,5 +1,6 @@
 #include "Menu.hpp"
 #include "NavigationWidget.hpp"
+#include "ImageWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
 {
@@ -30,19 +31,37 @@ bool  Menu::initialize()
       !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER) ||
       !_textShader.build())
     return (false);
-  _mainPanel.push_back(new NavigationWidget(x / 4, 520, y / 11.25f, x / 2, "./assets/singleplayer.tga", &_newGamePanel));
+  ImageWidget	*background = new ImageWidget(0, 0, y, x, "./Ressources/Images/background.tga");
+
+  _mainPanel.push_back(background);
+  _mainPanel.push_back(new NavigationWidget(x / 4, 500, y / 11.25f, x / 2, "./assets/singleplayer.tga", &_newGamePanel)); 
   _mainPanel.push_back(new NavigationWidget(x / 4, 400, y / 11.25f, x / 2, "./assets/multiplayers.tga", &_newGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, 280, y / 11.25f, x / 2, "./assets/option.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/option.tga", &_loadPanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/option.tga", &_optionPanel));
+
+  _newGamePanel.push_back(background);
+  _newGamePanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/option.tga", &_importPanel));
+
   // fill Panels vectors with Widgets
   return (true);
 }
 
-bool  Menu::update()
+bool		Menu::update()
 {
-  double time;
-  double fps = (1000 / _gameInfo.set->getVar(FPS));
+  double	time;
+  double	fps = (1000 / _gameInfo.set->getVar(FPS));
+  t_mouse	mouse;
 
   _gameInfo.input->getInput(*(_gameInfo.set));
+  (*(_gameInfo.input))[mouse];
+  if (mouse.event == BUTTONUP)
+    for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
+	   endit = (*_currentPanel).end(); it != endit ; ++it)
+      if ((*it)->isClicked(mouse.x, mouse.y))
+	{
+	  (*it)->onClick(_gameInfo, (*this));
+	  break;
+	}
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
     launchGame();
@@ -66,14 +85,14 @@ void  Menu::draw()
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   glDisable(GL_DEPTH_TEST);
-  // draw Widget here (need a draw function first, or may be Square need it)
   _textShader.bind();
   _textShader.setUniform("projection", glm::ortho(0.0f, x, 0.0f, y, -1.0f, 1.0f));
   _textShader.setUniform("view", glm::mat4(1));
   _textShader.setUniform("winX", x);
   _textShader.setUniform("winY", y);
-  for (int i = 0; i < 3; ++i)
-    (*_currentPanel)[i]->draw(_textShader, *_gameInfo.clock);
+  for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
+	 endit = (*_currentPanel).end(); it != endit ; ++it)
+    (*it)->draw(_textShader, *_gameInfo.clock);
   glEnable(GL_DEPTH_TEST);
   _win.flush();
 }
