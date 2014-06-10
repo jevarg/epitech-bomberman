@@ -6,6 +6,7 @@
 # include <string>
 # include "IObject.hpp"
 # include "Exception.hpp"
+# include "Input.hpp"
 
 class		Model: public IObject
 {

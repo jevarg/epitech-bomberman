@@ -25,6 +25,7 @@
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "Player.hpp"
+# include "Text.hpp"
 # include "Condvar.hpp"
 # include "Mutex.hpp"
 # include "Console.hpp"
@@ -64,22 +65,23 @@
 typedef struct	s_gameinfo
 {
   s_gameinfo(gdl::Clock *pclock, Map *pmap, Settings *pset, Input *pinput, Sound *psound) :
-    clock(pclock), map(pmap), input(pinput), set(pset), sound(psound)
+    clock(pclock), input(pinput), set(pset), sound(psound), map(pmap)
   {
   }
   gdl::Clock   	*clock;
-  Map	       	*map;
   Input	       	*input;
   Settings     	*set;
+  Sound		*sound;
+  Map	       	*map;
   Mutex		*mutex;
   Condvar	*condvar;
-  Sound		*sound;
 }		t_gameinfo;
 
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input, Sound &sound);
+  GameEngine(gdl::SdlContext *win, gdl::Clock *clock, gdl::BasicShader *shader, Map *map,
+	     Settings *set, Input *input, Sound *sound);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -90,9 +92,9 @@ private:
   void	mainInput();
   int	clearElements();
 
-  gdl::SdlContext		_win;
+  gdl::SdlContext		*_win;
   gdl::BasicShader		_shader;
-  gdl::BasicShader		_textShader;
+  gdl::BasicShader		*_textShader;
   Save				_save;
   Cube				*_ground;
   unsigned int			_mapX;
