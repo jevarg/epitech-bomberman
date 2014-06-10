@@ -34,6 +34,7 @@ private:
   Text			_text;
   Sound			_sound;
   int			_frames;
+  Console		_console;
   // std::vector<Widget>	_mainPanel;
   // std::vector<Widget>	_loadPanel;
   // std::vector<Widget>	_optionPanel;

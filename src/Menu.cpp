@@ -1,6 +1,6 @@
 #include "Menu.hpp"
 
-Menu::Menu(Settings &set): _win(), _input(), _set(set), _textShader(), _done(false), _sound()
+Menu::Menu(Settings &set): _win(), _input(), _set(set), _textShader(), _done(false), _sound(), _console(_set)
 {
   _frames = 0;
 }
@@ -33,6 +33,8 @@ bool  Menu::update()
   _win.updateClock(_clock);
   if (_input[LAUNCHGAME])
     launchGame();
+  if (_input[SDLK_F1])
+    _console.aff(_clock, _textShader, _win, _input);
   if (_input[SDLK_ESCAPE]) // || _input.getInput(SDL_QUIT))
     return (false);
   _frames++;

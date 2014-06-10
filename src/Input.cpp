@@ -91,7 +91,7 @@ void	Input::getInput(const Settings &set)
     {
       switch (event.type)
 	{
-	case SDL_KEYDOWN:
+	case SDL_KEYDOWN:	  
 	case SDL_KEYUP:
 	  keyboardInput(set, event, event.type == SDL_KEYDOWN);
 	  break ;
@@ -132,4 +132,9 @@ bool	Input::operator[](t_window &win) const
 bool	Input::operator[](SDL_Keycode key) const
 {
   return (key == _key);
+}
+
+void	Input::operator[](SDL_Keycode *key) const
+{
+  *key = _key;
 }
