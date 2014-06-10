@@ -32,7 +32,7 @@ void HUD::draw(Player *player, t_gameinfo &gameInfo)
 
   glDisable(GL_DEPTH_TEST);
   _shader.bind();
-  _shader.setUniform("projection", glm::ortho(0.0f, x, y, 0.0f, -1.0f, 1.0f));
+  _shader.setUniform("projection", glm::ortho(0.0f, x, 0.0f, y, -1.0f, 1.0f));
   _shader.setUniform("view", glm::mat4(1));
   _shader.setUniform("winX", x);
   _shader.setUniform("winY", y);
