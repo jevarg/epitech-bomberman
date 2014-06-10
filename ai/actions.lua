@@ -19,7 +19,7 @@ function can_i_put_bomb(map_nb, x, y, block)
 
 	map_nb = fill_dangerous_fields(map_nb)
 
-	display_map(map_nb)
+	-- display_map(map_nb)
 
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[1] == 0) then
@@ -65,7 +65,7 @@ function can_i_put_bomb(map_nb, x, y, block)
 			break
 		end
 	end
-	print("way is : ", way)
+	-- print("way is : ", way)
 	if (way ~= 0) then
 		x = x + gotox[way]
 		y = y + gotoy[way]
@@ -84,7 +84,7 @@ function run_out_danger(map_nb, x, y, block)
 	if (arg["bomb"] == 1) then map_nb[y][x] = "O" end
 	map_nb = fill_dangerous_fields(map_nb)
 
-	display_map(map_nb)
+	-- display_map(map_nb)
 
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[1] == 0) then
@@ -130,7 +130,7 @@ function run_out_danger(map_nb, x, y, block)
 			break
 		end
 	end
-	print("WAY IS : ", way)
+	-- print("WAY IS : ", way)
 	if (way ~= 0) then
 		x = x + gotox[way]
 		y = y + gotoy[way]
