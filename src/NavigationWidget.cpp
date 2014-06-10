@@ -5,6 +5,7 @@ NavigationWidget::NavigationWidget(int x, int y, int height, int width,
   : AWidget(x, y, height, width, text)
 {
   _onClickPanel = onClickPanel;
+  setSquare(new Square("assets/singleplayer.tga")); // tmp
 }
 
 NavigationWidget::~NavigationWidget()
@@ -13,5 +14,5 @@ NavigationWidget::~NavigationWidget()
 
 void	NavigationWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
-  menu._currentPanel = _onClickPanel;
+  menu.setCurrentPanel(_onClickPanel);
 }

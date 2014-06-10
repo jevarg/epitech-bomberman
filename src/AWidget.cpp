@@ -8,16 +8,34 @@ AWidget::AWidget(int x, int y, int height, int width, const std::string &text)
   _height = height;
   _width = width;
   _text.setText(text, x + 3, y + 3, 50);
+  _square = NULL;
 }
 
 AWidget::~AWidget()
 {
 }
 
-
-void	AWidget::isClicked()
+void	AWidget::draw()
 {
-  // TODO
+
+}
+
+bool	AWidget::isClicked(int x, int y)
+{
+  if (x >= _x && x <= (_x + _width) && y >= _y && y <= (_y + _height))
+    return (true);
+  else
+    return (false);
+}
+
+void	AWidget::setSquare(Square *square)
+{
+  _square = square;
+}
+
+Square	*AWidget::getSquare() const
+{
+  return (_square);
 }
 
 int	AWidget::getX() const

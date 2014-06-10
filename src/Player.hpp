@@ -8,7 +8,7 @@
 class		Player : public ACharacter
 {
 public:
-  Player(int x, int y, t_gameinfo *gameInfo, eType type, bool thread = true);
+  Player(int x, int y, t_gameinfo *gameInfo, eType type, bool multi = false, bool thread = true);
   virtual ~Player();
   bool	checkInput();
   bool	checkInputSingle();
@@ -19,6 +19,7 @@ public:
 
 private:
   Camera	_camera;
+  bool		_multi;
 };
 
 #endif /* _PLAYER_HPP_ */

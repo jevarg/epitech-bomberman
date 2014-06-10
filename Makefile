@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sun Jun  8 15:47:23 2014 
+## Last update Mon Jun  9 21:18:04 2014 enzo de gregorio
 ##
 
 NAME		=	bomberman
@@ -58,8 +58,9 @@ SRC		=	main.cpp \
 			EntityFactory.cpp \
 			Sound.cpp \
 			Square.cpp \
-			Hud.cpp
-			# Widget.cpp
+			Hud.cpp \
+			AWidget.cpp \
+			NavigationWidget.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/

@@ -3,6 +3,7 @@
 
 # include <vector>
 # include "AWidget.hpp"
+# include "Menu.hpp"
 
 class	NavigationWidget : public AWidget
 {
