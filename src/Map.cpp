@@ -446,6 +446,24 @@ eType	Map::checkMapColision(int x, int y) const
   return (_cont[pos]->checkColision(x, y));
 }
 
+bool	Map::checkFullMapColision(int x, int y, std::vector<AEntity *> &vec) const
+{
+  unsigned int	pos = getContPos(x, y);
+  AEntity	*ent;
+
+  if (y <= 0 || y >= _mapY - 1 || x  <= 0 || x >= _mapX - 1 || pos >= _cont.size())
+    {
+      vec.push_back(getEntity(x, y));
+      return (true);
+    }
+  for (int i = WALL; i < GROUND; ++i)
+    {
+      if ((ent = getEntityIf(x, y, static_cast<eType>(i))) != NULL)
+	vec.push_back(ent);
+    }
+  return (vec.empty());
+}
+
 unsigned int	Map::getWidth() const
 {
   return (_mapX);

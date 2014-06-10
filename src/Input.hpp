@@ -47,7 +47,7 @@ public:
   bool	operator[](t_mouse &key) const;
   bool	operator[](t_window &win) const;
   bool	operator[](SDL_Keycode key) const;
-  void	operator[](SDL_Keycode *key) const;
+  void	operator[](SDL_Keycode * const key) const;
 
 private:
   void	keyboardInput(const Settings &set, const SDL_Event &event, bool state);

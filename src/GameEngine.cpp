@@ -51,9 +51,11 @@ bool GameEngine::initialize()
 
   _ground = new Cube(WALL_TEXTURE);
   _ground->initialize();
-  // _ground->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
-  // 			      -0.5, (((float)(_mapY) - 1.0) / 2.0)));
-  _ground->scale(glm::vec3(((_mapX < 10) ? _mapX : 10), 1, ((_mapY < 10) ? _mapY : 10)));
+  _ground->translate(glm::vec3((((float)(_mapX) - 1.0) / 2.0),
+  			      -1, (((float)(_mapY) - 1.0) / 2.0)));
+  _ground->scale(glm::vec3(_gameInfo.set->getVar(R_DEPTHVIEW) * 2,
+			   1.0,
+			   _gameInfo.set->getVar(R_DEPTHVIEW) * 2));
 
   fact.addModel(WALL, new Cube(*_ground), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*_ground), BOX_TEXTURE);
@@ -70,15 +72,12 @@ bool GameEngine::initialize()
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
-  // _gameInfo.map->createMap(_gameInfo);
-  _gameInfo.map->load("map", _gameInfo);
-  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
+  _gameInfo.map->createMap(_gameInfo);
+  // _gameInfo.map->load("map", _gameInfo);
+  // spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
-
-  // spawn.spawnEnt(1, 0, all_cam, _gameInfo);
-  // createDisplayBorder();
 
   ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
   ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
@@ -171,6 +170,8 @@ void GameEngine::draw()
 {
   int x = _player1->getXPos(), y = _player1->getYPos(), mapx = _mapX, mapy = _mapY;
   Camera &cam = _player1->getCam();
+  int depth_view = _gameInfo.set->getVar(R_DEPTHVIEW);
+  float groundX = x, groundY = y, sizeX = depth_view * 2, sizeY = depth_view * 2;
   const std::vector<Container *>	&cont = _gameInfo.map->getCont();
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -182,26 +183,34 @@ void GameEngine::draw()
 
   for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
     (*it)->render(_shader);
-
-  float groundX = x - 0.5, groundY = y - 0.5;
-  // float posX = x - 0.5, posY = y - 0.5;
-
-  if (x + 5 >= mapx)
-    groundX -= (x + 5 - mapx);
-  else if (x - 5 <= 0)
-    groundX += (-(x - 5));
-
-  if (y + 5 >= mapy)
-    groundY -= (y + 5 - mapy);
-  else if (y - 5 <= 0)
-    groundY += (-(y - 5));
-
-  _ground->setScale(glm::vec3((x + 5) < 10 ? x  + 5 : 10, 1.0, (y + 5) < 10 ? y + 5 : 10));
+  sizeY = std::ceil(sizeY);
+  if (groundX - depth_view < 0)
+    {
+      sizeX -= ABS(groundX - depth_view);
+      groundX = sizeX / 2;
+    }
+  else if (groundX + depth_view > _gameInfo.map->getWidth())
+    {
+      sizeX -= (groundX + depth_view - _gameInfo.map->getWidth());
+      groundX = _gameInfo.map->getWidth() - sizeX / 2;
+    }
+  if (groundY - depth_view < 0)
+    {
+      sizeY -= ABS(groundY - depth_view);
+      groundY = sizeY / 2;
+    }
+  else if (groundY + depth_view > _gameInfo.map->getHeight())
+    {
+      sizeY -= (groundY + depth_view - _gameInfo.map->getHeight());
+      groundY = _gameInfo.map->getHeight() - sizeY / 2;
+    }
+  groundX -= 0.5;
+  //groundY -= 0.5;
+  _ground->setScale(glm::vec3(sizeX, 1.0, sizeY));
   _ground->setPos(glm::vec3(groundX, -1, groundY));
   _ground->draw(_shader, *_gameInfo.clock);
-
-  for (int j = (y > 5) ? y - 5 : 0;j <= y + 5 && j < mapy;j++)
-    for (int i = (x > 5) ? x - 5 : 0;i < x + 5 && i < mapx;i++)
+  for (int j = (y > depth_view) ? y - depth_view : 0;j <= y + depth_view && j < mapy;j++)
+    for (int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < mapx;i++)
       {
 	AEntity *tmp = _gameInfo.map->getEntity(i, j);
 	if (tmp != NULL)
