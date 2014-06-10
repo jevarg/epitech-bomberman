@@ -67,7 +67,7 @@ bool GameEngine::initialize()
   fact.addModel(STOCKITEM, STOCKITEM_MODEL);
   fact.addModel(RANGEITEM, RANGEITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
-  fact.addModel(CHARACTER2, CHARACTER_MODEL);
+  fact.addModel(CHARACTER2, CHARACTER2_MODEL);
   fact.addModel(BOT, BOT_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
