@@ -25,6 +25,7 @@ public:
 
   void	createMap(t_gameinfo &gameInfo);
   eType	checkMapColision(int x, int y) const;
+  bool	checkFullMapColision(int x, int y, std::vector<AEntity *> &vec) const;
 
   bool		save(const std::string&);
   bool		load(const std::string &,
