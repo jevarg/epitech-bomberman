@@ -61,6 +61,7 @@ bool	Player::checkInputMulti()
   int		idx;
   float		d;
 
+  std::cout << pos << std::endl;
   for (int i = pos * 5; i < 4 + pos * 5; ++i)
     {
       if ((*_gameInfo->input)[keyTab[i]])
