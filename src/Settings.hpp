@@ -17,11 +17,11 @@
 
 typedef	struct	s_cvar	t_cvar;
 
-typedef int keyCode;
+typedef int Keycode;
 typedef std::vector<std::string>::const_iterator v_instCit;
 typedef std::vector<std::string>::iterator v_instit;
 typedef std::vector<t_cvar *>::iterator v_cvarit;
-typedef std::map<std::string, keyCode>::const_iterator m_keyCit;
+typedef std::map<std::string, Keycode>::const_iterator m_keyCit;
 
 enum	eAction
   {
@@ -79,9 +79,9 @@ public:
   bool	cvarExist(cvar var) const;
   int	getVar(cvar var) const;
   void	setVar(cvar var, int value);
-  eAction	getActionFromKey(keyCode key) const;
-  int	getKeyFromAct(eAction act, std::vector<keyCode> &) const;
-  void	setKey(keyCode key, eAction act);
+  eAction	getActionFromKey(Keycode key) const;
+  int	getKeyFromAct(eAction act, std::vector<Keycode> &) const;
+  void	setKey(Keycode key, eAction act);
   const std::string &getCodeFromKey(SDL_Keycode key) const;
 
   int	toNumber(const std::string &) const;
@@ -94,15 +94,15 @@ private:
   bool	readFile(std::vector<std::string> &inst, const std::string &);
   void	parsInst(const std::vector<std::string> &inst);
   void	initCvar();
-  keyCode	getKeyFromCode(const std::string &) const;
+  Keycode	getKeyFromCode(const std::string &) const;
 
   std::vector<std::string>	_actionList;
-  std::map<keyCode, eAction>	_keyMap;
+  std::map<Keycode, eAction>	_keyMap;
 
   std::vector<t_cvar *>     	_cvarList;
   std::map<cvar, int>		_cvarMap;
 
-  std::map<std::string, keyCode>	_speKeys;
+  std::map<std::string, Keycode>	_speKeys;
 };
 
 #endif /* _SETTINGS_H_ */

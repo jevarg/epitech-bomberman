@@ -2,32 +2,68 @@
 #include <cctype>
 #include "Input.hpp"
 
-Input::Input()
+Input::Input() : _mutex()
 {
   for (unsigned int i = FORWARD; i < UNKNOWN; ++i)
     _actionState.push_back(false);
   std::memset(&_mouse, 0, sizeof(_mouse));
   std::memset(&_window, 0, sizeof(_window));
+  _key = 0;
 }
 
 Input::~Input()
 {
+
+}
+
+/*
+** Basically, here i transform the key after stocking it because
+** It would me a non sense stocking the transformation
+** What we care off is just the key pressed
+*/
+
+void	Input::pressKey(const SDL_Event &event)
+{
+  Scopelock	<Mutex>sc(_mutex);
+  bool		size = false;
+  l_Keycit	it;
+
+  if ((it = std::find(_keyPressed.begin(), _keyPressed.end(), _key)) == _keyPressed.end())
+    _keyPressed.push_back(_key);
+  if (_key < 128 && isalpha(_key))
+    {
+      size ^= (event.key.keysym.mod & (KMOD_SHIFT | KMOD_CAPS));
+      _key -= (size * 32);
+    }
+}
+
+void	Input::unpressKey(const SDL_Event &event)
+{
+  Scopelock	<Mutex>sc(_mutex);
+  l_Keyit	it;
+
+  if ((it = std::find(_keyPressed.begin(), _keyPressed.end(), _key)) != _keyPressed.end())
+    _keyPressed.erase(it);
+  if (_key == event.key.keysym.sym)
+    _key = 0;
 }
 
 void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool state)
 {
-  std::map<keyCode, bool>::iterator it;
-  std::map<keyCode, bool>::iterator end;
+  std::map<Keycode, bool>::iterator it;
+  std::map<Keycode, bool>::iterator end;
   eAction	act;
 
   _key = event.key.keysym.sym;
-  if (_key < 128 && isalpha(_key))
-    {
-      if(event.key.keysym.mod & KMOD_SHIFT)
-	_key -= 32;
-    }
   if ((act = set.getActionFromKey(_key)) != UNKNOWN)
-    _actionState[act] = state;
+    {
+      std::cout << "action: " << act << " " << state << std::endl;
+      _actionState[act] = state;
+    }
+  if (event.type == SDL_KEYDOWN)
+    pressKey(event);
+  else
+    unpressKey(event);
 }
 
 void	Input::mouseInput(const SDL_Event &event)
@@ -75,14 +111,14 @@ void	Input::windowEvent(const SDL_Event &event)
       _window.event = WIN_QUIT;
       break ;
     }
-  /*  switch (event.window.event)
-    {
-    case SDL_WINDOWEVENT_RESIZED:
-      _window.event = WIN_RESIZE;
-      _window.x = event.window.data1;
-      _window.y = event.window.data2;
-    break ;
-    }*/
+   // switch (event.window.event)
+   //  {
+   //  case SDL_WINDOWEVENT_RESIZED:
+   //    _window.event = WIN_RESIZE;
+   //    _window.x = event.window.data1;
+   //    _window.y = event.window.data2;
+   //  break ;
+   //  }
 }
 
 void	Input::getInput(const Settings &set)
@@ -92,7 +128,6 @@ void	Input::getInput(const Settings &set)
   if (_mouse.event != BUTTONDOWN)
     _mouse.event = NONE;
   _window.event = WIN_NONE;
-  _key = SDLK_UNKNOWN;
   while (SDL_PollEvent(&event))
     {
       switch (event.type)
@@ -135,9 +170,13 @@ bool	Input::operator[](t_window &win) const
   return (true);
 }
 
-bool	Input::operator[](SDL_Keycode key) const
+bool	Input::isPressed(Keycode key)
 {
-  return (key == _key);
+  Scopelock	<Mutex>sc(_mutex);
+  l_Keycit it;
+
+  it = std::find(_keyPressed.begin(), _keyPressed.end(), key);
+  return (it != _keyPressed.end());
 }
 
 void	Input::operator[](SDL_Keycode * const key) const

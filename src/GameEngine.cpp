@@ -78,8 +78,8 @@ bool GameEngine::initialize()
   // _gameInfo.map->load("map", _gameInfo);
   // spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
-  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1, false);
-  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2, false);
+  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1, true);
+  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2, true);
 
   ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
   ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
@@ -95,8 +95,8 @@ bool GameEngine::initialize()
 
   // spawn.spawnEnt(1, 0, _gameInfo);
   _players.push_back(_player1);
-  // _players.push_back(_player2);
-  spawn.spawnEnt(1, 0, _gameInfo);
+  _players.push_back(_player2);
+  spawn.spawnEnt(2, 0, _gameInfo);
 
   return (true);
 }
@@ -107,7 +107,7 @@ void	GameEngine::mainInput()
 
   _gameInfo.input->getInput(*(_gameInfo.set));
   if (((*_gameInfo.input)[win] && win.event == WIN_QUIT) ||
-      (*_gameInfo.input)[SDLK_ESCAPE])
+      _gameInfo.input->isPressed(SDLK_ESCAPE))
     {
       _shutdown = true;
       v_Contcit end = _gameInfo.map->ContEnd();
