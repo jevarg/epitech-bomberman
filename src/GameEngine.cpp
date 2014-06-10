@@ -25,7 +25,6 @@ GameEngine::~GameEngine()
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
   usleep(1000);
-  // _win.stop();
 }
 
 bool GameEngine::initialize()
@@ -178,8 +177,6 @@ void GameEngine::draw()
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   for (std::vector<Player *>::const_iterator player = _players.begin();player != _players.end();++player)
     {
-      // std::cout << "X => " << i * (winX / _players.size()) << " Y => 0 SIZEX => "
-      // 		<< (winX / _players.size()) << " SIZEY => " << winY << std::endl;
       glViewport (i * (winX / _players.size()), 0, (winX / _players.size()), winY);
       ++i;
 
@@ -227,12 +224,13 @@ void GameEngine::draw()
       for (int j = (y > depth_view) ? y - depth_view : 0;j <= y + depth_view && j < mapy;j++)
 	for (int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < mapx;i++)
 	  {
-	    AEntity *tmp = _gameInfo.map->getEntity(i, j);
-	    if (tmp != NULL)
+	    std::vector<AEntity *> elem;
+	    _gameInfo.map->checkFullMapColision(i, j, elem);
+	    for (std::vector<AEntity *>::const_iterator it1 = elem.begin();it1 != elem.end();it1++)
 	      {
-		if (tmp->getType() == WALL)
-		  tmp->getModel()->setPos(glm::vec3(i, 0.0, j));
-		tmp->draw(_shader, *_gameInfo.clock);
+		if ((*it1)->getType() == WALL)
+		  (*it1)->getModel()->setPos(glm::vec3(i, 0.0, j));
+		(*it1)->draw(_shader, *_gameInfo.clock);
 	      }
 	  }
       _hud->draw(*player, _gameInfo);
