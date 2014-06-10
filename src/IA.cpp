@@ -6,7 +6,7 @@
 IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
   : ACharacter(x, y, BOT, gameInfo, thread), _lua()
 {
-  _level = 2;
+  _level = 3;
 }
 
 IA::~IA()
@@ -14,9 +14,9 @@ IA::~IA()
 }
 
 void	IA::update()
-{ 
+{
+  static double aggro[] = {4.0, 8.0, 12.0};
   int cnt = 0;
-  static double aggro[] = {4.0, 8.0, 12.0, 10.0};
   double y = _y - aggro[_level - 1];
   double x = _x - aggro[_level - 1];
 
@@ -39,6 +39,7 @@ void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y,
       if (x > min_x && x < max_x && y > min_y && y < max_y &&
 	  _gameInfo->map->getEntityIf(x, y, FREE) == NULL)
 	{
+	  std::cout << "insert flame at : " << FLAME << x << " " << y << std::endl;
 	  _lua.pushIntInt(++(*cnt), FLAME);
 	  _lua.pushIntInt(++(*cnt), y);
 	  _lua.pushIntInt(++(*cnt), x);	

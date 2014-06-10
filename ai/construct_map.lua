@@ -46,7 +46,6 @@ function fill_dangerous_fields(map)
 	for i = 1, #map do
 		for j = 1, #map[i] do
 			if (map[i][j] == "O") then
-				-- print("at", j, i)
 				for k = 1, BOMB_RANGE do
 					put_danger_around_at(map, j, i, k, "D", block)
 				end

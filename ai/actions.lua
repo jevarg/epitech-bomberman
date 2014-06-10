@@ -4,15 +4,14 @@ function authorized_put_bomb(point, map)
 			return 1
 		end
 		return 0
-	else
-	if (point ~= "." and point ~= "I") then
-			return 1
-		end
-		return 0
+	elseif (point ~= "." and point ~= "I") then
+		return 1
 	end
+	return 0
 end
 
 function can_i_put_bomb(map_nb, x, y, block)
+	print("can i put bomb ?")
 	local way = 0
 	local gotox = {0, 0, -1, 1}
 	local gotoy = {-1, 1, 0, 0}
@@ -28,9 +27,7 @@ function can_i_put_bomb(map_nb, x, y, block)
 			elseif (x - 1 > 0 and map_nb[y - i][x - 1] == ".") then way = 1 ; break
 			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y - i][x + 1] == ".") then way = 1 ; break
 			end
-		else
-			break
-		end
+		else break end
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[2] == 0) then
@@ -39,9 +36,7 @@ function can_i_put_bomb(map_nb, x, y, block)
 			elseif (y - 1 > 0 and map_nb[y - 1][x - i] == ".") then way = 3 ; break
 			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x - i] == ".") then way = 3 ; break
 			end
-		else
-			break
-		end
+		else break end
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[3] == 0) then
@@ -50,9 +45,7 @@ function can_i_put_bomb(map_nb, x, y, block)
 			elseif (x - 1 > 0 and map_nb[y + i][x - 1] == ".") then way = 2 ; break
 			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y + i][x + 1] == ".") then way = 2 ; break
 			end
-		else
-			break
-		end
+		else break end
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[4] == 0) then
@@ -61,11 +54,9 @@ function can_i_put_bomb(map_nb, x, y, block)
 			elseif (y - 1 > 0 and map_nb[y - 1][x + i] == ".") then way = 4 ; break
 			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x + i] == ".") then way = 4 ; break 
 			end
-			else
-			break
-		end
+		else break end
 	end
-	-- print("way is : ", way)
+	-- print("can i escape ? way is : ", way)
 	if (way ~= 0) then
 		x = x + gotox[way]
 		y = y + gotoy[way]
@@ -93,9 +84,7 @@ function run_out_danger(map_nb, x, y, block)
 			elseif (x - 1 > 0 and map_nb[y - i][x - 1] == ".") then if (i < nb) then nb = i ; way = 1 ; break end
 			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y - i][x + 1] == ".") then if (i < nb) then nb = i ; way = 1 ; break end
 			end
-		else
-			break
-		end
+		else break end
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[2] == 0) then
@@ -104,9 +93,7 @@ function run_out_danger(map_nb, x, y, block)
 			elseif (y - 1 > 0 and map_nb[y - 1][x - i] == ".") then if (i < nb) then nb = i ; way = 3 ; break end
 			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x - i] == ".") then if (i < nb) then nb = i ; way = 3 ; break end
 			end
-		else
-			break
-		end
+		else break end
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[3] == 0) then
@@ -115,9 +102,7 @@ function run_out_danger(map_nb, x, y, block)
 			elseif (x - 1 > 0 and map_nb[y + i][x - 1] == ".") then if (i < nb) then nb = i ; way = 2 ; break end
 			elseif (x + 1 < MAP_XMAX + 1 and map_nb[y + i][x + 1] == ".") then if (i < nb) then nb = i ; way = 2 ; break end
 			end
-		else
-			break
-		end
+		else break end
 	end
 	for i = 1, BOMB_RANGE + 1 do
 		if (block[4] == 0) then
@@ -126,9 +111,7 @@ function run_out_danger(map_nb, x, y, block)
 			elseif (y - 1 > 0 and map_nb[y - 1][x + i] == ".") then if (i < nb) then nb = i ; way = 4 ; break end
 			elseif (y + 1 < MAP_YMAX + 1 and map_nb[y + 1][x + i] == ".") then if (i < nb) then nb = i ; way = 4 ; break end
 			end
-		else
-			break
-		end
+		else break end
 	end
 	-- print("WAY IS : ", way)
 	if (way ~= 0) then

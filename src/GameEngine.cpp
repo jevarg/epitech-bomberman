@@ -20,8 +20,8 @@ GameEngine::GameEngine(gdl::Clock &clock, Map &map, Settings &set, Input &input,
 
 GameEngine::~GameEngine()
 {
-  // _player1->setDestroyAttr();
-  // _player2->setDestroyAttr();
+  _player1->setDestroyAttr();
+  _player2->setDestroyAttr();
   _win.stop();
 }
 
@@ -78,8 +78,8 @@ bool GameEngine::initialize()
   // _gameInfo.map->load("map", _gameInfo);
   // spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
-  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1, true);
-  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2, true);
+  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1, false);
+  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2, false);
 
   ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
   ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
@@ -95,7 +95,7 @@ bool GameEngine::initialize()
 
   // spawn.spawnEnt(1, 0, _gameInfo);
   _players.push_back(_player1);
-  _players.push_back(_player2);
+  // _players.push_back(_player2);
   spawn.spawnEnt(1, 1, _gameInfo);
 
   return (true);

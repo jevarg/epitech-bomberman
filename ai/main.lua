@@ -48,6 +48,7 @@ function take_decision(map, map_nb, entities)
 end
 
 function artificial_intelligence()
+	set_priority(LEVEL)
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)

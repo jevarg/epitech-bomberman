@@ -61,7 +61,7 @@ int LuaCommunication::getDatas()
 	{
 	  res = lua_tonumber(_luaState, lua_gettop(_luaState));
 	  lua_pop(_luaState, 1);
-	  // std::cout << "Script returned : " << static_cast<int>(res) << std::endl;
+	  std::cout << "Script returned : " << static_cast<int>(res) << std::endl;
 	}
       else
 	std::cout << "dont return a number" << std::endl;

@@ -54,7 +54,6 @@ function get_good_way(map, x, y, nb)
 end
 
 function take_shortest_priority(map, map_nb, entities)
-	-- print("take take_shortest_priority")
 	local x, tmp_x = 1000000, 1000000
 	local y, tmp_y = 1000000, 1000000
 	local cur_dist = 0
