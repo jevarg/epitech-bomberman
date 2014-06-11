@@ -32,6 +32,10 @@ Sound::Sound()
 	std::cerr << "Failed to load orb sound." << std::endl;
       if ((_soundBox["click"] = Mix_LoadWAV("./assets/sounds/orb.wav")) == NULL)
 	std::cerr << "Failed to load click sound." << std::endl;
+      if ((_soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav")) == NULL)
+	std::cerr << "Failed to load getbomb sound." << std::endl;
+      if ((_soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav")) == NULL)
+	std::cerr << "Failed to load burp sound." << std::endl;
     }
   catch (std::string err)
     {
@@ -49,6 +53,12 @@ Sound::Sound()
 
 Sound::~Sound()
 {
+  for (std::map<std::string, Mix_Music *>::iterator it = _musicBox.begin(); it != _musicBox.end(); ++it)
+    if (it->second != NULL)
+      Mix_FreeMusic(it->second);
+  for (std::map<std::string, Mix_Chunk *>::iterator it = _soundBox.begin(); it != _soundBox.end(); ++it)
+    if (it->second != NULL)
+      Mix_FreeChunk(it->second);
   Mix_AllocateChannels(0);
   Mix_Quit();
 }
