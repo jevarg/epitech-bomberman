@@ -139,7 +139,7 @@ void	ACharacter::setSpeed(int speed)
 
 void	ACharacter::takeDamages(int amount)
 {
-  _gameInfo->sound->playSound("hurt");
+  _gameInfo->sound->play("hurt", EFFECT);
   _health -= amount;
   if (_health <= 0)
     die();
@@ -212,4 +212,10 @@ void	ACharacter::destroy()
 int ACharacter::getMaxBomb() const
 {
   return (_maxBomb);
+}
+
+ACharacter &ACharacter::operator+=(int score)
+{
+  _score += score;
+  return (*this);
 }

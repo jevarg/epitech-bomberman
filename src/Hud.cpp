@@ -9,8 +9,10 @@ HUD::HUD(gdl::AShader &shader)
   _nostock.setSize(30, 30);
   _heart.setSize(30, 30);
   _noHeart.setSize(30, 30);
-  if (!_fps.initialize() || !_heart.initialize() || !_noHeart.initialize()
-      || !_stock.initialize() || !_nostock.initialize() || !_score.initialize())
+  _score.initialize();
+  _fps.initialize();
+  if (!_heart.initialize() || !_noHeart.initialize()
+      || !_stock.initialize() || !_nostock.initialize())
     throw(Exception("Cannot Init the HUD"));
 }
 

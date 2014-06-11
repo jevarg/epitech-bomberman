@@ -21,7 +21,6 @@ void	IA::update()
   double x = _x - aggro[_level - 1];
 
   pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1]);
-  std::cout << this << " : je passe dans l'update" << std::endl;
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));

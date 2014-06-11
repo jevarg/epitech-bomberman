@@ -63,7 +63,7 @@ private:
   void	mouseInput(const SDL_Event &event);
   void	windowEvent(const SDL_Event &event);
   void	pressKey(const SDL_Event &event);
-  void	unpressKey(const SDL_Event &event);
+  void	unpressKey();
 
   Mutex				_mutex;
   std::vector<bool>		_actionState;
