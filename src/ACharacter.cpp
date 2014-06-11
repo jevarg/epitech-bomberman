@@ -139,7 +139,7 @@ void	ACharacter::setSpeed(int speed)
 
 void	ACharacter::takeDamages(int amount)
 {
-  _gameInfo->sound->playSound("hurt");
+  _gameInfo->sound->play("hurt", EFFECT);
   _health -= amount;
   if (_health <= 0)
     die();

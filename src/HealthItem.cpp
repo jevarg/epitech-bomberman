@@ -15,7 +15,7 @@ void	HealthItem::setAttr(ACharacter *ch) const
 {
   if (ch->getHealth() < HEALTH_MAX)
     ch->setHealth(ch->getHealth() + _amount);
-  _gameInfo->sound->playSound("eat");
+  _gameInfo->sound->play("eat", EFFECT);
 }
 
 AItem	*HealthItem::clone(int x, int y)

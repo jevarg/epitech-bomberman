@@ -28,6 +28,7 @@ bool  Menu::initialize()
       !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER) ||
       !_textShader.build())
     return (false);
+  _gameInfo.sound->play("menu", MUSIC);
   _mainPanel.push_back(new NavigationWidget(50, 50, 40, 400, "allo", &_loadPanel)); // tmp
   // fill Panels vectors with Widgets
   return (true);

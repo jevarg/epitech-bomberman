@@ -6,12 +6,18 @@
 # include <map>
 # include <SDL2/SDL_mixer.h>
 
+enum type
+  {
+    MUSIC,
+    EFFECT
+  };
+
 class	Sound
 {
 public:
   Sound();
   ~Sound();
-  bool	playSound(const std::string &);
+  bool	play(const std::string &, int type);
 private:
   std::map<std::string, Mix_Music *>	_musicBox;
   std::map<std::string, Mix_Chunk *>	_soundBox;

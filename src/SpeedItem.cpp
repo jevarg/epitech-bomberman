@@ -14,7 +14,7 @@ SpeedItem::~SpeedItem()
 void	SpeedItem::setAttr(ACharacter *ch) const
 {
   ch->setSpeed(ch->getSpeed() + _amount);
-  _gameInfo->sound->playSound("orb");
+  _gameInfo->sound->play("orb", EFFECT);
 }
 
 AItem	*SpeedItem::clone(int x, int y)

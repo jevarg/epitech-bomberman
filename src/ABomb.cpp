@@ -9,7 +9,7 @@ ABomb::ABomb(int x, int y, ACharacter *character, t_gameinfo *gameInfo, bool thr
   _character = character;
   _timeout = 1 * gameInfo->set->getVar(FPS);
   if (thread)
-    _gameInfo->sound->playSound("fuse");
+    _gameInfo->sound->play("fuse", EFFECT);
 }
 
 ABomb::~ABomb()
@@ -23,7 +23,7 @@ void	ABomb::explode()
     return ;			// importent to die first so no colision with flame
   if (_character != NULL)
     _character->setBombStock(_character->getBombStock() + 1);
-  _gameInfo->sound->playSound("explosion");
+  _gameInfo->sound->play("explosion", EFFECT);
 }
 
 /*
