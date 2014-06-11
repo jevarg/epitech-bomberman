@@ -75,6 +75,7 @@ typedef struct	s_gameinfo
   Map	       	*map;
   Mutex		*mutex;
   Condvar	*condvar;
+  std::map<std::string, int> score;
 }		t_gameinfo;
 
 class GameEngine : public gdl::Game
@@ -110,6 +111,7 @@ private:
   Player			*_player2;
   std::vector<Player *>		_players;
   HUD				*_hud;
+  std::map<std::string, int>	_score;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

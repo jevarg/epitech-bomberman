@@ -12,6 +12,8 @@
 # include "AWidget.hpp"
 # include "Console.hpp"
 
+# define SCORE_PATH "./.scores"
+
 class Menu
 {
 public:
@@ -25,6 +27,8 @@ public:
   void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
 
 private:
+  void	loadScore();
+  void	saveScore();
   void	launchGame();
 
   gdl::SdlContext	_win;
