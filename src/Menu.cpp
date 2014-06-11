@@ -77,7 +77,7 @@ bool		Menu::update()
   if (mouse.event == BUTTONUP)
     for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
 	   endit = (*_currentPanel).end(); it != endit ; ++it)
-      if ((*it)->isClicked(x - mouse.x, y - mouse.y))
+      if ((*it)->isClicked(mouse.x, y - mouse.y))
 	{
 	  (*it)->onClick(_gameInfo, (*this));
 	  break;
