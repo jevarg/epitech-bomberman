@@ -44,6 +44,8 @@ bool GameEngine::initialize()
       || !_shader.build())
     return (false);
 
+  _gameInfo.sound->play("game", MUSIC);
+
   _hud = new HUD(*(_textShader));
 
   _ground = new Cube(WALL_TEXTURE);

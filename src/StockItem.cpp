@@ -14,8 +14,8 @@ StockItem::~StockItem()
 void	StockItem::setAttr(ACharacter *ch) const
 {
   ch->setBombStock(ch->getBombStock() + _amount);
+  _gameInfo->sound->play("getbomb", EFFECT);
   increaseScore(ch);
-  _gameInfo->sound->playSound("orb");
 }
 
 AItem	*StockItem::clone(int x, int y)
