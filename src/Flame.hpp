@@ -4,9 +4,17 @@
 # include "ALivingEntity.hpp"
 # include "ACharacter.hpp"
 
+enum
+  {
+    HIT_BOX = 5,
+    HIT_PLAYER = 200
+  };
+
 class	Flame : public ALivingEntity
 {
 private:
+  void setScore();
+
   int	_power;
   int	_range;
   eDir	_direction;

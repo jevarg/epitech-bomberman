@@ -12,8 +12,11 @@ protected:
 
 public:
   NavigationWidget(int x, int y, int height, int width,
-		   const std::string &text, std::vector<AWidget *> *onClickPanel);
+		   const std::string &texture, std::vector<AWidget *> *onClickPanel);
   ~NavigationWidget();
+
+  virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock);
+
   void	onClick(t_gameinfo &gameInfo, Menu &menu);
 };
 

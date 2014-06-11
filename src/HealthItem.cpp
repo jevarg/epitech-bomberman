@@ -20,6 +20,7 @@ void	HealthItem::setAttr(ACharacter *ch) const
     }
   else
     _gameInfo->sound->play("burp", EFFECT);
+  increaseScore(ch);
 }
 
 AItem	*HealthItem::clone(int x, int y)

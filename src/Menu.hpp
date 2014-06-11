@@ -35,7 +35,9 @@ private:
   Console		*_console;
   std::vector<AWidget *> *_currentPanel;
   std::vector<AWidget *> _mainPanel;
-  std::vector<AWidget *> _loadPanel;
+  std::vector<AWidget *> _newGamePanel;
+  std::vector<AWidget *> _importPanel;
+  std::vector<AWidget *> _loadGamePanel;
   std::vector<AWidget *> _optionPanel;
 };
 

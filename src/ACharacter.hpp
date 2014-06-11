@@ -36,7 +36,7 @@ enum
     BOMB_AMOUNT = 1,
     BOMB_MAX = 3,
     RANGE_AMOUNT = 1,
-    RANGE_MAX = 10
+    RANGE_MAX = 10,
   };
 
 class	ACharacter : public ALivingEntity
@@ -52,6 +52,8 @@ public:
   bool		updatePosition(Map *map, eAction action, gdl::Clock *clock);
   void		dropBomb();
   void		takeDamages(int amount);
+
+  ACharacter	&operator+=(int score);
 
   int		getBombStock() const;
   int		getMaxBomb() const;

@@ -15,6 +15,7 @@ void	RangeItem::setAttr(ACharacter *ch) const
 {
   ch->setRange(ch->getRange() + _amount);
   _gameInfo->sound->play("orb", EFFECT);
+  increaseScore(ch);
 }
 
 AItem	*RangeItem::clone(int x, int y)
