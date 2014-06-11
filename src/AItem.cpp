@@ -24,6 +24,11 @@ bool	AItem::checkItemColision(const Map *map)
   return (true);
 }
 
+void	AItem::increaseScore(ACharacter *character) const
+{
+  (*character) += ITEM_SCORE;
+}
+
 void	AItem::update()
 {
   _model->rotate(glm::vec3(0, 1.0f, 0), 5.0f);

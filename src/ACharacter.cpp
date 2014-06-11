@@ -213,3 +213,9 @@ int ACharacter::getMaxBomb() const
 {
   return (_maxBomb);
 }
+
+ACharacter &ACharacter::operator+=(int score)
+{
+  _score += score;
+  return (*this);
+}

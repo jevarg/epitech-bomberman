@@ -14,6 +14,7 @@ RangeItem::~RangeItem()
 void	RangeItem::setAttr(ACharacter *ch) const
 {
   ch->setRange(ch->getRange() + _amount);
+  increaseScore(ch);
   _gameInfo->sound->playSound("orb");
 }
 

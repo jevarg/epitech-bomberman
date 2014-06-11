@@ -15,6 +15,7 @@ void	HealthItem::setAttr(ACharacter *ch) const
 {
   if (ch->getHealth() < HEALTH_MAX)
     ch->setHealth(ch->getHealth() + _amount);
+  increaseScore(ch);
   _gameInfo->sound->playSound("eat");
 }
 

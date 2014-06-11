@@ -5,6 +5,7 @@
 # include "ACharacter.hpp"
 
 # define NO_TIMEOUT -10
+# define ITEM_SCORE 5
 
 class AItem : public ALivingEntity
 {
@@ -14,6 +15,8 @@ public:
 
   void	update();
   bool	checkItemColision(const Map *map);
+
+  void	increaseScore(ACharacter *character) const;
 
   virtual void	setAttr(ACharacter *ch) const = 0;
   virtual AItem	*clone(int x, int y) = 0;

@@ -14,6 +14,7 @@ StockItem::~StockItem()
 void	StockItem::setAttr(ACharacter *ch) const
 {
   ch->setBombStock(ch->getBombStock() + _amount);
+  increaseScore(ch);
   _gameInfo->sound->playSound("orb");
 }
 

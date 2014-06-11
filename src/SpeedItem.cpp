@@ -14,6 +14,7 @@ SpeedItem::~SpeedItem()
 void	SpeedItem::setAttr(ACharacter *ch) const
 {
   ch->setSpeed(ch->getSpeed() + _amount);
+  increaseScore(ch);
   _gameInfo->sound->playSound("orb");
 }
 
