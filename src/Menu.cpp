@@ -243,7 +243,9 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
       handleClock(frame, time, fps);
       draw();
       text.setText(buf, x, y, POLICE_SIZE);
+      glDisable(GL_DEPTH_TEST);
       text.draw(_textShader, *_gameInfo.clock);
+      glEnable(GL_DEPTH_TEST);
       _win.flush();
       std::cout << "Printed: " << buf << std::endl;
     }
