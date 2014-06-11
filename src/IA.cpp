@@ -21,6 +21,7 @@ void	IA::update()
   double x = _x - aggro[_level - 1];
 
   pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1]);
+  std::cout << this << " : je passe dans l'update" << std::endl;
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
@@ -34,6 +35,7 @@ void	IA::update()
 void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y,
 			  int max_y, int i_x, int i_y, int max_it, int *cnt)
 {
+  std::vector<AEntity *> vec;
   for (int i = 0 ; i < max_it ; i++)
     {
       if (x > min_x && x < max_x && y > min_y && y < max_y &&
@@ -60,12 +62,14 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
       c2 = 1;
       for (int j = x ; j < x + (aggro * 2) + 1; ++j)
 	{
+
 	  int type = _gameInfo->map->checkMapColision(j, i);
 	  if (*cnt == 0)
 	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 9);
 	  Flame	*ff;
 	  if ((ff = static_cast<Flame*>(_gameInfo->map->getEntityIf(j, i, FLAME))) != NULL)
 	    {
+
 	      int dir = ff->getDirection();
 	      if (dir == ALLDIR)
 	  	{
@@ -77,6 +81,7 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 				y + (aggro * 2) + 1, 1, 0, ff->getRange(), cnt);
 	  	  danger_in_dir(c2 - 1, c1, x, x + (aggro * 2) + 1, y,
 				y + (aggro * 2) + 1, -1, 0, ff->getRange(), cnt);
+
 	  	}
 	      else
 	  	{
@@ -85,6 +90,7 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 	  	  danger_in_dir(c2, c1, x, x + (aggro * 2) + 1, y,
 				y + (aggro * 2) + 1, dir_x[dir], dir_y[dir], ff->getRange(), cnt);
 	  	}
+
 	    }
 	  if (i == std::floor(_y) && j == std::floor(_x))
 	    {
@@ -97,6 +103,7 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 	      _lua.pushStringInt("y", c1);
 	      _lua.pushStringInt("x", c2);
 	    }
+
 	  _lua.pushIntInt(++(*cnt), type);
 	  _lua.pushIntInt(++(*cnt), c1);
 	  _lua.pushIntInt(++(*cnt), c2);
@@ -104,6 +111,7 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 	}
       ++c1;
     }
+
 }
 
 int	IA::getResultScript(int aggro, int orient)

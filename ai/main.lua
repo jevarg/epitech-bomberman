@@ -52,6 +52,7 @@ function artificial_intelligence()
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
+	display_map(map)
 	local action = take_decision(map, fill_dangerous_fields(map_nb), entities)
 	if (action == ENUM_ACTION["bomb"]) then
 		local block = {0, 0, 0, 0}

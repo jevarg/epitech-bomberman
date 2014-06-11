@@ -37,8 +37,10 @@ void	LuaCommunication::pushSetGlobal(const char *name) const
 
 void	LuaCommunication::executeLua(const char *name)
 {
+  int	err = 0;
   if ((_status = luaL_loadfile(_luaState, name)) == LUA_OK)
-    lua_pcall(_luaState, 0, LUA_MULTRET, 0);
+    if ((err = lua_pcall(_luaState, 0, LUA_MULTRET, 0)) != LUA_OK)
+      std::cout << "very hard problem : " << err << std::endl;
 }
 
 lua_State* LuaCommunication::getState() const
