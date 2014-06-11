@@ -24,7 +24,8 @@ GameEngine::~GameEngine()
 {
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
-  usleep(1000);
+  _gameInfo.condvar->broadcast();
+  sleep(1);
 }
 
 bool GameEngine::initialize()
@@ -117,6 +118,7 @@ void	GameEngine::mainInput()
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
 	}
+      _gameInfo.condvar->broadcast();
       return ;
     }
 }
@@ -136,7 +138,6 @@ bool		GameEngine::update()
 
   mainInput();
   (*_gameInfo.input)[mouse];
-  std::cout << "event: " << mouse.event << std::endl;
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
     return (false);
