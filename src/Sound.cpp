@@ -19,7 +19,7 @@ Sound::Sound()
       _soundBox["hurt"] = Mix_LoadWAV("./assets/sounds/hurt.wav");
       _soundBox["pop"] = Mix_LoadWAV("./assets/sounds/pop.wav");
       _soundBox["orb"] = Mix_LoadWAV("./assets/sounds/orb.wav");
-      _soundBox["click"] = Mix_LoadWAV("./assets/sounds/orb.wav");
+      _soundBox["click"] = Mix_LoadWAV("./assets/sounds/click.wav");
       _soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav");
       _soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav");
     }

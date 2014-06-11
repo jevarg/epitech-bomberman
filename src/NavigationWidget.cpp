@@ -17,6 +17,7 @@ NavigationWidget::~NavigationWidget()
 
 void	NavigationWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
+  gameInfo.sound->play("click", EFFECT);
   menu.setCurrentPanel(_onClickPanel);
 }
 
