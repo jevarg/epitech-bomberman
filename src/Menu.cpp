@@ -86,7 +86,7 @@ bool  Menu::initialize()
   _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 2.25f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
   _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 3.0f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
   _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 4.5f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
-  
+
   return (true);
 }
 
@@ -296,4 +296,9 @@ void	Menu::saveScore()
 
   for (std::map<std::string, int>::const_iterator it = _gameInfo.score.begin();it != _gameInfo.score.end();it++)
     file << it->first << " " << it->second << std::endl;
+}
+
+void	Menu::setDone(bool done)
+{
+  _done = done;
 }
