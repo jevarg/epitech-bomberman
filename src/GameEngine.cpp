@@ -8,6 +8,8 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
   : _win(win), _textShader(textShader), _save(),
     _gameInfo(clock, map, set, input, sound), _lights(), _players()
 {
+  _player1 = NULL;
+  _player2 = NULL;
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
   _shutdown = false;
@@ -22,9 +24,12 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
 
 GameEngine::~GameEngine()
 {
-  _player1->setDestroyAttr();
-  _player2->setDestroyAttr();
-  usleep(1000);
+  if (_player1)
+    _player1->setDestroyAttr();
+  if (_player2)
+    _player2->setDestroyAttr();
+  _gameInfo.condvar->broadcast();
+  sleep(1);
 }
 
 bool GameEngine::initialize()
@@ -33,12 +38,20 @@ bool GameEngine::initialize()
   EntityFactory *ent = EntityFactory::getInstance();
   Spawn	spawn(_gameInfo.map);
 
-  // int x = 0, y = 0;
-  // _gameInfo.map->determineMapSize("map", x, y);
-  // _gameInfo.set->setVar(MAP_WIDTH, x);
-  // _gameInfo.set->setVar(MAP_HEIGHT, y);
-  _mapX = _gameInfo.set->getVar(MAP_WIDTH);
-  _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
+  try
+    {
+      int x = 0, y = 0;
+      _gameInfo.map->determineMapSize("map", x, y);
+      _gameInfo.set->setVar(MAP_WIDTH, x);
+      _gameInfo.set->setVar(MAP_HEIGHT, y);
+      _mapX = _gameInfo.set->getVar(MAP_WIDTH);
+      _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
+    }
+  catch (Exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      return (false);
+    }
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -74,9 +87,9 @@ bool GameEngine::initialize()
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
-  _gameInfo.map->createMap(_gameInfo);
-  // _gameInfo.map->load("map", _gameInfo);
-  //  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
+  // _gameInfo.map->createMap(_gameInfo);
+  _gameInfo.map->load("map", _gameInfo);
+   spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1, false);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2, false);
@@ -120,6 +133,7 @@ void	GameEngine::mainInput()
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
 	}
+      _gameInfo.condvar->broadcast();
       return ;
     }
 }
@@ -139,7 +153,6 @@ bool		GameEngine::update()
 
   mainInput();
   (*_gameInfo.input)[mouse];
-  std::cout << "event: " << mouse.event << std::endl;
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
     return (false);

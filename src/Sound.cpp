@@ -6,7 +6,7 @@ Sound::Sound()
   try
     {
       if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
-	throw (new Exception("Mix_OpenAudio()"));
+	throw (Exception("Mix_OpenAudio()"));
       Mix_AllocateChannels(128);
       _musicBox["intro"] = Mix_LoadMUS("./assets/sounds/calm1.ogg");
       _musicBox["menu"] = Mix_LoadMUS("./assets/sounds/calm2.ogg");

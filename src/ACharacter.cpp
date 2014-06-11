@@ -202,7 +202,7 @@ void	ACharacter::setRange(int range)
 
 void	ACharacter::destroy()
 {
-  if (_bombStock < BOMB_MAX)
+  if (_bombStock < _maxBomb)
     return ;
   delete (_mutex);
   delete (this);
