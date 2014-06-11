@@ -62,7 +62,7 @@ void		Map::load(const std::string &name,
 	    std::string buf;
 	    convert << y + 1;
 	    buf = "Error while loading map on line : " + convert.str();
-	    throw (new Exception(buf));
+	    throw (Exception(buf));
 	  }
       for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
 	{
@@ -84,7 +84,7 @@ void		Map::load(const std::string &name,
 		convert.flush();
 		convert << x;
 		buf += " column : " + convert.str();
-		throw (new Exception(buf));
+		throw (Exception(buf));
 	      }
 	    }
 	  ++x;
@@ -117,6 +117,8 @@ void		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
     }
   sizeX = len;
   sizeY = y;
+  if (!len || !y)
+    throw(Exception("Couldn't load map."));
   file.close();
 }
 
