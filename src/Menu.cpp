@@ -1,6 +1,8 @@
 #include <iostream>
 #include <fstream>
 #include <sstream>
+#include <sys/types.h>
+#include <dirent.h>
 #include "Menu.hpp"
 #include "NavigationWidget.hpp"
 #include "ImageWidget.hpp"
@@ -179,7 +181,7 @@ void	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
 	  buf = buf.substr(0, buf.length() - 2);
 	  buf.push_back('|');
 	}
-      else if (buf.length() < maxlen)
+      else if (buf.length() < maxlen && key >= ' ' && key <= '~')
 	{
 	  buf.at(buf.length() - 1) = static_cast<char>(key);
 	  buf.push_back('|');
@@ -218,7 +220,6 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
 	++beg;
       if (beg != end)
 	{
-	  save = *beg;
 	  key = *beg;
 	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
 	    key = '0' + key - SDLK_KP_1 + 1;
@@ -309,6 +310,20 @@ void	Menu::saveScore()
 
   for (std::map<std::string, int>::const_iterator it = _gameInfo.score.begin();it != _gameInfo.score.end();it++)
     file << it->first << " " << it->second << std::endl;
+}
+
+void	Menu::readDir(const std::string &dirname)
+{
+  DIR	*dirp;
+  struct dirent *file;
+
+  if ((dirp = opendir(dirname.c_str())) == NULL)
+    return ;
+  while ((file = readdir(dirp)) != NULL)
+    {
+      if (file->d_type != DT_DIR)
+	_filename.push_back(file->d_name);
+    }
 }
 
 void	Menu::setDone(bool done)
