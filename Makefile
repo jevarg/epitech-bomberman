@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Tue Jun 10 18:52:22 2014 
+## Last update Wed Jun 11 15:49:58 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -61,6 +61,7 @@ SRC		=	main.cpp \
 			Hud.cpp \
 			AWidget.cpp \
 			NavigationWidget.cpp \
+			TextWidget.cpp \
 			Intro.cpp
 
 OBJDIR		=	obj/

@@ -23,9 +23,12 @@ public:
   void	draw();
   void	launch();
   void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
+  void	textInput(std::string &buf, unsigned int maxlen, int x, int y);
 
 private:
   void	launchGame();
+  void	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
+  void	handleClock(int &frame, double &time, double fps);
 
   gdl::SdlContext	_win;
   gdl::BasicShader	_textShader;
