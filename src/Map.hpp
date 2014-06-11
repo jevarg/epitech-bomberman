@@ -27,8 +27,8 @@ public:
   eType	checkMapColision(int x, int y) const;
   bool	checkFullMapColision(int x, int y, std::vector<AEntity *> &vec) const;
 
-  bool		save(const std::string&);
-  bool		load(const std::string &,
+  void		save(const std::string&);
+  void		load(const std::string &,
 		     t_gameinfo &gameInfo);
 
   void		addEntity(AEntity *ent);
@@ -50,7 +50,7 @@ public:
   unsigned int	getContPos(int x, int y) const;
   v_Contcit	ContBegin() const;
   v_Contcit	ContEnd() const;
-  bool		determineMapSize(const std::string &, int &, int &);
+  void		determineMapSize(const std::string &, int &, int &);
 
   void		createContainers();
   void		display();
