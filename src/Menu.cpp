@@ -5,6 +5,7 @@
 #include "NavigationWidget.hpp"
 #include "ImageWidget.hpp"
 #include "InputWidget.hpp"
+#include "QuitWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
 {
@@ -51,7 +52,7 @@ bool  Menu::initialize()
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/multiplayer.tga", &_newGamePanel));
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/load_game.tga", &_loadGamePanel));
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2, "./assets/Button/options.tga", &_optionsPanel));
-  _mainPanel.push_back(new ImageWidget(x / 4, y / 18, y / 11.25f, x / 2, "./assets/Button/quit.tga"));
+  _mainPanel.push_back(new QuitWidget(x / 4, y / 18, y / 11.25f, x / 2, "./assets/Button/quit.tga"));
 
   _mainPanel.push_back(new InputWidget(50, 50, y / 11.25f, x / 2, "allotest"));
 
