@@ -7,6 +7,7 @@
 #include "NavigationWidget.hpp"
 #include "ImageWidget.hpp"
 #include "InputWidget.hpp"
+#include "LaunchWidget.hpp"
 #include "QuitWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
@@ -61,7 +62,7 @@ bool  Menu::initialize()
   _newGamePanel.push_back(background);
   _newGamePanel.push_back(title);
   _newGamePanel.push_back(back);
-  _newGamePanel.push_back(new ImageWidget(x / 4, 450, y / 11.25f, x / 2, "./assets/Button/generate_map.tga"));
+  _newGamePanel.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2, "./assets/Button/generate_map.tga"));
   _newGamePanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/Button/import_map.tga", &_importMapPanel));
 
   _loadGamePanel.push_back(background);
@@ -219,7 +220,6 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
 	++beg;
       if (beg != end)
 	{
-	  save = *beg;
 	  key = *beg;
 	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
 	    key = '0' + key - SDLK_KP_1 + 1;
@@ -244,7 +244,9 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
       handleClock(frame, time, fps);
       draw();
       text.setText(buf, x, y, POLICE_SIZE);
+      glDisable(GL_DEPTH_TEST);
       text.draw(_textShader, *_gameInfo.clock);
+      glEnable(GL_DEPTH_TEST);
       _win.flush();
       std::cout << "Printed: " << buf << std::endl;
     }
