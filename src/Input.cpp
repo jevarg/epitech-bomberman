@@ -37,7 +37,7 @@ void	Input::pressKey(const SDL_Event &event)
     _keyPressed.push_back(_key);
 }
 
-void	Input::unpressKey(const SDL_Event &event)
+void	Input::unpressKey()
 {
   Scopelock	<Mutex>sc(_mutex);
   l_Keyit	it;
@@ -69,7 +69,7 @@ void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool stat
   if (event.type == SDL_KEYDOWN)
     pressKey(event);
   else
-    unpressKey(event);
+    unpressKey();
 }
 
 void	Input::mouseInput(const SDL_Event &event)
@@ -89,7 +89,7 @@ void	Input::mouseInput(const SDL_Event &event)
       _mouse.event = BUTTONDOWN;
       break ;
     case SDL_MOUSEBUTTONUP:
-      if (_mouse.event == BUTTONDOWN)
+      if (_mouse.event != BUTTONUP)
 	{
 	  _mouse.x = event.button.x;
 	  _mouse.y = event.button.y;
@@ -162,17 +162,17 @@ bool	Input::operator[](eAction act) const
 
 bool	Input::operator[](t_mouse &mouse) const
 {
+  mouse = _mouse;
   if (_mouse.event == NONE)
     return (false);
-  mouse = _mouse;
   return (true);
 }
 
 bool	Input::operator[](t_window &win) const
 {
+  win = _window;
   if (_window.event == WIN_NONE)
     return (false);
-  win = _window;
   return (true);
 }
 

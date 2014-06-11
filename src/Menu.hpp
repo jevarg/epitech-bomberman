@@ -12,6 +12,8 @@
 # include "AWidget.hpp"
 # include "Console.hpp"
 
+# define SCORE_PATH "./.scores"
+
 class Menu
 {
 public:
@@ -23,9 +25,14 @@ public:
   void	draw();
   void	launch();
   void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
+  void	textInput(std::string &buf, unsigned int maxlen, int x, int y);
 
 private:
+  void	loadScore();
+  void	saveScore();
   void	launchGame();
+  void	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
+  void	handleClock(int &frame, double &time, double fps);
 
   gdl::SdlContext	_win;
   gdl::BasicShader	_textShader;
@@ -36,9 +43,9 @@ private:
   std::vector<AWidget *> *_currentPanel;
   std::vector<AWidget *> _mainPanel;
   std::vector<AWidget *> _newGamePanel;
-  std::vector<AWidget *> _importPanel;
   std::vector<AWidget *> _loadGamePanel;
-  std::vector<AWidget *> _optionPanel;
+  std::vector<AWidget *> _importMapPanel;
+  std::vector<AWidget *> _optionsPanel;
 };
 
 #endif /* _MENU_HPP_ */

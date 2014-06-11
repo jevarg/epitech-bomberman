@@ -14,6 +14,7 @@
 # define USER_FILE "config.cfg"
 # define UNBIND 0
 # define UNKNOWN_KEY -1
+# define POLICE_SIZE 30
 
 typedef	struct	s_cvar	t_cvar;
 

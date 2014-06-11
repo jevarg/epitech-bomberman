@@ -84,7 +84,7 @@ bool GameEngine::initialize()
   ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
   ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
   ent->addEntity(BOMB, new Bomb(0, 0, NULL, &_gameInfo, false));
-  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, &_gameInfo, false));
+  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, &_gameInfo, NULL, false));
   ent->addEntity(CHARACTER1, _player1);
   ent->addEntity(CHARACTER2, _player2);
   ent->addEntity(BOT, new IA(0, 0, &_gameInfo, false));
@@ -135,8 +135,11 @@ bool		GameEngine::update()
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
   // static int	frame = 0;
   static double	elapsedTime = 0;
+  t_mouse mouse;
 
   mainInput();
+  (*_gameInfo.input)[mouse];
+  std::cout << "event: " << mouse.event << std::endl;
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
     return (false);

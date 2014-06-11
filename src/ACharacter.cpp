@@ -174,7 +174,7 @@ void	ACharacter::setBombStock(int bombStock)
   else
     {
       _bombStock = bombStock;
-      _maxBomb = bombStock;
+      _maxBomb = (_maxBomb < bombStock) ? bombStock : _maxBomb;
     }
 }
 

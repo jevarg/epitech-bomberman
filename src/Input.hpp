@@ -19,9 +19,9 @@ enum	eMouse
 
 enum	eWin
   {
-    WIN_QUIT = 0,
-    WIN_RESIZE,
-    WIN_NONE
+    WIN_NONE = 0,
+    WIN_QUIT,
+    WIN_RESIZE
   };
 
 typedef struct	s_mouse
@@ -63,7 +63,7 @@ private:
   void	mouseInput(const SDL_Event &event);
   void	windowEvent(const SDL_Event &event);
   void	pressKey(const SDL_Event &event);
-  void	unpressKey(const SDL_Event &event);
+  void	unpressKey();
 
   Mutex				_mutex;
   std::vector<bool>		_actionState;
