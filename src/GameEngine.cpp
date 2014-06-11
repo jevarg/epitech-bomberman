@@ -13,7 +13,7 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
   _shutdown = false;
-  
+
   Mutex *mutex = _gameInfo.mutex;
   pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
   _frames = 0;
@@ -28,7 +28,8 @@ GameEngine::~GameEngine()
     _player1->setDestroyAttr();
   if (_player2)
     _player2->setDestroyAttr();
-  usleep(1000);
+  _gameInfo.condvar->broadcast();
+  sleep(1);
 }
 
 bool GameEngine::initialize()
@@ -132,6 +133,7 @@ void	GameEngine::mainInput()
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
 	}
+      _gameInfo.condvar->broadcast();
       return ;
     }
 }
@@ -151,7 +153,6 @@ bool		GameEngine::update()
 
   mainInput();
   (*_gameInfo.input)[mouse];
-  std::cout << "event: " << mouse.event << std::endl;
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
     return (false);
