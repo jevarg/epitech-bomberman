@@ -13,14 +13,13 @@ Box::~Box()
 
 void	Box::takeDamages(int)
 {
-  _gameInfo->sound->playSound("box");
   if (_toDestroy == true)
     return ;
   setDestroy();
   {
     Scopelock	<Mutex>sc(*_mutex);
     spawnItem();
-    _gameInfo->sound->playSound("box");
+    _gameInfo->sound->play("box", EFFECT);
   }
 }
 
