@@ -32,6 +32,7 @@ private:
   void	loadScore();
   void	saveScore();
   void	launchGame();
+  void	readDir(const std::string &dirname);
   void	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
   void	handleClock(int &frame, double &time, double fps);
 
@@ -41,6 +42,7 @@ private:
   t_gameinfo		_gameInfo;
   int			_frames;
   Console		*_console;
+  std::list<std::string> _filename;
   std::vector<AWidget *> *_currentPanel;
   std::vector<AWidget *> _mainPanel;
   std::vector<AWidget *> _newGamePanel;
