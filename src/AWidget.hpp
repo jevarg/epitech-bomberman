@@ -25,7 +25,7 @@ public:
   void		draw();
 
   virtual bool	isClicked(int x, int y);
-  virtual void	onClick(t_gameinfo &gameInfo, Menu &menu) = 0;
+  virtual void	onClick(const t_gameinfo &gameInfo, Menu &menu) = 0;
   virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock) = 0;
 
   void		setSquare(Square *);
@@ -34,7 +34,7 @@ public:
   int		getY() const;
   int		getHeight() const;
   int		getWidth() const;
-  const Text	&getText() const;  
+  const Text	&getText() const;
 };
 
 #endif
