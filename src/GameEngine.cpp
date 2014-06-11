@@ -8,10 +8,12 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
   : _win(win), _textShader(textShader), _save(),
     _gameInfo(clock, map, set, input, sound), _lights(), _players()
 {
+  _player1 = NULL;
+  _player2 = NULL;
   _gameInfo.mutex = new Mutex;
   _gameInfo.condvar = new Condvar;
   _shutdown = false;
-
+  
   Mutex *mutex = _gameInfo.mutex;
   pthread_mutex_t * m = _gameInfo.mutex->getMutexPtr();
   _frames = 0;
@@ -22,8 +24,10 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::Clock *clock,
 
 GameEngine::~GameEngine()
 {
-  _player1->setDestroyAttr();
-  _player2->setDestroyAttr();
+  if (_player1)
+    _player1->setDestroyAttr();
+  if (_player2)
+    _player2->setDestroyAttr();
   usleep(1000);
 }
 
@@ -37,7 +41,6 @@ bool GameEngine::initialize()
     {
       int x = 0, y = 0;
       _gameInfo.map->determineMapSize("map", x, y);
-      std::cout << "x:" << x << " y: " << y << std::endl;
       _gameInfo.set->setVar(MAP_WIDTH, x);
       _gameInfo.set->setVar(MAP_HEIGHT, y);
       _mapX = _gameInfo.set->getVar(MAP_WIDTH);

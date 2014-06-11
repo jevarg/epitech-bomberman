@@ -93,7 +93,6 @@ bool		Menu::update()
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
     {
-      std::cout << "j'y passe loul" << std::endl;
       launchGame();
       _gameInfo.sound->play("menu", MUSIC);
     }
@@ -227,12 +226,10 @@ void	Menu::launchGame()
 		 _gameInfo.input, _gameInfo.sound);
   bool	done = true;
 
-  std::cout << "debut launchgame" << std::endl;
   if (!eng.initialize())
     return ;
   while ((done = eng.update()))
     eng.draw();
-  std::cout << "launchgame" << std::endl;
 }
 
 void	Menu::launch()

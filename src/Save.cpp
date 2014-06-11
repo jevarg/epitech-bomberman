@@ -132,7 +132,6 @@ void		Save::loadGame(Map &map, Settings &settings,
       while (std::getline(file, buf))
 	{
 	  this->decrypt(buf);
-	  std::cout << "readed : " << buf << std::endl;
 	  if (std::count(buf.begin(), buf.end(), ' ') != 2)
 	    throw (Exception("Error : invalid savegame file"));
 	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
@@ -143,7 +142,6 @@ void		Save::loadGame(Map &map, Settings &settings,
 	  if (type >= UNKNOWNENTITY || type < 0)
 	    throw (Exception("Error : invalid savegame file"));
 	  map.addEntity(fact->getEntity(static_cast<eType>(type % (GROUND + 1)), x, y));
-	  std::cout << "added entity of type : " << type << std::endl;
 	  ++line;
 	}
     }
