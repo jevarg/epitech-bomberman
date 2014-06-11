@@ -41,7 +41,7 @@ void	Console::handleClock(const gdl::SdlContext &win, int &frame,
 bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
 {
   Text		text;
-  double	fps = 1000.0 / 50.0;
+  double	fps = 1000.0 / 25.0;
   int		frame = -1;
   double	time;
   Keycode	key = 0;
@@ -70,26 +70,31 @@ bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       l_Keycit beg = _input.getPressedBeg();
       l_Keycit end = _input.getPressedEnd();
+      if (beg != end && *beg == SDLK_LSHIFT)
+	++beg;
       if (beg != end)
 	{
-	  save = *beg;
-	  if (save == key && key < 128 &&
-	      (((key == '\b' || key == '\r' || key == SDLK_KP_ENTER) &&
-		frame < 6) ||
-	       ((key != '\b' && key != '\r' && key != SDLK_KP_ENTER) &&
-		frame >= 0 && frame < 10)))
+	  key = *beg;
+	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
+	    key = '0' + key - SDLK_KP_1 + 1;
+	  if (save == key)
 	    {
-	      handleClock(win, frame, time, fps);
-	      continue;
+	      if (((key < 128 && key != '\b') && frame < 8) ||
+		  (key == '\b' && frame < 2) ||
+		  ((key == '\r' || key == SDLK_KP_ENTER) && frame < 15))
+		{
+		  handleClock(win, frame, time, fps);
+		  continue;
+		}
+	      else
+		frame = 0;
 	    }
 	  else
 	    frame = 0;
+	  save = key;
 	}
       for (; beg != end; ++beg)
 	{
-	  key = *beg;
-	  if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
-	    key = '0' + key - SDLK_KP_0;
 	  if (key == '\r' || key == SDLK_KP_ENTER)
 	    {
 	      _buf.erase(_buf.begin());
