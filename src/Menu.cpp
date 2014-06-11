@@ -1,3 +1,6 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
 #include "Menu.hpp"
 #include "NavigationWidget.hpp"
 #include "ImageWidget.hpp"
@@ -11,6 +14,8 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
   _gameInfo.clock = new gdl::Clock();
   _gameInfo.set->loadFile(DEFAULT_FILE);
   _gameInfo.set->loadFile(USER_FILE);
+  loadScore();
+
   _currentPanel = &_mainPanel;
   _console = new Console(*_gameInfo.set, *_gameInfo.input, *_gameInfo.clock, _textShader);
   //    _console->aff(*_gameInfo.clock, _textShader, _win, *_gameInfo.input);
@@ -18,12 +23,14 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 
 Menu::~Menu()
 {
+  saveScore();
 }
 
 bool  Menu::initialize()
 {
   int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
-  if (!_win.start(_gameInfo.set->getVar(W_WIDTH), _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
+
+  if (!_win.start(x, y, "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
@@ -253,4 +260,33 @@ void	Menu::launch()
 void	Menu::setCurrentPanel(std::vector<AWidget *> *currentPanel)
 {
   _currentPanel = currentPanel;
+}
+
+void	Menu::loadScore()
+{
+  std::ifstream file(SCORE_PATH);
+
+  if (file)
+    {
+      std::string line;
+
+      while (getline(file, line))
+	{
+	  std::stringstream ss(line);
+	  std::string name;
+	  int score;
+
+	  ss >> name >> score;
+	  if (name != "")
+	    _gameInfo.score[name] = score;
+	}
+    }
+}
+
+void	Menu::saveScore()
+{
+  std::ofstream file(SCORE_PATH, std::ios::out | std::ios::trunc);
+
+  for (std::map<std::string, int>::const_iterator it = _gameInfo.score.begin();it != _gameInfo.score.end();it++)
+    file << it->first << " " << it->second << std::endl;
 }

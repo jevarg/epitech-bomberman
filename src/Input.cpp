@@ -162,17 +162,17 @@ bool	Input::operator[](eAction act) const
 
 bool	Input::operator[](t_mouse &mouse) const
 {
+  mouse = _mouse;
   if (_mouse.event == NONE)
     return (false);
-  mouse = _mouse;
   return (true);
 }
 
 bool	Input::operator[](t_window &win) const
 {
+  win = _window;
   if (_window.event == WIN_NONE)
     return (false);
-  win = _window;
   return (true);
 }
 

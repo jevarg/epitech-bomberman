@@ -12,6 +12,8 @@
 # include "AWidget.hpp"
 # include "Console.hpp"
 
+# define SCORE_PATH "./.scores"
+
 class Menu
 {
 public:
@@ -26,6 +28,8 @@ public:
   void	textInput(std::string &buf, unsigned int maxlen, int x, int y);
 
 private:
+  void	loadScore();
+  void	saveScore();
   void	launchGame();
   void	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
   void	handleClock(int &frame, double &time, double fps);
