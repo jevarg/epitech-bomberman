@@ -24,6 +24,7 @@ public:
   bool	update();
   void	draw();
   void	launch();
+  void	launchGame();
   void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen, int x, int y);
   void	setDone(bool done = true);
@@ -31,7 +32,6 @@ public:
 private:
   void	loadScore();
   void	saveScore();
-  void	launchGame();
   void	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
   void	handleClock(int &frame, double &time, double fps);
 

@@ -5,6 +5,7 @@
 #include "NavigationWidget.hpp"
 #include "ImageWidget.hpp"
 #include "InputWidget.hpp"
+#include "LaunchWidget.hpp"
 #include "QuitWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
@@ -59,7 +60,7 @@ bool  Menu::initialize()
   _newGamePanel.push_back(background);
   _newGamePanel.push_back(title);
   _newGamePanel.push_back(back);
-  _newGamePanel.push_back(new ImageWidget(x / 4, 450, y / 11.25f, x / 2, "./assets/Button/generate_map.tga"));
+  _newGamePanel.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2, "./assets/Button/generate_map.tga"));
   _newGamePanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/Button/import_map.tga", &_importMapPanel));
 
   _loadGamePanel.push_back(background);
