@@ -4,6 +4,7 @@
 #include "Menu.hpp"
 #include "NavigationWidget.hpp"
 #include "ImageWidget.hpp"
+#include "InputWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
 {
@@ -52,6 +53,8 @@ bool  Menu::initialize()
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2, "./assets/Button/options.tga", &_optionsPanel));
   _mainPanel.push_back(new ImageWidget(x / 4, y / 18, y / 11.25f, x / 2, "./assets/Button/quit.tga"));
 
+  _mainPanel.push_back(new InputWidget(50, 50, y / 11.25f, x / 2, "allotest"));
+
   _newGamePanel.push_back(background);
   _newGamePanel.push_back(title);
   _newGamePanel.push_back(back);
@@ -79,6 +82,10 @@ bool  Menu::initialize()
   _controlsPanel.push_back(background);
   _controlsPanel.push_back(title);
   _controlsPanel.push_back(back);
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 1.8f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 2.25f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 3.0f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 4.5f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
   
   return (true);
 }
