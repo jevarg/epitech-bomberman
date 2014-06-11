@@ -19,9 +19,9 @@ enum	eMouse
 
 enum	eWin
   {
-    WIN_QUIT = 0,
-    WIN_RESIZE,
-    WIN_NONE
+    WIN_NONE = 0,
+    WIN_QUIT,
+    WIN_RESIZE
   };
 
 typedef struct	s_mouse

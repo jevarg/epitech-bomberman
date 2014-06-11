@@ -132,8 +132,11 @@ bool		GameEngine::update()
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
   // static int	frame = 0;
   static double	elapsedTime = 0;
+  t_mouse mouse;
 
   mainInput();
+  (*_gameInfo.input)[mouse];
+  std::cout << "event: " << mouse.event << std::endl;
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
     return (false);
