@@ -33,6 +33,7 @@ bool  Menu::initialize()
       !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER) ||
       !_textShader.build())
     return (false);
+  _gameInfo.sound->play("menu", MUSIC);
   ImageWidget	*background = new ImageWidget(0, 0, y, x, "./Ressources/Images/background.tga");
   ImageWidget	*title = new ImageWidget(x / 8, y / 1.43f, y / 4.8f, x / 1.3f, "./assets/BomberCraft.tga");
   NavigationWidget *back = new NavigationWidget(x / 8, y / 11.25f, y / 11.25f, x / 6.15f, "./assets/Button/back_button.tga", &_mainPanel);
@@ -84,7 +85,10 @@ bool		Menu::update()
 	}
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
-    launchGame();
+    {
+      launchGame();
+      _gameInfo.sound->play("menu", MUSIC);
+    }
   if (_gameInfo.input->isPressed(SDLK_F1))
     {
       glDisable(GL_DEPTH_TEST);
