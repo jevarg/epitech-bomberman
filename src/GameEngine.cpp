@@ -79,7 +79,7 @@ bool GameEngine::initialize()
   ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
   ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
   ent->addEntity(BOMB, new Bomb(0, 0, NULL, &_gameInfo, false));
-  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, &_gameInfo, false));
+  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, &_gameInfo, NULL, false));
   ent->addEntity(CHARACTER1, _player1);
   ent->addEntity(CHARACTER2, _player2);
   ent->addEntity(BOT, new IA(0, 0, &_gameInfo, false));

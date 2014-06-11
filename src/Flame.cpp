@@ -2,9 +2,13 @@
 #include "Flame.hpp"
 #include "ABomb.hpp"
 
-Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo *gameInfo, bool thread)
+Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo *gameInfo, ABomb *bomb,
+	     bool thread)
   : ALivingEntity(x, y, FLAME, gameInfo, thread)
 {
+  if (bomb)
+    bomb->setRange(bomb->getRange() + 1);
+  _bomb = bomb;
   _power = power;
   _range = range;
   _direction = direction;
@@ -20,6 +24,8 @@ Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo *gam
 
 Flame::~Flame()
 {
+  if (_bomb)
+    _bomb->setRange(_bomb->getRange() - 1);
 }
 
 void		Flame::update()
@@ -39,6 +45,7 @@ void		Flame::update()
 	continue ;
       if ((ent = _gameInfo->map->getEntityIf(_x, _y, static_cast<eType>(i))) != NULL)
 	{
+	  increaseScore(ent->getType());
 	  ent->takeDamages(_power);
 	  die();
 	  hit = true;
@@ -75,7 +82,7 @@ void		Flame::update()
 void    Flame::setFire(int x, int y, eDir direction)
 {
   _gameInfo->map->addEntity(new Flame(x, y, _power, _range - 1,
-				      direction, _gameInfo));
+				      direction, _gameInfo, _bomb));
 }
 
 void	Flame::hurtCharacter(ACharacter *character, int power)
@@ -85,7 +92,7 @@ void	Flame::hurtCharacter(ACharacter *character, int power)
 
 AEntity	*Flame::clone(int x, int y)
 {
-  return (new Flame(x, y, _power, _range, _direction, _gameInfo));
+  return (new Flame(x, y, _power, _range, _direction, _gameInfo, _bomb));
 }
 
 int	Flame::getRange() const
@@ -96,4 +103,12 @@ int	Flame::getRange() const
 eDir	Flame::getDirection() const
 {
   return (_direction);
+}
+
+void	Flame::increaseScore(eType type) const
+{
+  if (type == BOX)
+    *_bomb->getCharacter() += BOX_SCORE;
+  else if (type == CHARACTER1 || type == CHARACTER2 || type == BOT)
+    *_bomb->getCharacter() += PLAYER_SCORE;
 }
