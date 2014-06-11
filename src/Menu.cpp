@@ -57,7 +57,7 @@ bool  Menu::initialize()
 
   _importMapPanel.push_back(background);
   _importMapPanel.push_back(title);
-  _importPanel.push_back(back);
+  _importMapPanel.push_back(back);
 
   _optionsPanel.push_back(background);
   _optionsPanel.push_back(title);
