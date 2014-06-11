@@ -189,7 +189,7 @@ void	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
 void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
 {
   Text		text;
-  double	fps = 1000.0 / 20.0;
+  double	fps = 1000.0 / 25.0;
   double	time = 0;
   int		frame = -1;
   Keycode	key = 0;
@@ -213,29 +213,38 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       l_Keycit beg = input->getPressedBeg();
       l_Keycit end = input->getPressedEnd();
+      if (beg != end && *beg == SDLK_LSHIFT)
+	++beg;
       if (beg != end)
 	{
 	  save = *beg;
-	  if (save == key && key < 128 && (isalpha(key) || key == ' ') &&
-	      ((key == '\b' && frame < 2) ||
-	       (key != '\b' && frame >= 0 && frame < 10)))
+	  key = *beg;
+	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
+	    key = '0' + key - SDLK_KP_1 + 1;
+	  if (save == key)
 	    {
-	      handleClock(frame, time, fps);
-	      continue;
+	      if (((key < 128 && key != '\b') && frame < 8) ||
+		  (key == '\b' && frame < 2) ||
+		  ((key == '\r' || key == SDLK_KP_ENTER) && frame < 15))
+		{
+		  handleClock(frame, time, fps);
+		  continue;
+		}
+	      else
+		frame = 0;
 	    }
 	  else
 	    frame = 0;
+	  save = key;
 	}
       for (; beg != end; ++beg)
-	{
-	  key = *beg;
-	  textFillBuf(buf, maxlen, key);
-	}
+	textFillBuf(buf, maxlen, key);
       handleClock(frame, time, fps);
       draw();
       text.setText(buf, x, y, POLICE_SIZE);
       text.draw(_textShader, *_gameInfo.clock);
       _win.flush();
+      std::cout << "Printed: " << buf << std::endl;
     }
 }
 
