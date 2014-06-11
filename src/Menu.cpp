@@ -124,6 +124,94 @@ void  Menu::draw()
   _win.flush();
 }
 
+void	Menu::handleClock(int &frame, double &time, double fps)
+{
+  time = _gameInfo.clock->getElapsed();
+  if (time < fps)
+    usleep((fps - time) * 1000);
+  frame = (frame >= 100) ? 100 : frame + 1;
+  _win.updateClock(*_gameInfo.clock);
+}
+
+void	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
+{
+  if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
+    key = '0' + key - SDLK_KP_0;
+  if (key == '\r' || key == SDLK_KP_ENTER)
+    {
+      buf.erase(buf.end() - 1);
+      buf.clear();
+      buf.push_back('|');
+      return ;
+    }
+  else if (key > 0 && key < 128)
+    {
+      if (key == '\b' && buf.length() > 1)
+	{
+	  buf = buf.substr(0, buf.length() - 2);
+	  buf.push_back('|');
+	}
+      else if (buf.length() < maxlen)
+	{
+	  buf.at(buf.length() - 1) = static_cast<char>(key);
+	  buf.push_back('|');
+	}
+    }
+}
+
+void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
+{
+  Text		text;
+  double	fps = 1000.0 / 20.0;
+  double	time = 0;
+  int		frame = -1;
+  Keycode	key = 0;
+  Keycode	save = -1;
+  Input		*input = _gameInfo.input;
+
+  try
+    {
+      text.initialize();
+    }
+  catch (const Exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      return ;
+    }
+  buf.clear();
+  buf.push_back('|');
+  while (key != 27)
+    {
+      input->getInput(*(_gameInfo.set));
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      l_Keycit beg = input->getPressedBeg();
+      l_Keycit end = input->getPressedEnd();
+      if (beg != end)
+	{
+	  save = *beg;
+	  if (save == key && key < 128 && (isalpha(key) || key == ' ') &&
+	      ((key == '\b' && frame < 2) ||
+	       (key != '\b' && frame >= 0 && frame < 10)))
+	    {
+	      handleClock(frame, time, fps);
+	      continue;
+	    }
+	  else
+	    frame = 0;
+	}
+      for (; beg != end; ++beg)
+	{
+	  key = *beg;
+	  textFillBuf(buf, maxlen, key);
+	}
+      handleClock(frame, time, fps);
+      draw();
+      text.setText(buf, x, y, POLICE_SIZE);
+      text.draw(_textShader, *_gameInfo.clock);
+      _win.flush();
+    }
+}
+
 void	Menu::launchGame()
 {
   Map map(*(_gameInfo.set));

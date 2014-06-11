@@ -5,7 +5,7 @@
 # include "ACharacter.hpp"
 
 # define NO_TIMEOUT -10
-# define ITEM_SCORE 5
+# define ITEM_SCORE 20
 
 class AItem : public ALivingEntity
 {

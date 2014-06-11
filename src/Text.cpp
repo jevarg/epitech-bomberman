@@ -16,9 +16,10 @@ Text::~Text()
     delete _geometry;
 }
 
-bool	Text::initialize()
+void	Text::initialize()
 {
-  return (_font.load(FONT));
+  if (_font.load(FONT) == false)
+    throw(Exception("Can't load font"));
 }
 
 void	Text::clear()

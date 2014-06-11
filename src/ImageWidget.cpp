@@ -6,7 +6,7 @@ ImageWidget::ImageWidget(int x, int y, int height, int width, const std::string 
   _square = new Square(texture);
   _square->initialize();
   _square->setPos(x, y);
-  _square->setSize(width, height); 
+  _square->setSize(width, height);
 }
 
 ImageWidget::~ImageWidget()
@@ -18,7 +18,7 @@ bool	ImageWidget::isClicked(int x, int y)
   return (false);
 }
 
-void	ImageWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
+void	ImageWidget::onClick(const t_gameinfo &gameInfo, Menu &menu)
 {
 }
 

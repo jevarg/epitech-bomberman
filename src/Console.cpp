@@ -2,8 +2,6 @@
 #include "Console.hpp"
 #include "Settings.hpp"
 
-# define POLICE_SIZE (30)
-
 Console::Console(Settings &set, Input &input, gdl::Clock &clock, gdl::AShader &shader): _set(set), _input(input), _clock(clock), _shader(shader)
 {
   _buf = "";
@@ -43,19 +41,26 @@ void	Console::handleClock(const gdl::SdlContext &win, int &frame,
 bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
 {
   Text		text;
-  double	fps = 1000.0 / 20.0;
+  double	fps = 1000.0 / 50.0;
   int		frame = -1;
   double	time;
   Keycode	key = 0;
   Keycode	save = -1;
 
-  if (text.initialize() == false)
-    return (false);
+  try
+    {
+      text.initialize();
+    }
+  catch (const Exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      return (false);
+    }
   _buf.clear();
   _buf.push_back('>');
   _shader.bind();
-  _shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f
-						  , 0.0f, -1.0f, 1.0f));
+  _shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f,
+					      0.0f, -1.0f, 1.0f));
   _shader.setUniform("view", glm::mat4(1));
   _shader.setUniform("winX", winX);
   _shader.setUniform("winY", winY);
@@ -67,11 +72,12 @@ bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
       l_Keycit end = _input.getPressedEnd();
       if (beg != end)
 	{
-	  std::cout << save << " " << *beg << " " << frame << std::endl;
 	  save = *beg;
-	  if (save == key && key < 128 && (isalpha(key) || key == ' ') &&
-	      ((key == '\b' && frame < 2) ||
-	       (key != '\b' && frame >= 0 && frame < 10)))
+	  if (save == key && key < 128 &&
+	      (((key == '\b' || key == '\r' || key == SDLK_KP_ENTER) &&
+		frame < 6) ||
+	       ((key != '\b' && key != '\r' && key != SDLK_KP_ENTER) &&
+		frame >= 0 && frame < 10)))
 	    {
 	      handleClock(win, frame, time, fps);
 	      continue;
