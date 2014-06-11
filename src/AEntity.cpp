@@ -59,11 +59,6 @@ bool	AEntity::toDestroy() const
   return (_toDestroy);
 }
 
-void	AEntity::setDestroyAttr()
-{
-  _toDestroy = true;
-}
-
 void	AEntity::setDestroy()
 {
   Scopelock	<Mutex>sc(*_mutex);

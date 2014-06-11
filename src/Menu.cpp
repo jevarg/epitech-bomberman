@@ -306,3 +306,8 @@ void	Menu::saveScore()
   for (std::map<std::string, int>::const_iterator it = _gameInfo.score.begin();it != _gameInfo.score.end();it++)
     file << it->first << " " << it->second << std::endl;
 }
+
+void	Menu::setDone(bool done)
+{
+  _done = done;
+}

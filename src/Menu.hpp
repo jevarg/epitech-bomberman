@@ -26,6 +26,7 @@ public:
   void	launch();
   void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen, int x, int y);
+  void	setDone(bool done = true);
 
 private:
   void	loadScore();
