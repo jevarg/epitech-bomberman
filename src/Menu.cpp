@@ -23,13 +23,14 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 
 Menu::~Menu()
 {
+  saveScore();
 }
 
 bool  Menu::initialize()
 {
   int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
 
-  if (!_win.start(_gameInfo.set->getVar(W_WIDTH), _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
+  if (!_win.start(x, y, "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
@@ -74,7 +75,7 @@ bool		Menu::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
-  int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
+  int y = _gameInfo.set->getVar(W_HEIGHT);
   t_window	win;
   t_mouse	mouse;
 
@@ -266,15 +267,14 @@ void	Menu::loadScore()
 	  ss >> name >> score;
 	  if (name != "")
 	    _gameInfo.score[name] = score;
-	  std::cout << "Name => " << name << " | Score => " << score << std::endl;
 	}
     }
-  for (std::map<std::string, int>::const_iterator it = _gameInfo.score.begin();it != _gameInfo.score.end();it++)
-    std::cout << "NAME => " << it->first << " | SCORE => " << it->second << std::endl;
 }
 
 void	Menu::saveScore()
 {
   std::ofstream file(SCORE_PATH, std::ios::out | std::ios::trunc);
 
+  for (std::map<std::string, int>::const_iterator it = _gameInfo.score.begin();it != _gameInfo.score.end();it++)
+    file << it->first << " " << it->second << std::endl;
 }
