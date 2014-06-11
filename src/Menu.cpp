@@ -55,15 +55,25 @@ bool  Menu::initialize()
   _loadGamePanel.push_back(background);
   _loadGamePanel.push_back(title);
   _loadGamePanel.push_back(back);
+  // add input widget or input image
+  _loadGamePanel.push_back(new ImageWidget(5.5f * (x / 8), y / 11.25f, y / 11.25f, x / 6.15f, "./assets/Button/load.tga"));
 
   _importMapPanel.push_back(background);
   _importMapPanel.push_back(title);
-  _importPanel.push_back(back);
+  _importMapPanel.push_back(back);
+  // add input widget or input image
+  _importMapPanel.push_back(new ImageWidget(5.5f * (x / 8), y / 11.25f, y / 11.25f, x / 6.15f, "./assets/Button/load.tga"));
 
   _optionsPanel.push_back(background);
   _optionsPanel.push_back(title);
+  _optionsPanel.push_back(back);
+  _optionsPanel.push_back(new ImageWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/fullscreen_off.tga"));
+  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/controls.tga", &_controlsPanel));
 
-  // fill Panels vectors with Widgets
+  _controlsPanel.push_back(background);
+  _controlsPanel.push_back(title);
+  _controlsPanel.push_back(back);
+  
   return (true);
 }
 
@@ -71,7 +81,7 @@ bool		Menu::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
-  int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
+  int y = _gameInfo.set->getVar(W_HEIGHT);
   t_mouse	mouse;
 
   _gameInfo.input->getInput(*(_gameInfo.set));

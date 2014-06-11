@@ -42,6 +42,7 @@ private:
   std::vector<AWidget *> _loadGamePanel;
   std::vector<AWidget *> _importMapPanel;
   std::vector<AWidget *> _optionsPanel;
+  std::vector<AWidget *> _controlsPanel;
 };
 
 #endif /* _MENU_HPP_ */
