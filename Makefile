@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Wed Jun 11 17:38:12 2014 enzo de gregorio
+## Last update Wed Jun 11 23:10:51 2014 enzo de gregorio
 ##
 
 NAME		=	bomberman
@@ -63,6 +63,7 @@ SRC		=	main.cpp \
 			NavigationWidget.cpp \
 			InputWidget.cpp \
 			ImageWidget.cpp \
+			TextWidget.cpp \
 			Intro.cpp
 
 OBJDIR		=	obj/
