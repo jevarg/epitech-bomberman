@@ -29,6 +29,7 @@ bool  Menu::initialize()
       !_textShader.build())
     return (false);
   _mainPanel.push_back(new NavigationWidget(50, 50, 40, 400, "allo", &_loadPanel)); // tmp
+  _gameInfo.sound->play("menu", MUSIC);
   // fill Panels vectors with Widgets
   return (true);
 }
@@ -41,7 +42,10 @@ bool  Menu::update()
   _gameInfo.input->getInput(*(_gameInfo.set));
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
-    launchGame();
+    {
+      launchGame();
+      _gameInfo.sound->play("menu", MUSIC);
+    }
   if (_gameInfo.input->isPressed(SDLK_F1))
     {
       glDisable(GL_DEPTH_TEST);

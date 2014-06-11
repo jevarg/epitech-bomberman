@@ -1,45 +1,34 @@
 #include "Sound.hpp"
+#include "Exception.hpp"
 
 Sound::Sound()
 {
   try
     {
       if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
-	throw (new std::string("Mix_OpenAudio()"));
+	throw (new Exception("Mix_OpenAudio()"));
       Mix_AllocateChannels(128);
-      if ((_musicBox["intro"] = Mix_LoadMUS("./assets/sounds/calm1.ogg")) == NULL)
-	std::cerr << "Failed to load intro music" << std::endl;
-      if ((_musicBox["menu"] = Mix_LoadMUS("./assets/sounds/calm2.ogg")) == NULL)
-	std::cerr << "Failed to load menu music" << std::endl;
-      if ((_musicBox["game"] = Mix_LoadMUS("./assets/sounds/calm3.ogg")) == NULL)
-	std::cerr << "Failed to load game music" << std::endl;
-      
-      if ((_soundBox["box"] = Mix_LoadWAV("./assets/sounds/chest.wav")) == NULL)
-	std::cerr << "Failed to load box sound." << std::endl;
-      if ((_soundBox["creeper"] = Mix_LoadWAV("./assets/sounds/creeper.wav")) == NULL)
-	std::cerr << "Failed to load creeper sound." << std::endl;
-      if ((_soundBox["eat"] = Mix_LoadWAV("./assets/sounds/eat.wav")) == NULL)
-	std::cerr << "Failed to load eat sound." << std::endl;
-      if ((_soundBox["explosion"] = Mix_LoadWAV("./assets/sounds/explosion.wav")) == NULL)
-	std::cerr << "Failed to load use sound." << std::endl;
-      if ((_soundBox["fuse"] = Mix_LoadWAV("./assets/sounds/fuse.wav")) == NULL)
-	std::cerr << "Failed to load fuse sound." << std::endl;
-      if ((_soundBox["hurt"] = Mix_LoadWAV("./assets/sounds/hurt.wav")) == NULL)
-	std::cerr << "Failed to load hurt sound." << std::endl;
-      if ((_soundBox["pop"] = Mix_LoadWAV("./assets/sounds/pop.wav")) == NULL)
-	std::cerr << "Failed to load pop sound." << std::endl;
-      if ((_soundBox["orb"] = Mix_LoadWAV("./assets/sounds/orb.wav")) == NULL)
-	std::cerr << "Failed to load orb sound." << std::endl;
-      if ((_soundBox["click"] = Mix_LoadWAV("./assets/sounds/orb.wav")) == NULL)
-	std::cerr << "Failed to load click sound." << std::endl;
-      if ((_soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav")) == NULL)
-	std::cerr << "Failed to load getbomb sound." << std::endl;
-      if ((_soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav")) == NULL)
-	std::cerr << "Failed to load burp sound." << std::endl;
+      _musicBox["intro"] = Mix_LoadMUS("./assets/sounds/calm1.ogg");
+      _musicBox["menu"] = Mix_LoadMUS("./assets/sounds/calm2.ogg");
+      _musicBox["game"] = Mix_LoadMUS("./assets/sounds/calm3.ogg");
+      _soundBox["box"] = Mix_LoadWAV("./assets/sounds/chest.wav");
+      _soundBox["creeper"] = Mix_LoadWAV("./assets/sounds/creeper.wav");
+      _soundBox["eat"] = Mix_LoadWAV("./assets/sounds/eat.wav");
+      _soundBox["explosion"] = Mix_LoadWAV("./assets/sounds/explosion.wav");
+      _soundBox["fuse"] = Mix_LoadWAV("./assets/sounds/fuse.wav");
+      _soundBox["hurt"] = Mix_LoadWAV("./assets/sounds/hurt.wav");
+      _soundBox["pop"] = Mix_LoadWAV("./assets/sounds/pop.wav");
+      _soundBox["orb"] = Mix_LoadWAV("./assets/sounds/orb.wav");
+      _soundBox["click"] = Mix_LoadWAV("./assets/sounds/orb.wav");
+      _soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav");
+      _soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav");
     }
-  catch (std::string err)
+  catch (Exception &e)
     {
-      std::cerr << "Sound initialization failed: " << err << std::endl;
+      std::cerr << e.what() << std::endl;
+      _musicBox["intro"] = NULL;
+      _musicBox["menu"] = NULL;
+      _musicBox["game"] = NULL;
       _soundBox["box"] = NULL;
       _soundBox["creeper"] = NULL;
       _soundBox["eat"] = NULL;
@@ -48,6 +37,9 @@ Sound::Sound()
       _soundBox["hurt"] = NULL;
       _soundBox["pop"] = NULL;
       _soundBox["orb"] = NULL;
+      _soundBox["click"] = NULL;
+      _soundBox["getbomb"] = NULL;
+      _soundBox["burp"] = NULL;
     }
 }
 
