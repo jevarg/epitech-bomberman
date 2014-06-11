@@ -23,7 +23,6 @@ Menu::~Menu()
 bool  Menu::initialize()
 {
   int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
-  
   if (!_win.start(_gameInfo.set->getVar(W_WIDTH), _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
@@ -82,10 +81,12 @@ bool		Menu::update()
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
   int y = _gameInfo.set->getVar(W_HEIGHT);
+  t_window	win;
   t_mouse	mouse;
 
   _gameInfo.input->getInput(*(_gameInfo.set));
   (*(_gameInfo.input))[mouse];
+  (*_gameInfo.input)[win];
   if (mouse.event == BUTTONUP)
     for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
 	   endit = (*_currentPanel).end(); it != endit ; ++it)
@@ -106,8 +107,7 @@ bool		Menu::update()
       _console->aff(_win, 1600.0f, 900.0f);
       glEnable(GL_DEPTH_TEST);
     }
-    // _console->aff(*_gameInfo.clock, _textShader, _win, *_gameInfo.input);
-  if (_gameInfo.input->isPressed(SDLK_ESCAPE)) // || _gameInfo.input->getInput(SDL_QUIT))
+  if (_gameInfo.input->isPressed(SDLK_ESCAPE) || win.event == WIN_QUIT)
     return (false);
   _frames++;
   if ((time = _gameInfo.clock->getElapsed()) < fps)

@@ -89,7 +89,7 @@ void	Input::mouseInput(const SDL_Event &event)
       _mouse.event = BUTTONDOWN;
       break ;
     case SDL_MOUSEBUTTONUP:
-      if (_mouse.event == BUTTONDOWN)
+      if (_mouse.event != BUTTONUP)
 	{
 	  _mouse.x = event.button.x;
 	  _mouse.y = event.button.y;
