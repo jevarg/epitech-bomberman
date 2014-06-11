@@ -51,6 +51,8 @@ public:
 
   void	getInput(const Settings &set);
   bool	isPressed(Keycode key);
+  const l_Keycit	getPressedBeg() const;
+  const l_Keycit	getPressedEnd() const;
   bool	operator[](eAction act) const;
   bool	operator[](t_mouse &key) const;
   bool	operator[](t_window &win) const;

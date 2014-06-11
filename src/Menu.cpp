@@ -44,7 +44,11 @@ bool  Menu::update()
   if ((*(_gameInfo.input))[LAUNCHGAME])
     launchGame();
   if (_gameInfo.input->isPressed(SDLK_F1))
-    _console->aff(_win, 1600.0f, 900.0f);
+    {
+      glDisable(GL_DEPTH_TEST);
+      _console->aff(_win, 1600.0f, 900.0f);
+      glEnable(GL_DEPTH_TEST);
+    }
     // _console->aff(*_gameInfo.clock, _textShader, _win, *_gameInfo.input);
   if (_gameInfo.input->isPressed(SDLK_ESCAPE)) // || _gameInfo.input->getInput(SDL_QUIT))
     return (false);

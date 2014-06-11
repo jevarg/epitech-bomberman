@@ -112,11 +112,11 @@ void	GameEngine::mainInput()
 	  AEntity *ent;
 	  v_Entit its;
 	  l_Entit itm;
-	  /*	  while ((ent = (*it)->listFront()) != NULL)
+	  while ((ent = (*it)->listFront()) != NULL)
 	    ent->setDestroy();
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
-	  */}
+	}
       return ;
     }
 }
@@ -224,13 +224,14 @@ void GameEngine::draw()
 	for (int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < mapx;i++)
 	  {
 	    std::vector<AEntity *> elem;
-	    _gameInfo.map->checkFullMapColision(i, j, elem);
-	    for (std::vector<AEntity *>::const_iterator it1 = elem.begin();it1 != elem.end();it1++)
-	      {
-		if ((*it1)->getType() == WALL)
-		  (*it1)->getModel()->setPos(glm::vec3(i, 0.0, j));
-		(*it1)->draw(_shader, *_gameInfo.clock);
-	      }
+	    if (_gameInfo.map->checkFullMapColision(i, j, elem))
+	      for (std::vector<AEntity *>::const_iterator it1 = elem.begin();
+		   it1 != elem.end();it1++)
+		{
+		  if ((*it1)->getType() == WALL)
+		    (*it1)->getModel()->setPos(glm::vec3(i, 0.0, j));
+		  (*it1)->draw(_shader, *_gameInfo.clock);
+		}
 	  }
       _hud->draw(*player, _gameInfo);
       glFlush();

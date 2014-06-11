@@ -77,9 +77,6 @@ Settings::Settings()
   _speKeys["RCTRL"] = SDLK_RCTRL;
   _speKeys["RSHIFT"] = SDLK_RSHIFT;
   _speKeys["RALT"] = SDLK_RALT;
-  _speKeys["KP_INSERT"] = SDLK_INSERT;
-  _speKeys["KP_INSERT"] = SDLK_INSERT;
-  _speKeys["KP_INSERT"] = SDLK_INSERT;
 
   initCvar();
 }
