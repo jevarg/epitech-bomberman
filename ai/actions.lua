@@ -52,8 +52,6 @@ function search_safe_place(map_nb, x, y, block, boolean, cond)
 			end
 		else break end
 	end
-	-- display_map(map_nb)
-	-- print("WAY IS : ", way)
 	if (way ~= 0) then
 		x = x + gotox[way]
 		y = y + gotoy[way]
@@ -62,7 +60,6 @@ function search_safe_place(map_nb, x, y, block, boolean, cond)
 end
 
 function can_i_put_bomb(map_nb, x, y, block)
-	-- print("can i put bomb ?")
 	local way = 0
 	local gotox = {0, 0, -1, 1}
 	local gotoy = {-1, 1, 0, 0}
@@ -104,7 +101,6 @@ function can_i_put_bomb(map_nb, x, y, block)
 			end
 		else break end
 	end
-	-- print("can i escape ? way is : ", way)
 	if (way ~= 0) then
 		x = x + gotox[way]
 		y = y + gotoy[way]
@@ -113,21 +109,17 @@ function can_i_put_bomb(map_nb, x, y, block)
 end
 
 function run_out_danger(map_nb, x, y, block)
-	-- print("run out danger", x, y)
 	if (arg["bomb"] == 1) then map_nb[y][x] = "O" end
 	map_nb = fill_dangerous_fields(map_nb)
-	-- display_map(map_nb)
 	local tmpx, tmpy = 0, 0
 	tmpx, tmpy = search_safe_place(map_nb, x, y, block, false, BOMB_RANGE + 1)
 	if (tmpx == x and tmpy == y) then
-		-- print("i can search a better place")
 		return search_safe_place(map_nb, x, y, block, true, BOMB_RANGE)
 	end
 	return tmpx, tmpy
 end
 
 function random_movement(map)
-	-- print("random move")
 	local orient = arg["orientation"] + 1
 	local mov = {1, 1, -1, -1}
 	local tested = {0, 0, 0, 0}

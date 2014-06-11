@@ -74,7 +74,6 @@ function set_pos_map(map)
 end
 
 function create_map(entities, aggro)
-	-- print("RECONSTITUTE MAP")
 	local map = {}
 
 	for i = 1, aggro * 2 + 2 do
