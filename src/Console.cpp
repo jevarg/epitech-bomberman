@@ -69,8 +69,9 @@ bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
 	{
 	  std::cout << save << " " << *beg << " " << frame << std::endl;
 	  save = *beg;
-	  if (save == key && ((key == '\b' && frame < 2) ||
-			      (key != '\b' && frame >= 0 && frame < 10)))
+	  if (save == key && key < 128 && (isalpha(key) || key == ' ') &&
+	      ((key == '\b' && frame < 2) ||
+	       (key != '\b' && frame >= 0 && frame < 10)))
 	    {
 	      handleClock(win, frame, time, fps);
 	      continue;
@@ -86,7 +87,6 @@ bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
 	  if (key == '\r' || key == SDLK_KP_ENTER)
 	    {
 	      _buf.erase(_buf.begin());
-	      std::cout << "buf: [" << _buf << "]" << std::endl;
 	      if (_buf == "quit")
 		return (true);
 	      parseCmd(_buf, _ret);

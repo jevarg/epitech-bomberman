@@ -28,22 +28,33 @@ void	Input::pressKey(const SDL_Event &event)
   bool		size = false;
   l_Keycit	it;
 
-  if ((it = std::find(_keyPressed.begin(), _keyPressed.end(), _key)) == _keyPressed.end())
-    _keyPressed.push_back(_key);
   if (_key < 128 && isalpha(_key))
     {
       size ^= (event.key.keysym.mod & (KMOD_SHIFT | KMOD_CAPS));
       _key -= (size * 32);
     }
+  if ((it = std::find(_keyPressed.begin(), _keyPressed.end(), _key)) == _keyPressed.end())
+    _keyPressed.push_back(_key);
 }
 
 void	Input::unpressKey(const SDL_Event &event)
 {
   Scopelock	<Mutex>sc(_mutex);
   l_Keyit	it;
+  Keycode      	key;
 
-  if ((it = std::find(_keyPressed.begin(), _keyPressed.end(), _key)) != _keyPressed.end())
+  key = _key;
+  if ((it = std::find(_keyPressed.begin(), _keyPressed.end(), key)) != _keyPressed.end())
     _keyPressed.erase(it);
+  else if (key < 128 && isalpha(key))
+    {
+      if (key >= 'A' && key <= 'Z')
+	key += 32;
+      else if (key >= 'a' && key <= 'z')
+	key -= 32;
+      if ((it = std::find(_keyPressed.begin(), _keyPressed.end(), key)) != _keyPressed.end())
+	_keyPressed.erase(it);
+    }
 }
 
 void	Input::keyboardInput(const Settings &set, const SDL_Event &event, bool state)
