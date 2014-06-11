@@ -33,12 +33,21 @@ bool GameEngine::initialize()
   EntityFactory *ent = EntityFactory::getInstance();
   Spawn	spawn(_gameInfo.map);
 
-  // int x = 0, y = 0;
-  // _gameInfo.map->determineMapSize("map", x, y);
-  // _gameInfo.set->setVar(MAP_WIDTH, x);
-  // _gameInfo.set->setVar(MAP_HEIGHT, y);
-  _mapX = _gameInfo.set->getVar(MAP_WIDTH);
-  _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
+  try
+    {
+      int x = 0, y = 0;
+      _gameInfo.map->determineMapSize("map", x, y);
+      std::cout << "x:" << x << " y: " << y << std::endl;
+      _gameInfo.set->setVar(MAP_WIDTH, x);
+      _gameInfo.set->setVar(MAP_HEIGHT, y);
+      _mapX = _gameInfo.set->getVar(MAP_WIDTH);
+      _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
+    }
+  catch (Exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      return (false);
+    }
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -74,9 +83,9 @@ bool GameEngine::initialize()
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
-  _gameInfo.map->createMap(_gameInfo);
-  // _gameInfo.map->load("map", _gameInfo);
-  //  spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
+  // _gameInfo.map->createMap(_gameInfo);
+  _gameInfo.map->load("map", _gameInfo);
+   spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1, false);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2, false);
