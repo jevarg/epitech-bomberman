@@ -27,21 +27,39 @@ bool  Menu::initialize()
   if (!_win.start(_gameInfo.set->getVar(W_WIDTH), _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   if (!_textShader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER) ||
       !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER) ||
       !_textShader.build())
     return (false);
   _gameInfo.sound->play("menu", MUSIC);
   ImageWidget	*background = new ImageWidget(0, 0, y, x, "./Ressources/Images/background.tga");
+  ImageWidget	*title = new ImageWidget(x / 8, y / 1.43f, y / 4.8f, x / 1.3f, "./assets/BomberCraft.tga");
+  NavigationWidget *back = new NavigationWidget(x / 8, y / 11.25f, y / 11.25f, x / 6.15f, "./assets/Button/back.tga", &_mainPanel);
 
   _mainPanel.push_back(background);
-  _mainPanel.push_back(new NavigationWidget(x / 4, 500, y / 11.25f, x / 2, "./assets/Button/singleplayer_button.tga", &_newGamePanel)); 
-  _mainPanel.push_back(new NavigationWidget(x / 4, 400, y / 11.25f, x / 2, "./assets/Button/multiplayer_button.tga", &_newGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/Button/loadgame_button.tga", &_loadGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/Button/options_button.tga", &_optionPanel));
+  _mainPanel.push_back(title);
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 1.8f, y / 11.25f, x / 2, "./assets/Button/singleplayer.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/multiplayer.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/load_game.tga", &_loadGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2, "./assets/Button/options.tga", &_optionsPanel));
+  _mainPanel.push_back(new ImageWidget(x / 4, y / 18, y / 11.25f, x / 2, "./assets/Button/quit.tga"));
 
   _newGamePanel.push_back(background);
-  _newGamePanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/Button/options_button.tga", &_importPanel));
+  _newGamePanel.push_back(title);
+  _newGamePanel.push_back(back);
+  _newGamePanel.push_back(new ImageWidget(x / 4, 450, y / 11.25f, x / 2, "./assets/Button/generate_map.tga"));
+  _newGamePanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/Button/import_map.tga", &_importMapPanel));
+
+  _loadGamePanel.push_back(background);
+  _loadGamePanel.push_back(title);
+
+  _importMapPanel.push_back(background);
+  _importMapPanel.push_back(title);
+
+  _optionsPanel.push_back(background);
+  _optionsPanel.push_back(title);
 
   // fill Panels vectors with Widgets
   return (true);
