@@ -170,9 +170,9 @@ bool	Input::operator[](t_mouse &mouse) const
 
 bool	Input::operator[](t_window &win) const
 {
+  win = _window;
   if (_window.event == WIN_NONE)
     return (false);
-  win = _window;
   return (true);
 }
 
