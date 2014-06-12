@@ -34,6 +34,7 @@ function take_decision(map, map_nb, entities)
 		if (arg["bomb"] == 1) then map[Y][X] = "O" end
 		local block = {0, 0, 0, 0}
 		local cur_x, cur_y = run_out_danger(map_nb, X, Y, block)
+		-- print(X, Y, cur_x, cur_y)
 		return determine_way(map, cur_x, cur_y)
 	else
 		local item = check_elem_at(map_nb, X, Y, "I", 1)
@@ -52,6 +53,7 @@ function artificial_intelligence()
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
+	-- display_map(map)
 	local action = take_decision(map, fill_dangerous_fields(map_nb), entities)
 	if (action == ENUM_ACTION["bomb"]) then
 		local block = {0, 0, 0, 0}
@@ -69,4 +71,5 @@ end
 X, Y = arg["x"], arg["y"]
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
+-- print("BOMB ? ", arg["bomb"])
 return artificial_intelligence()
