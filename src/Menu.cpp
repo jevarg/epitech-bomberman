@@ -234,9 +234,8 @@ bool	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
   return (true);
 }
 
-void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
+void	Menu::textInput(std::string &buf, unsigned int maxlen)
 {
-  Text		text;
   double	fps = 1000.0 / 25.0;
   double	time = 0;
   int		frame = -1;
@@ -244,15 +243,6 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
   Keycode	save = -1;
   Input		*input = _gameInfo.input;
 
-  try
-    {
-      text.initialize();
-    }
-  catch (const Exception &e)
-    {
-      std::cerr << e.what() << std::endl;
-      return ;
-    }
   buf.clear();
   buf.push_back('|');
   while (key != 27)
@@ -289,12 +279,6 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
 	  return ;
       handleClock(frame, time, fps);
       draw();
-      text.setText(buf, x, y, POLICE_SIZE);
-      glDisable(GL_DEPTH_TEST);
-      text.draw(_textShader, *_gameInfo.clock);
-      glEnable(GL_DEPTH_TEST);
-      _win.flush();
-      std::cout << "Printed: " << buf << std::endl;
     }
 }
 
