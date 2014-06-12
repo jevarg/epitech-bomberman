@@ -1,8 +1,8 @@
 # include "InputWidget.hpp"
 
 InputWidget::InputWidget(int x, int y, int height, int width,
-			 const std::string &texture, const std::string &text, int id) :
-  LoadWidget(x, y, height, width, texture, text, id)
+			 const std::string &texture, const std::string &text) :
+  LoadWidget(x, y, height, width, texture, text, 0)
 {
 }
 
@@ -25,5 +25,4 @@ bool	InputWidget::isClicked(int x, int y)
 void	InputWidget::onClick(t_gameinfo &/*gameInfo*/, Menu &menu)
 {
   menu.textInput(_sentence, 20);
-  // here do a treatment with buf, buf contains the user's input.
 }

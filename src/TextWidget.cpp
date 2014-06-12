@@ -27,5 +27,5 @@ void	TextWidget::onClick(t_gameinfo &, Menu &)
 
 void	TextWidget::setText(std::string const& str, float x, float y, float size)
 {
-  _text.setText(str, x, y, size);
+  _text.setText(str, x, y + (_height - size) / 2, size);
 }
