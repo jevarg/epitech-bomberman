@@ -12,6 +12,7 @@ public:
   ~LoadWidget();
 
   void	draw(gdl::AShader &shader, const gdl::Clock &clock);
+  bool	isClicked(int x, int y);
   void	onClick(t_gameinfo &gameInfo, Menu &menu);
   void	onDisplay(const std::list<std::string> &text, int filePos);
 

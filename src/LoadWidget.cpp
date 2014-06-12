@@ -32,12 +32,21 @@ void	LoadWidget::onDisplay(const std::list<std::string> &text, int filePos)
   _sentence = "FREE";
 }
 
-void	LoadWidget::onClick(t_gameinfo &gameInfo, Menu &/*menu*/)
+bool	LoadWidget::isClicked(int x, int y)
+{
+  if (x >= _x && x <= (_x + _width) && y >= _y && y <= (_y + _height))
+    return (true);
+  else
+    return (false);
+}
+
+void	LoadWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
   int x = 0, y = 0;
 
   gameInfo.sound->play("click", EFFECT);
   gameInfo.map->load(_sentence, gameInfo);
+  menu.launchGame();
 }
 
 void	LoadWidget::draw(gdl::AShader &shader, const gdl::Clock &clock)
