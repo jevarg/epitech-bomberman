@@ -12,8 +12,8 @@ public:
   ~LoadWidget();
 
   void	draw(gdl::AShader &shader, const gdl::Clock &clock);
-  bool	isClicked(int x, int y);
-  void	onDisplay(const std::list<std::string> &text, int filePos);
+  virtual bool	isClicked(int x, int y);
+  virtual void	onDisplay(const std::list<std::string> &text, int filePos);
   virtual void	onClick(t_gameinfo &gameInfo, Menu &menu);
 
 protected:

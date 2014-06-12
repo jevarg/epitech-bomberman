@@ -65,6 +65,8 @@ bool  Menu::initialize()
 					    "./assets/Button/load_game.tga", &_loadGamePanel));
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
 					    "./assets/Button/options.tga", &_optionsPanel));
+  _mainPanel.push_back(new InputWidget(500.0f, 500.0f, y / 15.3f, x / 30,
+  				       "./assets/Button/quit.tga", "", 0));
   _mainPanel.push_back(new QuitWidget(x / 4, y / 18, y / 11.25f, x / 2,
 				      "./assets/Button/quit.tga"));
 
