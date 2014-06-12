@@ -2,9 +2,8 @@
 
 InputWidget::InputWidget(int x, int y, int height, int width,
 		       const std::string &text) :
-  AWidget(x, y, height, width, text)
+  AWidget(x, y, height, width)
 {
-
 }
 
 InputWidget::~InputWidget()

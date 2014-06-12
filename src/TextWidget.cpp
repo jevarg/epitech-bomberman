@@ -1,9 +1,9 @@
 #include "TextWidget.hpp"
 
 TextWidget::TextWidget(int x, int y, int height, int width, const std::string &text)
-  : AWidget(x, y, height, width, text)
+  : AWidget(x, y, height, width)
 {
-
+  _text.setText(text, x, y, POLICE_SIZE);
 }
 
 TextWidget::~TextWidget()

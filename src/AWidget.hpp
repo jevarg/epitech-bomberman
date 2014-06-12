@@ -19,7 +19,7 @@ protected:
   Square	*_square;
 
 public:
-  AWidget(int x, int y, int height, int width, const std::string &text);
+  AWidget(int x, int y, int height, int width);
   virtual ~AWidget() = 0;
 
   void		draw();
