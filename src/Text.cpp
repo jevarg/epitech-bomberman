@@ -40,8 +40,6 @@ void	Text::draw(gdl::AShader &shader, gdl::Clock const&) const
     }
 }
 
-#include <iostream>
-
 void	Text::setText(std::string const& str, float x, float y, float size)
 {
   float Letterx, Lettery;

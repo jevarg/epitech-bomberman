@@ -28,7 +28,7 @@ public:
   void	launch();
   void	launchGame();
   void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
-  void	textInput(std::string &buf, unsigned int maxlen, int x, int y);
+  void	textInput(std::string &buf, unsigned int maxlen);
   void	setDone(bool done = true);
   Menu	&operator++();
   Menu	&operator--();

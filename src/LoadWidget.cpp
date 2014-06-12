@@ -52,8 +52,8 @@ void	LoadWidget::draw(gdl::AShader &shader, const gdl::Clock &clock)
 {
   _square->fillGeometry();
   _square->draw(shader, clock);
-  _text.setText(_sentence, _x + _width / 2 - (_sentence.length() / 4.0) * 45,
-  		_y + _height / 4, 45);
+  _text.setText(_sentence, _x +_width / 2 - (_sentence.length() / 4.0) * 45,
+  		_y + (_height - 45) / 2, 45);
   glDisable(GL_DEPTH_TEST);
   _text.draw(shader, clock);
   glEnable(GL_DEPTH_TEST);

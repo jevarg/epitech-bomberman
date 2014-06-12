@@ -24,6 +24,6 @@ bool	InputWidget::isClicked(int x, int y)
 
 void	InputWidget::onClick(t_gameinfo &/*gameInfo*/, Menu &menu)
 {
-  menu.textInput(_sentence, 20, _x, _y);
+  menu.textInput(_sentence, 20);
   // here do a treatment with buf, buf contains the user's input.
 }
