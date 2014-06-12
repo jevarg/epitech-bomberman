@@ -1,10 +1,4 @@
-// g++ main.cpp `pkg-config sdl gl libswscale libavcodec libavformat --libs --cflags` && SDL_VIDEO_FULLSCREEN_HEAD=0 ./a.out
-#ifndef INT64_C
-#define INT64_C(c) (int64_t)(c)
-#define UINT64_C(c) (uint64_t)(c)
-#endif
 
-extern "C" {
   #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libswscale/swscale.h>
