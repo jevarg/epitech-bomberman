@@ -3,7 +3,7 @@
 TextWidget::TextWidget(int x, int y, int height, int width, const std::string &text)
   : AWidget(x, y, height, width, text)
 {
-  
+
 }
 
 TextWidget::~TextWidget()

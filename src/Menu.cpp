@@ -9,6 +9,7 @@
 #include "InputWidget.hpp"
 #include "LaunchWidget.hpp"
 #include "QuitWidget.hpp"
+#include "LoadWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
 {
@@ -57,7 +58,7 @@ bool  Menu::initialize()
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2, "./assets/Button/options.tga", &_optionsPanel));
   _mainPanel.push_back(new QuitWidget(x / 4, y / 18, y / 11.25f, x / 2, "./assets/Button/quit.tga"));
 
-  _mainPanel.push_back(new InputWidget(50, 50, y / 11.25f, x / 2, "allotest"));
+  ///  _mainPanel.push_back(new InputWidget(50, 50, y / 11.25f, x / 2, "allotest"));
 
   _newGamePanel.push_back(background);
   _newGamePanel.push_back(title);
@@ -69,13 +70,14 @@ bool  Menu::initialize()
   _loadGamePanel.push_back(title);
   _loadGamePanel.push_back(back);
   // add input widget or input image
-  _loadGamePanel.push_back(new ImageWidget(5.5f * (x / 8), y / 11.25f, y / 11.25f, x / 6.15f, "./assets/Button/load.tga"));
-
   _importMapPanel.push_back(background);
   _importMapPanel.push_back(title);
   _importMapPanel.push_back(back);
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 1.8f, y / 11.25f, x / 2, "./assets/Button/quit.tga", "Map XX totofzefzefzefezfezef"));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/quit.tga", "Map XX totofzefzefzefezfezef"));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/quit.tga", "Map XX totofzefzefzefezfezef"));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 4.5f, y / 11.25f, x / 2, "./assets/Button/quit.tga", "Map XX totofzefzefzefezfezef"));
   // add input widget or input image
-  _importMapPanel.push_back(new ImageWidget(5.5f * (x / 8), y / 11.25f, y / 11.25f, x / 6.15f, "./assets/Button/load.tga"));
 
   _optionsPanel.push_back(background);
   _optionsPanel.push_back(title);
