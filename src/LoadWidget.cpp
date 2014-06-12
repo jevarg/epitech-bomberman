@@ -1,7 +1,7 @@
 #include "LoadWidget.hpp"
 
 LoadWidget::LoadWidget(int x, int y, int height, int width,
-		       const std::string &texture, const std::string &text)
+		       const std::string &texture, const std::string &text, int id)
 		       : TextWidget(x, y, height, width, text)
 {
   _square = new Square(texture);
@@ -9,10 +9,27 @@ LoadWidget::LoadWidget(int x, int y, int height, int width,
   _square->setPos(x, y);
   _square->setSize(width, height);
   _sentence = text;
+  _id = id;
 }
 
 LoadWidget::~LoadWidget()
 {
+}
+
+void	LoadWidget::onDisplay(const std::list<std::string> &text)
+{
+  std::list<std::string>::const_iterator it = text.begin();
+  std::list<std::string>::const_iterator end = text.end();
+
+  for (int count = 0; it != end; ++it, ++count)
+    {
+      if (count == _id)
+	{
+	  _sentence = *it;
+	  return ;
+	}
+    }
+  _sentence = "FREE";
 }
 
 void	LoadWidget::onClick(const t_gameinfo &gameInfo, Menu &menu)

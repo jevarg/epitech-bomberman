@@ -8,14 +8,16 @@ class	LoadWidget : public TextWidget
 {
 public:
   LoadWidget(int x, int y, int height, int width,
-	     const std::string &texture, const std::string &text);
+	     const std::string &texture, const std::string &text, int id);
   ~LoadWidget();
 
   void	draw(gdl::AShader &shader, const gdl::Clock &clock);
   void	onClick(const t_gameinfo &gameInfo, Menu &menu);
+  void	onDisplay(const std::list<std::string> &text);
 
 private:
   std::string	_sentence;
+  int		_id;
 };
 
 #endif /* _LOADWIDGET_H_ */

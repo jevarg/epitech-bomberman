@@ -36,6 +36,10 @@ bool	AWidget::isClicked(int x, int y)
     return (false);
 }
 
+void	AWidget::onDisplay(const std::list<std::string> &text)
+{
+}
+
 void	AWidget::setSquare(Square *square)
 {
   _square = square;
