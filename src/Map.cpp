@@ -12,7 +12,6 @@ Map::Map(Settings &set)
   _mapY = set.getVar(MAP_WIDTH);
   _density = set.getVar(MAP_DENSITY);	// expressed in %
   _linear = set.getVar(MAP_LINEAR);
-  std::cout << _density << " " << _linear << std::endl;
 }
 
 Map::~Map()
@@ -375,7 +374,6 @@ void	Map::addEntity(AEntity *ent)
   unsigned int	pos;
   Container	*cont;
 
-  std::cout << "Add: " << ent << std::endl;
   pos = getContPos(ent->getXPos(), ent->getYPos());
   while (_cont.size() <= pos)
     {
@@ -532,6 +530,30 @@ bool	Map::hasPlayer() const
 	}
     }
   return (false);
+}
+
+int	Map::nbPlayer() const
+{
+  AEntity *foundEnt;
+  int	mapSize = _mapX * _mapY;
+  int	contPos;
+  int	x;
+  int	y;
+  int	ret = 0;
+
+  for (int i = 0; i < mapSize; ++i)
+    {
+      x = i % _mapX;
+      y = i / _mapX;
+      contPos = getContPos(x, y);
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER1)) != NULL)
+	ret += 1;
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER2)) != NULL)
+	ret += 1;
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, BOT)) != NULL)
+	ret += 1;
+    }
+  return (ret);
 }
 
 const std::vector<Container *>	&Map::getCont() const

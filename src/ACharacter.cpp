@@ -19,6 +19,7 @@ ACharacter::ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thre
   _y += 0.5;
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
   _model->scale(glm::vec3(0.5, 0.5, 0.5));
+  _end = 0;
 }
 
 ACharacter::~ACharacter()
@@ -142,7 +143,11 @@ void	ACharacter::takeDamages(int amount)
   _gameInfo->sound->play("hurt", EFFECT);
   _health -= amount;
   if (_health <= 0)
-    die();
+    {
+      die();
+      if (_end != WIN)
+	_end = LOSE;
+    }
 }
 int	ACharacter::getHealth() const
 {
@@ -218,4 +223,14 @@ ACharacter &ACharacter::operator+=(int score)
 {
   _score += score;
   return (*this);
+}
+
+char ACharacter::getEnd() const
+{
+  return (_end);
+}
+
+void ACharacter::setEnd(char end)
+{
+  _end = end;
 }

@@ -144,6 +144,7 @@ void	Menu::draw()
   float x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glViewport(0, 0, x, y);
   glDisable(GL_DEPTH_TEST);
   _textShader.bind();
   _textShader.setUniform("projection", glm::ortho(0.0f, x, 0.0f, y, -1.0f, 1.0f));
@@ -261,14 +262,15 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
 void	Menu::launchGame()
 {
   Map map(*(_gameInfo.set));
-  GameEngine eng(&_win, _gameInfo.clock, &_textShader, &map, _gameInfo.set,
-		 _gameInfo.input, _gameInfo.sound);
+  _gameInfo.map = &map;
+  GameEngine eng(&_win, &_textShader, &_gameInfo);
   bool	done = true;
 
   if (!eng.initialize())
     return ;
   while ((done = eng.update()))
     eng.draw();
+  _gameInfo.map = NULL;
 }
 
 void	Menu::launch()

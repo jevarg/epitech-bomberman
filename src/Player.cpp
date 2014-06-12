@@ -94,7 +94,7 @@ bool	Player::checkInput()
 
 void	Player::update()
 {
-  if (checkInput() == false && _anim == RUN)
+  if (_end == 0 && checkInput() == false && _anim == RUN)
     {
       dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(dynamic_cast<Model *>(_model)->getModel()->getAnimationFrameNumber(0), false);
       _anim = NOTHING;
