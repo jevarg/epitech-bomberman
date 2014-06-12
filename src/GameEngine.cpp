@@ -4,13 +4,14 @@
 
 GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo,
 		       bool multi)
-  : _win(win), _textShader(textShader), _save(),
+  : _win(win), _textShader(textShader),
     _gameInfo(gameInfo), _lights(), _players(), _multi(multi)
 {
   _player1 = NULL;
   _player2 = NULL;
   _gameInfo->mutex = new Mutex;
   _gameInfo->condvar = new Condvar;
+  _gameInfo->save = new Save;
   _shutdown = false;
   _frames = 0;
   _fps.initialize();

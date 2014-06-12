@@ -12,7 +12,12 @@ LoadGameWidget::~LoadGameWidget()
 
 void	LoadGameWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
+  int	x = 0, y = 0;
+
   gameInfo.sound->play("click", EFFECT);
+  gameInfo.map->determineMapSize(_sentence, x, y);
+  gameInfo.set->setVar(MAP_WIDTH, x);
+  gameInfo.set->setVar(MAP_HEIGHT, y);
   gameInfo.map->load(_sentence, gameInfo);
   menu.launchGame();
 }
