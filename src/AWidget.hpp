@@ -17,7 +17,7 @@ protected:
   int		_width;
   Text		_text;
   Square	*_square;
-  
+
 public:
   AWidget(int x, int y, int height, int width, const std::string &text);
   virtual ~AWidget() = 0;
