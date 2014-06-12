@@ -1,8 +1,11 @@
 #include "LaunchWidget.hpp"
 
-LaunchWidget::LaunchWidget(int x, int y, int height, int width, const std::string &texture)
+LaunchWidget::LaunchWidget(int x, int y, int height, int width,
+			   const std::string &texture,
+			   std::vector<AWidget *> *onClickPanel)
   : AWidget(x, y, height, width, texture)
 {
+  _onClickPanel = onClickPanel;
   _square = new Square(texture);
   _square->initialize();
   _square->setPos(x, y);
@@ -16,6 +19,7 @@ LaunchWidget::~LaunchWidget()
 void	LaunchWidget::onClick(const t_gameinfo &/*gameInfo*/, Menu &menu)
 {
   menu.launchGame();
+  menu.setCurrentPanel(_onClickPanel);
 }
 
 void	LaunchWidget::draw(gdl::AShader &shader, const gdl::Clock &clock)
