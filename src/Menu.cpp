@@ -10,6 +10,7 @@
 #include "LaunchWidget.hpp"
 #include "QuitWidget.hpp"
 #include "LoadWidget.hpp"
+#include "LoadGameWidget.hpp"
 #include "ArrowWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
@@ -47,29 +48,52 @@ bool  Menu::initialize()
       !_textShader.build())
     return (false);
   _gameInfo.sound->play("menu", MUSIC);
-  ImageWidget	*background = new ImageWidget(0, 0, y, x, "./Ressources/Images/background.tga");
-  ImageWidget	*title = new ImageWidget(x / 8, y / 1.43f, y / 4.8f, x / 1.3f, "./assets/BomberCraft.tga");
-  NavigationWidget *back = new NavigationWidget(x / 8, y / 11.25f, y / 11.25f, x / 6.15f, "./assets/Button/back.tga", &_mainPanel);
+  ImageWidget	*background = new ImageWidget(0, 0, y, x,
+					      "./Ressources/Images/background.tga");
+  ImageWidget	*title = new ImageWidget(x / 8, y / 1.43f, y / 4.8f, x / 1.3f,
+					 "./assets/BomberCraft.tga");
+  NavigationWidget *back = new NavigationWidget(x / 8, y / 11.25f, y / 11.25f, x / 6.15f,
+						"./assets/Button/back.tga", &_mainPanel);
 
   _mainPanel.push_back(background);
   _mainPanel.push_back(title);
-  _mainPanel.push_back(new NavigationWidget(x / 4, y / 1.8f, y / 11.25f, x / 2, "./assets/Button/singleplayer.tga", &_newGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/multiplayer.tga", &_newGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/load_game.tga", &_loadGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2, "./assets/Button/options.tga", &_optionsPanel));
-  _mainPanel.push_back(new QuitWidget(x / 4, y / 18, y / 11.25f, x / 2, "./assets/Button/quit.tga"));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+					    "./assets/Button/singleplayer.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+					    "./assets/Button/multiplayer.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+					    "./assets/Button/load_game.tga", &_loadGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
+					    "./assets/Button/options.tga", &_optionsPanel));
+  _mainPanel.push_back(new QuitWidget(x / 4, y / 18, y / 11.25f, x / 2,
+				      "./assets/Button/quit.tga"));
 
   ///  _mainPanel.push_back(new InputWidget(50, 50, y / 11.25f, x / 2, "allotest"));
 
   _newGamePanel.push_back(background);
   _newGamePanel.push_back(title);
   _newGamePanel.push_back(back);
-  _newGamePanel.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2, "./assets/Button/generate_map.tga", &_mainPanel));
-  _newGamePanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/Button/import_map.tga", &_importMapPanel));
+  _newGamePanel.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2,
+					   "./assets/Button/generate_map.tga", &_mainPanel));
+  _newGamePanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2,
+					       "./assets/Button/import_map.tga", &_importMapPanel));
 
   _loadGamePanel.push_back(background);
   _loadGamePanel.push_back(title);
   _loadGamePanel.push_back(back);
+  _loadGamePanel.push_back(new LoadGameWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+					       "./assets/Button/button.tga", "Free", 0));
+  _loadGamePanel.push_back(new LoadGameWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+					       "./assets/Button/button.tga", "Free", 1));
+  _loadGamePanel.push_back(new LoadGameWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+					       "./assets/Button/button.tga", "Free", 2));
+  _loadGamePanel.push_back(new LoadGameWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
+					       "./assets/Button/button.tga", "Free", 3));
+  _loadGamePanel.push_back(new ArrowWidget(x / 2 - 2 * (x / 21.0f), y / 11.25f, y / 12, x / 21.0f,
+					    "./assets/Button/left_arrow.tga", 0));
+  _loadGamePanel.push_back(new ArrowWidget(x / 2 + x / 21.0f, y / 11.25f, y / 12, x / 21.0f,
+					    "./assets/Button/right_arrow.tga", 1));
+
 
   // add input widget or input image
   _importMapPanel.push_back(background);
@@ -92,16 +116,22 @@ bool  Menu::initialize()
   _optionsPanel.push_back(background);
   _optionsPanel.push_back(title);
   _optionsPanel.push_back(back);
-  _optionsPanel.push_back(new ImageWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/fullscreen_off.tga"));
-  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/controls.tga", &_controlsPanel));
+  _optionsPanel.push_back(new ImageWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+					  "./assets/Button/fullscreen_off.tga"));
+  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+					       "./assets/Button/controls.tga", &_controlsPanel));
 
   _controlsPanel.push_back(background);
   _controlsPanel.push_back(title);
   _controlsPanel.push_back(back);
-  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 1.8f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
-  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 2.25f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
-  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 3.0f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
-  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 4.5f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 1.8f, y / 11.25f, x / 6.15f,
+					   "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 2.25f, y / 11.25f, x / 6.15f,
+					   "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 3.0f, y / 11.25f, x / 6.15f,
+					   "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 4.5f, y / 11.25f, x / 6.15f,
+					   "./assets/Button/bind.tga"));
 
   return (true);
 }
@@ -300,7 +330,9 @@ void	Menu::setCurrentPanel(std::vector<AWidget *> *currentPanel)
   _currentPanel = currentPanel;
   _filePos = 0;
   if (_currentPanel == &_importMapPanel)
-    readDir("./Save");
+    readDir(MAPS_PATH);
+  else if (_currentPanel == &_loadGamePanel)
+    readDir(GAMES_PATH);
 }
 
 void	Menu::loadScore()

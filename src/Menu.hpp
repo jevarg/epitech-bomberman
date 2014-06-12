@@ -13,6 +13,8 @@
 # include "Console.hpp"
 
 # define SCORE_PATH "./.scores"
+# define MAPS_PATH "./Save/Maps/"
+# define GAMES_PATH "./Sve/Games/"
 
 class Menu
 {

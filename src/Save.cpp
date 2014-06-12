@@ -57,7 +57,7 @@ void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
     throw (Exception("Failed to open save file"));
   ss << settings.getVar(MAP_WIDTH) << " " << settings.getVar(MAP_HEIGHT);
   buf = ss.str();
-  this->encrypt(buf);
+  encrypt(buf);
   file << buf << "\n";
   buf = "";
   while (it != end)
@@ -96,55 +96,49 @@ void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
 void		Save::loadGame(Map &map, Settings &settings,
 			       const std::string &name, t_gameinfo &gameInfo)
 {
+  EntityFactory	*fact = EntityFactory::getInstance();
+  v_Contcit	end = gameInfo.map->ContEnd();
   std::ifstream	file(name.c_str());
   std::string	buf;
-  int		line = 0;
   int		x;
   int		y;
   int		type;
-  EntityFactory	*fact = EntityFactory::getInstance();
-  
+
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     throw (Exception("Error opening " + name));
-  v_Contcit end = gameInfo.map->ContEnd();
   for (v_Contcit it = gameInfo.map->ContBegin();it != end;it++)
     {
       AEntity *ent;
-      v_Entit its;
-      l_Entit itm;
+
       while ((ent = (*it)->listFront()) != NULL)
   	ent->setDestroy();
       while ((ent = (*it)->vecFront()) != NULL)
   	ent->setDestroy();
     }
-  while (gameInfo.map->clearElements() != 0) {;}
+  while (gameInfo.map->clearElements() != 0);
   gameInfo.map->createContainers();
-  if (std::getline(file, buf))
+  for (bool first = true; std::getline(file, buf); first = false)
     {
-      this->decrypt(buf);
-      if (std::count(buf.begin(), buf.end(), ' ') != 1)
+      decrypt(buf);
+      if (std::count(buf.begin(), buf.end(), ' ') != (first ? 1 : 2))
 	throw (Exception("Error : invalid savegame file"));
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
       buf.erase(0, buf.find_first_of(' ', 0) + 1);
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
-      settings.setVar(MAP_WIDTH, x);
-      settings.setVar(MAP_HEIGHT, y);
-      while (std::getline(file, buf))
+      if (first == true)
 	{
-	  this->decrypt(buf);
-	  if (std::count(buf.begin(), buf.end(), ' ') != 2)
-	    throw (Exception("Error : invalid savegame file"));
-	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
-	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
-	  std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
+	  settings.setVar(MAP_WIDTH, x);
+	  settings.setVar(MAP_HEIGHT, y);
+	}
+      else
+	{
 	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
 	  std::istringstream (buf) >> type;
-	  if (type >= UNKNOWNENTITY || type < 0)
-	    throw (Exception("Error : invalid savegame file"));
-	  map.addEntity(fact->getEntity(static_cast<eType>(type % (GROUND + 1)), x, y));
-	  ++line;
+	  if (type >= BOT || type < 0 || type == FREE)
+	    throw (Exception("Error : invalid savegame file, bad type"));
+	  map.addEntity(fact->getEntity(static_cast<eType>(type), x, y));
 	}
     }
-  gameInfo.map->display();
   file.close();
+  gameInfo.map->display();
 }
