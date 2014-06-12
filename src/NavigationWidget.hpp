@@ -16,7 +16,6 @@ public:
   ~NavigationWidget();
 
   void	draw(gdl::AShader &shader, const gdl::Clock &clock);
-
   void	onClick(t_gameinfo &gameInfo, Menu &menu);
 };
 
