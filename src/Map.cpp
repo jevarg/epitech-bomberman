@@ -12,7 +12,6 @@ Map::Map(Settings &set)
   _mapY = set.getVar(MAP_WIDTH);
   _density = set.getVar(MAP_DENSITY);	// expressed in %
   _linear = set.getVar(MAP_LINEAR);
-  std::cout << _density << " " << _linear << std::endl;
 }
 
 Map::~Map()
@@ -375,7 +374,6 @@ void	Map::addEntity(AEntity *ent)
   unsigned int	pos;
   Container	*cont;
 
-  std::cout << "Add: " << ent << std::endl;
   pos = getContPos(ent->getXPos(), ent->getYPos());
   while (_cont.size() <= pos)
     {
