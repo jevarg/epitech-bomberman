@@ -2,10 +2,9 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo,
-		       bool multi)
+GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo)
   : _win(win), _textShader(textShader),
-    _gameInfo(gameInfo), _lights(), _players(), _multi(multi)
+    _gameInfo(gameInfo), _lights(), _players()
 {
   _player1 = NULL;
   _player2 = NULL;
@@ -13,8 +12,11 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _gameInfo->condvar = new Condvar;
   _gameInfo->save = new Save;
   _shutdown = false;
+  _multi = false;
   _frames = 0;
   _fps.initialize();
+  _end_screen[0] = NULL;
+  _end_screen[1] = NULL;
 }
 
 GameEngine::~GameEngine()
@@ -23,8 +25,10 @@ GameEngine::~GameEngine()
     _player1->setDestroyAttr();
   if (_player2)
     _player2->setDestroyAttr();
-  delete _end_screen[0];
-  delete _end_screen[1];
+  if (_end_screen[0] != NULL)
+    delete _end_screen[0];
+  if (_end_screen[1] != NULL)
+    delete _end_screen[1];
   _gameInfo->condvar->broadcast();
   sleep(1);
   delete _gameInfo->mutex;
@@ -316,4 +320,9 @@ void	GameEngine::moveGround(Player *player)
   groundY -= 0.5;
   _ground->setScale(glm::vec3(sizeX, 1.0, sizeY));
   _ground->setPos(glm::vec3(groundX, -1, groundY));
+}
+
+void	GameEngine::setMulti(bool multi)
+{
+  _multi = multi;
 }
