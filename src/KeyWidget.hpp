@@ -11,6 +11,7 @@ public:
   KeyWidget(int x, int y, int height, int width, eAction act);
   ~KeyWidget();
 
+  void	init(const Settings * const set);
   void	onClick(t_gameinfo &gameInfo, Menu &menu);
 
 private:
