@@ -1,16 +1,20 @@
-#ifndef _TEXTWIDGET_H_
-# define _TEXTWIDGET_H_
+#ifndef _TEXTWIDGET_HPP_ 
+# define _TEXTWIDGET_HPP_
 
 # include "AWidget.hpp"
 # include "Menu.hpp"
 
-class TextWidget : public AWidget
+class	TextWidget : public AWidget
 {
 public:
   TextWidget(int x, int y, int height, int width, const std::string &text);
   ~TextWidget();
 
-  void	onClick(const t_gameinfo &gameInfo, Menu &menu);
+  virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock);
+  virtual bool	isClicked(int x, int y);
+  virtual void	onClick(const t_gameinfo &gameInfo, Menu &menu);
+
+  void		setText(std::string const& str, float x, float y, float size);
 };
 
-#endif /* _TEXTWIDGET_H_ */
+#endif

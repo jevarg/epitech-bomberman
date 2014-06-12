@@ -11,13 +11,13 @@ class	Menu;
 class	AWidget
 {
 protected:
-  Text		_text;
   int		_x;
   int		_y;
   int		_height;
   int		_width;
+  Text		_text;
   Square	*_square;
-
+  
 public:
   AWidget(int x, int y, int height, int width, const std::string &text);
   virtual ~AWidget() = 0;
