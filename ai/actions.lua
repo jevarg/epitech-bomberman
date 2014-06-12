@@ -15,6 +15,7 @@ function search_safe_place(map_nb, x, y, block, boolean, cond)
 	local way = 0
 	local gotox = {0, 0, -1, 1}
 	local gotoy = {-1, 1, 0, 0}
+	local max nb = 0
 
 	for i = 1, cond do
 		if (block[1] == 0) then
