@@ -36,7 +36,7 @@ bool	AWidget::isClicked(int x, int y)
     return (false);
 }
 
-void	AWidget::onDisplay(const std::list<std::string> &text)
+void	AWidget::onDisplay(const std::list<std::string> &/*text*/, int /*filePos*/)
 {
 }
 

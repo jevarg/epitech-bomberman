@@ -28,6 +28,8 @@ public:
   void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen, int x, int y);
   void	setDone(bool done = true);
+  Menu	&operator++();
+  Menu	&operator--();
 
 private:
   void	loadScore();
@@ -42,6 +44,7 @@ private:
   t_gameinfo		_gameInfo;
   int			_frames;
   Console		*_console;
+  unsigned int		 _filePos;
   std::list<std::string> _filename;
   std::vector<AWidget *> *_currentPanel;
   std::vector<AWidget *> _mainPanel;

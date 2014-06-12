@@ -25,8 +25,8 @@ public:
   void		draw();
 
   virtual bool	isClicked(int x, int y);
-  virtual void	onDisplay(const std::list<std::string> &text);
-  virtual void	onClick(const t_gameinfo &gameInfo, Menu &menu) = 0;
+  virtual void	onDisplay(const std::list<std::string> &text, int filePos);
+  virtual void	onClick(t_gameinfo &gameInfo, Menu &menu) = 0;
   virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock) = 0;
 
   void		setSquare(Square *);

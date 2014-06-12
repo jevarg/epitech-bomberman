@@ -10,7 +10,7 @@ public:
   InputWidget(int x, int y, int height, int width, const std::string &text);
   ~InputWidget();
 
-  void	onClick(const t_gameinfo &gameInfo, Menu &menu);
+  void	onClick(t_gameinfo &gameInfo, Menu &menu);
   void	draw(gdl::AShader &shader, const gdl::Clock &clock);
 };
 

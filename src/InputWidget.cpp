@@ -10,7 +10,7 @@ InputWidget::~InputWidget()
 {
 }
 
-void	InputWidget::onClick(const t_gameinfo &/*gameInfo*/, Menu &menu)
+void	InputWidget::onClick(t_gameinfo &/*gameInfo*/, Menu &menu)
 {
   std::string	buf;
 

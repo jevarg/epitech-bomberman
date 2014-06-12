@@ -16,14 +16,14 @@ LoadWidget::~LoadWidget()
 {
 }
 
-void	LoadWidget::onDisplay(const std::list<std::string> &text)
+void	LoadWidget::onDisplay(const std::list<std::string> &text, int filePos)
 {
   std::list<std::string>::const_iterator it = text.begin();
   std::list<std::string>::const_iterator end = text.end();
 
   for (int count = 0; it != end; ++it, ++count)
     {
-      if (count == _id)
+      if (count == _id + filePos * 4)
 	{
 	  _sentence = *it;
 	  return ;
@@ -32,9 +32,10 @@ void	LoadWidget::onDisplay(const std::list<std::string> &text)
   _sentence = "FREE";
 }
 
-void	LoadWidget::onClick(const t_gameinfo &gameInfo, Menu &menu)
+void	LoadWidget::onClick(t_gameinfo &gameInfo, Menu &/*menu*/)
 {
   gameInfo.sound->play("click", EFFECT);
+  gameInfo.map->load(_sentence, gameInfo);
 }
 
 void	LoadWidget::draw(gdl::AShader &shader, const gdl::Clock &clock)

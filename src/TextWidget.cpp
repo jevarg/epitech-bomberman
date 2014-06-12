@@ -21,7 +21,7 @@ bool	TextWidget::isClicked(int, int)
   return (false);
 }
 
-void	TextWidget::onClick(const t_gameinfo &, Menu &)
+void	TextWidget::onClick(t_gameinfo &, Menu &)
 {
 }
 

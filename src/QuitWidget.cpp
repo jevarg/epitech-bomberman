@@ -13,7 +13,7 @@ QuitWidget::~QuitWidget()
 {
 }
 
-void	QuitWidget::onClick(const t_gameinfo &/*gameInfo*/, Menu &menu)
+void	QuitWidget::onClick(t_gameinfo &/*gameInfo*/, Menu &menu)
 {
   menu.setDone(true);
 }

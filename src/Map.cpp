@@ -369,7 +369,7 @@ unsigned int	Map::getContPos(int x, int y) const
   return (ratioy * (_mapX / SQUARESIZE) + ratiox);
 }
 
-void	Map::addEntity(AEntity *ent)
+void	Map::addEntity(AEntity * const ent)
 {
   unsigned int	pos;
   Container	*cont;

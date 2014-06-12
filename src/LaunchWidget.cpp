@@ -16,7 +16,7 @@ LaunchWidget::~LaunchWidget()
 {
 }
 
-void	LaunchWidget::onClick(const t_gameinfo &/*gameInfo*/, Menu &menu)
+void	LaunchWidget::onClick(t_gameinfo &/*gameInfo*/, Menu &menu)
 {
   menu.launchGame();
   menu.setCurrentPanel(_onClickPanel);

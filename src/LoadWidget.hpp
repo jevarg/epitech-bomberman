@@ -12,8 +12,8 @@ public:
   ~LoadWidget();
 
   void	draw(gdl::AShader &shader, const gdl::Clock &clock);
-  void	onClick(const t_gameinfo &gameInfo, Menu &menu);
-  void	onDisplay(const std::list<std::string> &text);
+  void	onClick(t_gameinfo &gameInfo, Menu &menu);
+  void	onDisplay(const std::list<std::string> &text, int filePos);
 
 private:
   std::string	_sentence;

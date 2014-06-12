@@ -10,6 +10,7 @@
 #include "LaunchWidget.hpp"
 #include "QuitWidget.hpp"
 #include "LoadWidget.hpp"
+#include "ArrowWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
 {
@@ -74,10 +75,18 @@ bool  Menu::initialize()
   _importMapPanel.push_back(background);
   _importMapPanel.push_back(title);
   _importMapPanel.push_back(back);
-  _importMapPanel.push_back(new LoadWidget(x / 4, y / 1.8f, y / 11.25f, x / 2, "./assets/Button/button.tga", "Free", 0));
-  _importMapPanel.push_back(new LoadWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/button.tga", "Free", 1));
-  _importMapPanel.push_back(new LoadWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/button.tga", "Free", 2));
-  _importMapPanel.push_back(new LoadWidget(x / 4, y / 4.5f, y / 11.25f, x / 2, "./assets/Button/button.tga", "Free", 3));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+					   "./assets/Button/button.tga", "Free", 0));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+					   "./assets/Button/button.tga", "Free", 1));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+					   "./assets/Button/button.tga", "Free", 2));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
+					   "./assets/Button/button.tga", "Free", 3));
+  _importMapPanel.push_back(new ArrowWidget(x / 2 - 2 * (x / 21.0f), y / 11.25f, y / 12, x / 21.0f,
+					    "./assets/Button/left_arrow.tga", 0));
+  _importMapPanel.push_back(new ArrowWidget(x / 2 + x / 21.0f, y / 11.25f, y / 12, x / 21.0F,
+					    "./assets/Button/right_arrow.tga", 1));
 
   // add input widget or input image
   _optionsPanel.push_back(background);
@@ -154,7 +163,7 @@ void	Menu::draw()
   for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
 	 endit = (*_currentPanel).end(); it != endit ; ++it)
     {
-      (*it)->onDisplay(_filename);
+      (*it)->onDisplay(_filename, _filePos);
       (*it)->draw(_textShader, *_gameInfo.clock);
     }
   glEnable(GL_DEPTH_TEST);
@@ -288,8 +297,10 @@ void	Menu::launch()
 
 void	Menu::setCurrentPanel(std::vector<AWidget *> *currentPanel)
 {
-  //    readDir("./Save");
   _currentPanel = currentPanel;
+  _filePos = 0;
+  if (_currentPanel == &_importMapPanel)
+    readDir("./Save");
 }
 
 void	Menu::loadScore()
@@ -326,6 +337,7 @@ void	Menu::readDir(const std::string &dirname)
   DIR	*dirp;
   struct dirent *file;
 
+  _filename.clear();
   if ((dirp = opendir(dirname.c_str())) == NULL)
     return ;
   while ((file = readdir(dirp)) != NULL)
@@ -333,6 +345,20 @@ void	Menu::readDir(const std::string &dirname)
       if (file->d_type != DT_DIR)
 	_filename.push_back(file->d_name);
     }
+}
+
+Menu	&Menu::operator++()
+{
+  if (_filename.size() > (_filePos + 1) * 4)
+    ++_filePos;
+  return (*this);
+}
+
+Menu	&Menu::operator--()
+{
+  if (_filePos > 0)
+    --_filePos;
+  return (*this);
 }
 
 void	Menu::setDone(bool done)
