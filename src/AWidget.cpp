@@ -23,11 +23,6 @@ AWidget::~AWidget()
 {
 }
 
-void	AWidget::draw()
-{
-
-}
-
 bool	AWidget::isClicked(int x, int y)
 {
   if (x >= _x && x <= (_x + _width) && y >= _y && y <= (_y + _height))
@@ -36,7 +31,15 @@ bool	AWidget::isClicked(int x, int y)
     return (false);
 }
 
+void	AWidget::draw()
+{
+}
+
 void	AWidget::onDisplay(const std::list<std::string> &/*text*/, int /*filePos*/)
+{
+}
+
+void	AWidget::init(const Settings * const /*set*/)
 {
 }
 

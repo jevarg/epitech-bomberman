@@ -331,6 +331,9 @@ void	Menu::setCurrentPanel(std::vector<AWidget *> *currentPanel)
     readDir(MAPS_PATH);
   else if (_currentPanel == &_loadGamePanel)
     readDir(GAMES_PATH);
+  for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
+	 endit = (*_currentPanel).end(); it != endit ; ++it)
+      (*it)->init(_gameInfo.set);
 }
 
 void	Menu::loadScore()

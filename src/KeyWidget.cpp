@@ -10,6 +10,22 @@ KeyWidget::~KeyWidget()
 {
 }
 
+void	KeyWidget::init(const Settings * const set)
+{
+  std::vector<Keycode>	keySet;
+  Keycode		key = 0;
+
+  set->getKeyFromAct(_act, keySet);
+  if (!keySet.empty())
+    {
+      if ((key = keySet.front()) > 0 && key < 128)
+	{
+	  _sentence.clear();
+	  _sentence.push_back(static_cast<char>(key));
+	}
+    }
+}
+
 void	KeyWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
   menu.textInput(_sentence, 2);
