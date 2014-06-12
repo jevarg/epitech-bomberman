@@ -15,7 +15,7 @@ extern "C" {
 
 int fullscreen = 1, videoStream = -1, frameFinished=0;
 const PixelFormat CONV_FORMAT = PIX_FMT_RGB24;
-const char *fname = "./test.mpg";
+const char *fname = "./Ressources/Videos/intro.mp4";
 AVFormatContext *pFormatCtx = NULL;
 AVCodecContext  *pCodecCtx = NULL;
 AVCodec         *pCodec = NULL;
@@ -33,12 +33,12 @@ int main(int argc, const char **argv) {
 
   av_init();
 
-  uint16_t width = fullscreen ? 1920 : pCodecCtx->width;
-  uint16_t height = fullscreen ? 1200 : pCodecCtx->height;
+  uint16_t width = fullscreen ? 1600 : pCodecCtx->width;
+  uint16_t height = fullscreen ? 900 : pCodecCtx->height;
 
   SDL_Init(SDL_INIT_EVERYTHING);
   SDL_GL_SetAttribute( SDL_GL_DOUBLEBUFFER, 1 );
-  SDL_SetVideoMode(width, height, 32, SDL_OPENGL | (fullscreen ? SDL_FULLSCREEN : 0));
+  SDL_SetVideoMode(width, height, 32, SDL_OPENGL);
 
   glEnable(GL_TEXTURE_2D);
   glClearColor(0.0f, 0.4f, 0.4f, 0.0f);
@@ -145,8 +145,8 @@ void av_init() {
   pCodecCtx = pFormatCtx->streams[videoStream]->codec;
   pCodec = avcodec_find_decoder(pCodecCtx->codec_id);
   avcodec_open2(pCodecCtx, pCodec, &optionsDict);
-  pFrame = avcodec_alloc_frame();
-  pFrameRGB = avcodec_alloc_frame();
+  pFrame = av_frame_alloc();
+  pFrameRGB = av_frame_alloc();
   int bytes = avpicture_get_size(CONV_FORMAT, pCodecCtx->width, pCodecCtx->height);
   uint8_t *video_buffer = (uint8_t*)av_malloc(bytes * sizeof(uint8_t));
   avpicture_fill((AVPicture *)pFrameRGB, video_buffer, CONV_FORMAT, pCodecCtx->width, pCodecCtx->height);

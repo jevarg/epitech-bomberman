@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Thu Jun 12 15:26:44 2014 luc sinet
+## Last update Thu Jun 12 22:06:56 2014 
 ##
 
 NAME		=	bomberman
@@ -75,6 +75,9 @@ SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
 CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
+CXXFLAGS	+=	$(shell pkg-config --cflags libswscale libavcodec libavformat libavutil)
+
+LDFLAGS		+=	$(shell pkg-config --libs libswscale libavcodec libavformat libavutil)
 LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2_mixer -lSDL2 -lpthread -lm -ldl -p -lrt
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
