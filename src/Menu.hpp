@@ -33,7 +33,7 @@ private:
   void	loadScore();
   void	saveScore();
   void	readDir(const std::string &dirname);
-  void	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
+  bool	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
   void	handleClock(int &frame, double &time, double fps);
 
   gdl::SdlContext	_win;

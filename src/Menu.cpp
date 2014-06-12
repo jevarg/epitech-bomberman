@@ -163,16 +163,14 @@ void	Menu::handleClock(int &frame, double &time, double fps)
   _win.updateClock(*_gameInfo.clock);
 }
 
-void	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
+bool	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
 {
   if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
     key = '0' + key - SDLK_KP_0;
-  if (key == '\r' || key == SDLK_KP_ENTER)
+  if (key == '\r' || key == SDLK_KP_ENTER || key == 27)
     {
       buf.erase(buf.end() - 1);
-      buf.clear();
-      buf.push_back('|');
-      return ;
+      return (false);
     }
   else if (key > 0 && key < 128)
     {
@@ -187,6 +185,7 @@ void	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
 	  buf.push_back('|');
 	}
     }
+  return (true);
 }
 
 void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
@@ -240,7 +239,8 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
 	  save = key;
 	}
       for (; beg != end; ++beg)
-	textFillBuf(buf, maxlen, key);
+	if (textFillBuf(buf, maxlen, key) == false)
+	  return ;
       handleClock(frame, time, fps);
       draw();
       text.setText(buf, x, y, POLICE_SIZE);
