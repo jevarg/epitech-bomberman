@@ -534,6 +534,30 @@ bool	Map::hasPlayer() const
   return (false);
 }
 
+int	Map::nbPlayer() const
+{
+  AEntity *foundEnt;
+  int	mapSize = _mapX * _mapY;
+  int	contPos;
+  int	x;
+  int	y;
+  int	ret = 0;
+
+  for (int i = 0; i < mapSize; ++i)
+    {
+      x = i % _mapX;
+      y = i / _mapX;
+      contPos = getContPos(x, y);
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER1)) != NULL)
+	ret += 1;
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER2)) != NULL)
+	ret += 1;
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, BOT)) != NULL)
+	ret += 1;
+    }
+  return (ret);
+}
+
 const std::vector<Container *>	&Map::getCont() const
 {
   return (_cont);

@@ -51,6 +51,9 @@
 # define FLAME_TEXTURE "./assets/flames.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
 
+# define WIN_TEXTURE "./assets/You-Win.tga"
+# define LOSE_TEXTURE "./assets/You-Lose.tga"
+
 # define HEALTHITEM_MODEL "./assets/health_item.fbx"
 # define SPEEDITEM_MODEL "./assets/speed_item.fbx"
 # define STOCKITEM_MODEL "./assets/stock_item.fbx"
@@ -111,6 +114,7 @@ private:
   Player			*_player2;
   std::vector<Player *>		_players;
   HUD				*_hud;
+  Square			*_end_screen[2];
   std::map<std::string, int>	_score;
 };
 

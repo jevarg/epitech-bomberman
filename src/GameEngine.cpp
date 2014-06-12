@@ -28,6 +28,8 @@ GameEngine::~GameEngine()
     _player1->setDestroyAttr();
   if (_player2)
     _player2->setDestroyAttr();
+  delete _end_screen[0];
+  delete _end_screen[1];
   _gameInfo.condvar->broadcast();
   sleep(1);
 }
@@ -37,6 +39,12 @@ bool GameEngine::initialize()
   ModelFactory &fact = ModelFactory::getInstance();
   EntityFactory *ent = EntityFactory::getInstance();
   Spawn	spawn(_gameInfo.map);
+
+  _end_screen[0] = new Square(WIN_TEXTURE);
+  _end_screen[1] = new Square(LOSE_TEXTURE);
+
+  if (!_end_screen[0]->initialize() || !_end_screen[1]->initialize())
+    return (false);
 
   try
     {
@@ -52,6 +60,7 @@ bool GameEngine::initialize()
       std::cerr << e.what() << std::endl;
       return (false);
     }
+
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -59,6 +68,16 @@ bool GameEngine::initialize()
       || !_shader.load("./Shaders/basic.vp", GL_VERTEX_SHADER)
       || !_shader.build())
     return (false);
+
+  _end_screen[0]->setSize(420, 94);
+  _end_screen[1]->setSize(490, 94);
+
+  _end_screen[0]->setPos(800 - 210, 450 - 47);
+  _end_screen[1]->setPos(800 - 245, 450 - 47);
+
+  _end_screen[0]->fillGeometry();
+  _end_screen[1]->fillGeometry();
+
 
   _gameInfo.sound->play("game", MUSIC);
 
@@ -91,8 +110,8 @@ bool GameEngine::initialize()
   _gameInfo.map->load("map", _gameInfo);
    spawn.setSpawnSize(_gameInfo.map->getWidth(), _gameInfo.map->getHeight());
 
-  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1, false);
-  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2, false);
+  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1, true);
+  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2, true);
 
   ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
   ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
@@ -108,8 +127,8 @@ bool GameEngine::initialize()
 
   // spawn.spawnEnt(1, 0, _gameInfo);
   _players.push_back(_player1);
-  // _players.push_back(_player2);
-  spawn.spawnEnt(1, 0, _gameInfo);
+  _players.push_back(_player2);
+  spawn.spawnEnt(2, 0, _gameInfo);
   return (true);
 }
 
@@ -150,8 +169,13 @@ bool		GameEngine::update()
   // static int	frame = 0;
   static double	elapsedTime = 0;
   t_mouse mouse;
+  int nbPlayer = _gameInfo.map->nbPlayer();
 
   mainInput();
+  if (_player1->isAlive() && nbPlayer == 1)
+    _player1->setEnd(WIN);
+  if (_player2->isAlive() && nbPlayer == 1)
+    _player2->setEnd(WIN);
   (*_gameInfo.input)[mouse];
   _gameInfo.condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
@@ -253,7 +277,10 @@ void GameEngine::draw()
 		}
 	  }
       _hud->draw(*player, _gameInfo);
-      glFlush();
+      if ((*player)->getEnd() == WIN)
+	_end_screen[0]->draw(*_textShader, *_gameInfo.clock);
+      else if ((*player)->getEnd() == LOSE)
+	_end_screen[1]->draw(*_textShader, *_gameInfo.clock);
     }
   _win->flush();
 }
