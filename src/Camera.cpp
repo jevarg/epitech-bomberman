@@ -2,11 +2,13 @@
 #include "Input.hpp"
 #include "Camera.hpp"
 
-Camera::Camera(t_gameinfo *gameinfo): _pos(0.0, 0.0, 0.0), _pos_view(0.0, 0.0, 1.0), _dir(0.0, 1.0, 0.0)
+Camera::Camera(t_gameinfo *gameinfo, bool player): _pos(0.0, 0.0, 0.0), _pos_view(0.0, 0.0, 1.0), _dir(0.0, 1.0, 0.0)
 {
+  float nbPlayer = (player == false) ? 1 : 2;
+
   _projection = glm::perspective(static_cast<float>(gameinfo->set->getVar(FOV)),
-				 static_cast<float>(gameinfo->set->getVar(W_WIDTH))
-				 / static_cast<float>(gameinfo->set->getVar(W_HEIGHT)),
+				 (static_cast<float>(gameinfo->set->getVar(W_WIDTH)) / nbPlayer)
+				 / (static_cast<float>(gameinfo->set->getVar(W_HEIGHT))),
 				 0.1f, 100.0f);
 }
 

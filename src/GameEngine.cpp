@@ -2,9 +2,10 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo)
+GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo,
+		       bool multi)
   : _win(win), _textShader(textShader), _save(),
-    _gameInfo(gameInfo), _lights(), _players()
+    _gameInfo(gameInfo), _lights(), _players(), _multi(multi)
 {
   _player1 = NULL;
   _player2 = NULL;
@@ -12,6 +13,7 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _gameInfo->condvar = new Condvar;
   _shutdown = false;
   _frames = 0;
+  _fps.initialize();
 }
 
 GameEngine::~GameEngine()
@@ -66,12 +68,11 @@ bool GameEngine::initialize()
   _end_screen[0]->setSize(420, 94);
   _end_screen[1]->setSize(490, 94);
 
-  _end_screen[0]->setPos(800 - 210, 450 - 47);
-  _end_screen[1]->setPos(800 - 245, 450 - 47);
+  _end_screen[0]->setPos((800 / (_multi == true) ? 2 : 1) - 210, 450 - 47);
+  _end_screen[1]->setPos((800 / (_multi == true) ? 2 : 1) - 245, 450 - 47);
 
   _end_screen[0]->fillGeometry();
   _end_screen[1]->fillGeometry();
-
 
   _gameInfo->sound->play("game", MUSIC);
 
@@ -102,8 +103,8 @@ bool GameEngine::initialize()
   _gameInfo->map->load("map", *_gameInfo);
    spawn.setSpawnSize(_gameInfo->map->getWidth(), _gameInfo->map->getHeight());
 
-  _player1 = new Player(0, 0, _gameInfo, CHARACTER1, true);
-  _player2 = new Player(0, 0, _gameInfo, CHARACTER2, true);
+  _player1 = new Player(0, 0, _gameInfo, CHARACTER1, _multi);
+  _player2 = new Player(0, 0, _gameInfo, CHARACTER2, _multi);
 
   ent->addEntity(WALL, new Entity(0, 0, WALL, _gameInfo));
   ent->addEntity(BOX, new Box(0, 0, _gameInfo));
@@ -117,10 +118,10 @@ bool GameEngine::initialize()
   ent->addEntity(STOCKITEM, new StockItem(0, 0, _gameInfo, false));
   ent->addEntity(RANGEITEM, new RangeItem(0, 0, _gameInfo, false));
 
-  // spawn.spawnEnt(1, 0, _gameInfo);
   _players.push_back(_player1);
-  _players.push_back(_player2);
-  spawn.spawnEnt(2, 0, *_gameInfo);
+  if (_multi)
+    _players.push_back(_player2);
+  spawn.spawnEnt((_multi == true ? 2 : 1), 0, *_gameInfo);
   return (true);
 }
 
@@ -177,7 +178,7 @@ bool		GameEngine::update()
   elapsedTime += time;
   if (elapsedTime > 0.1)
     {
-      _hud->setFps(round(_frames / elapsedTime));
+      _fps << (round(_frames / elapsedTime));
       _frames = 0;
       elapsedTime = 0;
     }
@@ -214,10 +215,9 @@ void GameEngine::draw()
       glViewport (i * (winX / _players.size()), 0, (winX / _players.size()), winY);
       ++i;
 
-      int x = (*player)->getXPos(), y = (*player)->getYPos(), mapx = _mapX, mapy = _mapY;
+      unsigned int x = (*player)->getXPos(), y = (*player)->getYPos();
+      unsigned int depth_view = _gameInfo->set->getVar(R_DEPTHVIEW);
       Camera &cam = (*player)->getCam();
-      int depth_view = _gameInfo->set->getVar(R_DEPTHVIEW);
-      float groundX = x, groundY = y, sizeX = depth_view * 2, sizeY = depth_view * 2;
       const std::vector<Container *>	&cont = _gameInfo->map->getCont();
 
       cam.lookAt();
@@ -228,35 +228,10 @@ void GameEngine::draw()
       for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
 	(*it)->render(_shader);
 
-      sizeY += 1;
-      groundY += 0.5;
-      if (groundX - depth_view < 0)
-	{
-	  sizeX -= ABS(groundX - depth_view);
-	  groundX = sizeX / 2;
-	}
-      else if (groundX + depth_view > _gameInfo->map->getWidth())
-	{
-	  sizeX -= (groundX + depth_view - _gameInfo->map->getWidth());
-	  groundX = _gameInfo->map->getWidth() - sizeX / 2;
-	}
-      if (groundY - depth_view < 0)
-	{
-	  sizeY -= ABS(groundY - depth_view);
-	  groundY = sizeY / 2;
-	}
-      else if (groundY + depth_view > _gameInfo->map->getHeight())
-	{
-	  sizeY -= (groundY + depth_view - _gameInfo->map->getHeight());
-	  groundY = _gameInfo->map->getHeight() - sizeY / 2;
-	}
-      groundX -= 0.5;
-      groundY -= 0.5;
-      _ground->setScale(glm::vec3(sizeX, 1.0, sizeY));
-      _ground->setPos(glm::vec3(groundX, -1, groundY));
+      moveGround((*player));
       _ground->draw(_shader, *_gameInfo->clock);
-      for (int j = (y > depth_view) ? y - depth_view : 0;j <= y + depth_view && j < mapy;j++)
-	for (int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < mapx;i++)
+      for (unsigned int j = (y > depth_view) ? y - depth_view : 0;j <= y + depth_view && j < _mapY;j++)
+	for (unsigned int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < _mapX;i++)
 	  {
 	    std::vector<AEntity *> elem;
 	    if (_gameInfo->map->checkFullMapColision(i, j, elem))
@@ -268,32 +243,71 @@ void GameEngine::draw()
 		  (*it1)->draw(_shader, *_gameInfo->clock);
 		}
 	  }
-      _hud->draw(*player, *_gameInfo);
+      _hud->draw(*player, *_gameInfo, _multi);
       if ((*player)->getEnd() == WIN)
 	_end_screen[0]->draw(*_textShader, *_gameInfo->clock);
       else if ((*player)->getEnd() == LOSE)
 	_end_screen[1]->draw(*_textShader, *_gameInfo->clock);
     }
   if (_player1->getEnd() != 0 && _player2->getEnd() != 0)
-    {
-      Text score;
-      int  i = 0;
-
-      glViewport(0, 0, winX, winY);
-      glDisable(GL_DEPTH_TEST);
-      score.initialize();
-      score.setText("Scores", 725, winY - 250, 50);
-      score.draw(*_textShader, *_gameInfo->clock);
-      for (std::map<std::string, int>::const_iterator it = _gameInfo->score.begin();it != _gameInfo->score.end();it++)
-	{
-	  std::stringstream ss("");
-
-	  ss << it->first << " => " << it->second << " Point" << std::endl;
-	  score.setText(ss.str(), 650, winY - ((_gameInfo->score.size() - i) * 50 + 300),  40);
-	  score.draw(*_textShader, *_gameInfo->clock);
-	  ++i;
-	}
-      glEnable(GL_DEPTH_TEST);
-    }
+    displayScore();
+  _fps.draw(_shader, *_gameInfo->clock);
   _win->flush();
+}
+
+void	GameEngine::displayScore()
+{
+  int winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
+  Text score;
+  int  i = 0;
+
+  glViewport(0, 0, winX, winY);
+  glDisable(GL_DEPTH_TEST);
+  score.initialize();
+  score.setText("Scores", 725, winY - 250, 50);
+  score.draw(*_textShader, *_gameInfo->clock);
+  for (std::map<std::string, int>::const_iterator it = _gameInfo->score.begin();it != _gameInfo->score.end();it++)
+    {
+      std::stringstream ss("");
+
+      ss << it->first << " => " << it->second << " Point" << std::endl;
+      score.setText(ss.str(), 650, winY - ((_gameInfo->score.size() - i) * 50 + 300),  40);
+      score.draw(*_textShader, *_gameInfo->clock);
+      ++i;
+    }
+  glEnable(GL_DEPTH_TEST);
+}
+
+void	GameEngine::moveGround(Player *player)
+{
+  int x = player->getXPos(), y = player->getYPos();
+  int depth_view = _gameInfo->set->getVar(R_DEPTHVIEW);
+  float groundX = x, groundY = y, sizeX = depth_view * 2, sizeY = depth_view * 2;
+
+  sizeY += 1;
+  groundY += 0.5;
+  if (groundX - depth_view < 0)
+    {
+      sizeX -= ABS(groundX - depth_view);
+      groundX = sizeX / 2;
+    }
+  else if (groundX + depth_view > _gameInfo->map->getWidth())
+    {
+      sizeX -= (groundX + depth_view - _gameInfo->map->getWidth());
+      groundX = _gameInfo->map->getWidth() - sizeX / 2;
+    }
+  if (groundY - depth_view < 0)
+    {
+      sizeY -= ABS(groundY - depth_view);
+      groundY = sizeY / 2;
+    }
+  else if (groundY + depth_view > _gameInfo->map->getHeight())
+    {
+      sizeY -= (groundY + depth_view - _gameInfo->map->getHeight());
+      groundY = _gameInfo->map->getHeight() - sizeY / 2;
+    }
+  groundX -= 0.5;
+  groundY -= 0.5;
+  _ground->setScale(glm::vec3(sizeX, 1.0, sizeY));
+  _ground->setPos(glm::vec3(groundX, -1, groundY));
 }

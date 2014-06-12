@@ -2,7 +2,7 @@
 #include "Player.hpp"
 
 Player::Player(int x, int y, t_gameinfo *gameInfo, eType type, bool multi, bool thread)
-  : ACharacter(x, y, type, gameInfo, thread), _camera(gameInfo)
+  : ACharacter(x, y, type, gameInfo, thread), _camera(gameInfo, multi)
 {
   _camera.translate(glm::vec3(x, 5.0, 10.0));
   _camera.setPointView(glm::vec3(x, 0.0, y));
