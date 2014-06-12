@@ -126,22 +126,27 @@ bool  Menu::initialize()
   _controlsPanel.push_back(title);
   _controlsPanel.push_back(back);
   _controlsPanel.push_back(new KeyWidget(x / 8, y / 1.8f, y / 16.8, x / 30, FORWARD));
-  _controlsPanel.push_back(new TextWidget(x / 8 + 2 * x / 30, y / 1.8f,
-					  y / 16.8, x / 4, "Forward"));
+  _controlsPanel.push_back(new TextImgWidget(x / 8 + 2 * x / 30, y / 1.8f,
+					     y / 16.8, x / 4,
+					     "./assets/Button/button_small.tga", "Forward"));
   _controlsPanel.push_back(new KeyWidget(x / 8, y / 2.25f, y / 16.8, x / 30, BACK));
-  _controlsPanel.push_back(new TextWidget(x / 8 + 2 * x / 30, y / 2.25f,
-					  y / 16.8, x / 4, "Back"));
+  _controlsPanel.push_back(new TextImgWidget(x / 8 + 2 * x / 30, y / 2.25f,
+					  y / 16.8, x / 4,
+					     "./assets/Button/button_small.tga", "Back"));
   _controlsPanel.push_back(new KeyWidget(x / 8, y / 3.0f, y / 16.8, x / 30, LEFT));
-  _controlsPanel.push_back(new TextWidget(x / 8 + 2 * x / 30, y / 3.0f,
-					  y / 16.8, x / 4, "Left"));
+  _controlsPanel.push_back(new TextImgWidget(x / 8 + 2 * x / 30, y / 3.0f,
+					  y / 16.8, x / 4,
+					     "./assets/Button/button_small.tga", "Left"));
   _controlsPanel.push_back(new KeyWidget(x / 2 + x / 8, y / 1.8f,
 					 y / 16.8, x / 30, RIGHT));
-  _controlsPanel.push_back(new TextWidget(x / 2 + x / 8 + 2 * x / 30, y / 1.8f,
-					  y / 16.8, x / 4, "Right"));
+  _controlsPanel.push_back(new TextImgWidget(x / 2 + x / 8 + 2 * x / 30, y / 1.8f,
+					  y / 16.8, x / 4,
+					     "./assets/Button/button_small.tga", "Right"));
   _controlsPanel.push_back(new KeyWidget(x / 2 + x / 8, y / 2.25f,
 					 y / 16.8, x / 30, DROPBOMB));
-  _controlsPanel.push_back(new TextWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
-					  y / 16.8, x / 4, "DropBomb"));
+  _controlsPanel.push_back(new TextImgWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
+					  y / 16.8, x / 4,
+					     "./assets/Button/button_small.tga", "DropBomb"));
   return (true);
 }
 
