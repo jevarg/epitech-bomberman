@@ -11,6 +11,7 @@ IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
 
 IA::~IA()
 {
+  std::cout << "IA Destructed" << std::endl;
 }
 
 void	IA::update()
