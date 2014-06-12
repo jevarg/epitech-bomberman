@@ -1,6 +1,11 @@
 #ifndef _INTRO_HPP_
 # define _INTRO_HPP_
 
+# ifndef INT64_C
+#  define INT64_C(c) (int64_t)(c)
+#  define UINT64_C(c) (uint64_t)(c)
+# endif
+
 extern "C"
 {
 # include <libavcodec/avcodec.h>
