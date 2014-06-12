@@ -12,6 +12,7 @@
 #include "LoadWidget.hpp"
 #include "LoadGameWidget.hpp"
 #include "ArrowWidget.hpp"
+#include "KeyWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
 {
@@ -124,15 +125,23 @@ bool  Menu::initialize()
   _controlsPanel.push_back(background);
   _controlsPanel.push_back(title);
   _controlsPanel.push_back(back);
-  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 1.8f, y / 11.25f, x / 6.15f,
-					   "./assets/Button/bind.tga"));
-  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 2.25f, y / 11.25f, x / 6.15f,
-					   "./assets/Button/bind.tga"));
-  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 3.0f, y / 11.25f, x / 6.15f,
-					   "./assets/Button/bind.tga"));
-  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 4.5f, y / 11.25f, x / 6.15f,
-					   "./assets/Button/bind.tga"));
-
+  _controlsPanel.push_back(new KeyWidget(x / 8, y / 1.8f, y / 16.8, x / 30, FORWARD));
+  _controlsPanel.push_back(new TextWidget(x / 8 + 2 * x / 30, y / 1.8f,
+					  y / 16.8, x / 4, "Forward"));
+  _controlsPanel.push_back(new KeyWidget(x / 8, y / 2.25f, y / 16.8, x / 30, BACK));
+  _controlsPanel.push_back(new TextWidget(x / 8 + 2 * x / 30, y / 2.25f,
+					  y / 16.8, x / 4, "Back"));
+  _controlsPanel.push_back(new KeyWidget(x / 8, y / 3.0f, y / 16.8, x / 30, LEFT));
+  _controlsPanel.push_back(new TextWidget(x / 8 + 2 * x / 30, y / 3.0f,
+					  y / 16.8, x / 4, "Left"));
+  _controlsPanel.push_back(new KeyWidget(x / 2 + x / 8, y / 1.8f,
+					 y / 16.8, x / 30, RIGHT));
+  _controlsPanel.push_back(new TextWidget(x / 2 + x / 8 + 2 * x / 30, y / 1.8f,
+					  y / 16.8, x / 4, "Right"));
+  _controlsPanel.push_back(new KeyWidget(x / 2 + x / 8, y / 2.25f,
+					 y / 16.8, x / 30, DROPBOMB));
+  _controlsPanel.push_back(new TextWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
+					  y / 16.8, x / 4, "DropBomb"));
   return (true);
 }
 
