@@ -1,14 +1,22 @@
 #include "AWidget.hpp"
 
-AWidget::AWidget(int x, int y, int height, int width, const std::string &text)
+AWidget::AWidget(int x, int y, int height, int width)
   : _text()
 {
   _x = x;
   _y = y;
   _height = height;
   _width = width;
-  _text.setText(text, x + 3, y + 3, 50);
   _square = NULL;
+  try
+    {
+      _text.initialize();
+    }
+  catch (const Exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      return ;
+    }
 }
 
 AWidget::~AWidget()
@@ -26,6 +34,10 @@ bool	AWidget::isClicked(int x, int y)
     return (true);
   else
     return (false);
+}
+
+void	AWidget::onDisplay(const std::list<std::string> &/*text*/, int /*filePos*/)
+{
 }
 
 void	AWidget::setSquare(Square *square)

@@ -1,6 +1,16 @@
+#include <iostream>
+#include <fstream>
+#include <sstream>
+#include <sys/types.h>
+#include <dirent.h>
 #include "Menu.hpp"
 #include "NavigationWidget.hpp"
 #include "ImageWidget.hpp"
+#include "InputWidget.hpp"
+#include "LaunchWidget.hpp"
+#include "QuitWidget.hpp"
+#include "LoadWidget.hpp"
+#include "ArrowWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
 {
@@ -11,6 +21,8 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
   _gameInfo.clock = new gdl::Clock();
   _gameInfo.set->loadFile(DEFAULT_FILE);
   _gameInfo.set->loadFile(USER_FILE);
+  loadScore();
+
   _currentPanel = &_mainPanel;
   _console = new Console(*_gameInfo.set, *_gameInfo.input, *_gameInfo.clock, _textShader);
   //    _console->aff(*_gameInfo.clock, _textShader, _win, *_gameInfo.input);
@@ -18,31 +30,79 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 
 Menu::~Menu()
 {
+  saveScore();
 }
 
 bool  Menu::initialize()
 {
   int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
-  
-  if (!_win.start(_gameInfo.set->getVar(W_WIDTH), _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
+
+  if (!_win.start(x, y, "Bomberman"))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   if (!_textShader.load("./Shaders/text.fp", GL_FRAGMENT_SHADER) ||
       !_textShader.load("./Shaders/text.vp", GL_VERTEX_SHADER) ||
       !_textShader.build())
     return (false);
+  _gameInfo.sound->play("menu", MUSIC);
   ImageWidget	*background = new ImageWidget(0, 0, y, x, "./Ressources/Images/background.tga");
+  ImageWidget	*title = new ImageWidget(x / 8, y / 1.43f, y / 4.8f, x / 1.3f, "./assets/BomberCraft.tga");
+  NavigationWidget *back = new NavigationWidget(x / 8, y / 11.25f, y / 11.25f, x / 6.15f, "./assets/Button/back.tga", &_mainPanel);
 
   _mainPanel.push_back(background);
-  _mainPanel.push_back(new NavigationWidget(x / 4, 500, y / 11.25f, x / 2, "./assets/Button/singleplayer_button.tga", &_newGamePanel)); 
-  _mainPanel.push_back(new NavigationWidget(x / 4, 400, y / 11.25f, x / 2, "./assets/Button/multiplayer_button.tga", &_newGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/Button/loadgame_button.tga", &_loadGamePanel));
-  _mainPanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/Button/options_button.tga", &_optionPanel));
+  _mainPanel.push_back(title);
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 1.8f, y / 11.25f, x / 2, "./assets/Button/singleplayer.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/multiplayer.tga", &_newGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/load_game.tga", &_loadGamePanel));
+  _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2, "./assets/Button/options.tga", &_optionsPanel));
+  _mainPanel.push_back(new QuitWidget(x / 4, y / 18, y / 11.25f, x / 2, "./assets/Button/quit.tga"));
+
+  ///  _mainPanel.push_back(new InputWidget(50, 50, y / 11.25f, x / 2, "allotest"));
 
   _newGamePanel.push_back(background);
-  _newGamePanel.push_back(new NavigationWidget(x / 4, 200, y / 11.25f, x / 2, "./assets/Button/options_button.tga", &_importPanel));
+  _newGamePanel.push_back(title);
+  _newGamePanel.push_back(back);
+  _newGamePanel.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2, "./assets/Button/generate_map.tga", &_mainPanel));
+  _newGamePanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2, "./assets/Button/import_map.tga", &_importMapPanel));
 
-  // fill Panels vectors with Widgets
+  _loadGamePanel.push_back(background);
+  _loadGamePanel.push_back(title);
+  _loadGamePanel.push_back(back);
+
+  // add input widget or input image
+  _importMapPanel.push_back(background);
+  _importMapPanel.push_back(title);
+  _importMapPanel.push_back(back);
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+					   "./assets/Button/button.tga", "Free", 0));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+					   "./assets/Button/button.tga", "Free", 1));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+					   "./assets/Button/button.tga", "Free", 2));
+  _importMapPanel.push_back(new LoadWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
+					   "./assets/Button/button.tga", "Free", 3));
+  _importMapPanel.push_back(new ArrowWidget(x / 2 - 2 * (x / 21.0f), y / 11.25f, y / 12, x / 21.0f,
+					    "./assets/Button/left_arrow.tga", 0));
+  _importMapPanel.push_back(new ArrowWidget(x / 2 + x / 21.0f, y / 11.25f, y / 12, x / 21.0F,
+					    "./assets/Button/right_arrow.tga", 1));
+
+  // add input widget or input image
+  _optionsPanel.push_back(background);
+  _optionsPanel.push_back(title);
+  _optionsPanel.push_back(back);
+  _optionsPanel.push_back(new ImageWidget(x / 4, y / 2.25f, y / 11.25f, x / 2, "./assets/Button/fullscreen_off.tga"));
+  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2, "./assets/Button/controls.tga", &_controlsPanel));
+
+  _controlsPanel.push_back(background);
+  _controlsPanel.push_back(title);
+  _controlsPanel.push_back(back);
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 1.8f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 2.25f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 3.0f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
+  _controlsPanel.push_back(new ImageWidget(x / 4.5f, y / 4.5f, y / 11.25f, x / 6.15f, "./assets/Button/bind.tga"));
+
   return (true);
 }
 
@@ -50,30 +110,34 @@ bool		Menu::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
-  int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
+  int y = _gameInfo.set->getVar(W_HEIGHT);
+  t_window	win;
   t_mouse	mouse;
 
   _gameInfo.input->getInput(*(_gameInfo.set));
   (*(_gameInfo.input))[mouse];
+  (*_gameInfo.input)[win];
   if (mouse.event == BUTTONUP)
     for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
 	   endit = (*_currentPanel).end(); it != endit ; ++it)
-      if ((*it)->isClicked(x - mouse.x, y - mouse.y))
+      if ((*it)->isClicked(mouse.x, y - mouse.y))
 	{
 	  (*it)->onClick(_gameInfo, (*this));
 	  break;
 	}
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
-    launchGame();
+    {
+      launchGame();
+      _gameInfo.sound->play("menu", MUSIC);
+    }
   if (_gameInfo.input->isPressed(SDLK_F1))
     {
       glDisable(GL_DEPTH_TEST);
       _console->aff(_win, 1600.0f, 900.0f);
       glEnable(GL_DEPTH_TEST);
     }
-    // _console->aff(*_gameInfo.clock, _textShader, _win, *_gameInfo.input);
-  if (_gameInfo.input->isPressed(SDLK_ESCAPE)) // || _gameInfo.input->getInput(SDL_QUIT))
+  if (_gameInfo.input->isPressed(SDLK_ESCAPE) || win.event == WIN_QUIT)
     return (false);
   _frames++;
   if ((time = _gameInfo.clock->getElapsed()) < fps)
@@ -84,11 +148,12 @@ bool		Menu::update()
   return (true);
 }
 
-void  Menu::draw()
+void	Menu::draw()
 {
   float x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+  glViewport(0, 0, x, y);
   glDisable(GL_DEPTH_TEST);
   _textShader.bind();
   _textShader.setUniform("projection", glm::ortho(0.0f, x, 0.0f, y, -1.0f, 1.0f));
@@ -97,22 +162,124 @@ void  Menu::draw()
   _textShader.setUniform("winY", y);
   for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
 	 endit = (*_currentPanel).end(); it != endit ; ++it)
-    (*it)->draw(_textShader, *_gameInfo.clock);
+    {
+      (*it)->onDisplay(_filename, _filePos);
+      (*it)->draw(_textShader, *_gameInfo.clock);
+    }
   glEnable(GL_DEPTH_TEST);
   _win.flush();
+}
+
+void	Menu::handleClock(int &frame, double &time, double fps)
+{
+  time = _gameInfo.clock->getElapsed();
+  if (time < fps)
+    usleep((fps - time) * 1000);
+  frame = (frame >= 100) ? 100 : frame + 1;
+  _win.updateClock(*_gameInfo.clock);
+}
+
+bool	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
+{
+  if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
+    key = '0' + key - SDLK_KP_0;
+  if (key == '\r' || key == SDLK_KP_ENTER || key == 27)
+    {
+      buf.erase(buf.end() - 1);
+      return (false);
+    }
+  else if (key > 0 && key < 128)
+    {
+      if (key == '\b' && buf.length() > 1)
+	{
+	  buf = buf.substr(0, buf.length() - 2);
+	  buf.push_back('|');
+	}
+      else if (buf.length() < maxlen && key >= ' ' && key <= '~')
+	{
+	  buf.at(buf.length() - 1) = static_cast<char>(key);
+	  buf.push_back('|');
+	}
+    }
+  return (true);
+}
+
+void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
+{
+  Text		text;
+  double	fps = 1000.0 / 25.0;
+  double	time = 0;
+  int		frame = -1;
+  Keycode	key = 0;
+  Keycode	save = -1;
+  Input		*input = _gameInfo.input;
+
+  try
+    {
+      text.initialize();
+    }
+  catch (const Exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      return ;
+    }
+  buf.clear();
+  buf.push_back('|');
+  while (key != 27)
+    {
+      input->getInput(*(_gameInfo.set));
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      l_Keycit beg = input->getPressedBeg();
+      l_Keycit end = input->getPressedEnd();
+      if (beg != end && *beg == SDLK_LSHIFT)
+	++beg;
+      if (beg != end)
+	{
+	  key = *beg;
+	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
+	    key = '0' + key - SDLK_KP_1 + 1;
+	  if (save == key)
+	    {
+	      if (((key < 128 && key != '\b') && frame < 8) ||
+		  (key == '\b' && frame < 2) ||
+		  ((key == '\r' || key == SDLK_KP_ENTER) && frame < 15))
+		{
+		  handleClock(frame, time, fps);
+		  continue;
+		}
+	      else
+		frame = 0;
+	    }
+	  else
+	    frame = 0;
+	  save = key;
+	}
+      for (; beg != end; ++beg)
+	if (textFillBuf(buf, maxlen, key) == false)
+	  return ;
+      handleClock(frame, time, fps);
+      draw();
+      text.setText(buf, x, y, POLICE_SIZE);
+      glDisable(GL_DEPTH_TEST);
+      text.draw(_textShader, *_gameInfo.clock);
+      glEnable(GL_DEPTH_TEST);
+      _win.flush();
+      std::cout << "Printed: " << buf << std::endl;
+    }
 }
 
 void	Menu::launchGame()
 {
   Map map(*(_gameInfo.set));
-  GameEngine eng(&_win, _gameInfo.clock, &_textShader, &map, _gameInfo.set,
-		 _gameInfo.input, _gameInfo.sound);
+  _gameInfo.map = &map;
+  GameEngine eng(&_win, &_textShader, &_gameInfo);
   bool	done = true;
 
   if (!eng.initialize())
     return ;
   while ((done = eng.update()))
     eng.draw();
+  _gameInfo.map = NULL;
 }
 
 void	Menu::launch()
@@ -131,4 +298,70 @@ void	Menu::launch()
 void	Menu::setCurrentPanel(std::vector<AWidget *> *currentPanel)
 {
   _currentPanel = currentPanel;
+  _filePos = 0;
+  if (_currentPanel == &_importMapPanel)
+    readDir("./Save");
+}
+
+void	Menu::loadScore()
+{
+  std::ifstream file(SCORE_PATH);
+
+  if (file)
+    {
+      std::string line;
+
+      while (getline(file, line))
+	{
+	  std::stringstream ss(line);
+	  std::string name;
+	  int score;
+
+	  ss >> name >> score;
+	  if (name != "")
+	    _gameInfo.score[name] = score;
+	}
+    }
+}
+
+void	Menu::saveScore()
+{
+  std::ofstream file(SCORE_PATH, std::ios::out | std::ios::trunc);
+
+  for (std::map<std::string, int>::const_iterator it = _gameInfo.score.begin();it != _gameInfo.score.end();it++)
+    file << it->first << " " << it->second << std::endl;
+}
+
+void	Menu::readDir(const std::string &dirname)
+{
+  DIR	*dirp;
+  struct dirent *file;
+
+  _filename.clear();
+  if ((dirp = opendir(dirname.c_str())) == NULL)
+    return ;
+  while ((file = readdir(dirp)) != NULL)
+    {
+      if (file->d_type != DT_DIR)
+	_filename.push_back(file->d_name);
+    }
+}
+
+Menu	&Menu::operator++()
+{
+  if (_filename.size() > (_filePos + 1) * 4)
+    ++_filePos;
+  return (*this);
+}
+
+Menu	&Menu::operator--()
+{
+  if (_filePos > 0)
+    --_filePos;
+  return (*this);
+}
+
+void	Menu::setDone(bool done)
+{
+  _done = done;
 }

@@ -11,20 +11,21 @@ class	Menu;
 class	AWidget
 {
 protected:
-  Text		_text;
   int		_x;
   int		_y;
   int		_height;
   int		_width;
+  Text		_text;
   Square	*_square;
 
 public:
-  AWidget(int x, int y, int height, int width, const std::string &text);
+  AWidget(int x, int y, int height, int width);
   virtual ~AWidget() = 0;
 
   void		draw();
 
   virtual bool	isClicked(int x, int y);
+  virtual void	onDisplay(const std::list<std::string> &text, int filePos);
   virtual void	onClick(t_gameinfo &gameInfo, Menu &menu) = 0;
   virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock) = 0;
 
@@ -34,7 +35,7 @@ public:
   int		getY() const;
   int		getHeight() const;
   int		getWidth() const;
-  const Text	&getText() const;  
+  const Text	&getText() const;
 };
 
 #endif

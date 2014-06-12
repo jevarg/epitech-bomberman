@@ -6,6 +6,7 @@
 # include <Geometry.hh>
 # include <sstream>
 # include <Clock.hh>
+# include "Exception.hpp"
 # include "ATransformation.hpp"
 
 # define FONT "assets/font.tga"
@@ -16,7 +17,7 @@ public:
   Text();
   virtual ~Text();
 
-  bool	initialize();
+  void	initialize();
   void	draw(gdl::AShader &, gdl::Clock const&) const;
   void	clear();
 

@@ -13,14 +13,13 @@ Box::~Box()
 
 void	Box::takeDamages(int)
 {
-  _gameInfo->sound->playSound("box");
   if (_toDestroy == true)
     return ;
   setDestroy();
   {
     Scopelock	<Mutex>sc(*_mutex);
     spawnItem();
-    _gameInfo->sound->playSound("box");
+    _gameInfo->sound->play("box", EFFECT);
   }
 }
 
@@ -141,8 +140,7 @@ void	Box::spawnItem()
   double       	start = 0;
   EntityFactory *facto = EntityFactory::getInstance();
 
-  randnum = std::rand() % static_cast<int>(getMaxProb(ptab, size)); // So it can't remove it
-  selectSameProb(ptab, size);
+  randnum = std::rand() % 100;
   scaleToPercent(ptab, size);
   for (int i = 0; i < size; ++i)
     {

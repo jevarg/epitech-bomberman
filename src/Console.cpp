@@ -2,8 +2,6 @@
 #include "Console.hpp"
 #include "Settings.hpp"
 
-# define POLICE_SIZE (30)
-
 Console::Console(Settings &set, Input &input, gdl::Clock &clock, gdl::AShader &shader): _set(set), _input(input), _clock(clock), _shader(shader)
 {
   _buf = "";
@@ -43,19 +41,26 @@ void	Console::handleClock(const gdl::SdlContext &win, int &frame,
 bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
 {
   Text		text;
-  double	fps = 1000.0 / 20.0;
+  double	fps = 1000.0 / 25.0;
   int		frame = -1;
   double	time;
   Keycode	key = 0;
   Keycode	save = -1;
 
-  if (text.initialize() == false)
-    return (false);
+  try
+    {
+      text.initialize();
+    }
+  catch (const Exception &e)
+    {
+      std::cerr << e.what() << std::endl;
+      return (false);
+    }
   _buf.clear();
   _buf.push_back('>');
   _shader.bind();
-  _shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f
-						  , 0.0f, -1.0f, 1.0f));
+  _shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f,
+					      0.0f, -1.0f, 1.0f));
   _shader.setUniform("view", glm::mat4(1));
   _shader.setUniform("winX", winX);
   _shader.setUniform("winY", winY);
@@ -65,28 +70,34 @@ bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
       glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
       l_Keycit beg = _input.getPressedBeg();
       l_Keycit end = _input.getPressedEnd();
+      if (beg != end && *beg == SDLK_LSHIFT)
+	++beg;
       if (beg != end)
 	{
-	  std::cout << save << " " << *beg << " " << frame << std::endl;
-	  save = *beg;
-	  if (save == key && ((key == '\b' && frame < 2) ||
-			      (key != '\b' && frame >= 0 && frame < 10)))
+	  key = *beg;
+	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
+	    key = '0' + key - SDLK_KP_1 + 1;
+	  if (save == key)
 	    {
-	      handleClock(win, frame, time, fps);
-	      continue;
+	      if (((key < 128 && key != '\b') && frame < 8) ||
+		  (key == '\b' && frame < 2) ||
+		  ((key == '\r' || key == SDLK_KP_ENTER) && frame < 15))
+		{
+		  handleClock(win, frame, time, fps);
+		  continue;
+		}
+	      else
+		frame = 0;
 	    }
 	  else
 	    frame = 0;
+	  save = key;
 	}
       for (; beg != end; ++beg)
 	{
-	  key = *beg;
-	  if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
-	    key = '0' + key - SDLK_KP_0;
 	  if (key == '\r' || key == SDLK_KP_ENTER)
 	    {
 	      _buf.erase(_buf.begin());
-	      std::cout << "buf: [" << _buf << "]" << std::endl;
 	      if (_buf == "quit")
 		return (true);
 	      parseCmd(_buf, _ret);

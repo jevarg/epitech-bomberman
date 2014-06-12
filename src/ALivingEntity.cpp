@@ -58,7 +58,7 @@ void	ALivingEntity::aliveLoop()
       _gameInfo->mutex->unlock();
       if (_isAlive)
 	update();
-      else if (_type != CHARACTER1 &&_type != CHARACTER2)
+      else if (_type != CHARACTER1 && _type != CHARACTER2)
 	{
 	  if ((_timeDeath =- 1) <= 0)
 	    destroy();
@@ -75,6 +75,11 @@ bool	ALivingEntity::isAlive() const
 
 void	ALivingEntity::takeDamages(int /*amount*/)
 {
-  _gameInfo->sound->playSound("hurt");
   die();
+}
+
+void	ALivingEntity::setDestroyAttr()
+{
+  _toDestroy = true;
+  _isAlive = false;
 }

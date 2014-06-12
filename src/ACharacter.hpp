@@ -36,7 +36,9 @@ enum
     BOMB_AMOUNT = 1,
     BOMB_MAX = 3,
     RANGE_AMOUNT = 1,
-    RANGE_MAX = 10
+    RANGE_MAX = 10,
+    WIN = 1,
+    LOSE = 2,
   };
 
 class	ACharacter : public ALivingEntity
@@ -53,6 +55,8 @@ public:
   void		dropBomb();
   void		takeDamages(int amount);
 
+  ACharacter	&operator+=(int score);
+
   int		getBombStock() const;
   int		getMaxBomb() const;
   void		setBombStock(int bombStock);
@@ -65,6 +69,8 @@ public:
   int		getRange() const;
   void		setRange(int range);
   int		getScore() const;
+  char		getEnd() const;
+  void		setEnd(char end);
 
   void		destroy();
 protected:
@@ -77,6 +83,7 @@ protected:
   int		_score;
   eDir		_orient;
   eAnim		_anim;
+  char		_end;
 };
 
 #endif /* ! ACHARACTER_HPP_ */

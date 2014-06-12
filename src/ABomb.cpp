@@ -9,7 +9,7 @@ ABomb::ABomb(int x, int y, ACharacter *character, t_gameinfo *gameInfo, bool thr
   _character = character;
   _timeout = 1 * gameInfo->set->getVar(FPS);
   if (thread)
-    _gameInfo->sound->playSound("fuse");
+    _gameInfo->sound->play("fuse", EFFECT);
 }
 
 ABomb::~ABomb()
@@ -18,12 +18,15 @@ ABomb::~ABomb()
 
 void	ABomb::explode()
 {
-  _gameInfo->map->addEntity(new Flame(_x, _y, _power, _range, ALLDIR, _gameInfo));
+  int range = _range;
+
+  _range = 0;
+  _gameInfo->map->addEntity(new Flame(_x, _y, _power, range, ALLDIR, _gameInfo, this));
   if (die() == false)		// Already ind ead state
     return ;			// importent to die first so no colision with flame
   if (_character != NULL)
     _character->setBombStock(_character->getBombStock() + 1);
-  _gameInfo->sound->playSound("explosion");
+  _gameInfo->sound->play("explosion", EFFECT);
 }
 
 /*
@@ -51,4 +54,18 @@ void	ABomb::setRange(int range)
 int	ABomb::getRange() const
 {
   return (_range);
+}
+
+void	ABomb::destroy()
+{
+  if (_range > 0)
+    return ;
+  delete (_mutex);
+  delete (this);
+  pthread_exit(NULL);
+}
+
+ACharacter *ABomb::getCharacter()
+{
+  return (_character);
 }
