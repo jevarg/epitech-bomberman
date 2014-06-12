@@ -7,7 +7,8 @@ Square::Square()
   _y = 0;
   _sizeX = 0;
   _sizeY = 0;
-  _scale = 1;
+  _scaleX = 1;
+  _scaleY = 1;
 }
 
 Square::Square(const std::string &file)
@@ -17,7 +18,8 @@ Square::Square(const std::string &file)
   _y = 0;
   _sizeX = 0;
   _sizeY = 0;
-  _scale = 1;
+  _scaleX = 1;
+  _scaleY = 1;
 }
 
 Square::Square(const Square &cpy)
@@ -27,7 +29,8 @@ Square::Square(const Square &cpy)
   _y = 0;
   _sizeX = 0;
   _sizeY = 0;
-  _scale = 1;
+  _scaleX = 1;
+  _scaleY = 1;
 }
 
 Square::~Square()
@@ -47,10 +50,13 @@ void Square::setSize(int x, int y)
   _sizeY = y;
 }
 
-void Square::setScale(int scale)
+void Square::setScale(int x, int y)
 {
-  _scale = scale;
+  _scaleX = x;
+  _scaleY = y;
 }
+
+
 
 bool Square::initialize()
 {
@@ -71,9 +77,9 @@ void Square::fillGeometry()
   _geometry = new gdl::Geometry();
 
   _geometry->pushVertex(glm::vec3(_x, _y, 0));
-  _geometry->pushVertex(glm::vec3(_x + _sizeX * _scale, _y, 0));
-  _geometry->pushVertex(glm::vec3(_x + _sizeX * _scale, _y + _sizeY * _scale, 0));
-  _geometry->pushVertex(glm::vec3(_x, _y + _sizeY * _scale, 0));
+  _geometry->pushVertex(glm::vec3(_x + _sizeX * _scaleX, _y, 0));
+  _geometry->pushVertex(glm::vec3(_x + _sizeX * _scaleX, _y + _sizeY * _scaleY, 0));
+  _geometry->pushVertex(glm::vec3(_x, _y + _sizeY * _scaleY, 0));
   _geometry->pushUv(glm::vec2(0.0f, 0.0f));
   _geometry->pushUv(glm::vec2(1.0f, 0.0f));
   _geometry->pushUv(glm::vec2(1.0f, 1.0f));

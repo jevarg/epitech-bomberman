@@ -52,6 +52,8 @@ bool Intro::initialize(const std::string &file)
   				  SWS_BICUBIC, NULL, NULL, NULL);
   if (_sws == NULL)
     return (false);
+  _square.setScale(1, -1);
+  _square.setPos(0, 900);
   return (true);
 }
 
@@ -64,6 +66,7 @@ void Intro::genTexture()
 	       0, GL_RGB, GL_UNSIGNED_BYTE, _frameRGB->data[0]);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+
 }
 
 bool Intro::nextFrame()
@@ -107,7 +110,7 @@ bool Intro::update(gdl::SdlContext &win, gdl::Clock &clock, Input &input, Settin
 void Intro::draw(gdl::AShader &shader, gdl::SdlContext &win, gdl::Clock clock, float x, float y)
 {
   shader.bind();
-  shader.setUniform("projection", glm::ortho(0.0f, x, 0.0f, y, -1.0f, 1.0f));
+  shader.setUniform("projection", glm::ortho(0.0f, x, y, 0.0f, -1.0f, 1.0f));
   shader.setUniform("view", glm::mat4(1));
   shader.setUniform("winX", x);
   shader.setUniform("winY", y);
