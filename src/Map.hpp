@@ -42,6 +42,7 @@ public:
   AEntity	*getEntityIf(int, int, eType) const;
   AEntity	*getEntityIfNot(int, int, eType) const;
   bool		hasPlayer() const;
+  int		nbPlayer() const;
 
   void		setMobilEnt(int x, int y, eType type);
 

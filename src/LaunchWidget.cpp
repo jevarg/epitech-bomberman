@@ -3,7 +3,7 @@
 LaunchWidget::LaunchWidget(int x, int y, int height, int width,
 			   const std::string &texture,
 			   std::vector<AWidget *> *onClickPanel)
-  : AWidget(x, y, height, width, texture)
+  : AWidget(x, y, height, width)
 {
   _onClickPanel = onClickPanel;
   _square = new Square(texture);

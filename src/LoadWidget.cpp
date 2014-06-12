@@ -2,21 +2,12 @@
 
 LoadWidget::LoadWidget(int x, int y, int height, int width,
 		       const std::string &texture, const std::string &text)
-		       : AWidget(x, y, height, width, text)
+		       : TextWidget(x, y, height, width, text)
 {
   _square = new Square(texture);
   _square->initialize();
   _square->setPos(x, y);
   _square->setSize(width, height);
-  try
-    {
-      _text.initialize();
-    }
-  catch (const Exception &e)
-    {
-      std::cerr << e.what() << std::endl;
-      return ;
-    }
   _sentence = text;
 }
 

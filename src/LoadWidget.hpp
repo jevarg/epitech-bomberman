@@ -1,10 +1,10 @@
 #ifndef _LOADWIDGET_H_
 # define _LOADWIDGET_H_
 
-# include "AWidget.hpp"
+# include "TextWidget.hpp"
 # include "Menu.hpp"
 
-class	LoadWidget : public AWidget
+class	LoadWidget : public TextWidget
 {
 public:
   LoadWidget(int x, int y, int height, int width,

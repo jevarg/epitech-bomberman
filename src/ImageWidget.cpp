@@ -1,7 +1,7 @@
 #include "ImageWidget.hpp"
 
 ImageWidget::ImageWidget(int x, int y, int height, int width, const std::string &texture)
-  : AWidget(x, y, height, width, texture)
+  : AWidget(x, y, height, width)
 {
   _square = new Square(texture);
   _square->initialize();
