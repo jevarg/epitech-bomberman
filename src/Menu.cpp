@@ -13,7 +13,7 @@
 #include "LoadGameWidget.hpp"
 #include "ArrowWidget.hpp"
 
-Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL)
+Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL)
 {
   _frames = 0;
   _gameInfo.input = new Input();

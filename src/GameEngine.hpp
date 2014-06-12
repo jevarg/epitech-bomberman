@@ -67,8 +67,8 @@
 
 typedef struct	s_gameinfo
 {
-  s_gameinfo(gdl::Clock *pclock, Map *pmap, Settings *pset, Input *pinput, Sound *psound) :
-    clock(pclock), input(pinput), set(pset), sound(psound), map(pmap)
+  s_gameinfo(gdl::Clock *pclock, Map *pmap, Settings *pset, Input *pinput, Sound *psound, Save *psave) :
+    clock(pclock), input(pinput), set(pset), sound(psound), map(pmap), save(psave)
   {
   }
   gdl::Clock   	*clock;
@@ -78,6 +78,7 @@ typedef struct	s_gameinfo
   Map	       	*map;
   Mutex		*mutex;
   Condvar	*condvar;
+  Save		*save;
   std::map<std::string, int> score;
 }		t_gameinfo;
 
@@ -100,7 +101,6 @@ private:
   gdl::SdlContext		*_win;
   gdl::BasicShader		_shader;
   gdl::BasicShader		*_textShader;
-  Save				_save;
   Cube				*_ground;
   Cube				*_skybox;
   unsigned int			_mapX;

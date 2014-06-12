@@ -46,9 +46,6 @@ void		Map::load(const std::string &name,
 
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     throw(Exception("Couldn't load map."));
-  determineMapSize("map", _mapX, _mapY);
-  gameInfo.set->setVar(MAP_WIDTH, _mapX);
-  gameInfo.set->setVar(MAP_HEIGHT, _mapY);
   createContainers();
   addEntity(new Entity(0, 0, WALL, &gameInfo));
   while (std::getline(file, buf))
@@ -91,8 +88,6 @@ void		Map::load(const std::string &name,
 	}
       ++y;
     }
-  gameInfo.set->setVar(MAP_HEIGHT, y);
-  gameInfo.set->setVar(MAP_WIDTH, x);
   display();
   file.close();
 }
@@ -119,6 +114,8 @@ void		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
   sizeY = y;
   if (!len || !y)
     throw(Exception("Couldn't load map."));
+  _mapX = sizeX;
+  _mapY = y;
   file.close();
 }
 

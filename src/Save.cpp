@@ -93,8 +93,7 @@ void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
   file.close();
 }
 
-void		Save::loadGame(Map &map, Settings &settings,
-			       const std::string &name, t_gameinfo &gameInfo)
+void		Save::loadGame(const std::string &name, t_gameinfo &gameInfo)
 {
   EntityFactory	*fact = EntityFactory::getInstance();
   v_Contcit	end = gameInfo.map->ContEnd();
@@ -127,8 +126,8 @@ void		Save::loadGame(Map &map, Settings &settings,
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> y;
       if (first == true)
 	{
-	  settings.setVar(MAP_WIDTH, x);
-	  settings.setVar(MAP_HEIGHT, y);
+	  gameInfo.set->setVar(MAP_WIDTH, x);
+	  gameInfo.set->setVar(MAP_HEIGHT, y);
 	}
       else
 	{
@@ -136,7 +135,7 @@ void		Save::loadGame(Map &map, Settings &settings,
 	  std::istringstream (buf) >> type;
 	  if (type >= BOT || type < 0 || type == FREE)
 	    throw (Exception("Error : invalid savegame file, bad type"));
-	  map.addEntity(fact->getEntity(static_cast<eType>(type), x, y));
+	  gameInfo.map->addEntity(fact->getEntity(static_cast<eType>(type), x, y));
 	}
     }
   file.close();
