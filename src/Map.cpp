@@ -99,21 +99,23 @@ void		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
   unsigned int	len = 0;
   int		y = 0;
 
-  if ((file.rdstate() && std::ifstream::failbit) != 0)
+  if (file.is_open() == false)
     throw(Exception("Couldn't load map : " + name));
+  // if ((file.rdstate() && std::ifstream::failbit) != 0)
+  //   throw(Exception("Couldn't load map : " + name));
   while (std::getline(file, buf))
     {
       if (len == 0)
 	len = buf.length();
       else
 	if (len != buf.length())
-	  throw(Exception("Couldn't load map."));
+	  throw(Exception("Couldn't load map. (determineMapSize)"));
       ++y;
     }
   sizeX = len;
   sizeY = y;
   if (!len || !y)
-    throw(Exception("Couldn't load map."));
+    throw(Exception("Couldn't load map. (determineMapSize)"));
   _mapX = sizeX;
   _mapY = y;
   file.close();

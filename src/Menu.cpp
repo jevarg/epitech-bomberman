@@ -23,6 +23,7 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
   _gameInfo.clock = new gdl::Clock();
   _gameInfo.set->loadFile(DEFAULT_FILE);
   _gameInfo.set->loadFile(USER_FILE);
+  _gameInfo.map = new Map(*_gameInfo.set);
   loadScore();
 
   _currentPanel = &_mainPanel;

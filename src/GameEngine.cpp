@@ -12,7 +12,7 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _gameInfo->condvar = new Condvar;
   _gameInfo->save = new Save;
   _shutdown = false;
-  _multi = false;
+  _multi = true;
   _frames = 0;
   _fps.initialize();
   _end_screen[0] = NULL;
