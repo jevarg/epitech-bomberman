@@ -15,6 +15,8 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _multi = false;
   _frames = 0;
   _fps.initialize();
+  _end_screen[0] = NULL;
+  _end_screen[1] = NULL;
 }
 
 GameEngine::~GameEngine()
@@ -23,8 +25,10 @@ GameEngine::~GameEngine()
     _player1->setDestroyAttr();
   if (_player2)
     _player2->setDestroyAttr();
-  delete _end_screen[0];
-  delete _end_screen[1];
+  if (_end_screen[0] != NULL)
+    delete _end_screen[0];
+  if (_end_screen[1] != NULL)
+    delete _end_screen[1];
   _gameInfo->condvar->broadcast();
   sleep(1);
   delete _gameInfo->mutex;
