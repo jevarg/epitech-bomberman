@@ -85,12 +85,14 @@ typedef struct	s_gameinfo
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(gdl::SdlContext *win, gdl::BasicShader *shader, t_gameinfo *gameInfo, bool multi);
+  GameEngine(gdl::SdlContext *win, gdl::BasicShader *shader, t_gameinfo *gameInfo);
   ~GameEngine();
 
   virtual bool	initialize();
   virtual bool	update();
   virtual void	draw();
+
+  void		setMulti(bool multi);
 
 private:
   void	mainInput();

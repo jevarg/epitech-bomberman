@@ -44,6 +44,7 @@ private:
   gdl::BasicShader	_textShader;
   bool			_done;
   t_gameinfo		_gameInfo;
+  GameEngine		_gameEngine;
   int			_frames;
   Console		*_console;
   unsigned int		 _filePos;

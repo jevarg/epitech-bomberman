@@ -13,7 +13,7 @@
 #include "LoadGameWidget.hpp"
 #include "ArrowWidget.hpp"
 
-Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL)
+Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL), _gameEngine(&_win, &_textShader, &_gameInfo)
 {
   _frames = 0;
   _gameInfo.input = new Input();
@@ -286,13 +286,12 @@ void	Menu::launchGame()
 {
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
-  GameEngine eng(&_win, &_textShader, &_gameInfo, true);
   bool	done = true;
 
-  if (!eng.initialize())
+  if (!_gameEngine.initialize())
     return ;
-  while ((done = eng.update()))
-    eng.draw();
+  while ((done = _gameEngine.update()))
+    _gameEngine.draw();
   _gameInfo.map = NULL;
 }
 

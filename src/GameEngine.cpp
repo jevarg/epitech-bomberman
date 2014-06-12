@@ -2,10 +2,9 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo,
-		       bool multi)
+GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo)
   : _win(win), _textShader(textShader),
-    _gameInfo(gameInfo), _lights(), _players(), _multi(multi)
+    _gameInfo(gameInfo), _lights(), _players()
 {
   _player1 = NULL;
   _player2 = NULL;
@@ -13,6 +12,7 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _gameInfo->condvar = new Condvar;
   _gameInfo->save = new Save;
   _shutdown = false;
+  _multi = false;
   _frames = 0;
   _fps.initialize();
 }
@@ -316,4 +316,9 @@ void	GameEngine::moveGround(Player *player)
   groundY -= 0.5;
   _ground->setScale(glm::vec3(sizeX, 1.0, sizeY));
   _ground->setPos(glm::vec3(groundX, -1, groundY));
+}
+
+void	GameEngine::setMulti(bool multi)
+{
+  _multi = multi;
 }
