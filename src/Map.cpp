@@ -35,23 +35,18 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
-bool		Map::load(const std::string &name,
+void		Map::load(const std::string &name,
 			  t_gameinfo &gameInfo)
 {
   std::ifstream	file(name.c_str());
+  std::ostringstream convert;
   std::string	buf;
   unsigned int	len = 0;
   int		y = 0;
   int		x = 0;
 
   if ((file.rdstate() && std::ifstream::failbit) != 0)
-    {
-      std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
-      throw(Exception("Couldn't load map."));
-      return (false);
-    }
-  // if (determineMapSize(name, x, y) == false)
-  //   return (false);
+    throw(Exception("Couldn't load map."));
   _mapX = gameInfo.set->getVar(MAP_WIDTH);
   _mapY = gameInfo.set->getVar(MAP_HEIGHT);
   createContainers();
@@ -64,8 +59,10 @@ bool		Map::load(const std::string &name,
       else
 	if (len != buf.length())
 	  {
-	    std::cerr << "Error while loading map on line : " << y + 1 << std::endl;
-	    return (false);
+	    std::string buf;
+	    convert << y + 1;
+	    buf = "Error while loading map on line : " + convert.str();
+	    throw (Exception(buf));
 	  }
       for (std::string::const_iterator it = buf.begin(); it != buf.end(); ++it)
 	{
@@ -80,10 +77,15 @@ bool		Map::load(const std::string &name,
 	    case ' ':
 	      break;
 	    default:
-	      std::cerr << "Error while loading map on line : " << y + 1
-			<< " column : " << x << std::endl;
-	      throw(Exception("Couldn't load map."));
-	      return (false);
+	      {
+		std::string buf;
+		convert << y + 1;
+		buf = "Error while loading map on line : " + convert.str();
+		convert.flush();
+		convert << x;
+		buf += " column : " + convert.str();
+		throw (Exception(buf));
+	      }
 	    }
 	  ++x;
 	}
@@ -93,10 +95,9 @@ bool		Map::load(const std::string &name,
   gameInfo.set->setVar(MAP_WIDTH, x);
   display();
   file.close();
-  return (true);
 }
 
-bool		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
+void		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
 {
   std::ifstream	file(name.c_str());
   std::string	buf;
@@ -104,31 +105,24 @@ bool		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
   int		y = 0;
 
   if ((file.rdstate() && std::ifstream::failbit) != 0)
-    {
-      std::cerr << "Error while loading map, couldn't open : " << name << std::endl;
-      throw(Exception("Couldn't load map."));
-      return (false);
-    }
+    throw(Exception("Couldn't load map : " + name));
   while (std::getline(file, buf))
     {
       if (len == 0)
 	len = buf.length();
       else
 	if (len != buf.length())
-	  {
-	    std::cerr << "Error while loading map on line : " << y << std::endl;
-	    throw(Exception("Couldn't load map."));
-	    return (false);
-	  }
+	  throw(Exception("Couldn't load map."));
       ++y;
     }
   sizeX = len;
   sizeY = y;
+  if (!len || !y)
+    throw(Exception("Couldn't load map."));
   file.close();
-  return (true);
 }
 
-bool		Map::save(const std::string &name)
+void		Map::save(const std::string &name)
 {
   std::ofstream	file(name.c_str());
   std::string	buf;
@@ -137,7 +131,6 @@ bool		Map::save(const std::string &name)
     {
       std::cerr << "Error while saving map, couldn't open : " << name << std::endl;
       throw(Exception("Couldn't save map."));
-      return (false);
     }
   for (int y = 0; y < _mapY; ++y)
     {
@@ -159,7 +152,6 @@ bool		Map::save(const std::string &name)
       file << buf << "\n";
     }
   file.close();
-  return (true);
 }
 
 short	Map::getDir(bool *rtab, short cuBlock) const
@@ -540,6 +532,30 @@ bool	Map::hasPlayer() const
 	}
     }
   return (false);
+}
+
+int	Map::nbPlayer() const
+{
+  AEntity *foundEnt;
+  int	mapSize = _mapX * _mapY;
+  int	contPos;
+  int	x;
+  int	y;
+  int	ret = 0;
+
+  for (int i = 0; i < mapSize; ++i)
+    {
+      x = i % _mapX;
+      y = i / _mapX;
+      contPos = getContPos(x, y);
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER1)) != NULL)
+	ret += 1;
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, CHARACTER2)) != NULL)
+	ret += 1;
+      if ((foundEnt = _cont[contPos]->getEntityIf(x, y, BOT)) != NULL)
+	ret += 1;
+    }
+  return (ret);
 }
 
 const std::vector<Container *>	&Map::getCont() const

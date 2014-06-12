@@ -59,8 +59,7 @@ public:
   bool		toDestroy() const;
   void		draw(gdl::AShader &shader, gdl::Clock &clock);
   int		getDeathTime() const;
-   void		decTimeDeath();
-  void		setDestroyAttr();
+  void		decTimeDeath();
 
   virtual void	setDestroy();
   virtual void	destroy();

@@ -18,6 +18,7 @@ public:
   void		setDead();
   bool		isAlive() const;
 
+  void		setDestroyAttr();
   virtual void	update() = 0;
   virtual bool	die();
   virtual void 	destroy();

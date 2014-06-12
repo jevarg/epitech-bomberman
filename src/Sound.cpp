@@ -6,7 +6,7 @@ Sound::Sound()
   try
     {
       if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
-	throw (new Exception("Mix_OpenAudio()"));
+	throw (Exception("Mix_OpenAudio()"));
       Mix_AllocateChannels(128);
       _musicBox["intro"] = Mix_LoadMUS("./assets/sounds/calm1.ogg");
       _musicBox["menu"] = Mix_LoadMUS("./assets/sounds/calm2.ogg");
@@ -19,7 +19,7 @@ Sound::Sound()
       _soundBox["hurt"] = Mix_LoadWAV("./assets/sounds/hurt.wav");
       _soundBox["pop"] = Mix_LoadWAV("./assets/sounds/pop.wav");
       _soundBox["orb"] = Mix_LoadWAV("./assets/sounds/orb.wav");
-      _soundBox["click"] = Mix_LoadWAV("./assets/sounds/orb.wav");
+      _soundBox["click"] = Mix_LoadWAV("./assets/sounds/click.wav");
       _soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav");
       _soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav");
     }
