@@ -34,7 +34,7 @@ void	LoadWidget::onDisplay(const std::list<std::string> &text, int filePos)
 
 bool	LoadWidget::isClicked(int x, int y)
 {
-  if (x >= _x && x <= (_x + _width) && y >= _y && y <= (_y + _height))
+  if (_sentence != "FREE" && x >= _x && x <= (_x + _width) && y >= _y && y <= (_y + _height))
     return (true);
   else
     return (false);
