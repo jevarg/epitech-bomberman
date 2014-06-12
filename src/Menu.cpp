@@ -146,7 +146,7 @@ bool  Menu::initialize()
 					 y / 16.8, x / 30, DROPBOMB));
   _controlsPanel.push_back(new TextImgWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
 					  y / 16.8, x / 4,
-					     "./assets/Button/button_small.tga", "DropBomb"));
+					     "./assets/Button/button_small.tga", "Drop bomb"));
   return (true);
 }
 

@@ -12,4 +12,7 @@ KeyWidget::~KeyWidget()
 
 void	KeyWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
+  menu.textInput(_sentence, 2);
+  if (_sentence.length() > 0)
+    gameInfo.set->setKey(_sentence.at(0), _act);
 }
