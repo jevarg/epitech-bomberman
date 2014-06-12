@@ -253,7 +253,7 @@ void	Menu::launchGame()
 {
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
-  GameEngine eng(&_win, &_textShader, &_gameInfo);
+  GameEngine eng(&_win, &_textShader, &_gameInfo, true);
   bool	done = true;
 
   if (!eng.initialize())
