@@ -39,7 +39,7 @@ end
 
 function best_first(map, map_nb, entities)
 	local cur_x, cur_y = X, Y
-
+	-- print("best first")
 	if (have_elem(entities, cur_x, cur_y, "box") == 1 or
 		have_elem(entities, cur_x, cur_y, "item") == 1 or
 		have_elem(entities, cur_x, cur_y, "player") == 1)then
