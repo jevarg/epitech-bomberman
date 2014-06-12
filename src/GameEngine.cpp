@@ -68,8 +68,8 @@ bool GameEngine::initialize()
   _end_screen[0]->setSize(420, 94);
   _end_screen[1]->setSize(490, 94);
 
-  _end_screen[0]->setPos((800 / (_multi == true) ? 2 : 1) - 210, 450 - 47);
-  _end_screen[1]->setPos((800 / (_multi == true) ? 2 : 1) - 245, 450 - 47);
+  _end_screen[0]->setPos((800 / (_multi == true ? 2 : 1)) - 210, 450 - 47);
+  _end_screen[1]->setPos((800 / (_multi == true ? 2 : 1)) - 245, 450 - 47);
 
   _end_screen[0]->fillGeometry();
   _end_screen[1]->fillGeometry();
@@ -257,12 +257,17 @@ void GameEngine::draw()
 
 void	GameEngine::displayScore()
 {
-  int winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
+  float winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
   Text score;
   int  i = 0;
 
   glViewport(0, 0, winX, winY);
   glDisable(GL_DEPTH_TEST);
+  _textShader->bind();
+  _textShader->setUniform("projection", glm::ortho(0.0f, winX, 0.0f, winY, -1.0f, 1.0f));
+  _textShader->setUniform("view", glm::mat4(1));
+  _textShader->setUniform("winX", winX);
+  _textShader->setUniform("winY", winY);
   score.initialize();
   score.setText("Scores", 725, winY - 250, 50);
   score.draw(*_textShader, *_gameInfo->clock);
