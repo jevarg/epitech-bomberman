@@ -1,9 +1,9 @@
+
 #ifndef _PLAYER_HPP_
 # define _PLAYER_HPP_
 
 # include "ACharacter.hpp"
 # include "Camera.hpp"
-# include "Input.hpp"
 
 class		Player : public ACharacter
 {

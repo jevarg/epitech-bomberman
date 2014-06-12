@@ -61,10 +61,9 @@ bool	Player::checkInputMulti()
   int		idx;
   float		d;
 
-  std::cout << pos << std::endl;
   for (int i = pos * 5; i < 4 + pos * 5; ++i)
     {
-      if ((*_gameInfo->input)[keyTab[i]])
+      if (_gameInfo->input->isPressed(keyTab[i]))
 	{
 	  idx = i > 4 ? i - 5 : i;
 	  if (updatePosition(_gameInfo->map, tab[idx], _gameInfo->clock) == true)
@@ -76,7 +75,7 @@ bool	Player::checkInputMulti()
 	    }
 	}
     }
-  if ((*_gameInfo->input)[keyTab[pos * 5 + 4]])
+  if (_gameInfo->input->isPressed(keyTab[pos * 5 + 4]))
     dropBomb();
   return (ret);
 }

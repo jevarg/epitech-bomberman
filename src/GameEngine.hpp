@@ -56,6 +56,8 @@
 # define STOCKITEM_MODEL "./assets/stock_item.fbx"
 # define RANGEITEM_MODEL "./assets/range_item.fbx"
 # define CHARACTER_MODEL "./assets/steve.fbx"
+# define CHARACTER2_MODEL "./assets/villager.fbx"
+# define BOT_MODEL "./assets/pigman.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
 
 # define ABS(x) (((x) < 0) ? (-(x)) : (x))

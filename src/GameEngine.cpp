@@ -24,6 +24,7 @@ GameEngine::~GameEngine()
 {
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
+  usleep(1000);
 }
 
 bool GameEngine::initialize()
@@ -35,9 +36,6 @@ bool GameEngine::initialize()
   // _gameInfo.map->determineMapSize("map", x, y);
   _mapX = _gameInfo.set->getVar(MAP_HEIGHT);
   _mapY = _gameInfo.set->getVar(MAP_HEIGHT);
-  if (!_win->start(_gameInfo.set->getVar(W_WIDTH),
-		  _gameInfo.set->getVar(W_HEIGHT), "Bomberman"))
-    throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -64,8 +62,8 @@ bool GameEngine::initialize()
   fact.addModel(STOCKITEM, STOCKITEM_MODEL);
   fact.addModel(RANGEITEM, RANGEITEM_MODEL);
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
-  fact.addModel(CHARACTER2, CHARACTER_MODEL);
-  fact.addModel(BOT, CHARACTER_MODEL);
+  fact.addModel(CHARACTER2, CHARACTER2_MODEL);
+  fact.addModel(BOT, BOT_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
@@ -94,7 +92,6 @@ bool GameEngine::initialize()
   _players.push_back(_player1);
   // _players.push_back(_player2);
   spawn.spawnEnt(1, 0, _gameInfo);
-
   return (true);
 }
 
@@ -104,7 +101,7 @@ void	GameEngine::mainInput()
 
   _gameInfo.input->getInput(*(_gameInfo.set));
   if (((*_gameInfo.input)[win] && win.event == WIN_QUIT) ||
-      (*_gameInfo.input)[SDLK_ESCAPE])
+      _gameInfo.input->isPressed(SDLK_ESCAPE))
     {
       _shutdown = true;
       v_Contcit end = _gameInfo.map->ContEnd();
@@ -113,11 +110,11 @@ void	GameEngine::mainInput()
 	  AEntity *ent;
 	  v_Entit its;
 	  l_Entit itm;
-	  /*	  while ((ent = (*it)->listFront()) != NULL)
+	  while ((ent = (*it)->listFront()) != NULL)
 	    ent->setDestroy();
 	  while ((ent = (*it)->vecFront()) != NULL)
 	    ent->setDestroy();
-	  */}
+	}
       return ;
     }
 }
@@ -162,6 +159,7 @@ bool		GameEngine::update()
   //     else
   // 	std::cout << "loaded game successfully" << std::endl;
   //   }
+
   if (time < fps)
     usleep((fps - time) * 1000);
   _win->updateClock(*_gameInfo.clock);

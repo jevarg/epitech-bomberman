@@ -2,12 +2,119 @@
 #include "Console.hpp"
 #include "Settings.hpp"
 
-Console::Console(Settings &set): _set(set)
+# define POLICE_SIZE (30)
+
+Console::Console(Settings &set, Input &input, gdl::Clock &clock, gdl::AShader &shader): _set(set), _input(input), _clock(clock), _shader(shader)
 {
+  _buf = "";
+  _ret = "";
   _cmd["bind"] = &Console::bind;
   _cmd["set"] = &Console::set;
   _cmd["help"] = &Console::help;
   _cmd["import"] = &Console::import;
+}
+
+void	Console::print(Text &text, int winY)
+{
+  int	y = 1;
+
+  text.setText(_buf, 20, 0, POLICE_SIZE);
+  text.draw(_shader, _clock);
+  for (int size = _history.size(); size > (winY / POLICE_SIZE); --size)
+    _history.pop_back();
+  for (std::list<std::string>::iterator it = _history.begin(); it != _history.end(); ++it)
+    {
+      text.setText(*it, 20, y * POLICE_SIZE, POLICE_SIZE);
+      text.draw(_shader, _clock);
+      ++y;
+    }
+}
+
+void	Console::handleClock(const gdl::SdlContext &win, int &frame,
+			     double &time, double fps)
+{
+  time = _clock.getElapsed();
+  if (time < fps)
+    usleep((fps - time) * 1000);
+  frame = (frame >= 100) ? 100 : frame + 1;
+  win.updateClock(_clock);
+}
+
+bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
+{
+  Text		text;
+  double	fps = 1000.0 / 20.0;
+  int		frame = -1;
+  double	time;
+  Keycode	key = 0;
+  Keycode	save = -1;
+
+  if (text.initialize() == false)
+    return (false);
+  _buf.clear();
+  _buf.push_back('>');
+  _shader.bind();
+  _shader.setUniform("projection", glm::ortho(0.0f, 1600.0f, 900.0f
+						  , 0.0f, -1.0f, 1.0f));
+  _shader.setUniform("view", glm::mat4(1));
+  _shader.setUniform("winX", winX);
+  _shader.setUniform("winY", winY);
+  while (key != 27)
+    {
+      _input.getInput(_set);
+      glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+      l_Keycit beg = _input.getPressedBeg();
+      l_Keycit end = _input.getPressedEnd();
+      if (beg != end)
+	{
+	  std::cout << save << " " << *beg << " " << frame << std::endl;
+	  save = *beg;
+	  if (save == key && ((key == '\b' && frame < 2) ||
+			      (key != '\b' && frame >= 0 && frame < 10)))
+	    {
+	      handleClock(win, frame, time, fps);
+	      continue;
+	    }
+	  else
+	    frame = 0;
+	}
+      for (; beg != end; ++beg)
+	{
+	  key = *beg;
+	  if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
+	    key = '0' + key - SDLK_KP_0;
+	  if (key == '\r' || key == SDLK_KP_ENTER)
+	    {
+	      _buf.erase(_buf.begin());
+	      std::cout << "buf: [" << _buf << "]" << std::endl;
+	      if (_buf == "quit")
+		return (true);
+	      parseCmd(_buf, _ret);
+	      _ret = _buf + ":" + _ret;
+	      _history.push_front(_ret);
+	      _buf.clear();
+	      _buf.push_back('>');
+	    }
+	  else if (key > 0 && key < 128)
+	    {
+	      if (key == '\b' && _buf.length() > 1)
+		_buf = _buf.substr(0, _buf.length() - 1);
+	      if (isPrintable(key) == true)
+		_buf.push_back(static_cast<char>(key));
+	    }
+	}
+      print(text, static_cast<int>(winY));
+      win.flush();
+      handleClock(win, frame, time, fps);
+    }
+  return (true);
+}
+
+bool	Console::isPrintable(char key)
+{
+  if (key >= ' ' && key <= '~')
+    return (true);
+  return (false);
 }
 
 bool	Console::import(const std::string &arg, std::string &ret, int nbr_space)
@@ -40,10 +147,10 @@ bool	Console::bind(const std::string &arg, std::string &ret, int nbr_space)
     }
   tab[0] = "bind";
   tab[1] = arg.substr(0, arg.find_first_of(' ', 0));
-  tab[2] = arg.substr(arg.find_first_of(' ', 0), arg.length());
+  tab[2] = arg.substr(arg.find_first_of(' ', 0) + 1, arg.length());
   if (_set.addKey(tab) == false)
     {
-      ret = "bind " + arg + " : failed to bind " + arg + ".";
+      ret = arg + " : failed to bind " + arg + ".";
       return (false);
     }
   ret = "Success.";
@@ -56,15 +163,15 @@ bool	Console::set(const std::string &arg, std::string &ret, int nbr_space)
 
   if (nbr_space < 2)
     {
-      ret = "set " + arg + " : not enough arguments.";
+      ret = arg + " not enough arguments.";
       return (false);
     }
   tab[0] = "set";
   tab[1] = arg.substr(0, arg.find_first_of(' ', 0));
-  tab[2] = arg.substr(arg.find_first_of(' ', 0), arg.length());
+  tab[2] = arg.substr(arg.find_first_of(' ', 0) + 1, arg.length());
   if (_set.addCvar(tab) == false)
     {
-      ret = "set " + arg + " : failed to set " + arg + ".";
+      ret = arg + " failed to set " + arg + ".";
       return (false);
     }
   ret = "Success.";
@@ -75,8 +182,13 @@ bool	Console::help(const std::string &arg, std::string &ret, int nbr_space)
 {
   (void)arg;
   (void)nbr_space;
-  ret = "This is help.";
-  return (true);  
+
+  ret = "You can configure manually some features and options about the game.\n";
+  ret += "You can bind a cvar using this syntax : \"bind cvar value\".\n";
+  ret += "You can set a key using this syntax : \"set key action\".\n";
+  ret += "You can import a config file using this syntax : \"import filename\".";
+  std::cout << "outputting help" << std::endl;
+  return (true);
 }
 
 bool	Console::parseCmd(const std::string &cmdline, std::string &ret)
@@ -95,12 +207,12 @@ bool	Console::parseCmd(const std::string &cmdline, std::string &ret)
     cmd = cmdline;
   if (_cmd.find(cmd) == _cmd.end())
     {
-      ret = cmd + ": unknown command.";
+      ret = ": unknown command.";
       return (false);
     }
   if (nbr_space > 2)
     {
-      ret = cmd + ": too many arguments.";
+      ret = ": too many arguments.";
       return (false);
     }
   ptr = _cmd[cmd];

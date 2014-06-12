@@ -10,6 +10,7 @@ Settings::Settings()
   _actionList.push_back("dropBomb");
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
+  _actionList.push_back("console");
 
   _cvarList.push_back(new t_cvar ("com_maxFps", 2, 300, 60));
   _cvarList.push_back(new t_cvar ("cg_fov", 20, 180, 80));
@@ -76,9 +77,6 @@ Settings::Settings()
   _speKeys["RCTRL"] = SDLK_RCTRL;
   _speKeys["RSHIFT"] = SDLK_RSHIFT;
   _speKeys["RALT"] = SDLK_RALT;
-  _speKeys["KP_INSERT"] = SDLK_INSERT;
-  _speKeys["KP_INSERT"] = SDLK_INSERT;
-  _speKeys["KP_INSERT"] = SDLK_INSERT;
 
   initCvar();
 }
@@ -152,7 +150,7 @@ const std::string	&Settings::getCodeFromKey(SDL_Keycode key) const
   return (it->first);
 }
 
-keyCode	Settings::getKeyFromCode(const std::string &str) const
+Keycode	Settings::getKeyFromCode(const std::string &str) const
 {
   m_keyCit	it = _speKeys.find(str);
 
@@ -170,11 +168,11 @@ bool		Settings::addKey(const std::string tab[3])
       if (*listit == tab[2])
 	{
 	  if (isAscii(tab[1]))
-	    _keyMap.insert(std::pair<keyCode, eAction>
+	    _keyMap.insert(std::pair<Keycode, eAction>
 			   (tab[1].at(0), static_cast<eAction>
 			    (std::distance(_actionList.begin(), listit))));
 	  else if ((boundkey = getKeyFromCode(tab[1])) != UNKNOWN_KEY)
-	    _keyMap.insert(std::pair<keyCode, eAction>
+	    _keyMap.insert(std::pair<Keycode, eAction>
 			   (boundkey, static_cast<eAction>
 			    (std::distance(_actionList.begin(), listit))));
 	  return (true);
@@ -235,7 +233,7 @@ bool	Settings::loadFile(const std::string &filename)
     parsInst(inst);
   else
     return (false);
-  // std::map<keyCode, eAction>::iterator kit;
+  // std::map<Keycode, eAction>::iterator kit;
   // std::map<cvar, int>::iterator cit;
 
   // for (kit = _keyMap.begin(); kit != _keyMap.end(); ++kit)
@@ -276,9 +274,9 @@ void	Settings::setVar(cvar var, int value)
   _cvarMap[var] = value;
 }
 
-eAction	Settings::getActionFromKey(keyCode key) const
+eAction	Settings::getActionFromKey(Keycode key) const
 {
-  std::map<keyCode, eAction>::const_iterator   it;
+  std::map<Keycode, eAction>::const_iterator   it;
 
   if ((it = _keyMap.find(key)) == _keyMap.end())
     return (UNKNOWN);
@@ -290,10 +288,10 @@ eAction	Settings::getActionFromKey(keyCode key) const
 ** A vector must be used considering we handle multibinding
 */
 
-int	Settings::getKeyFromAct(eAction act, std::vector<keyCode> &keySet) const
+int	Settings::getKeyFromAct(eAction act, std::vector<Keycode> &keySet) const
 {
-  std::map<keyCode, eAction>::const_iterator   it;
-  std::map<keyCode, eAction>::const_iterator   end;
+  std::map<Keycode, eAction>::const_iterator   it;
+  std::map<Keycode, eAction>::const_iterator   end;
   int	nbKey = 0;
 
   for (it = _keyMap.begin(), end = _keyMap.end(); it != end; ++it)
@@ -307,7 +305,7 @@ int	Settings::getKeyFromAct(eAction act, std::vector<keyCode> &keySet) const
   return (nbKey);
 }
 
-void	Settings::setKey(keyCode key, eAction act)
+void	Settings::setKey(Keycode key, eAction act)
 {
   _keyMap[key] = act;
 }
