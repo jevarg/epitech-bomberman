@@ -44,7 +44,8 @@ void	Text::setText(std::string const& str, float x, float y, float size)
 
   if (_geometry)
     delete _geometry;
-  _geometry = new gdl::Geometry();
+  if (str.length())
+    _geometry = new gdl::Geometry();
 
   for (unsigned int i = 0; i < str.length(); ++i)
     {
