@@ -252,14 +252,15 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen, int x, int y)
 void	Menu::launchGame()
 {
   Map map(*(_gameInfo.set));
-  GameEngine eng(&_win, _gameInfo.clock, &_textShader, &map, _gameInfo.set,
-		 _gameInfo.input, _gameInfo.sound);
+  _gameInfo.map = &map;
+  GameEngine eng(&_win, &_textShader, &_gameInfo, true);
   bool	done = true;
 
   if (!eng.initialize())
     return ;
   while ((done = eng.update()))
     eng.draw();
+  _gameInfo.map = NULL;
 }
 
 void	Menu::launch()

@@ -84,8 +84,7 @@ typedef struct	s_gameinfo
 class GameEngine : public gdl::Game
 {
 public:
-  GameEngine(gdl::SdlContext *win, gdl::Clock *clock, gdl::BasicShader *shader, Map *map,
-	     Settings *set, Input *input, Sound *sound);
+  GameEngine(gdl::SdlContext *win, gdl::BasicShader *shader, t_gameinfo *gameInfo, bool multi);
   ~GameEngine();
 
   virtual bool	initialize();
@@ -95,18 +94,21 @@ public:
 private:
   void	mainInput();
   int	clearElements();
+  void	displayScore();
+  void	moveGround(Player *player);
 
   gdl::SdlContext		*_win;
   gdl::BasicShader		_shader;
   gdl::BasicShader		*_textShader;
   Save				_save;
   Cube				*_ground;
+  Cube				*_skybox;
   unsigned int			_mapX;
   unsigned int			_mapY;
   std::map<eType, IObject *>	_type;
   std::map<eType, gdl::Texture *>	_texture;
   Player			*_player;
-  t_gameinfo			_gameInfo;
+  t_gameinfo			*_gameInfo;
   bool				_shutdown;
   int				_frames;
   std::vector<Light*>		_lights;
@@ -116,6 +118,8 @@ private:
   HUD				*_hud;
   Square			*_end_screen[2];
   std::map<std::string, int>	_score;
+  Text				_fps;
+  bool				_multi;
 };
 
 #endif /* _GAMEENGINE_HPP_ */

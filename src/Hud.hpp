@@ -19,9 +19,8 @@ public:
   HUD(gdl::AShader &shader);
   ~HUD();
 
-  void setFps(float fps);
   void setScore(float score);
-  void draw(Player *player, t_gameInfo &gameInfo);
+  void draw(Player *player, t_gameInfo &gameInfo, bool multi);
 
 private:
   gdl::AShader &_shader;
@@ -29,7 +28,6 @@ private:
   Square _nostock;
   Square _heart;
   Square _noHeart;
-  Text	 _fps;
   Text	 _score;
 };
 

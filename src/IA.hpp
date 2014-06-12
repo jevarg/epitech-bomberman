@@ -3,6 +3,7 @@
 
 # include "ACharacter.hpp"
 # include "LuaCommunication.hpp"
+# include "Flame.hpp"
 
 class		IA : public ACharacter
 {

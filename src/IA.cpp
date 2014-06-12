@@ -1,7 +1,6 @@
 #include <cmath>
 #include "GameEngine.hpp"
 #include "IA.hpp"
-#include "Flame.hpp"
 
 IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
   : ACharacter(x, y, BOT, gameInfo, thread), _lua()
