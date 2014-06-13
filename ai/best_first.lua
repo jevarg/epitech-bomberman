@@ -39,21 +39,17 @@ end
 
 function best_first(map, map_nb, entities)
 	local cur_x, cur_y = X, Y
-
+	-- print("best first")
 	if (have_elem(entities, cur_x, cur_y, "box") == 1 or
 		have_elem(entities, cur_x, cur_y, "item") == 1 or
-		have_elem(entities, cur_x, cur_y, "player") == 1)
-	then
-		travel_map(map_nb, cur_x, cur_y)
-		-- display_map(map_nb)
-		local nx, ny = take_shortest_priority(map, map_nb, entities)
-		if (cur_x == nx and cur_y == ny) then
-			return ENUM_ACTION["bomb"]
-		else
-			cur_x, cur_y = nx, ny
-		end
+		have_elem(entities, cur_x, cur_y, "player") == 1)then
+			travel_map(map_nb, cur_x, cur_y)
+			local nx, ny = take_shortest_priority(map, map_nb, entities)
+			if (cur_x == nx and cur_y == ny) then
+				return ENUM_ACTION["bomb"]
+			else cur_x, cur_y = nx, ny
+			end
 	else
-		cur_x, cur_y = random_movement(map)
-	end	
+		cur_x, cur_y = random_movement(map) end
 	return determine_way(map, cur_x, cur_y)
 end

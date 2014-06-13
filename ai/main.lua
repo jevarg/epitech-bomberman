@@ -1,5 +1,6 @@
 dofile("ai/global.lua")
 dofile("ai/utils.lua")
+dofile("ai/danger_dir.lua")
 dofile("ai/construct_map.lua")
 dofile("ai/directions.lua")
 dofile("ai/best_first.lua")
@@ -27,6 +28,8 @@ function check_elem_at(map, cur_x, cur_y, w, n)
 end
 
 function take_decision(map, map_nb, entities)
+	-- print("IN TAKE DECISION MAP AFTER fill_dangerous_fields")
+	-- display_map(map_nb)
 	if (arg["bomb"] == 1 or
 		check_elem_at(map_nb, X, Y, "D", 1) ~= -1 or
 		check_elem_at(map_nb, X, Y, "O", 1) ~= -1)
@@ -34,6 +37,7 @@ function take_decision(map, map_nb, entities)
 		if (arg["bomb"] == 1) then map[Y][X] = "O" end
 		local block = {0, 0, 0, 0}
 		local cur_x, cur_y = run_out_danger(map_nb, X, Y, block)
+		-- print(X, Y, cur_x, cur_y)
 		return determine_way(map, cur_x, cur_y)
 	else
 		local item = check_elem_at(map_nb, X, Y, "I", 1)
@@ -48,9 +52,12 @@ function take_decision(map, map_nb, entities)
 end
 
 function artificial_intelligence()
+	set_priority(LEVEL)
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
+	-- print("MAP AFTER RECONSTITUTION")
+	-- display_map(map_nb)
 	local action = take_decision(map, fill_dangerous_fields(map_nb), entities)
 	if (action == ENUM_ACTION["bomb"]) then
 		local block = {0, 0, 0, 0}
@@ -66,7 +73,7 @@ function artificial_intelligence()
 end
 
 X, Y = arg["x"], arg["y"]
-BOMB_RANGE = 25
 AGGRO = arg["aggro"]
 LEVEL = arg["level"]
+-- print("BOMB ? ", arg["bomb"])
 return artificial_intelligence()

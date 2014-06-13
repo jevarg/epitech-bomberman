@@ -104,8 +104,8 @@ bool GameEngine::initialize()
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
-  // _gameInfo->map->createMap(_gameInfo);
-  _gameInfo->map->load("map", *_gameInfo);
+  _gameInfo->map->createMap(*_gameInfo);
+  // _gameInfo->map->load("map", *_gameInfo);
    spawn.setSpawnSize(_gameInfo->map->getWidth(), _gameInfo->map->getHeight());
 
   _player1 = new Player(0, 0, _gameInfo, CHARACTER1, _multi);
@@ -126,7 +126,7 @@ bool GameEngine::initialize()
   _players.push_back(_player1);
   if (_multi)
     _players.push_back(_player2);
-  spawn.spawnEnt((_multi == true ? 2 : 1), 0, *_gameInfo);
+  spawn.spawnEnt((_multi == true ? 2 : 1), 2, *_gameInfo);
   return (true);
 }
 
