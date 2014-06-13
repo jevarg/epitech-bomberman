@@ -15,9 +15,8 @@ public:
 		   const std::string &texture, std::vector<AWidget *> *onClickPanel);
   ~NavigationWidget();
 
-  virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock);
-
-  virtual void	onClick(const t_gameinfo &gameInfo, Menu &menu);
+  void	draw(gdl::AShader &shader, const gdl::Clock &clock);
+  void	onClick(t_gameinfo &gameInfo, Menu &menu);
 };
 
 #endif

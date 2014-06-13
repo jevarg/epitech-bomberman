@@ -106,6 +106,8 @@ v_Entit	Container::vecEndMod()
 
 AEntity	*Container::vecFront() const
 {
+  Scopelock	<Mutex>sc(*_mutex);
+
   return (_staticEnt.empty() ? NULL : _staticEnt.front());
 }
 
@@ -116,6 +118,8 @@ bool	Container::vecEmpty() const
 
 AEntity	*Container::listFront() const
 {
+  Scopelock	<Mutex>sc(*_mutex);
+
   return (_mobileEnt.empty() ? NULL : _mobileEnt.front());
 }
 

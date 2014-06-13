@@ -1,4 +1,4 @@
-#ifndef _TEXTWIDGET_HPP_ 
+#ifndef _TEXTWIDGET_HPP_
 # define _TEXTWIDGET_HPP_
 
 # include "AWidget.hpp"
@@ -12,7 +12,7 @@ public:
 
   virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock);
   virtual bool	isClicked(int x, int y);
-  virtual void	onClick(const t_gameinfo &gameInfo, Menu &menu);
+  virtual void	onClick(t_gameinfo &gameInfo, Menu &menu);
 
   void		setText(std::string const& str, float x, float y, float size);
 };

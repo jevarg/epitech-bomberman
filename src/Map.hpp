@@ -31,7 +31,7 @@ public:
   void		load(const std::string &,
 		     t_gameinfo &gameInfo);
 
-  void		addEntity(AEntity *ent);
+  void		addEntity(AEntity * const ent);
   void		removeEntity(int x, int y);
   void		removeEntityByPtr(AEntity *ptr);
   void		pushToCollector(AEntity *ent);
