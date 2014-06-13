@@ -16,7 +16,6 @@ void	LoadWidget::onDisplay(const std::list<std::string> &text, int filePos)
   std::list<std::string>::const_iterator it = text.begin();
   std::list<std::string>::const_iterator end = text.end();
 
-  std::cout << "Pass by here" << std::endl;
   for (int count = 0; it != end; ++it, ++count)
     {
       if (count == _id + filePos * 4)
