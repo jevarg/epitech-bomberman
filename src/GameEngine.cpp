@@ -2,18 +2,21 @@
 #include <cmath>
 #include "GameEngine.hpp"
 
-GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo,
-		       bool multi)
-  : _win(win), _textShader(textShader), _save(),
-    _gameInfo(gameInfo), _lights(), _players(), _multi(multi)
+GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gameinfo *gameInfo)
+  : _win(win), _textShader(textShader),
+    _gameInfo(gameInfo), _lights(), _players()
 {
   _player1 = NULL;
   _player2 = NULL;
   _gameInfo->mutex = new Mutex;
   _gameInfo->condvar = new Condvar;
+  _gameInfo->save = new Save;
   _shutdown = false;
+  _multi = true;
   _frames = 0;
   _fps.initialize();
+  _end_screen[0] = NULL;
+  _end_screen[1] = NULL;
 }
 
 GameEngine::~GameEngine()
@@ -22,8 +25,10 @@ GameEngine::~GameEngine()
     _player1->setDestroyAttr();
   if (_player2)
     _player2->setDestroyAttr();
-  delete _end_screen[0];
-  delete _end_screen[1];
+  if (_end_screen[0] != NULL)
+    delete _end_screen[0];
+  if (_end_screen[1] != NULL)
+    delete _end_screen[1];
   _gameInfo->condvar->broadcast();
   sleep(1);
   delete _gameInfo->mutex;
@@ -178,7 +183,9 @@ bool		GameEngine::update()
   elapsedTime += time;
   if (elapsedTime > 0.1)
     {
-      _fps << (round(_frames / elapsedTime));
+      std::stringstream ss("");
+      ss << "FPS: " << (round(_frames / elapsedTime));
+      _fps.setText(ss.str(), 1400, 800, 50);
       _frames = 0;
       elapsedTime = 0;
     }
@@ -207,7 +214,7 @@ bool		GameEngine::update()
 void GameEngine::draw()
 {
   int i = 0;
-  int winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
+  float winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   for (std::vector<Player *>::const_iterator player = _players.begin();player != _players.end();++player)
@@ -240,6 +247,10 @@ void GameEngine::draw()
 		{
 		  if ((*it1)->getType() == WALL)
 		    (*it1)->getModel()->setPos(glm::vec3(i, 0.0, j));
+		  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+		  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+		  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+		  glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 		  (*it1)->draw(_shader, *_gameInfo->clock);
 		}
 	  }
@@ -249,18 +260,6 @@ void GameEngine::draw()
       else if ((*player)->getEnd() == LOSE)
 	_end_screen[1]->draw(*_textShader, *_gameInfo->clock);
     }
-  if (_player1->getEnd() != 0 && _player2->getEnd() != 0)
-    displayScore();
-  _fps.draw(_shader, *_gameInfo->clock);
-  _win->flush();
-}
-
-void	GameEngine::displayScore()
-{
-  float winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
-  Text score;
-  int  i = 0;
-
   glViewport(0, 0, winX, winY);
   glDisable(GL_DEPTH_TEST);
   _textShader->bind();
@@ -268,6 +267,19 @@ void	GameEngine::displayScore()
   _textShader->setUniform("view", glm::mat4(1));
   _textShader->setUniform("winX", winX);
   _textShader->setUniform("winY", winY);
+  if (_player1->getEnd() != 0 && _player2->getEnd() != 0)
+    displayScore();
+  _fps.draw(*_textShader, *_gameInfo->clock);
+  glEnable(GL_DEPTH_TEST);
+  _win->flush();
+}
+
+void	GameEngine::displayScore()
+{
+  float winY = _gameInfo->set->getVar(W_HEIGHT);
+  Text score;
+  int  i = 0;
+
   score.initialize();
   score.setText("Scores", 725, winY - 250, 50);
   score.draw(*_textShader, *_gameInfo->clock);
@@ -280,7 +292,6 @@ void	GameEngine::displayScore()
       score.draw(*_textShader, *_gameInfo->clock);
       ++i;
     }
-  glEnable(GL_DEPTH_TEST);
 }
 
 void	GameEngine::moveGround(Player *player)
@@ -315,4 +326,9 @@ void	GameEngine::moveGround(Player *player)
   groundY -= 0.5;
   _ground->setScale(glm::vec3(sizeX, 1.0, sizeY));
   _ground->setPos(glm::vec3(groundX, -1, groundY));
+}
+
+void	GameEngine::setMulti(bool multi)
+{
+  _multi = multi;
 }

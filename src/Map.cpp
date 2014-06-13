@@ -46,8 +46,6 @@ void		Map::load(const std::string &name,
 
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     throw(Exception("Couldn't load map."));
-  _mapX = gameInfo.set->getVar(MAP_WIDTH);
-  _mapY = gameInfo.set->getVar(MAP_HEIGHT);
   createContainers();
   addEntity(new Entity(0, 0, WALL, &gameInfo));
   while (std::getline(file, buf))
@@ -90,8 +88,6 @@ void		Map::load(const std::string &name,
 	}
       ++y;
     }
-  gameInfo.set->setVar(MAP_HEIGHT, y);
-  gameInfo.set->setVar(MAP_WIDTH, x);
   display();
   file.close();
 }
@@ -103,21 +99,25 @@ void		Map::determineMapSize(const std::string &name, int &sizeX, int &sizeY)
   unsigned int	len = 0;
   int		y = 0;
 
-  if ((file.rdstate() && std::ifstream::failbit) != 0)
+  if (file.is_open() == false)
     throw(Exception("Couldn't load map : " + name));
+  // if ((file.rdstate() && std::ifstream::failbit) != 0)
+  //   throw(Exception("Couldn't load map : " + name));
   while (std::getline(file, buf))
     {
       if (len == 0)
 	len = buf.length();
       else
 	if (len != buf.length())
-	  throw(Exception("Couldn't load map."));
+	  throw(Exception("Couldn't load map. (determineMapSize)"));
       ++y;
     }
   sizeX = len;
   sizeY = y;
   if (!len || !y)
-    throw(Exception("Couldn't load map."));
+    throw(Exception("Couldn't load map. (determineMapSize)"));
+  _mapX = sizeX;
+  _mapY = y;
   file.close();
 }
 
@@ -369,7 +369,7 @@ unsigned int	Map::getContPos(int x, int y) const
   return (ratioy * (_mapX / SQUARESIZE) + ratiox);
 }
 
-void	Map::addEntity(AEntity *ent)
+void	Map::addEntity(AEntity * const ent)
 {
   unsigned int	pos;
   Container	*cont;

@@ -24,12 +24,12 @@ public:
   void setTexture(gdl::Texture *texture);
   void setPos(int x, int y);
   void setSize(int x, int y);
-  void setScale(int scale);
+  void setScale(int x, int y);
   void fillGeometry();
 
 private:
 
-  int _x, _y, _sizeX, _sizeY, _scale;
+  int _x, _y, _sizeX, _sizeY, _scaleX, _scaleY;
   gdl::Texture *_texture;
   gdl::Geometry *_geometry;
   std::string _file;

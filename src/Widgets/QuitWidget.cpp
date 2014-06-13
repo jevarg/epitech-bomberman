@@ -1,7 +1,7 @@
 #include "QuitWidget.hpp"
 
 QuitWidget::QuitWidget(int x, int y, int height, int width, const std::string &texture)
-  : AWidget(x, y, height, width, texture)
+  : AWidget(x, y, height, width)
 {
   _square = new Square(texture);
   _square->initialize();
@@ -13,7 +13,7 @@ QuitWidget::~QuitWidget()
 {
 }
 
-void	QuitWidget::onClick(const t_gameinfo &/*gameInfo*/, Menu &menu)
+void	QuitWidget::onClick(t_gameinfo &/*gameInfo*/, Menu &menu)
 {
   menu.setDone(true);
 }

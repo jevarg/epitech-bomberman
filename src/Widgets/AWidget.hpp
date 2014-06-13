@@ -17,15 +17,16 @@ protected:
   int		_width;
   Text		_text;
   Square	*_square;
-  
+
 public:
-  AWidget(int x, int y, int height, int width, const std::string &text);
+  AWidget(int x, int y, int height, int width);
   virtual ~AWidget() = 0;
 
   void		draw();
-
   virtual bool	isClicked(int x, int y);
-  virtual void	onClick(const t_gameinfo &gameInfo, Menu &menu) = 0;
+  virtual void	init(const Settings * const set);
+  virtual void	onDisplay(const std::list<std::string> &text, int filePos);
+  virtual void	onClick(t_gameinfo &gameInfo, Menu &menu) = 0;
   virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock) = 0;
 
   void		setSquare(Square *);
