@@ -11,7 +11,7 @@ function authorized_put_bomb(point, map, boolean)
 end
 
 function search_safe_place(map_nb, x, y, block, boolean, cond)
-	print("search_safe_place")
+	-- print("search_safe_place")
 	local nb = 50
 	local way = 0
 	local gotox = {0, 0, -1, 1}
