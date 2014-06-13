@@ -132,10 +132,12 @@ bool  Menu::initialize()
   _optionsPanel.push_back(background);
   _optionsPanel.push_back(title);
   _optionsPanel.push_back(back);
-  _optionsPanel.push_back(new ImageWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+  _optionsPanel.push_back(new ImageWidget(x / 4, y / 2.0f, y / 11.25f, x / 2,
 					  "./assets/Button/fullscreen_off.tga"));
-  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/controls.tga", &_controlsPanel));
+  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
+					       "./assets/Button/button.tga", &_screenPanel));
 
   _controlsPanel.push_back(background);
   _controlsPanel.push_back(title);
@@ -162,6 +164,10 @@ bool  Menu::initialize()
   _controlsPanel.push_back(new TextImgWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
 					  y / 16.8, x / 4,
 					     "./assets/Button/button_small.tga", "Drop bomb"));
+
+  _screenPanel.push_back(background);
+  _screenPanel.push_back(title);
+  _screenPanel.push_back(back);
   return (true);
 }
 
@@ -196,8 +202,8 @@ bool		Menu::update()
       _console->aff(_win, 1600.0f, 900.0f);
       glEnable(GL_DEPTH_TEST);
     }
-  if ((_gameInfo.input->isPressed(SDLK_ESCAPE) || win.event == WIN_QUIT) &&
-      _currentPanel == &_mainPanel)
+  if ((_gameInfo.input->isPressed(SDLK_ESCAPE) && _currentPanel == &_mainPanel) ||
+      win.event == WIN_QUIT)
     return (false);
   _frames++;
   if ((time = _gameInfo.clock->getElapsed()) < fps)

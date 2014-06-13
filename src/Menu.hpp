@@ -60,6 +60,7 @@ private:
   std::vector<AWidget *> _importMapPanel;
   std::vector<AWidget *> _optionsPanel;
   std::vector<AWidget *> _controlsPanel;
+  std::vector<AWidget *> _screenPanel;
 };
 
 #endif /* _MENU_HPP_ */
