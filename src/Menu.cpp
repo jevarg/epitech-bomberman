@@ -37,6 +37,10 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 Menu::~Menu()
 {
   saveScore();
+  _player1->setDestroyAttr();
+  _player2->setDestroyAttr();
+  _gameInfo.condvar->broadcast();
+  sleep(1);
 }
 
 bool  Menu::initialize()

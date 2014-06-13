@@ -11,7 +11,6 @@ Player::Player(int x, int y, t_gameinfo *gameInfo, eType type, bool multi, bool 
 
 Player::~Player()
 {
-  std::cout << "PLAYER DEAD" << std::endl;
 }
 
 /*
