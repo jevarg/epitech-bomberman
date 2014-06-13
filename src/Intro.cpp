@@ -52,8 +52,6 @@ bool Intro::initialize(const std::string &file)
   				  SWS_BICUBIC, NULL, NULL, NULL);
   if (_sws == NULL)
     return (false);
-  _square.setScale(1, -1);
-  _square.setPos(0, 900);
   return (true);
 }
 
@@ -126,7 +124,9 @@ void Intro::play(t_gameinfo &gameInfo, gdl::SdlContext &win, gdl::AShader &shade
 {
   float x = gameInfo.set->getVar(W_WIDTH), y = gameInfo.set->getVar(W_HEIGHT);
 
+  _square.setScale(1, -1);
   _square.setSize(x, y);
+  _square.setPos(0, gameInfo.set->getVar(W_HEIGHT));
   _square.fillGeometry();
   while (update(win, *gameInfo.clock, *gameInfo.input, *gameInfo.set))
     draw(shader, win, *gameInfo.clock, x, y);
