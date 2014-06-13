@@ -27,7 +27,7 @@ public:
   void	draw();
   void	launch();
   void	launchGame();
-  void	setCurrentPanel(std::vector<AWidget *> *currentPanel);
+  void	setCurrentPanel(std::vector<AWidget *> * const currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen);
   void	setDone(bool done = true);
   Menu	&operator++();
@@ -43,6 +43,7 @@ private:
   gdl::SdlContext	_win;
   gdl::BasicShader	_textShader;
   bool			_done;
+  bool			_multi;
   t_gameinfo		_gameInfo;
   GameEngine		_gameEngine;
   int			_frames;
@@ -51,7 +52,8 @@ private:
   std::list<std::string> _filename;
   std::vector<AWidget *> *_currentPanel;
   std::vector<AWidget *> _mainPanel;
-  std::vector<AWidget *> _newGamePanel;
+  std::vector<AWidget *> _newGamePanelSolo;
+  std::vector<AWidget *> _newGamePanelMulti;
   std::vector<AWidget *> _loadGamePanel;
   std::vector<AWidget *> _importMapPanel;
   std::vector<AWidget *> _optionsPanel;

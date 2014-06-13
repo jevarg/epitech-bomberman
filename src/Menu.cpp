@@ -17,6 +17,7 @@
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL), _gameEngine(&_win, &_textShader, &_gameInfo)
 {
   _frames = 0;
+  _multi = false;
   _gameInfo.input = new Input();
   _gameInfo.set = new Settings();
   _gameInfo.sound = new Sound();
@@ -60,9 +61,9 @@ bool  Menu::initialize()
   _mainPanel.push_back(background);
   _mainPanel.push_back(title);
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
-					    "./assets/Button/singleplayer.tga", &_newGamePanel));
+					    "./assets/Button/singleplayer.tga", &_newGamePanelSolo));
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
-					    "./assets/Button/multiplayer.tga", &_newGamePanel));
+					    "./assets/Button/multiplayer.tga", &_newGamePanelMulti));
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
 					    "./assets/Button/load_game.tga", &_loadGamePanel));
   _mainPanel.push_back(new NavigationWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
@@ -70,14 +71,20 @@ bool  Menu::initialize()
   _mainPanel.push_back(new QuitWidget(x / 4, y / 18, y / 11.25f, x / 2,
 				      "./assets/Button/quit.tga"));
 
-  ///  _mainPanel.push_back(new InputWidget(50, 50, y / 11.25f, x / 2, "allotest"));
-
-  _newGamePanel.push_back(background);
-  _newGamePanel.push_back(title);
-  _newGamePanel.push_back(back);
-  _newGamePanel.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2,
+  _newGamePanelSolo.push_back(background);
+  _newGamePanelSolo.push_back(title);
+  _newGamePanelSolo.push_back(back);
+  _newGamePanelSolo.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2,
 					   "./assets/Button/generate_map.tga", &_mainPanel));
-  _newGamePanel.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2,
+  _newGamePanelSolo.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2,
+					       "./assets/Button/import_map.tga", &_importMapPanel));
+
+  _newGamePanelMulti.push_back(background);
+  _newGamePanelMulti.push_back(title);
+  _newGamePanelMulti.push_back(back);
+  _newGamePanelMulti.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2,
+					   "./assets/Button/generate_map.tga", &_mainPanel));
+  _newGamePanelMulti.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
 
   _loadGamePanel.push_back(background);
@@ -323,17 +330,19 @@ void	Menu::launch()
   _win.stop();
 }
 
-void	Menu::setCurrentPanel(std::vector<AWidget *> *currentPanel)
+void	Menu::setCurrentPanel(std::vector<AWidget *> * const currentPanel)
 {
   _currentPanel = currentPanel;
   _filePos = 0;
   if (_currentPanel == &_importMapPanel)
-    readDir(MAPS_PATH);
+	readDir(MAPS_PATH);
   else if (_currentPanel == &_loadGamePanel)
     readDir(GAMES_PATH);
+  if (_currentPanel == &_newGamePanelSolo || _currentPanel == &_newGamePanelMulti)
+    _multi = _currentPanel == &_newGamePanelMulti;
   for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
 	 endit = (*_currentPanel).end(); it != endit ; ++it)
-      (*it)->init(_gameInfo.set);
+    (*it)->init(_gameInfo.set);
 }
 
 void	Menu::loadScore()
