@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Fri Jun 13 10:34:39 2014 luc sinet
+## Last update Fri Jun 13 11:20:41 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -15,8 +15,10 @@ CC		=	g++
 RM		=	rm -f
 
 LIBGDLDIR	+=	./libGDL
+WIDGETDIR	=	Widgets
+SRCDIR		=	./src
 
-INCDIR		=	-I../Includes/ -I$(LIBGDLDIR)/includes/
+INCDIR		=	-I../Includes/ -I$(LIBGDLDIR)/includes/ -I$(SRCDIR) -I$(SRCDIR)/$(WIDGETDIR)/
 SRCDIR		=	./
 SRC		=	main.cpp \
 			GameEngine.cpp \
@@ -59,19 +61,19 @@ SRC		=	main.cpp \
 			Sound.cpp \
 			Square.cpp \
 			Hud.cpp \
-			AWidget.cpp \
-			NavigationWidget.cpp \
-			InputWidget.cpp \
-			ImageWidget.cpp \
-			TextWidget.cpp \
-			TextImgWidget.cpp \
-			LaunchWidget.cpp \
-			QuitWidget.cpp \
-			LoadWidget.cpp \
-			LoadGameWidget.cpp \
-			ArrowWidget.cpp \
-			KeyWidget.cpp \
-			NameWidget.cpp \
+			$(WIDGETDIR)/AWidget.cpp \
+			$(WIDGETDIR)/NavigationWidget.cpp \
+			$(WIDGETDIR)/InputWidget.cpp \
+			$(WIDGETDIR)/ImageWidget.cpp \
+			$(WIDGETDIR)/TextWidget.cpp \
+			$(WIDGETDIR)/TextImgWidget.cpp \
+			$(WIDGETDIR)/LaunchWidget.cpp \
+			$(WIDGETDIR)/QuitWidget.cpp \
+			$(WIDGETDIR)/LoadWidget.cpp \
+			$(WIDGETDIR)/LoadGameWidget.cpp \
+			$(WIDGETDIR)/ArrowWidget.cpp \
+			$(WIDGETDIR)/KeyWidget.cpp \
+			$(WIDGETDIR)/NameWidget.cpp \
 			Intro.cpp
 
 OBJDIR		=	obj/
@@ -82,7 +84,8 @@ CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
 LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2_mixer -lSDL2 -lpthread -lm -ldl -p -lrt
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
-			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR))
+			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR)) \
+			$(shell test -d $(OBJDIR)/$(WIDGETDIR) || mkdir $(OBJDIR)/$(WIDGETDIR))
 
 $(OBJDIR)%.o: $(SRCDIR)%.cpp
 	$(CC) $(CXXFLAGS) $(INCDIR) -o $@ -c $<
