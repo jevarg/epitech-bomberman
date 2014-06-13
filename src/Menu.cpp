@@ -14,6 +14,8 @@
 #include "ArrowWidget.hpp"
 #include "KeyWidget.hpp"
 #include "NameWidget.hpp"
+#include "ResWidget.hpp"
+#include "FullScreenWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL),
 	      _gameEngine(&_win, &_textShader, &_gameInfo)
@@ -87,8 +89,10 @@ bool  Menu::initialize()
 					   "./assets/Button/generate_map.tga", &_mainPanel));
   _newGamePanelSolo.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
+  _newGamePanelSolo.push_back(new InputWidget(x - x / 5, y / 4.0, y / 11.25f, x / 8,
+					      "./assets/input.tga", "Nb AI"));
   _newGamePanelSolo.push_back(new NameWidget(x / 4, y / 4.0, y / 11.25f, x / 2,
-					       "./assets/input.tga", 1));
+					     "./assets/input.tga", 1));
 
   _newGamePanelMulti.push_back(background);
   _newGamePanelMulti.push_back(title);
@@ -97,6 +101,8 @@ bool  Menu::initialize()
 					   "./assets/Button/generate_map.tga", &_mainPanel));
   _newGamePanelMulti.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
+  _newGamePanelMulti.push_back(new InputWidget(x - x / 5, y / 4.5, y / 11.25f, x / 8,
+					      "./assets/input.tga", "Nb AI"));
   _newGamePanelMulti.push_back(new NameWidget(x / 4, y / 3.0, y / 11.25f, x / 2,
 					       "./assets/input.tga", 1));
   _newGamePanelMulti.push_back(new NameWidget(x / 4, y / 4.5, y / 11.25f, x / 2,
@@ -140,10 +146,12 @@ bool  Menu::initialize()
   _optionsPanel.push_back(background);
   _optionsPanel.push_back(title);
   _optionsPanel.push_back(back);
-  _optionsPanel.push_back(new ImageWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
-					  "./assets/Button/fullscreen_off.tga"));
-  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+  _optionsPanel.push_back(new FullScreenWidget(x / 4, y / 2.0f, y / 11.25f, x / 2,
+					    "./assets/Button/button.tga", ""));
+  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/controls.tga", &_controlsPanel));
+  // _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
+  // 					       "./assets/Button/resolution.tga", &_screenPanel));
 
   _controlsPanel.push_back(background);
   _controlsPanel.push_back(title);
@@ -170,6 +178,17 @@ bool  Menu::initialize()
   _controlsPanel.push_back(new TextImgWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
 					  y / 16.8, x / 4,
 					     "./assets/Button/button_small.tga", "Drop bomb"));
+  _screenPanel.push_back(background);
+  _screenPanel.push_back(title);
+  _screenPanel.push_back(back);
+  _screenPanel.push_back(new ResWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "2880x1800"));
+  _screenPanel.push_back(new ResWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "1920x1080"));
+  _screenPanel.push_back(new ResWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "1280x1024"));
+  _screenPanel.push_back(new ResWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "800x600"));
 
   _cube.initialize();
   fact.addModel(WALL, new Cube(_cube), WALL_TEXTURE);
@@ -234,8 +253,8 @@ bool		Menu::update()
       _console->aff(_win, 1600.0f, 900.0f);
       glEnable(GL_DEPTH_TEST);
     }
-  if ((_gameInfo.input->isPressed(SDLK_ESCAPE) || win.event == WIN_QUIT) &&
-      _currentPanel == &_mainPanel)
+  if ((_gameInfo.input->isPressed(SDLK_ESCAPE) && _currentPanel == &_mainPanel) ||
+      win.event == WIN_QUIT)
     return (false);
   _frames++;
   if ((time = _gameInfo.clock->getElapsed()) < fps)
@@ -281,10 +300,14 @@ void	Menu::handleClock(int &frame, double &time, double fps)
   _win.updateClock(*_gameInfo.clock);
 }
 
+void	Menu::setFullScreen(const Settings * const set)
+{
+  // _win.stop();
+  // _win.start();
+}
+
 bool	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
 {
-  if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
-    key = '0' + key - SDLK_KP_0;
   if (key == '\r' || key == SDLK_KP_ENTER || key == 27)
     {
       buf.erase(buf.end() - 1);
@@ -327,8 +350,30 @@ void	Menu::getPlayerName(std::string &name, int playerId) const
 	    }
 	}
     }
-
 }
+
+
+int	Menu::getNbIa()
+{
+  const std::vector<AWidget *> *panel;
+  int				res = 0;
+
+  panel = (_multi ? &_newGamePanelMulti : &_newGamePanelSolo);
+  for (std::vector<AWidget *>::const_iterator it = (*panel).begin(),
+	 endit = (*panel).end(); it != endit ; ++it)
+    {
+      if (dynamic_cast<InputWidget *>(*it))
+	{
+	  std::string content((dynamic_cast<InputWidget *>(*it))->getContent());
+	  std::stringstream ss(content);
+
+	  ss >> res;
+	  return (res);
+	}
+    }
+  return (0);
+}
+
 
 void	Menu::textInput(std::string &buf, unsigned int maxlen)
 {
@@ -353,7 +398,7 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
 	{
 	  key = *beg;
 	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
-	    key = '0' + key - SDLK_KP_1 + 1;
+	    key = '0' + (key == SDLK_KP_0 ? (key - 10) : key) - SDLK_KP_1 + 1;
 	  if (save == key)
 	    {
 	      if (((key < 128 && key != '\b') && frame < 8) ||
@@ -380,6 +425,7 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
 
 void	Menu::launchGame(const std::string &file)
 {
+  int	nbIa;
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
   bool	done = true;
@@ -391,6 +437,8 @@ void	Menu::launchGame(const std::string &file)
   _player2->setMulti(_multi);
   getPlayerName(name[0], 1);
   getPlayerName(name[1], 2);
+  nbIa = getNbIa();
+  std::cout << "Nb ia: " << nbIa << std::endl;
   std::cout << name[0] << std::endl;
   std::cout << name[1] << std::endl;
   if (!_gameEngine.loadMap(file))

@@ -31,7 +31,9 @@ public:
   void	setCurrentPanel(std::vector<AWidget *> * const currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen);
   void	getPlayerName(std::string &name, int playerId) const;
+  int	getNbIa();
   void	setDone(bool done = true);
+  void	setFullScreen(const Settings * const set);
   Menu	&operator++();
   Menu	&operator--();
 
@@ -61,6 +63,7 @@ private:
   std::vector<AWidget *> _importMapPanel;
   std::vector<AWidget *> _optionsPanel;
   std::vector<AWidget *> _controlsPanel;
+  std::vector<AWidget *> _screenPanel;
   Player		 *_player1;
   Player		 *_player2;
 };

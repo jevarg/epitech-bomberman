@@ -20,7 +20,7 @@ Settings::Settings()
   _cvarList.push_back(new t_cvar ("m_mapWidth", 5, 100000, 25));
   _cvarList.push_back(new t_cvar ("s_mapDensity", 0, 100, 25));
   _cvarList.push_back(new t_cvar ("s_mapLinear", 0, 100, 25));
-  _cvarList.push_back(new t_cvar ("r_fullScreen", 0, 1, 1));
+  _cvarList.push_back(new t_cvar ("r_fullScreen", 0, 1, 0));
   _cvarList.push_back(new t_cvar ("r_mipmap", 0, 1, 1));
   _cvarList.push_back(new t_cvar ("s_fireSpeed", 0, 100000, 10));
   _cvarList.push_back(new t_cvar ("s_fireTime", 0, 1000000, 10));
@@ -109,7 +109,6 @@ void	Settings::initCvar()
       _cvarMap.insert(std::pair<cvar, int>
 		      (static_cast<cvar>(std::distance(_cvarList.begin(), listit)),
 		       (*listit)->default_value));
-      break ;
     }
 }
 
