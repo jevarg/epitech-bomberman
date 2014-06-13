@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Fri Jun 13 13:10:02 2014 
+## Last update Fri Jun 13 15:30:49 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -15,6 +15,7 @@ CC		=	g++
 RM		=	rm -f
 
 LIBGDLDIR	+=	./libGDL
+LIBAVDIR	=	./libav
 WIDGETDIR	=	Widgets
 SRCDIR		=	./src
 
@@ -84,7 +85,8 @@ CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
 CXXFLAGS	+=	$(shell pkg-config --cflags libswscale libavcodec libavformat libavutil)
 
 LDFLAGS		+=	$(shell pkg-config --libs libswscale libavcodec libavformat libavutil)
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2_mixer -lSDL2 -lpthread -lm -ldl -p -lrt
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -L$(LIBAV) -lavcodec  -lavformat -lavutil -lswscale
+LDFLAGS		+=	-lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2_mixer -lSDL2 -lpthread -lm -ldl -p -lrt
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR)) \
