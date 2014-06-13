@@ -24,7 +24,7 @@ void	IA::update()
   pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1]);
   if (cnt != 0)
     {
-      int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
+      int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient), "ai/main.lua");
       if (res == DROPBOMB)
 	dropBomb();
       else
@@ -32,7 +32,7 @@ void	IA::update()
     }
 }
 
-void	IA::danger_in_dir(int i, int j, int x, int y, 
+void	IA::danger_in_dir(int i, int j, int x, int y,
 			  int i_x, int i_y, int max_it, int *cnt)
 {
   for (int k = 0 ; k < max_it ; k++)
@@ -53,7 +53,7 @@ void	IA::danger_in_dir(int i, int j, int x, int y,
     }
 }
 
-void	IA::put_abstract_flame(Flame *ff, int i, int j, 
+void	IA::put_abstract_flame(Flame *ff, int i, int j,
 			       int c1, int c2, int *cnt)
 {
   int dir = ff->getDirection();
@@ -106,14 +106,14 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 
 }
 
-int	IA::getResultScript(int aggro, int orient)
+int	IA::getResultScript(int aggro, int orient, const char *fileName)
 {
   _lua.pushStringInt("orientation", orient);
   _lua.pushStringInt("bomb_range", 4);
   _lua.pushStringInt("level", _level);
   _lua.pushStringInt("aggro", aggro);
   _lua.pushSetGlobal("arg");
-  _lua.executeLua("ai/main.lua");
+  _lua.executeLua(fileName);
   return (_lua.getDatas());
 }
 
