@@ -32,6 +32,7 @@ public:
   void	textInput(std::string &buf, unsigned int maxlen);
   void	getPlayerName(std::string &name, int playerId) const;
   void	setDone(bool done = true);
+  void	setFullScreen(const Settings * const set);
   Menu	&operator++();
   Menu	&operator--();
 

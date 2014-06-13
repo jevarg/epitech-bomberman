@@ -15,6 +15,7 @@
 #include "KeyWidget.hpp"
 #include "NameWidget.hpp"
 #include "ResWidget.hpp"
+#include "FullScreenWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL), _gameEngine(&_win, &_textShader, &_gameInfo)
 {
@@ -133,12 +134,12 @@ bool  Menu::initialize()
   _optionsPanel.push_back(background);
   _optionsPanel.push_back(title);
   _optionsPanel.push_back(back);
-  _optionsPanel.push_back(new ImageWidget(x / 4, y / 2.0f, y / 11.25f, x / 2,
-					  "./assets/Button/fullscreen_off.tga"));
+  _optionsPanel.push_back(new FullScreenWidget(x / 4, y / 2.0f, y / 11.25f, x / 2,
+					    "./assets/Button/button.tga", ""));
   _optionsPanel.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/controls.tga", &_controlsPanel));
-  _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
-					       "./assets/Button/resolution.tga", &_screenPanel));
+  // _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
+  // 					       "./assets/Button/resolution.tga", &_screenPanel));
 
   _controlsPanel.push_back(background);
   _controlsPanel.push_back(title);
@@ -256,6 +257,12 @@ void	Menu::handleClock(int &frame, double &time, double fps)
     usleep((fps - time) * 1000);
   frame = (frame >= 100) ? 100 : frame + 1;
   _win.updateClock(*_gameInfo.clock);
+}
+
+void	Menu::setFullScreen(const Settings * const set)
+{
+  // _win.stop();
+  // _win.start();
 }
 
 bool	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)

@@ -13,12 +13,12 @@ ImageWidget::~ImageWidget()
 {
 }
 
-bool	ImageWidget::isClicked(int x, int y)
+bool	ImageWidget::isClicked(int /*x*/, int /*y*/)
 {
   return (false);
 }
 
-void	ImageWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
+void	ImageWidget::onClick(t_gameinfo &/*gameInfo*/, Menu &/*menu*/)
 {
 }
 
