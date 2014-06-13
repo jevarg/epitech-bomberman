@@ -16,6 +16,7 @@ public:
   void	update();
   Camera &getCam();
   AEntity *clone(int x, int y);
+  void setMulti(bool multi);
 
 private:
   Camera	_camera;

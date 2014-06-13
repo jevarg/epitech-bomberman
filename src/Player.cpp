@@ -11,7 +11,6 @@ Player::Player(int x, int y, t_gameinfo *gameInfo, eType type, bool multi, bool 
 
 Player::~Player()
 {
-  std::cout << "PLAYER DEAD" << std::endl;
 }
 
 /*
@@ -103,10 +102,21 @@ void	Player::update()
 
 AEntity *Player::clone(int x, int y)
 {
+  _isAlive = true;
+  _bombStock = 1;
+  _maxBomb = 1;
+  _health = 1;
+  _speed = 5;
+  _range = 0;
+  _score = 0;
+  _orient = NORTH;
+  _anim = NOTHING;
+  _end = 0;
   _x = x + 0.5;
   _y = y + 0.5;
   _camera.setPos(glm::vec3(x, 6.0, y + 7));
   _camera.setPointView(glm::vec3(x, 0.0, y));
+  _model->setRotation(glm::vec3(0.0, 0.0, 0.0));
   _model->setPos(glm::vec3(x, 0.0, y));
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
   return (this);
@@ -115,4 +125,10 @@ AEntity *Player::clone(int x, int y)
 Camera &Player::getCam()
 {
   return (_camera);
+}
+
+void Player::setMulti(bool multi)
+{
+  _multi = multi;
+  _camera.setPlayer(multi, _gameInfo);
 }

@@ -26,7 +26,11 @@ function get_entities()
 		[4] = TYPE_PRIORITY["danger"],
 		[6] = TYPE_PRIORITY["item"],
 		[7] = TYPE_PRIORITY["item"],
-		[8] = TYPE_PRIORITY["player"]
+		[8] = TYPE_PRIORITY["item"],
+		[9] = TYPE_PRIORITY["item"],
+		[10] = TYPE_PRIORITY["player"],
+		[11] = TYPE_PRIORITY["player"],
+		[12] = TYPE_PRIORITY["player"]
 	}
 	local ent = {}
 	local entities = {}
@@ -45,11 +49,11 @@ end
 
 function set_priority(level)
 	if (level == 1) then
-		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
+		player, item, box, bomb, wall, free, danger = 2, 3, 1, 4, 5, 6, 7
 	elseif (level == 2) then
-		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
+		player, item, box, bomb, wall, free, danger = 1, 2, 3, 4, 5, 6, 7
 	elseif (level == 3) then
-		local player, item, box, bomb, wall, free = 1, 2, 3, 4, 5, 6
+		player, item, box, bomb, wall, free, danger = 2, 1, 3, 4, 5, 6, 7
 	end
 	TYPE_PRIORITY = {
 		["player"] = player,
@@ -57,6 +61,7 @@ function set_priority(level)
 		["box"] = box,
 		["bomb"] = bomb,
 		["wall"] = wall,
-		["free"] = free
+		["free"] = free,
+		["danger"] = danger
 	}
 end

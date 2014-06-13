@@ -11,7 +11,7 @@ enum
     PSPEED = 20,
     PHEALTH = 30,
     PSTOCK = 40,
-    PRANGE = 20
+    PRANGE = 30
   };
 
 class	Box : public AEntity

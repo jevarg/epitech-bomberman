@@ -27,7 +27,7 @@ public:
   bool	update();
   void	draw();
   void	launch();
-  void	launchGame();
+  void	launchGame(const std::string &file);
   void	setCurrentPanel(std::vector<AWidget *> * const currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen);
   void	getPlayerName(std::string &name, int playerId) const;
@@ -51,6 +51,7 @@ private:
   t_gameinfo		_gameInfo;
   GameEngine		_gameEngine;
   int			_frames;
+  Cube			_cube;
   Console		*_console;
   unsigned int		 _filePos;
   std::list<std::string> _filename;
@@ -63,6 +64,8 @@ private:
   std::vector<AWidget *> _optionsPanel;
   std::vector<AWidget *> _controlsPanel;
   std::vector<AWidget *> _screenPanel;
+  Player		 *_player1;
+  Player		 *_player2;
 };
 
 #endif /* _MENU_HPP_ */

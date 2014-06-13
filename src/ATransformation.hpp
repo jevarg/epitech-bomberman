@@ -15,6 +15,7 @@ public:
   void scale(glm::vec3 const& scale);
   void setPos(glm::vec3 const& pos);
   void setScale(glm::vec3 const& scale);
+  void setRotation(glm::vec3 const& rot);
 
   const glm::vec3 &getPos() const;
   const glm::mat4 getTransformation() const;

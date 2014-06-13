@@ -1,6 +1,5 @@
 function authorized_ent_danger(map, cur_x, cur_y, i_y, i_x)
 	if (map[cur_y + i_y][cur_x + i_x] == "W" or
-		map[cur_y + i_y][cur_x + i_x] == "D" or
 		map[cur_y + i_y][cur_x + i_x] == "I" or
 		map[cur_y + i_y][cur_x + i_x] == "P" or
 		map[cur_y + i_y][cur_x + i_x] == "B")
@@ -10,47 +9,20 @@ function authorized_ent_danger(map, cur_x, cur_y, i_y, i_x)
 	return 0
 end
 
-function put_danger_around_at(map, cur_x, cur_y, n, e, block)
-	if (cur_x + n < MAP_XMAX + 1 and block[1] == 0 and map[cur_y][cur_x + n] ~= "O") then
-		if (authorized_ent_danger(map, cur_x, cur_y, 0, n) == 1) then
-			block[1] = 1 
-		else
-			-- print("OK", cur_x + n, cur_y)
-			map[cur_y][cur_x + n] = e
-		end
-	end
-	if (cur_x - n > 0 and block[2] == 0 and map[cur_y][cur_x - n] ~= "O") then
-		if (authorized_ent_danger(map, cur_x, cur_y, 0, n * (-1)) == 1) then
-			block[2] = 1
-		else
-			-- print("OK", cur_x - n, cur_y)
-			map[cur_y][cur_x - n] = e
-		end
-	end
-	if (cur_y + n < MAP_YMAX + 1 and block[3] == 0 and map[cur_y + n][cur_x] ~= "O") then
-		if (authorized_ent_danger(map, cur_x, cur_y, n, 0) == 1) then
-			block[3] = 1
-		else
-			-- print("OK", cur_x, cur_y + n)
-			map[cur_y + n][cur_x] = e
-		end
-	end
-	if (cur_y - n > 0 and block[4] == 0 and map[cur_y - n][cur_x] ~= "O") then
-		if (authorized_ent_danger(map, cur_x, cur_y, n * (-1), 0) == 1) then
-			block[4] = 1
-		else
-			-- print("OK", cur_x, cur_y - n)
-			map[cur_y - n][cur_x] = e
-		end
-	end
+function put_danger_around_at(map, cur_x, cur_y, n, e)
+	-- print(MAP_XMAX, MAP_YMAX, cur_x, cur_y, n, e)
+	up_danger(map, cur_x, cur_y, n, e)
+	down_danger(map, cur_x, cur_y, n, e)
+	left_danger(map, cur_x, cur_y, n, e)
+	left_danger(map, cur_x, cur_y, n, e)
 end
 
 function fill_dangerous_fields(map)
-	local block = {0, 0, 0, 0}
 	for i = 1, #map do
 		for j = 1, #map[i] do
 			if (map[i][j] == "O") then
-				-- print("at", j, i)
+				-- print("have bomb at ", j, i)
+					local block = {0, 0, 0, 0}
 				for k = 1, BOMB_RANGE do
 					put_danger_around_at(map, j, i, k, "D", block)
 				end

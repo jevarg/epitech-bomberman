@@ -17,7 +17,8 @@
 #include "ResWidget.hpp"
 #include "FullScreenWidget.hpp"
 
-Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL), _gameEngine(&_win, &_textShader, &_gameInfo)
+Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL),
+	      _gameEngine(&_win, &_textShader, &_gameInfo)
 {
   _frames = 0;
   _multi = false;
@@ -27,7 +28,6 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
   _gameInfo.clock = new gdl::Clock();
   _gameInfo.set->loadFile(DEFAULT_FILE);
   _gameInfo.set->loadFile(USER_FILE);
-  _gameInfo.map = new Map(*_gameInfo.set);
   loadScore();
 
   _currentPanel = &_mainPanel;
@@ -38,14 +38,22 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 Menu::~Menu()
 {
   saveScore();
+  _player1->setDestroyAttr();
+  _player2->setDestroyAttr();
+  _gameInfo.condvar->broadcast();
+  sleep(1);
 }
 
 bool  Menu::initialize()
 {
   int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
+  ModelFactory &fact = ModelFactory::getInstance();
+  EntityFactory *ent = EntityFactory::getInstance();
 
   if (!_win.start(x, y, "Bomberman", SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL))
     throw(Exception("Cannot open window"));
+  if (!_gameEngine.initialize())
+    return (false);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -170,7 +178,6 @@ bool  Menu::initialize()
   _controlsPanel.push_back(new TextImgWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
 					  y / 16.8, x / 4,
 					     "./assets/Button/button_small.tga", "Drop bomb"));
-
   _screenPanel.push_back(background);
   _screenPanel.push_back(title);
   _screenPanel.push_back(back);
@@ -182,6 +189,36 @@ bool  Menu::initialize()
 				      "./assets/Button/button.tga", "1280x1024"));
   _screenPanel.push_back(new ResWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
 				      "./assets/Button/button.tga", "800x600"));
+
+  _cube.initialize();
+  fact.addModel(WALL, new Cube(_cube), WALL_TEXTURE);
+  fact.addModel(BOX, new Cube(_cube), BOX_TEXTURE);
+  fact.addModel(FLAME, new Cube(_cube), FLAME_TEXTURE);
+  fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
+  fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
+  fact.addModel(STOCKITEM, STOCKITEM_MODEL);
+  fact.addModel(RANGEITEM, RANGEITEM_MODEL);
+  fact.addModel(CHARACTER1, CHARACTER_MODEL);
+  fact.addModel(CHARACTER2, CHARACTER2_MODEL);
+  fact.addModel(BOT, BOT_MODEL);
+  fact.addModel(BOMB, BOMB_MODEL);
+
+  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
+  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
+
+  ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
+  ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
+  ent->addEntity(BOMB, new Bomb(0, 0, NULL, &_gameInfo, false));
+  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, &_gameInfo, NULL, false));
+  ent->addEntity(CHARACTER1, _player1);
+  ent->addEntity(CHARACTER2, _player2);
+  ent->addEntity(BOT, new IA(0, 0, &_gameInfo, false));
+  ent->addEntity(SPEEDITEM, new SpeedItem(0, 0, &_gameInfo, false));
+  ent->addEntity(HEALTHITEM, new HealthItem(0, 0, &_gameInfo, false));
+  ent->addEntity(STOCKITEM, new StockItem(0, 0, &_gameInfo, false));
+  ent->addEntity(RANGEITEM, new RangeItem(0, 0, &_gameInfo, false));
+
+  _gameEngine.setPlayer(_player1, _player2);
   return (true);
 }
 
@@ -207,7 +244,7 @@ bool		Menu::update()
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
     {
-      launchGame();
+      launchGame("");
       _gameInfo.sound->play("menu", MUSIC);
     }
   if (_gameInfo.input->isPressed(SDLK_F1))
@@ -386,7 +423,7 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
     }
 }
 
-void	Menu::launchGame()
+void	Menu::launchGame(const std::string &file)
 {
   int	nbIa;
   Map map(*(_gameInfo.set));
@@ -394,14 +431,17 @@ void	Menu::launchGame()
   bool	done = true;
   std::string name[2];
 
+  _gameEngine.setShutdown(false);
   _gameEngine.setMulti(_multi);
+  _player1->setMulti(_multi);
+  _player2->setMulti(_multi);
   getPlayerName(name[0], 1);
   getPlayerName(name[1], 2);
   nbIa = getNbIa();
   std::cout << "Nb ia: " << nbIa << std::endl;
   std::cout << name[0] << std::endl;
   std::cout << name[1] << std::endl;
-  if (!_gameEngine.initialize())
+  if (!_gameEngine.loadMap(file))
     return ;
   while ((done = _gameEngine.update()))
     _gameEngine.draw();

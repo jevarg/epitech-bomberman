@@ -1,23 +1,22 @@
 #include <cmath>
 #include "GameEngine.hpp"
 #include "IA.hpp"
-#include "Flame.hpp"
 
 IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
   : ACharacter(x, y, BOT, gameInfo, thread), _lua()
 {
-  _level = 2;
+  _level = 3;
+  // _passive = passive;
 }
 
 IA::~IA()
 {
-  std::cout << "DESTROY IA" << std::endl;
 }
 
 void	IA::update()
 {
+  static double aggro[] = {4.0, 8.0, 12.0};
   int cnt = 0;
-  static double aggro[] = {4.0, 8.0, 12.0, 10.0};
   double y = _y - aggro[_level - 1];
   double x = _x - aggro[_level - 1];
 
@@ -32,22 +31,43 @@ void	IA::update()
     }
 }
 
-void	IA::danger_in_dir(int x, int y, int min_x, int max_x, int min_y, int max_y, int i_x, int i_y, int max_it, int *cnt)
+void	IA::danger_in_dir(int i, int j, int x, int y,
+			  int i_x, int i_y, int max_it, int *cnt)
 {
-  for (int i = 0 ; i < max_it ; i++)
+  for (int k = 0 ; k < max_it ; k++)
     {
-      if (x > min_x && x < max_x && y > min_y && y < max_y &&
-	  _gameInfo->map->getEntityIf(x, y, FREE))
+      int type = _gameInfo->map->checkMapColision(j, i);
+      if (type == FREE)
 	{
 	  _lua.pushIntInt(++(*cnt), FLAME);
 	  _lua.pushIntInt(++(*cnt), y);
 	  _lua.pushIntInt(++(*cnt), x);
+	  x += i_x;
+	  y += i_y;
+	  j += i_x;
+	  i += i_y;
 	}
       else
-	break;
-      x += i_x;
-      y += i_y;
+	return ;
     }
+}
+
+void	IA::put_abstract_flame(Flame *ff, int i, int j,
+			       int c1, int c2, int *cnt)
+{
+  int dir = ff->getDirection();
+  static int dir_x[4] = {0, -1, 0, 1};
+  static int dir_y[4] = {-1, 0, 1, 0};
+
+  if (dir == ALLDIR)
+    {
+      danger_in_dir(i + 1, j, c2, c1 + 1, 0, 1, ff->getRange(), cnt);
+      danger_in_dir(i, j + 1, c2 + 1, c1, 1, 0, ff->getRange(), cnt);
+      danger_in_dir(i - 1, j, c2, c1 - 1, 0, -1, ff->getRange(), cnt);
+      danger_in_dir(i, j + 1, c2 - 1, c1, -1, 0, ff->getRange(), cnt);
+    }
+  else
+    danger_in_dir(i, j, c2, c1, dir_x[dir], dir_y[dir], ff->getRange(), cnt);
 }
 
 void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
@@ -62,37 +82,13 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 	{
 	  int type = _gameInfo->map->checkMapColision(j, i);
 	  if (*cnt == 0)
-	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 3) + 9);
+	    _lua.pushCreateTable(((aggro * 2) * (aggro * 2) * 4) + 9);
 	  Flame	*ff;
 	  if ((ff = static_cast<Flame*>(_gameInfo->map->getEntityIf(j, i, FLAME))) != NULL)
-	    {
-	      std::cout << "find flame" << std::endl;
-	      int dir = ff->getDirection();
-	      if (dir == ALLDIR)
-	  	{
-		  std::cout << "in alldir" << std::endl;
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
-				y + (aggro * 2) + 1, 0, -1, ff->getRange(), cnt);
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
-				y + (aggro * 2) + 1, 0, 1, ff->getRange(), cnt);
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
-				y + (aggro * 2) + 1, 1, 0, ff->getRange(), cnt);
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
-				y + (aggro * 2) + 1, -1, 0, ff->getRange(), cnt);
-	  	}
-	      else
-	  	{
-	  	  static int dir_x[4] = {0, -1, 0, 1};
-	  	  static int dir_y[4] = {-1, 0, 1, 0};
-	  	  danger_in_dir(j, i, x, x + (aggro * 2) + 1, y,
-				y + (aggro * 2) + 1, dir_x[dir], dir_y[dir], ff->getRange(), cnt);
-	  	}
-	    }
+	    put_abstract_flame(ff, i, j, c1, c2, cnt);
 	  if (i == std::floor(_y) && j == std::floor(_x))
 	    {
-	      if (type == BOMB)
-	      	_lua.pushStringInt("bomb", 1);
-	      else if (_gameInfo->map->getEntityIf(j, i, BOMB) != NULL)
+	      if (type == BOMB || _gameInfo->map->getEntityIf(j, i, BOMB) != NULL)
 	      	_lua.pushStringInt("bomb", 1);
 	      else
 	      	_lua.pushStringInt("bomb", 0);
@@ -106,6 +102,7 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 	}
       ++c1;
     }
+
 }
 
 int	IA::getResultScript(int aggro, int orient)

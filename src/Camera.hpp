@@ -17,6 +17,8 @@ public:
   void	setPointView(glm::vec3 vec);
   void	setPos(glm::vec3 pos);
 
+  void	setPlayer(bool player, t_gameinfo *gameInfo);
+
   const glm::mat4 &getTransformation() const;
   const glm::mat4 &getProjection() const;
   const glm::vec3 &getPosView() const;
