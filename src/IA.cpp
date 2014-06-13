@@ -11,7 +11,6 @@ IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
 
 IA::~IA()
 {
-  std::cout << "DESTROY IA" << std::endl;
 }
 
 void	IA::update()
@@ -32,7 +31,7 @@ void	IA::update()
     }
 }
 
-void	IA::danger_in_dir(int i, int j, int x, int y, 
+void	IA::danger_in_dir(int i, int j, int x, int y,
 			  int i_x, int i_y, int max_it, int *cnt)
 {
   for (int k = 0 ; k < max_it ; k++)
@@ -53,7 +52,7 @@ void	IA::danger_in_dir(int i, int j, int x, int y,
     }
 }
 
-void	IA::put_abstract_flame(Flame *ff, int i, int j, 
+void	IA::put_abstract_flame(Flame *ff, int i, int j,
 			       int c1, int c2, int *cnt)
 {
   int dir = ff->getDirection();

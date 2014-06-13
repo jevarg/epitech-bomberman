@@ -384,6 +384,7 @@ void	Menu::launchGame()
   bool	done = true;
   std::string name[2];
 
+  _gameEngine.setShutdown(false);
   _gameEngine.setMulti(_multi);
   _player1->setMulti(_multi);
   _player2->setMulti(_multi);

@@ -102,6 +102,7 @@ void	Player::update()
 
 AEntity *Player::clone(int x, int y)
 {
+  _isAlive = true;
   _bombStock = 1;
   _maxBomb = 1;
   _health = 1;
@@ -115,6 +116,7 @@ AEntity *Player::clone(int x, int y)
   _y = y + 0.5;
   _camera.setPos(glm::vec3(x, 6.0, y + 7));
   _camera.setPointView(glm::vec3(x, 0.0, y));
+  _model->setRotation(glm::vec3(0.0, 0.0, 0.0));
   _model->setPos(glm::vec3(x, 0.0, y));
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
   return (this);

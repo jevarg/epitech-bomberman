@@ -94,6 +94,7 @@ public:
 
   void		setMulti(bool multi);
   void		setPlayer(Player *player1, Player *player2);
+  void		setShutdown(bool shutdown);
 
 private:
   void	mainInput();
