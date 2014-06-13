@@ -42,7 +42,7 @@ bool  Menu::initialize()
 {
   int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
 
-  if (!_win.start(x, y, "Bomberman"))
+  if (!_win.start(x, y, "Bomberman", SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL))
     throw(Exception("Cannot open window"));
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
@@ -327,8 +327,12 @@ void	Menu::launchGame()
 
 void	Menu::launch()
 {
+  Intro intro;
+
   if (!initialize())
     return ;
+  if (intro.initialize("./Ressources/Video/intro.mp4"))
+    intro.play(_gameInfo, _win, _textShader);
   while (!_done)
     {
       if (update() == false)
