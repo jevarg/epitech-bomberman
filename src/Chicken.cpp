@@ -21,7 +21,7 @@ void	Chicken::update()
   pushEntitie(std::floor(x), std::floor(y), &cnt, 2);
   if (cnt != 0)
     {
-      int res = getResultScript(2, static_cast<int>(_orient), "ai/passive.lua");
+      int res = getResultScript(static_cast<int>(_orient), "ai/passive.lua");
       updatePosition(_gameInfo->map, static_cast<eAction>(res), _gameInfo->clock);
     }
 }
@@ -53,7 +53,7 @@ void	Chicken::pushEntitie(int x, int y, int *cnt, int aggro)
     }
 }
 
-int	Chicken::getResultScript(int aggro, int orient, const char *fileName)
+int	Chicken::getResultScript(int orient, const char *fileName)
 {
   _lua.pushStringInt("orientation", orient);
   _lua.pushStringInt("aggro", 2);

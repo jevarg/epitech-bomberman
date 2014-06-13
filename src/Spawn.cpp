@@ -1,3 +1,4 @@
+#include "Chicken.hpp"
 #include "IA.hpp"
 #include "GameEngine.hpp"
 #include "Spawn.hpp"
@@ -30,6 +31,8 @@ void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
     }
   else
     {
+      _map->addEntity(fact->getEntity(BOT, x, y));
+      --spawn.nbIa;
       _map->addEntity(fact->getEntity(BOT, x, y));
       --spawn.nbIa;
     }
