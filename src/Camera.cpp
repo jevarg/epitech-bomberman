@@ -53,3 +53,13 @@ void	Camera::setPos(glm::vec3 pos)
 {
   _pos = pos;
 }
+
+void	Camera::setPlayer(bool player, t_gameinfo *gameInfo)
+{
+  float nbPlayer = (player == false) ? 1 : 2;
+
+  _projection = glm::perspective(static_cast<float>(gameInfo->set->getVar(FOV)),
+  				 (static_cast<float>(gameInfo->set->getVar(W_WIDTH)) / nbPlayer)
+  				 / (static_cast<float>(gameInfo->set->getVar(W_HEIGHT))),
+  				 0.1f, 100.0f);
+}

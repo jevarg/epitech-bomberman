@@ -15,34 +15,21 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _multi = true;
   _frames = 0;
   _fps.initialize();
-  _end_screen[0] = NULL;
-  _end_screen[1] = NULL;
+  _end_screen[0] = new Square(WIN_TEXTURE);
+  _end_screen[1] = new Square(LOSE_TEXTURE);
 }
 
 GameEngine::~GameEngine()
 {
-  if (_player1)
-    _player1->setDestroyAttr();
-  if (_player2)
-    _player2->setDestroyAttr();
-  if (_end_screen[0] != NULL)
-    delete _end_screen[0];
-  if (_end_screen[1] != NULL)
-    delete _end_screen[1];
-  _gameInfo->condvar->broadcast();
-  sleep(1);
+  delete _end_screen[0];
+  delete _end_screen[1];
   delete _gameInfo->mutex;
   delete _gameInfo->condvar;
 }
 
 bool GameEngine::initialize()
 {
-  ModelFactory &fact = ModelFactory::getInstance();
-  EntityFactory *ent = EntityFactory::getInstance();
   Spawn	spawn(_gameInfo->map);
-
-  _end_screen[0] = new Square(WIN_TEXTURE);
-  _end_screen[1] = new Square(LOSE_TEXTURE);
 
   if (!_end_screen[0]->initialize() || !_end_screen[1]->initialize())
     return (false);
@@ -89,17 +76,7 @@ bool GameEngine::initialize()
   _skybox = new Cube(SKY_TEXTURE);
   _skybox->initialize();
 
-  fact.addModel(WALL, new Cube(*_ground), WALL_TEXTURE);
-  fact.addModel(BOX, new Cube(*_ground), BOX_TEXTURE);
-  fact.addModel(FLAME, new Cube(*_ground), FLAME_TEXTURE);
-  fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
-  fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
-  fact.addModel(STOCKITEM, STOCKITEM_MODEL);
-  fact.addModel(RANGEITEM, RANGEITEM_MODEL);
-  fact.addModel(CHARACTER1, CHARACTER_MODEL);
-  fact.addModel(CHARACTER2, CHARACTER2_MODEL);
-  fact.addModel(BOT, BOT_MODEL);
-  fact.addModel(BOMB, BOMB_MODEL);
+  _fps.initialize();
 
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
@@ -107,21 +84,6 @@ bool GameEngine::initialize()
   _gameInfo->map->createMap(*_gameInfo);
   // _gameInfo->map->load("map", *_gameInfo);
    spawn.setSpawnSize(_gameInfo->map->getWidth(), _gameInfo->map->getHeight());
-
-  _player1 = new Player(0, 0, _gameInfo, CHARACTER1, _multi);
-  _player2 = new Player(0, 0, _gameInfo, CHARACTER2, _multi);
-
-  ent->addEntity(WALL, new Entity(0, 0, WALL, _gameInfo));
-  ent->addEntity(BOX, new Box(0, 0, _gameInfo));
-  ent->addEntity(BOMB, new Bomb(0, 0, NULL, _gameInfo, false));
-  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, _gameInfo, NULL, false));
-  ent->addEntity(CHARACTER1, _player1);
-  ent->addEntity(CHARACTER2, _player2);
-  ent->addEntity(BOT, new IA(0, 0, _gameInfo, false));
-  ent->addEntity(SPEEDITEM, new SpeedItem(0, 0, _gameInfo, false));
-  ent->addEntity(HEALTHITEM, new HealthItem(0, 0, _gameInfo, false));
-  ent->addEntity(STOCKITEM, new StockItem(0, 0, _gameInfo, false));
-  ent->addEntity(RANGEITEM, new RangeItem(0, 0, _gameInfo, false));
 
   _players.push_back(_player1);
   if (_multi)
@@ -331,4 +293,10 @@ void	GameEngine::moveGround(Player *player)
 void	GameEngine::setMulti(bool multi)
 {
   _multi = multi;
+}
+
+void	GameEngine::setPlayer(Player *player1, Player *player2)
+{
+  _player1 = player1;
+  _player2 = player2;
 }

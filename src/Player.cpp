@@ -103,6 +103,15 @@ void	Player::update()
 
 AEntity *Player::clone(int x, int y)
 {
+  _bombStock = 1;
+  _maxBomb = 1;
+  _health = 1;
+  _speed = 5;
+  _range = 0;
+  _score = 0;
+  _orient = NORTH;
+  _anim = NOTHING;
+  _end = 0;
   _x = x + 0.5;
   _y = y + 0.5;
   _camera.setPos(glm::vec3(x, 6.0, y + 7));
@@ -115,4 +124,10 @@ AEntity *Player::clone(int x, int y)
 Camera &Player::getCam()
 {
   return (_camera);
+}
+
+void Player::setMulti(bool multi)
+{
+  _multi = multi;
+  _camera.setPlayer(multi, _gameInfo);
 }

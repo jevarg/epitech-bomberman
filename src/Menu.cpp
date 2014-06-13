@@ -15,7 +15,8 @@
 #include "KeyWidget.hpp"
 #include "NameWidget.hpp"
 
-Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL), _gameEngine(&_win, &_textShader, &_gameInfo)
+Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL),
+	      _gameEngine(&_win, &_textShader, &_gameInfo)
 {
   _frames = 0;
   _multi = false;
@@ -41,6 +42,8 @@ Menu::~Menu()
 bool  Menu::initialize()
 {
   int x = _gameInfo.set->getVar(W_WIDTH), y = _gameInfo.set->getVar(W_HEIGHT);
+  ModelFactory &fact = ModelFactory::getInstance();
+  EntityFactory *ent = EntityFactory::getInstance();
 
   if (!_win.start(x, y, "Bomberman", SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL))
     throw(Exception("Cannot open window"));
@@ -162,6 +165,36 @@ bool  Menu::initialize()
   _controlsPanel.push_back(new TextImgWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
 					  y / 16.8, x / 4,
 					     "./assets/Button/button_small.tga", "Drop bomb"));
+
+  _cube.initialize();
+  fact.addModel(WALL, new Cube(_cube), WALL_TEXTURE);
+  fact.addModel(BOX, new Cube(_cube), BOX_TEXTURE);
+  fact.addModel(FLAME, new Cube(_cube), FLAME_TEXTURE);
+  fact.addModel(SPEEDITEM, SPEEDITEM_MODEL);
+  fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
+  fact.addModel(STOCKITEM, STOCKITEM_MODEL);
+  fact.addModel(RANGEITEM, RANGEITEM_MODEL);
+  fact.addModel(CHARACTER1, CHARACTER_MODEL);
+  fact.addModel(CHARACTER2, CHARACTER2_MODEL);
+  fact.addModel(BOT, BOT_MODEL);
+  fact.addModel(BOMB, BOMB_MODEL);
+
+  _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
+  _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
+
+  ent->addEntity(WALL, new Entity(0, 0, WALL, &_gameInfo));
+  ent->addEntity(BOX, new Box(0, 0, &_gameInfo));
+  ent->addEntity(BOMB, new Bomb(0, 0, NULL, &_gameInfo, false));
+  ent->addEntity(FLAME, new Flame(0, 0, 1, 0, NORTH, &_gameInfo, NULL, false));
+  ent->addEntity(CHARACTER1, _player1);
+  ent->addEntity(CHARACTER2, _player2);
+  ent->addEntity(BOT, new IA(0, 0, &_gameInfo, false));
+  ent->addEntity(SPEEDITEM, new SpeedItem(0, 0, &_gameInfo, false));
+  ent->addEntity(HEALTHITEM, new HealthItem(0, 0, &_gameInfo, false));
+  ent->addEntity(STOCKITEM, new StockItem(0, 0, &_gameInfo, false));
+  ent->addEntity(RANGEITEM, new RangeItem(0, 0, &_gameInfo, false));
+
+  _gameEngine.setPlayer(_player1, _player2);
   return (true);
 }
 
@@ -348,6 +381,8 @@ void	Menu::launchGame()
   std::string name[2];
 
   _gameEngine.setMulti(_multi);
+  _player1->setMulti(_multi);
+  _player2->setMulti(_multi);
   getPlayerName(name[0], 1);
   getPlayerName(name[1], 2);
   std::cout << name[0] << std::endl;
