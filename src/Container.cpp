@@ -23,8 +23,8 @@ eType	Container::checkColision(int x, int y) const
    for (l_Entcit end = _mobileEnt.end(); lit != end; ++lit)
      if ((*lit)->getXPos() == x && (*lit)->getYPos() == y &&
 	 (*lit)->toDestroy() == false)
-      return ((*lit)->getType());
-  return (FREE);
+       return ((*lit)->getType());
+   return (FREE);
 }
 
 void	Container::stockEntity(AEntity *ent)
