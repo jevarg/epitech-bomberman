@@ -318,6 +318,7 @@ void	Menu::launchGame()
   _gameInfo.map = &map;
   bool	done = true;
 
+  _gameEngine.setMulti(_multi);
   if (!_gameEngine.initialize())
     return ;
   while ((done = _gameEngine.update()))
