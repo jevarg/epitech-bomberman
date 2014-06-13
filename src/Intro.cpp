@@ -100,7 +100,7 @@ bool Intro::nextFrame()
 bool Intro::update(gdl::SdlContext &win, gdl::Clock &clock, Input &input, Settings &set)
 {
   input.getInput(set);
-  usleep(33.33 * 1000);
+  usleep(30.0 * 1000);
   if (!nextFrame() || input.isPressed(SDLK_SPACE))
     return (false);
   win.updateClock(clock);
