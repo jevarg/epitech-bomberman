@@ -26,7 +26,6 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
   _gameInfo.clock = new gdl::Clock();
   _gameInfo.set->loadFile(DEFAULT_FILE);
   _gameInfo.set->loadFile(USER_FILE);
-  _gameInfo.map = new Map(*_gameInfo.set);
   loadScore();
 
   _currentPanel = &_mainPanel;
@@ -51,6 +50,8 @@ bool  Menu::initialize()
 
   if (!_win.start(x, y, "Bomberman", SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL))
     throw(Exception("Cannot open window"));
+  if (!_gameEngine.initialize())
+    return (false);
   glEnable(GL_DEPTH_TEST);
   glEnable(GL_BLEND);
   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
@@ -392,7 +393,7 @@ void	Menu::launchGame()
   getPlayerName(name[1], 2);
   std::cout << name[0] << std::endl;
   std::cout << name[1] << std::endl;
-  if (!_gameEngine.initialize())
+  if (!_gameEngine.loadMap())
     return ;
   while ((done = _gameEngine.update()))
     _gameEngine.draw();

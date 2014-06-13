@@ -20,19 +20,19 @@ HUD::~HUD()
 
 }
 
-void HUD::setScore(float score)
+void HUD::setScore(float score, float x)
 {
   std::stringstream ss("");
 
   ss << score;
-  _score.setText(std::string("Score: ") + ss.str(), 10.0, 800.0, 50);
+  _score.setText(std::string("Score: ") + ss.str(), 10.0, x - 100, 50);
 }
 
 void HUD::draw(Player *player, t_gameinfo &gameInfo, bool multi)
 {
   float x = gameInfo.set->getVar(W_WIDTH), y = gameInfo.set->getVar(W_HEIGHT);
 
-  setScore(player->getScore());
+  setScore(player->getScore(), y);
   glDisable(GL_DEPTH_TEST);
   _shader.bind();
   _shader.setUniform("projection", glm::ortho(0.0f, x / ((multi == true) ? 2 : 1),

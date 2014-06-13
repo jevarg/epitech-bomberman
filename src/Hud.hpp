@@ -19,7 +19,7 @@ public:
   HUD(gdl::AShader &shader);
   ~HUD();
 
-  void setScore(float score);
+  void setScore(float score, float x);
   void draw(Player *player, t_gameInfo &gameInfo, bool multi);
 
 private:
