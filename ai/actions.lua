@@ -127,17 +127,13 @@ function run_out_danger(map_nb, x, y, block)
 	return tmpx, tmpy
 end
 
-function random_movement(map)
-	-- print("random")
+function get_orient(map)
 	local orient = arg["orientation"] + 1
 	local mov = {1, 1, -1, -1}
 	local tested = {0, 0, 0, 0}
 	local x, y = X, Y
-	local i
-
-	if (orient == 1 or orient == 3) then y = y + mov[orient] end
-	if (orient == 2 or orient == 4) then x = x + mov[orient] end
-	if (map[y][x] == ".") then return x, y end
+	local i	
+	
 	for i = 0, 3 do
 		x = X
 		y = Y
@@ -157,4 +153,25 @@ function random_movement(map)
 		if (map[y][x] == ".") then return x, y end
 	end
 	return x, y
+	
+end
+
+function random_movement(map)
+	-- print("random")
+	local mov = {1, 1, -1, -1}
+	local orient = arg["orientation"] + 1
+	local x, y = X, Y
+
+	if (orient == 1 or orient == 3) then y = y + mov[orient] end
+	if (orient == 2 or orient == 4) then x = x + mov[orient] end
+	if (map[y][x] == ".") then
+		local tx, ty = get_orient(map)
+		if (X == tx - mov[orient] and Y == ty - mov[orient]) then
+			return x, y
+		elseif (math.random() * 100 < 10) then
+			return tx, ty
+		end
+		return x, y
+	end
+	return get_orient(map)
 end
