@@ -278,22 +278,28 @@ void	GameEngine::setShutdown(bool shutdown)
   _shutdown = shutdown;
 }
 
-bool	GameEngine::loadMap()
+bool	GameEngine::loadMap(const std::string &file)
 {
   Spawn	spawn(_gameInfo->map);
 
-  try
+  if (file != "")
     {
-      int x = 0, y = 0;
-      _gameInfo->map->determineMapSize("map", x, y);
-      _gameInfo->set->setVar(MAP_WIDTH, x);
-      _gameInfo->set->setVar(MAP_HEIGHT, y);
+      try
+	{
+	  int x = 0, y = 0;
+	  _gameInfo->map->determineMapSize(file, x, y);
+	  _gameInfo->set->setVar(MAP_WIDTH, x);
+	  _gameInfo->set->setVar(MAP_HEIGHT, y);
+	}
+      catch (Exception &e)
+	{
+	  std::cerr << e.what() << std::endl;
+	  return (false);
+	}
+      _gameInfo->map->load("map", *_gameInfo);
     }
-  catch (Exception &e)
-    {
-      std::cerr << e.what() << std::endl;
-      return (false);
-    }
+  else
+    _gameInfo->map->createMap(*_gameInfo);
 
   _mapX = _gameInfo->set->getVar(MAP_WIDTH);
   _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
@@ -308,8 +314,6 @@ bool	GameEngine::loadMap()
 
   _gameInfo->sound->play("game", MUSIC);
 
-  _gameInfo->map->createMap(*_gameInfo);
-  // _gameInfo->map->load("map", *_gameInfo);
   spawn.setSpawnSize(_gameInfo->map->getWidth(), _gameInfo->map->getHeight());
 
   _players.push_back(_player1);

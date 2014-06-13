@@ -95,7 +95,7 @@ public:
   void		setMulti(bool multi);
   void		setPlayer(Player *player1, Player *player2);
   void		setShutdown(bool shutdown);
-  bool		loadMap();
+  bool		loadMap(const std::string &file);
 
 private:
   void	mainInput();

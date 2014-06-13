@@ -225,7 +225,7 @@ bool		Menu::update()
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
     {
-      launchGame();
+      launchGame("");
       _gameInfo.sound->play("menu", MUSIC);
     }
   if (_gameInfo.input->isPressed(SDLK_F1))
@@ -378,7 +378,7 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
     }
 }
 
-void	Menu::launchGame()
+void	Menu::launchGame(const std::string &file)
 {
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
@@ -393,7 +393,7 @@ void	Menu::launchGame()
   getPlayerName(name[1], 2);
   std::cout << name[0] << std::endl;
   std::cout << name[1] << std::endl;
-  if (!_gameEngine.loadMap())
+  if (!_gameEngine.loadMap(file))
     return ;
   while ((done = _gameEngine.update()))
     _gameEngine.draw();
