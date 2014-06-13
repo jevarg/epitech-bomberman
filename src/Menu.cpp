@@ -14,6 +14,7 @@
 #include "ArrowWidget.hpp"
 #include "KeyWidget.hpp"
 #include "NameWidget.hpp"
+#include "ResWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL), _gameEngine(&_win, &_textShader, &_gameInfo)
 {
@@ -137,7 +138,7 @@ bool  Menu::initialize()
   _optionsPanel.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/controls.tga", &_controlsPanel));
   _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
-					       "./assets/Button/button.tga", &_screenPanel));
+					       "./assets/Button/resolution.tga", &_screenPanel));
 
   _controlsPanel.push_back(background);
   _controlsPanel.push_back(title);
@@ -168,6 +169,14 @@ bool  Menu::initialize()
   _screenPanel.push_back(background);
   _screenPanel.push_back(title);
   _screenPanel.push_back(back);
+  _screenPanel.push_back(new ResWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "2880x1800"));
+  _screenPanel.push_back(new ResWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "1920x1080"));
+  _screenPanel.push_back(new ResWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "1280x1024"));
+  _screenPanel.push_back(new ResWidget(x / 4, y / 4.5f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "800x600"));
   return (true);
 }
 
