@@ -347,6 +347,7 @@ void	Menu::launchGame()
   bool	done = true;
   std::string name[2];
 
+  _gameEngine.setMulti(_multi);
   getPlayerName(name[0], 1);
   getPlayerName(name[1], 2);
   std::cout << name[0] << std::endl;
