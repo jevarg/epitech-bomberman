@@ -24,10 +24,11 @@ enum	eType
     RANGEITEM,
     CHARACTER1,
     CHARACTER2,
+    CHICKEN,
     BOT,
+    CHARACTER,
     GROUND,
-    UNKNOWNENTITY,
-    CHARACTER
+    UNKNOWNENTITY
   };
 
 class Map;

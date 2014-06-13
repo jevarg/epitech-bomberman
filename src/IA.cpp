@@ -6,7 +6,6 @@ IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
   : ACharacter(x, y, BOT, gameInfo, thread), _lua()
 {
   _level = 3;
-  // _passive = passive;
 }
 
 IA::~IA()

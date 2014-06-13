@@ -5,6 +5,7 @@
 Chicken::Chicken(int x, int y, t_gameinfo *gameInfo, bool thread)
   : ACharacter(x, y, BOT, gameInfo, thread), _lua()
 {
+  _health = 200;
 }
 
 Chicken::~Chicken()
@@ -21,7 +22,7 @@ void	Chicken::update()
   pushEntitie(std::floor(x), std::floor(y), &cnt, 2);
   if (cnt != 0)
     {
-      int res = getResultScript(static_cast<int>(_orient), "ai/passive.lua");
+      int res = getResultScript(static_cast<int>(_orient), "ai/passiveAi.lua");
       updatePosition(_gameInfo->map, static_cast<eAction>(res), _gameInfo->clock);
     }
 }

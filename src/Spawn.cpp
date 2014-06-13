@@ -33,8 +33,6 @@ void	Spawn::spawnCharacter(t_spawn &spawn, int x, int y)
     {
       _map->addEntity(fact->getEntity(BOT, x, y));
       --spawn.nbIa;
-      _map->addEntity(fact->getEntity(BOT, x, y));
-      --spawn.nbIa;
     }
 }
 

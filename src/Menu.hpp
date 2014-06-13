@@ -12,6 +12,7 @@
 # include "AWidget.hpp"
 # include "Console.hpp"
 # include "Intro.hpp"
+# include "Chicken.hpp"
 
 # define SCORE_PATH "./.scores"
 # define MAPS_PATH "./Save/Maps/"
