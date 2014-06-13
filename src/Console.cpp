@@ -76,7 +76,7 @@ bool	Console::aff(const gdl::SdlContext &win, float winX, float winY)
 	{
 	  key = *beg;
 	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
-	    key = '0' + key - SDLK_KP_1 + 1;
+	    key = '0' + (key == SDLK_KP_0 ? (key - 10) : key) - SDLK_KP_1 + 1;
 	  if (save == key)
 	    {
 	      if (((key < 128 && key != '\b') && frame < 8) ||
