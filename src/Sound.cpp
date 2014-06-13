@@ -3,9 +3,10 @@
 
 Sound::Sound()
 {
+  _enabled = true;
   try
     {
-      if (Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+      if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
 	throw (Exception("Mix_OpenAudio()"));
       Mix_AllocateChannels(128);
       _musicBox["intro"] = Mix_LoadMUS("./assets/sounds/intro.ogg");
@@ -22,6 +23,9 @@ Sound::Sound()
       _soundBox["click"] = Mix_LoadWAV("./assets/sounds/click.wav");
       _soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav");
       _soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav");
+      for (std::map<std::string, Mix_Chunk *>::iterator it = _soundBox.begin(); it != _soundBox.end(); ++it)
+	if (it->second != NULL)
+	  Mix_VolumeChunk(it->second, 16);
     }
   catch (Exception &e)
     {
@@ -53,6 +57,27 @@ Sound::~Sound()
       Mix_FreeChunk(it->second);
   Mix_AllocateChannels(0);
   Mix_Quit();
+}
+
+void	Sound::toggle()
+{
+  int	volume;
+
+  if (_enabled == true)
+    {
+      volume = 0;
+      Mix_VolumeMusic(0);
+      _enabled = false;
+    }
+  else
+    {
+      volume = 16;
+      Mix_VolumeMusic(128);
+      _enabled = true;
+    }
+  for (std::map<std::string, Mix_Chunk *>::iterator it = _soundBox.begin(); it != _soundBox.end(); ++it)
+    if (it->second != NULL)
+      Mix_VolumeChunk(it->second, volume);
 }
 
 bool	Sound::play(const std::string &to_play, int type)
