@@ -13,6 +13,7 @@
 #include "LoadGameWidget.hpp"
 #include "ArrowWidget.hpp"
 #include "KeyWidget.hpp"
+#include "NameWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL), _gameEngine(&_win, &_textShader, &_gameInfo)
 {
@@ -74,18 +75,24 @@ bool  Menu::initialize()
   _newGamePanelSolo.push_back(background);
   _newGamePanelSolo.push_back(title);
   _newGamePanelSolo.push_back(back);
-  _newGamePanelSolo.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2,
+  _newGamePanelSolo.push_back(new LaunchWidget(x / 4, y / 2.0f, y / 11.25f, x / 2,
 					   "./assets/Button/generate_map.tga", &_mainPanel));
-  _newGamePanelSolo.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2,
+  _newGamePanelSolo.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
+  _newGamePanelSolo.push_back(new NameWidget(x / 4, y / 4.0, y / 11.25f, x / 2,
+					       "./assets/Button/button.tga", 1));
 
   _newGamePanelMulti.push_back(background);
   _newGamePanelMulti.push_back(title);
   _newGamePanelMulti.push_back(back);
-  _newGamePanelMulti.push_back(new LaunchWidget(x / 4, 450, y / 11.25f, x / 2,
+  _newGamePanelMulti.push_back(new LaunchWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
 					   "./assets/Button/generate_map.tga", &_mainPanel));
-  _newGamePanelMulti.push_back(new NavigationWidget(x / 4, 300, y / 11.25f, x / 2,
+  _newGamePanelMulti.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
+  _newGamePanelMulti.push_back(new NameWidget(x / 4, y / 3.0, y / 11.25f, x / 2,
+					       "./assets/Button/button.tga", 1));
+  _newGamePanelMulti.push_back(new NameWidget(x / 4, y / 4.5, y / 11.25f, x / 2,
+					       "./assets/Button/button.tga", 2));
 
   _loadGamePanel.push_back(background);
   _loadGamePanel.push_back(title);
@@ -189,7 +196,8 @@ bool		Menu::update()
       _console->aff(_win, 1600.0f, 900.0f);
       glEnable(GL_DEPTH_TEST);
     }
-  if (_gameInfo.input->isPressed(SDLK_ESCAPE) || win.event == WIN_QUIT)
+  if ((_gameInfo.input->isPressed(SDLK_ESCAPE) || win.event == WIN_QUIT) &&
+      _currentPanel == &_mainPanel)
     return (false);
   _frames++;
   if ((time = _gameInfo.clock->getElapsed()) < fps)
