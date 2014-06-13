@@ -25,3 +25,8 @@ void	TextImgWidget::draw(gdl::AShader &shader, const gdl::Clock &clock)
   _text.draw(shader, clock);
   glEnable(GL_DEPTH_TEST);
 }
+
+const std::string	&TextImgWidget::getContent() const
+{
+  return (_sentence);
+}

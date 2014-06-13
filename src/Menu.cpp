@@ -80,7 +80,7 @@ bool  Menu::initialize()
   _newGamePanelSolo.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
   _newGamePanelSolo.push_back(new NameWidget(x / 4, y / 4.0, y / 11.25f, x / 2,
-					       "./assets/Button/button.tga", 1));
+					       "./assets/input.tga", 1));
 
   _newGamePanelMulti.push_back(background);
   _newGamePanelMulti.push_back(title);
@@ -90,9 +90,9 @@ bool  Menu::initialize()
   _newGamePanelMulti.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
   _newGamePanelMulti.push_back(new NameWidget(x / 4, y / 3.0, y / 11.25f, x / 2,
-					       "./assets/Button/button.tga", 1));
+					       "./assets/input.tga", 1));
   _newGamePanelMulti.push_back(new NameWidget(x / 4, y / 4.5, y / 11.25f, x / 2,
-					       "./assets/Button/button.tga", 2));
+					       "./assets/input.tga", 2));
 
   _loadGamePanel.push_back(background);
   _loadGamePanel.push_back(title);
@@ -264,6 +264,30 @@ bool	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
   return (true);
 }
 
+void	Menu::getPlayerName(std::string &name, int playerId) const
+{
+  int	count = 0;
+  const std::vector<AWidget *> *panel;
+
+  if (!_multi && playerId >= 2)
+    playerId = 1;
+  panel = (_multi ? &_newGamePanelMulti : &_newGamePanelSolo);
+  for (std::vector<AWidget *>::const_iterator it = (*panel).begin(),
+	 endit = (*panel).end(); it != endit ; ++it)
+    {
+      if (dynamic_cast<NameWidget *>(*it))
+	{
+	  ++count;
+	  if (count == playerId)
+	    {
+	      name = (dynamic_cast<NameWidget *>(*it))->getContent();
+	      break ;
+	    }
+	}
+    }
+
+}
+
 void	Menu::textInput(std::string &buf, unsigned int maxlen)
 {
   double	fps = 1000.0 / 25.0;
@@ -317,7 +341,12 @@ void	Menu::launchGame()
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
   bool	done = true;
+  std::string name[2];
 
+  getPlayerName(name[0], 1);
+  getPlayerName(name[1], 2);
+  std::cout << name[0] << std::endl;
+  std::cout << name[1] << std::endl;
   if (!_gameEngine.initialize())
     return ;
   while ((done = _gameEngine.update()))

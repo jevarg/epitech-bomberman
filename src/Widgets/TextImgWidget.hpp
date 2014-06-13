@@ -11,6 +11,7 @@ public:
 		const std::string &texture, const std::string &text);
   ~TextImgWidget();
 
+  const std::string	&getContent() const;
   virtual void	draw(gdl::AShader &shader, const gdl::Clock &clock);
 
 protected:
