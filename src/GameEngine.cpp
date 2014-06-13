@@ -88,6 +88,7 @@ bool GameEngine::initialize()
 
   _skybox = new Cube(SKY_TEXTURE);
   _skybox->initialize();
+  _skybox->scale(glm::vec3(50.0, 50.0, 50.0));
 
   fact.addModel(WALL, new Cube(*_ground), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(*_ground), BOX_TEXTURE);
@@ -126,7 +127,7 @@ bool GameEngine::initialize()
   _players.push_back(_player1);
   if (_multi)
     _players.push_back(_player2);
-  spawn.spawnEnt((_multi == true ? 2 : 1), 0, *_gameInfo);
+  spawn.spawnEnt((_multi == true ? 2 : 1), 1, *_gameInfo);
   return (true);
 }
 
@@ -236,6 +237,15 @@ void GameEngine::draw()
 	(*it)->render(_shader);
 
       moveGround((*player));
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      _skybox->draw(_shader, *_gameInfo->clock);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
       _ground->draw(_shader, *_gameInfo->clock);
       for (unsigned int j = (y > depth_view) ? y - depth_view : 0;j <= y + depth_view && j < _mapY;j++)
 	for (unsigned int i = (x > depth_view) ? x - depth_view : 0;i < x + depth_view && i < _mapX;i++)
