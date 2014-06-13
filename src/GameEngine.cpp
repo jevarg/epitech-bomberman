@@ -178,7 +178,9 @@ bool		GameEngine::update()
   elapsedTime += time;
   if (elapsedTime > 0.1)
     {
-      _fps << (round(_frames / elapsedTime));
+      std::stringstream ss("");
+      ss << "FPS: " << (round(_frames / elapsedTime));
+      _fps.setText(ss.str(), 1400, 800, 50);
       _frames = 0;
       elapsedTime = 0;
     }
@@ -207,7 +209,7 @@ bool		GameEngine::update()
 void GameEngine::draw()
 {
   int i = 0;
-  int winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
+  float winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   for (std::vector<Player *>::const_iterator player = _players.begin();player != _players.end();++player)
@@ -249,18 +251,6 @@ void GameEngine::draw()
       else if ((*player)->getEnd() == LOSE)
 	_end_screen[1]->draw(*_textShader, *_gameInfo->clock);
     }
-  if (_player1->getEnd() != 0 && _player2->getEnd() != 0)
-    displayScore();
-  _fps.draw(_shader, *_gameInfo->clock);
-  _win->flush();
-}
-
-void	GameEngine::displayScore()
-{
-  float winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
-  Text score;
-  int  i = 0;
-
   glViewport(0, 0, winX, winY);
   glDisable(GL_DEPTH_TEST);
   _textShader->bind();
@@ -268,6 +258,19 @@ void	GameEngine::displayScore()
   _textShader->setUniform("view", glm::mat4(1));
   _textShader->setUniform("winX", winX);
   _textShader->setUniform("winY", winY);
+  if (_player1->getEnd() != 0 && _player2->getEnd() != 0)
+    displayScore();
+  _fps.draw(*_textShader, *_gameInfo->clock);
+  glEnable(GL_DEPTH_TEST);
+  _win->flush();
+}
+
+void	GameEngine::displayScore()
+{
+  float winY = _gameInfo->set->getVar(W_HEIGHT);
+  Text score;
+  int  i = 0;
+
   score.initialize();
   score.setText("Scores", 725, winY - 250, 50);
   score.draw(*_textShader, *_gameInfo->clock);
@@ -280,7 +283,6 @@ void	GameEngine::displayScore()
       score.draw(*_textShader, *_gameInfo->clock);
       ++i;
     }
-  glEnable(GL_DEPTH_TEST);
 }
 
 void	GameEngine::moveGround(Player *player)
