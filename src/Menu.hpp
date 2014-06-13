@@ -49,6 +49,7 @@ private:
   t_gameinfo		_gameInfo;
   GameEngine		_gameEngine;
   int			_frames;
+  Cube			_cube;
   Console		*_console;
   unsigned int		 _filePos;
   std::list<std::string> _filename;
@@ -60,6 +61,8 @@ private:
   std::vector<AWidget *> _importMapPanel;
   std::vector<AWidget *> _optionsPanel;
   std::vector<AWidget *> _controlsPanel;
+  Player		 *_player1;
+  Player		 *_player2;
 };
 
 #endif /* _MENU_HPP_ */

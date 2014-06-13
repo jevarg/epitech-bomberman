@@ -93,6 +93,7 @@ public:
   virtual void	draw();
 
   void		setMulti(bool multi);
+  void		setPlayer(Player *player1, Player *player2);
 
 private:
   void	mainInput();
