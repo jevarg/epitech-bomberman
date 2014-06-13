@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Fri Jun 13 15:30:49 2014 luc sinet
+## Last update Fri Jun 13 15:48:08 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -85,7 +85,7 @@ CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
 CXXFLAGS	+=	$(shell pkg-config --cflags libswscale libavcodec libavformat libavutil)
 
 LDFLAGS		+=	$(shell pkg-config --libs libswscale libavcodec libavformat libavutil)
-LDFLAGS		+=	-L$(LIBGDLDIR)/libs/ -L$(LIBAV) -lavcodec  -lavformat -lavutil -lswscale
+LDFLAGS		+=	-L$(LIBGDLDIR)/libs/
 LDFLAGS		+=	-lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2_mixer -lSDL2 -lpthread -lm -ldl -p -lrt
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
