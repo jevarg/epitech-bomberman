@@ -81,8 +81,10 @@ bool  Menu::initialize()
 					   "./assets/Button/generate_map.tga", &_mainPanel));
   _newGamePanelSolo.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
+  _newGamePanelSolo.push_back(new InputWidget(x - x / 5, y / 4.0, y / 11.25f, x / 8,
+					      "./assets/input.tga", "Nb AI"));
   _newGamePanelSolo.push_back(new NameWidget(x / 4, y / 4.0, y / 11.25f, x / 2,
-					       "./assets/input.tga", 1));
+					     "./assets/input.tga", 1));
 
   _newGamePanelMulti.push_back(background);
   _newGamePanelMulti.push_back(title);
@@ -91,6 +93,8 @@ bool  Menu::initialize()
 					   "./assets/Button/generate_map.tga", &_mainPanel));
   _newGamePanelMulti.push_back(new NavigationWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
 					       "./assets/Button/import_map.tga", &_importMapPanel));
+  _newGamePanelMulti.push_back(new InputWidget(x - x / 5, y / 4.5, y / 11.25f, x / 8,
+					      "./assets/input.tga", "Nb AI"));
   _newGamePanelMulti.push_back(new NameWidget(x / 4, y / 3.0, y / 11.25f, x / 2,
 					       "./assets/input.tga", 1));
   _newGamePanelMulti.push_back(new NameWidget(x / 4, y / 4.5, y / 11.25f, x / 2,
@@ -267,8 +271,6 @@ void	Menu::setFullScreen(const Settings * const set)
 
 bool	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
 {
-  if (key >= SDLK_KP_0 && key <= SDLK_KP_9)
-    key = '0' + key - SDLK_KP_0;
   if (key == '\r' || key == SDLK_KP_ENTER || key == 27)
     {
       buf.erase(buf.end() - 1);
@@ -311,8 +313,30 @@ void	Menu::getPlayerName(std::string &name, int playerId) const
 	    }
 	}
     }
-
 }
+
+
+int	Menu::getNbIa()
+{
+  const std::vector<AWidget *> *panel;
+  int				res = 0;
+
+  panel = (_multi ? &_newGamePanelMulti : &_newGamePanelSolo);
+  for (std::vector<AWidget *>::const_iterator it = (*panel).begin(),
+	 endit = (*panel).end(); it != endit ; ++it)
+    {
+      if (dynamic_cast<InputWidget *>(*it))
+	{
+	  std::string content((dynamic_cast<InputWidget *>(*it))->getContent());
+	  std::stringstream ss(content);
+
+	  ss >> res;
+	  return (res);
+	}
+    }
+  return (0);
+}
+
 
 void	Menu::textInput(std::string &buf, unsigned int maxlen)
 {
@@ -337,7 +361,7 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
 	{
 	  key = *beg;
 	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
-	    key = '0' + key - SDLK_KP_1 + 1;
+	    key = '0' + (key == SDLK_KP_0 ? (key - 10) : key) - SDLK_KP_1 + 1;
 	  if (save == key)
 	    {
 	      if (((key < 128 && key != '\b') && frame < 8) ||
@@ -364,6 +388,7 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
 
 void	Menu::launchGame()
 {
+  int	nbIa;
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
   bool	done = true;
@@ -372,6 +397,8 @@ void	Menu::launchGame()
   _gameEngine.setMulti(_multi);
   getPlayerName(name[0], 1);
   getPlayerName(name[1], 2);
+  nbIa = getNbIa();
+  std::cout << "Nb ia: " << nbIa << std::endl;
   std::cout << name[0] << std::endl;
   std::cout << name[1] << std::endl;
   if (!_gameEngine.initialize())

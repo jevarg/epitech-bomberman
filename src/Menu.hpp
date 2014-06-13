@@ -31,6 +31,7 @@ public:
   void	setCurrentPanel(std::vector<AWidget *> * const currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen);
   void	getPlayerName(std::string &name, int playerId) const;
+  int	getNbIa();
   void	setDone(bool done = true);
   void	setFullScreen(const Settings * const set);
   Menu	&operator++();
