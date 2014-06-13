@@ -33,10 +33,12 @@ void	IA::update()
 void	IA::danger_in_dir(int i, int j, int x, int y,
 			  int i_x, int i_y, int max_it, int *cnt)
 {
-  for (int k = 0 ; k < max_it ; k++)
+  int	k = 0;
+  while (k < max_it)
     {
       int type = _gameInfo->map->checkMapColision(j, i);
-      if (type == FREE)
+      if (type == FREE || type == ITEM || type == SPEEDITEM ||
+	  type == HEALTHITEM || type == STOCKITEM || type == RANGEITEM)
 	{
 	  _lua.pushIntInt(++(*cnt), FLAME);
 	  _lua.pushIntInt(++(*cnt), y);
@@ -45,6 +47,10 @@ void	IA::danger_in_dir(int i, int j, int x, int y,
 	  y += i_y;
 	  j += i_x;
 	  i += i_y;
+	  if (type == ITEM || type == SPEEDITEM ||
+	      type == HEALTHITEM || type == STOCKITEM || type == RANGEITEM)
+	    return ;
+	  ++k;
 	}
       else
 	return ;

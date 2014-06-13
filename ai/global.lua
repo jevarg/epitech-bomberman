@@ -7,7 +7,7 @@ LEVEL = 0
 MAP_XMAX = 0
 MAP_YMAX = 0
 
-BOMB_RANGE = 2
+BOMB_RANGE = 10
 
 ENUM_ACTION = {
 	["forward"] = 0,

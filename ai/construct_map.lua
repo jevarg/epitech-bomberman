@@ -1,20 +1,16 @@
-function authorized_ent_danger(map, cur_x, cur_y, i_y, i_x)
-	if (map[cur_y + i_y][cur_x + i_x] == "W" or
-		map[cur_y + i_y][cur_x + i_x] == "I" or
-		map[cur_y + i_y][cur_x + i_x] == "P" or
-		map[cur_y + i_y][cur_x + i_x] == "B")
-	then
-		return 1
+function put_danger_around_at(map, cur_x, cur_y, n, e, block)
+	if (block[1] == 0) then
+		if (up_danger(map, cur_x, cur_y, n, e) == 1) then block[1] = 1 end
 	end
-	return 0
-end
-
-function put_danger_around_at(map, cur_x, cur_y, n, e)
-	-- print(MAP_XMAX, MAP_YMAX, cur_x, cur_y, n, e)
-	up_danger(map, cur_x, cur_y, n, e)
-	down_danger(map, cur_x, cur_y, n, e)
-	left_danger(map, cur_x, cur_y, n, e)
-	left_danger(map, cur_x, cur_y, n, e)
+	if (block[2] == 0) then
+		if (down_danger(map, cur_x, cur_y, n, e) == 1) then block[2] = 1 end 
+	end
+	if (block[3] == 0) then
+		if (left_danger(map, cur_x, cur_y, n, e) == 1) then block[3] = 1 end
+	end
+	if (block[4] == 0) then
+		if (right_danger(map, cur_x, cur_y, n, e) == 1) then block[4] = 1 end
+	end
 end
 
 function fill_dangerous_fields(map)
@@ -22,7 +18,7 @@ function fill_dangerous_fields(map)
 		for j = 1, #map[i] do
 			if (map[i][j] == "O") then
 				-- print("have bomb at ", j, i)
-					local block = {0, 0, 0, 0}
+				local block = {0, 0, 0, 0}
 				for k = 1, BOMB_RANGE do
 					put_danger_around_at(map, j, i, k, "D", block)
 				end
