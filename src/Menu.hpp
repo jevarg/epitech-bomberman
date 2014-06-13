@@ -11,6 +11,7 @@
 # include "Sound.hpp"
 # include "AWidget.hpp"
 # include "Console.hpp"
+# include "Intro.hpp"
 
 # define SCORE_PATH "./.scores"
 # define MAPS_PATH "./Save/Maps/"
