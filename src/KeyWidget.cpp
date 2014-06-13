@@ -13,16 +13,21 @@ KeyWidget::~KeyWidget()
 void	KeyWidget::init(const Settings * const set)
 {
   std::vector<Keycode>	keySet;
+  set->getKeyFromAct(_act, keySet);
   Keycode		key = 0;
 
-  set->getKeyFromAct(_act, keySet);
-  if (!keySet.empty())
+  std::vector<Keycode>::const_iterator it = keySet.begin();
+  std::vector<Keycode>::const_iterator end = keySet.end();
+
+  for (; it != end; ++it)
     {
-      if ((key = keySet.front()) > 0 && key < 128)
-	{
-	  _sentence.clear();
-	  _sentence.push_back(static_cast<char>(key));
-	}
+      if (*it > 0 && *it < 128)
+	key = *it;
+    }
+  if (key != 0)
+    {
+      _sentence.clear();
+      _sentence.push_back(static_cast<char>(key));
     }
 }
 
