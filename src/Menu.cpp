@@ -553,8 +553,11 @@ void	Menu::launchGame(const std::string &file, bool load)
       while ((done = _gameEngine.update()))
 	_gameEngine.draw();
       if (_gameEngine.isShutingDown()) // Only when it has finished to shutdown
-	break ;
-      _currentPanel = &_pausePanel;
+	{
+	  setCurrentPanel(&_mainPanel);
+	  break ;
+	}
+      setCurrentPanel(&_pausePanel);
       while ((menuState = pauseMenu()) == 0);
       if (menuState == 2)
 	_gameEngine.setShutdown(true);
