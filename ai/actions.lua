@@ -163,12 +163,20 @@ function random_movement(map)
 	local mov = {1, 1, -1, -1}
 	local orient = arg["orientation"] + 1
 	local x, y = X, Y
-
-	if (orient == 1 or orient == 3) then y = y + mov[orient] end
-	if (orient == 2 or orient == 4) then x = x + mov[orient] end
+	local dirX = 0
+	local dirY = 0
+	
+	if (orient == 1 or orient == 3) then
+		dirY = mov[orient]
+	end
+	if (orient == 2 or orient == 4) then
+		dirX = mov[orient]
+	end
+	x = x + dirX
+	y = y + dirY
 	if (map[y][x] == ".") then
 		local tx, ty = get_orient(map)
-		if (X == tx - mov[orient] and Y == ty - mov[orient]) then
+		if (tx == X - dirX and ty == Y - dirY) then -- Taking a wrong direction
 			return x, y
 		elseif (math.random() * 100 < 10) then
 			return tx, ty

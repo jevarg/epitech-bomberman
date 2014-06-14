@@ -128,10 +128,7 @@ void	Box::scaleToPercent(double * const tab, int size) const
     total += tab[i];
   ratio = total / 100.0;
   for (int i = 0; i < size; ++i)
-    {
-      std::cout << tab[i] << " /= " << ratio << std::endl;
-      tab[i] /= ratio;
-    }
+    tab[i] /= ratio;
 }
 
 void	Box::spawnItem()
@@ -147,10 +144,8 @@ void	Box::spawnItem()
   scaleToPercent(ptab, size);
   for (int i = 0; i < size; ++i)
     {
-      std::cout << "Prob: " << start + ptab[i] << std::endl;
       if (start + ptab[i] > randnum) // means randnum is in the concerned area
 	{
-	  std::cout << "i: " << i << std::endl;
 	  _gameInfo->map->addEntity(facto->getEntity
 				    (static_cast<eType>(CHICKEN + i), _x, _y));
 	  break ;
