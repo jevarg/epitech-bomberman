@@ -178,6 +178,17 @@ bool  Menu::initialize()
   _controlsPanel.push_back(new TextImgWidget(x / 2 + x / 8 + 2 * x / 30, y / 2.25f,
 					  y / 16.8, x / 4,
 					     "./assets/Button/button_small.tga", "Drop bomb"));
+
+  _pausePanel.push_back(background);
+  _pausePanel.push_back(title);
+  _pausePanel.push_back(new TextImgWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "Resume"));
+  _pausePanel.push_back(new TextImgWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "Save"));
+  _pausePanel.push_back(new TextImgWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+				      "./assets/Button/button.tga", "Quit"));
+
+
   _screenPanel.push_back(background);
   _screenPanel.push_back(title);
   _screenPanel.push_back(back);
@@ -434,9 +445,18 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
     }
 }
 
+int	Menu::pauseMenu()
+{
+  if (update() == false)
+    return (2);
+  draw();
+  return (0);
+}
+
 void	Menu::launchGame(const std::string &file)
 {
   int	nbIa;
+  int	menuState;
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
   bool	done = true;
@@ -455,8 +475,17 @@ void	Menu::launchGame(const std::string &file)
   std::cout << name[1] << std::endl;
   if (!_gameEngine.loadMap(file))
     return ;
-  while ((done = _gameEngine.update()))
-    _gameEngine.draw();
+  while (1)
+    {
+      while ((done = _gameEngine.update()))
+	_gameEngine.draw();
+      if (_gameEngine.isShutingDown()) // Only when it has finished to shutdown
+	break ;
+      _currentPanel = &_pausePanel;
+      while ((menuState = pauseMenu()) == 0);
+      if (menuState == 2)
+	_gameEngine.setShutdown(true);
+    }
   _gameInfo.map = NULL;
 }
 

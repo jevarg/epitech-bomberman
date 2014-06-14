@@ -72,27 +72,11 @@ void	GameEngine::mainInput()
   if (_gameInfo->input->isPressed(SDLK_F1))
     {
       glDisable(GL_DEPTH_TEST);
-      _console->aff(*_win, 1600.0f, 900.0f);
+      _console->aff(*_win, _gameInfo->set->getVar(W_WIDTH), _gameInfo->set->getVar(W_HEIGHT));
       glEnable(GL_DEPTH_TEST);
     }
-  if (((*_gameInfo->input)[win] && win.event == WIN_QUIT) ||
-      _gameInfo->input->isPressed(SDLK_ESCAPE))
-    {
-      _shutdown = true;
-      v_Contcit end = _gameInfo->map->ContEnd();
-      for (v_Contcit it = _gameInfo->map->ContBegin();it != end;it++)
-	{
-	  AEntity *ent;
-	  v_Entit its;
-	  l_Entit itm;
-	  while ((ent = (*it)->listFront()) != NULL)
-	    ent->setDestroy();
-	  while ((ent = (*it)->vecFront()) != NULL)
-	    ent->setDestroy();
-	}
-      _gameInfo->condvar->broadcast();
-      return ;
-    }
+  if (((*_gameInfo->input)[win] && win.event == WIN_QUIT))
+    setShutdown(true);
 }
 
 int		GameEngine::clearElements()
@@ -110,6 +94,8 @@ bool		GameEngine::update()
   int nbPlayer = _gameInfo->map->nbPlayer();
 
   mainInput();
+  if (_gameInfo->input->isPressed(SDLK_ESCAPE) && _shutdown == false)
+    return (false);
   if (_player1->isAlive() && nbPlayer == 1)
     _player1->setEnd(WIN);
   if (_player2->isAlive() && nbPlayer == 1)
@@ -173,7 +159,8 @@ void GameEngine::draw()
       _shader.setUniform("projection", cam.getProjection());
       _shader.setUniform("view", cam.getTransformation());
       _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
-      for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
+      for (std::vector<Light *>::const_iterator it = _lights.begin();
+	   it != _lights.end();it++)
 	(*it)->render(_shader);
 
       moveGround((*player));
@@ -292,11 +279,30 @@ void	GameEngine::setPlayer(Player *player1, Player *player2)
 void	GameEngine::setShutdown(bool shutdown)
 {
   _shutdown = shutdown;
+  if (_shutdown == false)
+    return ;
+  v_Contcit end = _gameInfo->map->ContEnd();
+  for (v_Contcit it = _gameInfo->map->ContBegin();it != end;it++)
+    {
+      AEntity *ent;
+      v_Entit its;
+      l_Entit itm;
+      while ((ent = (*it)->listFront()) != NULL)
+	ent->setDestroy();
+      while ((ent = (*it)->vecFront()) != NULL)
+	ent->setDestroy();
+    }
+  _gameInfo->condvar->broadcast();
 }
 
 void	GameEngine::setConsole(Console * const console)
 {
   _console = console;
+}
+
+bool	GameEngine::isShutingDown() const
+{
+  return (_shutdown);
 }
 
 bool	GameEngine::loadMap(const std::string &file)

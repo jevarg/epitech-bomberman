@@ -44,6 +44,7 @@ private:
   void	readDir(const std::string &dirname);
   bool	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
   void	handleClock(int &frame, double &time, double fps);
+  int	pauseMenu();
 
   gdl::SdlContext	_win;
   gdl::BasicShader	_textShader;
@@ -65,6 +66,7 @@ private:
   std::vector<AWidget *> _optionsPanel;
   std::vector<AWidget *> _controlsPanel;
   std::vector<AWidget *> _screenPanel;
+  std::vector<AWidget *> _pausePanel;
   Player		 *_player1;
   Player		 *_player2;
 };

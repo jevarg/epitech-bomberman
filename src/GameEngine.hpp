@@ -96,6 +96,7 @@ public:
   void		setPlayer(Player *player1, Player *player2);
   void		setShutdown(bool shutdown);
   void		setConsole(Console * const console);
+  bool		isShutingDown() const;
   bool		loadMap(const std::string &file);
 
 private:
