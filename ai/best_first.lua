@@ -12,15 +12,18 @@ function determine_way(map, cur_x, cur_y)
 end
 
 function have_elem(entities, x, y, word)
-	local match = 0
 	for i = 1, #entities do
+			-- print(entities[i]["type"])
+		if (entities[i]["type"] == TYPE_PRIORITY["player"]) then
+			print(X, Y, entities[i]["x"], entities[i]["y"], entities[i]["type"], get_abs_dist(entities, x, y, i) <= AGGRO)
+		end
 		if (entities[i]["type"] == TYPE_PRIORITY[word] and
 			get_abs_dist(entities, x, y, i) <= AGGRO and
-			entities[i]["x"] ~= x and entities[i]["y"] ~= y) then
-			match = 1
+			(entities[i]["x"] ~= x or entities[i]["y"] ~= y)) then
+			return 1
 		end
 	end
-	return match
+	return 0
 end
 
 function travel_map(map, cur_x, cur_y)
@@ -40,12 +43,12 @@ end
 
 function best_first(map, map_nb, entities)
 	local cur_x, cur_y = X, Y
-	print("best first")
+	-- print("best first")
 	if (have_elem(entities, cur_x, cur_y, "box") == 1 or
 		have_elem(entities, cur_x, cur_y, "item") == 1 or
 		have_elem(entities, cur_x, cur_y, "player") == 1)then
 			travel_map(map_nb, cur_x, cur_y)
-			display_map(map_nb)
+			-- display_map(map_nb)
 			local nx, ny = take_shortest_priority(map, map_nb, entities)
 			if (cur_x == nx and cur_y == ny) then
 				return ENUM_ACTION["bomb"]

@@ -28,8 +28,8 @@ function check_elem_at(map, cur_x, cur_y, w, n)
 end
 
 function take_decision(map, map_nb, entities)
-	print("IN TAKE DECISION MAP AFTER fill_dangerous_fields")
-	display_map(map_nb)
+	-- print("IN TAKE DECISION MAP AFTER fill_dangerous_fields")
+	-- display_map(map_nb)
 	if (arg["bomb"] == 1 or
 		check_elem_at(map_nb, X, Y, "D", 1) ~= -1 or
 		check_elem_at(map_nb, X, Y, "O", 1) ~= -1)
@@ -56,8 +56,8 @@ function artificial_intelligence()
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
 	local map_nb = create_map(entities, AGGRO)
-	print("MAP AFTER RECONSTITUTION")
-	display_map(map_nb)
+	-- print("MAP AFTER RECONSTITUTION")
+	-- display_map(map_nb)
 	local action = take_decision(map, fill_dangerous_fields(map_nb), entities)
 	if (action == ENUM_ACTION["bomb"]) then
 		local block = {0, 0, 0, 0}

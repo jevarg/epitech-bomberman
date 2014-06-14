@@ -38,15 +38,6 @@ function get_entities()
 	local entities = {}
 	local m = 1
 	for i = 1, #arg, 3 do
-			if (arg[i] == 10 or
-				arg[i] == 11 or
-			arg[i] == 12 or
-			arg[i] == 13 or
-			arg[i] == 14) then
-			print("find a player !")
-			print(arg[i])
-			print(translate[arg[i]])
-		end
 		table.insert(ent, {["type"] = translate[arg[i]], ["y"] = arg[i + 1], ["x"] = arg[i + 2]})
 		m = m + 1
 	end
