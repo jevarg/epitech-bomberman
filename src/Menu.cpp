@@ -228,7 +228,7 @@ bool  Menu::initialize()
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER2_MODEL);
   fact.addModel(BOT, BOT_MODEL);
-  fact.addModel(CHICKEN, BOMB_MODEL);
+  fact.addModel(CHICKEN, CHICKEN_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
@@ -273,7 +273,7 @@ bool		Menu::update()
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
     {
-      launchGame("");
+      launchGame("", false);
       _gameInfo.sound->play("menu", MUSIC);
     }
   if (_gameInfo.input->isPressed(SDLK_F1))
@@ -520,9 +520,8 @@ int		Menu::pauseMenu()
   return (0);
 }
 
-void	Menu::launchGame(const std::string &file)
+void	Menu::launchGame(const std::string &file, bool load)
 {
-  int	nbIa;
   int	menuState;
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
@@ -536,12 +535,16 @@ void	Menu::launchGame(const std::string &file)
   _player2->setMulti(_multi);
   getPlayerName(name[0], 1);
   getPlayerName(name[1], 2);
-  nbIa = getNbIa();
-  std::cout << "Nb ia: " << nbIa << std::endl;
   std::cout << name[0] << std::endl;
   std::cout << name[1] << std::endl;
-  if (!_gameEngine.loadMap(file))
-    return ;
+  if (load == true)
+    {
+      if (!_gameEngine.loadSave(file))
+	return ;
+    }
+  else
+    if (!_gameEngine.loadMap(file, getNbIa()))
+      return ;
   while (1)
     {
       while ((done = _gameEngine.update()))

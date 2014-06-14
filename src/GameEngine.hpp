@@ -62,6 +62,7 @@
 # define CHARACTER2_MODEL "./assets/villager.fbx"
 # define BOT_MODEL "./assets/pigman.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
+# define CHICKEN_MODEL "./assets/chicken.fbx"
 
 # define ABS(x) (((x) < 0) ? (-(x)) : (x))
 
@@ -97,7 +98,8 @@ public:
   void		setShutdown(bool shutdown);
   void		setConsole(Console * const console);
   bool		isShutingDown() const;
-  bool		loadMap(const std::string &file);
+  bool		loadSave(const std::string &file);
+  bool		loadMap(const std::string &file, int ia);
 
 private:
   void	mainInput();
