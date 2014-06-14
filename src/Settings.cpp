@@ -25,6 +25,8 @@ Settings::Settings()
   _cvarList.push_back(new t_cvar ("s_fireSpeed", 0, 100000, 10));
   _cvarList.push_back(new t_cvar ("s_fireTime", 0, 1000000, 10));
   _cvarList.push_back(new t_cvar ("r_depthView", 5, 100, 10));
+  _cvarList.push_back(new t_cvar ("r_drawFog", 0, 1, 1));
+  _cvarList.push_back(new t_cvar ("r_skyBox", 0, 1, 1));
 
   _speKeys["CAPSLOCK"] = SDLK_CAPSLOCK;
   _speKeys["SPACE"] = SDLK_SPACE;
