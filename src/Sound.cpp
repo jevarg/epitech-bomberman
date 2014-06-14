@@ -22,6 +22,9 @@ Sound::Sound()
       _soundBox["click"] = Mix_LoadWAV("./assets/sounds/click.wav");
       _soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav");
       _soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav");
+      _soundBox["chickenhurt"] = Mix_LoadWAV("./assets/sounds/chickenhurt.wav");
+      _soundBox["chickenspawn"] = Mix_LoadWAV("./assets/sounds/chickenspawn.wav");
+      _soundBox["endgame"] = Mix_LoadWAV("./assets/sounds/endgame.wav");
     }
   catch (const Exception &e)
     {
@@ -40,6 +43,9 @@ Sound::Sound()
       _soundBox["click"] = NULL;
       _soundBox["getbomb"] = NULL;
       _soundBox["burp"] = NULL;
+      _soundBox["chickenhurt"] = NULL;
+      _soundBox["chickenspawn"] = NULL;
+      _soundBox["endgame"] = NULL;
     }
 }
 
