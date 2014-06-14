@@ -96,6 +96,8 @@ public:
   void		setMulti(bool multi);
   void		setPlayer(Player *player1, Player *player2);
   void		setShutdown(bool shutdown);
+  bool		loadMap(const std::string &file);
+  void		resetAlreadyPlayed();
   void		setConsole(Console * const console);
   bool		isShutingDown() const;
   bool		loadSave(const std::string &file);
@@ -119,6 +121,7 @@ private:
   std::map<eType, gdl::Texture *>	_texture;
   Player			*_player;
   t_gameinfo			*_gameInfo;
+  bool				_already_played;
   bool				_shutdown;
   int				_frames;
   std::vector<Light*>		_lights;

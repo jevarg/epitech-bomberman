@@ -259,7 +259,6 @@ bool  Menu::initialize()
   fact.addModel(CHICKEN, CHICKEN_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
-  std::cout << "MUTEX => " << _gameInfo.mutex << std::endl;
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
 
@@ -288,6 +287,7 @@ bool		Menu::update()
   t_window	win;
   t_mouse	mouse;
 
+  _gameEngine.resetAlreadyPlayed();
   _gameInfo.input->getInput(*(_gameInfo.set));
   (*(_gameInfo.input))[mouse];
   (*_gameInfo.input)[win];
