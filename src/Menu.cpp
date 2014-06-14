@@ -522,7 +522,6 @@ int		Menu::pauseMenu()
 
 void	Menu::launchGame(const std::string &file)
 {
-  int	nbIa;
   int	menuState;
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
@@ -536,11 +535,9 @@ void	Menu::launchGame(const std::string &file)
   _player2->setMulti(_multi);
   getPlayerName(name[0], 1);
   getPlayerName(name[1], 2);
-  nbIa = getNbIa();
-  std::cout << "Nb ia: " << nbIa << std::endl;
   std::cout << name[0] << std::endl;
   std::cout << name[1] << std::endl;
-  if (!_gameEngine.loadMap(file))
+  if (!_gameEngine.loadMap(file, getNbIa()))
     return ;
   while (1)
     {
