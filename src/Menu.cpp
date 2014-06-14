@@ -444,6 +444,7 @@ void	Menu::launchGame(const std::string &file)
 
   _gameEngine.setShutdown(false);
   _gameEngine.setMulti(_multi);
+  _gameEngine.setConsole(_console);
   _player1->setMulti(_multi);
   _player2->setMulti(_multi);
   getPlayerName(name[0], 1);

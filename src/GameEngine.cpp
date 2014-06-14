@@ -69,6 +69,12 @@ void	GameEngine::mainInput()
   t_window	win;
 
   _gameInfo->input->getInput(*(_gameInfo->set));
+  if (_gameInfo->input->isPressed(SDLK_F1))
+    {
+      glDisable(GL_DEPTH_TEST);
+      _console->aff(*_win, 1600.0f, 900.0f);
+      glEnable(GL_DEPTH_TEST);
+    }
   if (((*_gameInfo->input)[win] && win.event == WIN_QUIT) ||
       _gameInfo->input->isPressed(SDLK_ESCAPE))
     {
@@ -286,6 +292,11 @@ void	GameEngine::setPlayer(Player *player1, Player *player2)
 void	GameEngine::setShutdown(bool shutdown)
 {
   _shutdown = shutdown;
+}
+
+void	GameEngine::setConsole(Console * const console)
+{
+  _console = console;
 }
 
 bool	GameEngine::loadMap(const std::string &file)

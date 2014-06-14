@@ -95,6 +95,7 @@ public:
   void		setMulti(bool multi);
   void		setPlayer(Player *player1, Player *player2);
   void		setShutdown(bool shutdown);
+  void		setConsole(Console * const console);
   bool		loadMap(const std::string &file);
 
 private:
@@ -108,6 +109,7 @@ private:
   gdl::BasicShader		*_textShader;
   Cube				*_ground;
   Cube				*_skybox;
+  Console			*_console;
   unsigned int			_mapX;
   unsigned int			_mapY;
   std::map<eType, IObject *>	_type;
