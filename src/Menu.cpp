@@ -304,8 +304,17 @@ void	Menu::handleClock(int &frame, double &time, double fps)
 
 void	Menu::setFullScreen(const Settings * const set)
 {
-  // _win.stop();
-  // _win.start();
+  int	x;
+  int	y;
+
+  x = set->getVar(W_WIDTH);
+  y = set->getVar(W_HEIGHT);
+  _win.stop();
+  if (!_win.start(x, y, "Bomberman", SDL_INIT_EVERYTHING, SDL_WINDOW_OPENGL | (set->getVar(R_FULLSCREEN) == 1 ? SDL_WINDOW_FULLSCREEN_DESKTOP : 0)))
+    throw(Exception("Cannot open window"));
+  glEnable(GL_DEPTH_TEST);
+  glEnable(GL_BLEND);
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 }
 
 bool	Menu::textFillBuf(std::string &buf, unsigned int maxlen, Keycode key)
