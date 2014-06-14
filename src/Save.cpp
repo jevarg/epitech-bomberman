@@ -1,16 +1,14 @@
 #include <algorithm>
-#include <ios>
 #include <iostream>
 #include <sstream>
-#include <vector>
-#include <string>
-#include <iostream>
 #include <fstream>
-#include "Exception.hpp"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "GameEngine.hpp"
+#include "Menu.hpp"
+#include "Exception.hpp"
 #include "Save.hpp"
-#include "Container.hpp"
-#include "Settings.hpp"
 
 Save::Save()
 {
@@ -29,6 +27,14 @@ std::string    	&Save::encrypt(std::string &to_encrypt) const
   return (to_encrypt);
 }
 
+void		Save::checkDirectory(const std::string &path) const
+{
+  struct stat	st;
+
+  if (stat(path.c_str(), &st) == -1)
+    mkdir(path.c_str(), 0755);
+}
+
 void		Save::saveGame(const Map &map, const Settings &settings,
 			       const std::string &name) const
 {
@@ -38,10 +44,13 @@ void		Save::saveGame(const Map &map, const Settings &settings,
   v_Entcit	vit_end;
   l_Entcit     	lit;
   l_Entcit     	lit_end;
-  std::ofstream	file(name.c_str());
   std::string	buf;
   std::ostringstream	ss;
 
+  checkDirectory("./Save");
+  checkDirectory(MAPS_PATH);
+  checkDirectory(GAMES_PATH);
+  std::ofstream	file(name.c_str());
   if (file.is_open() == false)
     throw (Exception("Failed to open save file"));
   ss << settings.getVar(MAP_WIDTH) << " " << settings.getVar(MAP_HEIGHT);

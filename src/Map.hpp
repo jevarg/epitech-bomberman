@@ -3,6 +3,7 @@
 
 # include <string>
 # include <vector>
+# include <deque>
 # include "Container.hpp"
 # include "AEntity.hpp"
 # include "Entity.hpp"

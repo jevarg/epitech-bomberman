@@ -2,7 +2,8 @@
 # define _ENTITY_H_
 
 # include "AEntity.hpp"
-# include "GameEngine.hpp"
+
+typedef struct s_gameinfo	t_gameinfo;
 
 class Entity : public AEntity
 {
