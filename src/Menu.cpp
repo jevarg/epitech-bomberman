@@ -522,7 +522,6 @@ int		Menu::pauseMenu()
 
 void	Menu::launchGame(const std::string &file)
 {
-  int	nbIa;
   int	menuState;
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;
