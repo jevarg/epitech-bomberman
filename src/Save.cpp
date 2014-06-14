@@ -20,7 +20,7 @@ Save::~Save()
 {
 }
 
-void		Save::encrypt(std::string &to_encrypt)
+std::string    	&Save::encrypt(std::string &to_encrypt)
 {
   for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
     {
@@ -29,9 +29,10 @@ void		Save::encrypt(std::string &to_encrypt)
       else
 	throw (Exception("Decrypt error : incorrect savegame file"));
     }
+  return (to_encrypt);
 }
 
-void		Save::decrypt(std::string &to_encrypt)
+std::string    	&Save::decrypt(std::string &to_encrypt)
 {
   for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
     {
@@ -39,12 +40,13 @@ void		Save::decrypt(std::string &to_encrypt)
       if ((*it > '9' || *it < '0') && *it != ' ')
 	throw (Exception("Decrypt error : incorrect savegame file"));
     }
+  return (to_encrypt);
 }
 
 void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
 {
-  std::vector<Container *>::const_iterator	it = map.ContBegin();
-  std::vector<Container *>::const_iterator	end = map.ContEnd();
+  v_Contcit	it;
+  v_Contcit	end;
   v_Entcit	vit;
   v_Entcit	vit_end;
   l_Entcit     	lit;
@@ -59,36 +61,27 @@ void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
   buf = ss.str();
   encrypt(buf);
   file << buf << "\n";
-  buf = "";
-  while (it != end)
+  for (it = map.ContBegin(), end = map.ContEnd();
+       it != end; ++it)
     {
-      vit = (*it)->vecBegin();
-      vit_end = (*it)->vecEnd();
-      while (vit != vit_end)
+      for (vit = (*it)->vecBegin(), vit_end = (*it)->vecEnd();
+	   vit != vit_end; ++vit)
 	{
 	  std::ostringstream	oss;
 	  oss << (*vit)->getXPos() << " " << (*vit)->getYPos() << " "
 	      << static_cast<int>((*vit)->getType());
 	  buf = oss.str();
-	  this->encrypt(buf);
-	  file << buf << "\n";
-	  ++vit;
-	  buf = "";
+	  file << encrypt(buf) << std::endl;
 	}
-      lit = (*it)->listBegin();
-      lit_end = (*it)->listEnd();
-      while (lit != lit_end)
+      for (lit = (*it)->listBegin(), lit_end = (*it)->listEnd();
+	     lit != lit_end; ++lit)
 	{
 	  std::ostringstream	oss;
 	  oss << (*lit)->getXPos() << " " << (*lit)->getYPos() << " "
 	      << static_cast<int>((*lit)->getType());
 	  buf = oss.str();
-	  this->encrypt(buf);
-	  file << buf << "\n";
-	  ++lit;
-	  buf = "";
+	  file << encrypt(buf) << std::endl;
 	}
-      ++it;
     }
   file.close();
 }

@@ -23,7 +23,14 @@ void	SaveWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
   menu.textInput(_sentence, 20);
   found = _sentence.find(".game");
   if (found != std::string::npos && _sentence.size() > 5)
-    saveobj.saveGame(*gameInfo.map, *gameInfo.set, GAMES_PATH + _sentence);
+    try
+      {
+	saveobj.saveGame(*gameInfo.map, *gameInfo.set, GAMES_PATH + _sentence);
+      }
+    catch(const Exception &e)
+      {
+	std::cerr << e.what() << std::endl;
+      }
   else
     _sentence = "Invalid: Filename.game";
 }
