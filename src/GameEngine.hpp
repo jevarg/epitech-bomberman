@@ -97,8 +97,8 @@ public:
   void		setShutdown(bool shutdown);
   void		setConsole(Console * const console);
   bool		isShutingDown() const;
-  bool		loadMap(const std::string &file);
   bool		loadSave(const std::string &file);
+  bool		loadMap(const std::string &file, int ia);
 
 private:
   void	mainInput();
