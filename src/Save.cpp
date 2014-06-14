@@ -42,7 +42,6 @@ void		Save::saveGame(const Map &map, const Settings &settings,
   std::string	buf;
   std::ostringstream	ss;
 
- std::cout << name << std::endl;
   if (file.is_open() == false)
     throw (Exception("Failed to open save file"));
   ss << settings.getVar(MAP_WIDTH) << " " << settings.getVar(MAP_HEIGHT);
@@ -75,28 +74,34 @@ void		Save::saveGame(const Map &map, const Settings &settings,
 }
 
 void		Save::loadGame(const std::string &name,
-			       const t_gameinfo &gameInfo) const
+			       t_gameinfo &gameInfo) const
 {
   EntityFactory	*fact = EntityFactory::getInstance();
-  v_Contcit	end = gameInfo.map->ContEnd();
   std::ifstream	file(name.c_str());
   std::string	buf;
+  v_Contcit	end;
   int		x;
   int		y;
   int		type;
 
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     throw (Exception("Error opening " + name));
-  for (v_Contcit it = gameInfo.map->ContBegin();it != end;it++)
+  if (gameInfo.map) // erase old entities
     {
-      AEntity *ent;
+      for (v_Contcit it = gameInfo.map->ContBegin(), end = gameInfo.map->ContEnd();
+	   it != end; it++)
+	{
+	  AEntity *ent;
 
-      while ((ent = (*it)->listFront()) != NULL)
-  	ent->setDestroy();
-      while ((ent = (*it)->vecFront()) != NULL)
-  	ent->setDestroy();
+	  while ((ent = (*it)->listFront()) != NULL)
+	    ent->setDestroy();
+	  while ((ent = (*it)->vecFront()) != NULL)
+	    ent->setDestroy();
+      }
+      while (gameInfo.map->clearElements() != 0);
     }
-  while (gameInfo.map->clearElements() != 0);
+  else
+    gameInfo.map = new Map(*gameInfo.set);
   gameInfo.map->createContainers();
   for (bool first = true; std::getline(file, buf); first = false)
     {
@@ -115,7 +120,7 @@ void		Save::loadGame(const std::string &name,
 	{
 	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
 	  std::istringstream (buf) >> type;
-	  if (type >= BOT || type < 0 || type == FREE)
+	  if (type > BOT || type < 0 || type == FREE)
 	    throw (Exception("Error : invalid savegame file, bad type"));
 	  gameInfo.map->addEntity(fact->getEntity(static_cast<eType>(type), x, y));
 	}

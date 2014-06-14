@@ -30,6 +30,7 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
   _gameInfo.set = new Settings();
   _gameInfo.sound = new Sound();
   _gameInfo.clock = new gdl::Clock();
+  _gameInfo.map = NULL;
   _gameInfo.set->loadFile(DEFAULT_FILE);
   _gameInfo.set->loadFile(USER_FILE);
   loadScore();

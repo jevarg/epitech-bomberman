@@ -5,7 +5,7 @@
 // Login   <fritsc_h@epitech.net>
 //
 // Started on  Tue May  6 21:55:22 2014 Harold Fritsch
-// Last update Sat Jun 14 14:17:11 2014 luc sinet
+// Last update Sat Jun 14 14:32:40 2014 luc sinet
 //
 
 #ifndef SAVE_HPP_
@@ -29,7 +29,7 @@ public:
   void	saveGame(const Map &, const Settings &,
 		 const std::string &) const;
   void	loadGame(const std::string &,
-		 const t_gameinfo &) const;
+		 t_gameinfo &) const;
 private:
   ;
 };
