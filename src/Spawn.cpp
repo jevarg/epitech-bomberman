@@ -1,3 +1,4 @@
+#include "Chicken.hpp"
 #include "IA.hpp"
 #include "GameEngine.hpp"
 #include "Spawn.hpp"

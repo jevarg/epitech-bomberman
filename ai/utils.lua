@@ -30,12 +30,16 @@ function get_entities()
 		[9] = TYPE_PRIORITY["item"],
 		[10] = TYPE_PRIORITY["player"],
 		[11] = TYPE_PRIORITY["player"],
-		[12] = TYPE_PRIORITY["player"]
+		[12] = TYPE_PRIORITY["player"],
+		[13] = TYPE_PRIORITY["player"],
+		[14] = TYPE_PRIORITY["player"]
 	}
 	local ent = {}
 	local entities = {}
+	local m = 1
 	for i = 1, #arg, 3 do
 		table.insert(ent, {["type"] = translate[arg[i]], ["y"] = arg[i + 1], ["x"] = arg[i + 2]})
+		m = m + 1
 	end
 	for i = 1, 8 do
 		for j = 1, #ent do

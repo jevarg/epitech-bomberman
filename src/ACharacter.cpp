@@ -58,6 +58,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 	    case STOCKITEM:
 	    case RANGEITEM:
 	    case FLAME:
+	    case CHICKEN:
 	      if (_anim == NOTHING)
 	      	{
 		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);

@@ -201,6 +201,7 @@ bool  Menu::initialize()
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER2_MODEL);
   fact.addModel(BOT, BOT_MODEL);
+  fact.addModel(CHICKEN, BOMB_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
@@ -213,6 +214,7 @@ bool  Menu::initialize()
   ent->addEntity(CHARACTER1, _player1);
   ent->addEntity(CHARACTER2, _player2);
   ent->addEntity(BOT, new IA(0, 0, &_gameInfo, false));
+  ent->addEntity(CHICKEN, new Chicken(0, 0, &_gameInfo, false));
   ent->addEntity(SPEEDITEM, new SpeedItem(0, 0, &_gameInfo, false));
   ent->addEntity(HEALTHITEM, new HealthItem(0, 0, &_gameInfo, false));
   ent->addEntity(STOCKITEM, new StockItem(0, 0, &_gameInfo, false));

@@ -329,6 +329,6 @@ bool	GameEngine::loadMap(const std::string &file)
   _players.push_back(_player1);
   if (_multi)
     _players.push_back(_player2);
-  spawn.spawnEnt((_multi == true ? 2 : 1), 2, *_gameInfo);
+  spawn.spawnEnt((_multi == true ? 2 : 1), 1, *_gameInfo);
   return (true);
 }

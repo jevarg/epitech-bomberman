@@ -12,8 +12,6 @@ LoadGameWidget::~LoadGameWidget()
 
 void	LoadGameWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
-  int	x = 0, y = 0;
-
   gameInfo.sound->play("click", EFFECT);
   menu.launchGame(MAPS_PATH + _sentence);
 }

@@ -17,7 +17,7 @@ function search_safe_place(map_nb, x, y, block, boolean, cond)
 	local gotox = {0, 0, -1, 1}
 	local gotoy = {-1, 1, 0, 0}
 
-	-- -- print("IN  ? MAP AFTER fill_dangerous_fields")
+	-- print("IN  ? MAP AFTER fill_dangerous_fields")
 	-- display_map(map_nb)
 
 	for i = 1, cond do
@@ -117,13 +117,15 @@ end
 
 function run_out_danger(map_nb, x, y, block)
 	-- print("run out danger !")
-	if (arg["bomb"] == 1) then map_nb[y][x] = "O" end
-	map_nb = fill_dangerous_fields(map_nb)
+	if (arg["bomb"] == 1) then
+		map_nb[y][x] = "O"
+		map_nb = fill_dangerous_fields(map_nb)
+	end
 	local tmpx, tmpy = 0, 0
 	tmpx, tmpy = search_safe_place(map_nb, x, y, block, false, BOMB_RANGE + 1)
-	-- if (tmpx == x and tmpy == y) then
-	-- 	return search_safe_place(map_nb, x, y, block, true, BOMB_RANGE)
-	-- end
+	if (tmpx == x and tmpy == y) then
+		return search_safe_place(map_nb, x, y, block, true, BOMB_RANGE)
+	end
 	return tmpx, tmpy
 end
 
