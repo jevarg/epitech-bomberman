@@ -17,6 +17,7 @@
 #include "ResWidget.hpp"
 #include "FullScreenWidget.hpp"
 #include "ClickTextWidget.hpp"
+#include "SaveWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL),
 	      _gameEngine(&_win, &_textShader, &_gameInfo)
@@ -198,9 +199,9 @@ bool  Menu::initialize()
   _savePanel.push_back(title);
   _savePanel.push_back(new NavigationWidget(x / 8, y / 11.25f, y / 11.25f, x / 6.15f,
   					    "./assets/Button/back.tga", &_pausePanel));
-  _savePanel.push_back(new TextImgWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+  _savePanel.push_back(new TextImgWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
   				      "./assets/Button/button.tga", "Save your Game"));
-  _savePanel.push_back(new InputWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+  _savePanel.push_back(new SaveWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
   				      "./assets/input.tga", "Filename.map"));
 
   _screenPanel.push_back(background);
@@ -435,6 +436,8 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
 	  key = *beg;
 	  if (key >= SDLK_KP_1 && key <= SDLK_KP_0)
 	    key = '0' + (key == SDLK_KP_0 ? (key - 10) : key) - SDLK_KP_1 + 1;
+	  else if (key == SDLK_KP_PERIOD)
+	    key = '.';
 	  if (save == key)
 	    {
 	      if (((key < 128 && key != '\b') && frame < 8) ||
@@ -468,7 +471,9 @@ int		Menu::pauseMenu()
   t_mouse	mouse;
   std::string	content;
 
-  _gameInfo.input->getInput(*(_gameInfo.set));
+  if (_currentPanel == &_savePanel)
+    return (update() == false ? 2 : 0);
+    _gameInfo.input->getInput(*(_gameInfo.set));
   (*(_gameInfo.input))[mouse];
   (*_gameInfo.input)[win];
   if (_gameInfo.input->isPressed(SDLK_F1))
@@ -486,15 +491,24 @@ int		Menu::pauseMenu()
 	   endit = (*_currentPanel).end(); it != endit ; ++it)
       if ((*it)->isClicked(mouse.x, y - mouse.y))
 	{
-	  content = dynamic_cast<ClickTextWidget *>(*it)->getContent();
-	  if (content == "Resume")
-	    return (1);
-	  else if (content == "Quit")
-	    return (2);
-	  else
+	  if (dynamic_cast<ClickTextWidget *>(*it))
 	    {
-	      _currentPanel = &_savePanel;
-	      return (0);
+	      content = dynamic_cast<ClickTextWidget *>(*it)->getContent();
+	      if (content == "Resume")
+		return (1);
+	      else if (content == "Quit")
+		return (2);
+	      else
+		{
+		  setCurrentPanel(&_savePanel);
+		  int	ret = 0;
+		  while (_currentPanel == &_savePanel && ret == 0)
+		    {
+		      ret = (update() == false ? 2 : 0);
+		      draw();
+		    }
+		  return (ret);
+		}
 	    }
 	}
   if ((time = _gameInfo.clock->getElapsed()) < fps)
