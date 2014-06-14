@@ -16,6 +16,7 @@
 #include "NameWidget.hpp"
 #include "ResWidget.hpp"
 #include "FullScreenWidget.hpp"
+#include "ClickTextWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL),
 	      _gameEngine(&_win, &_textShader, &_gameInfo)
@@ -181,11 +182,11 @@ bool  Menu::initialize()
 
   _pausePanel.push_back(background);
   _pausePanel.push_back(title);
-  _pausePanel.push_back(new TextImgWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+  _pausePanel.push_back(new ClickTextWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
 				      "./assets/Button/button.tga", "Resume"));
-  _pausePanel.push_back(new TextImgWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+  _pausePanel.push_back(new ClickTextWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
 				      "./assets/Button/button.tga", "Save"));
-  _pausePanel.push_back(new TextImgWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
+  _pausePanel.push_back(new ClickTextWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
 				      "./assets/Button/button.tga", "Quit"));
 
 
@@ -239,7 +240,7 @@ bool		Menu::update()
 {
   double	time;
   double	fps = (1000 / _gameInfo.set->getVar(FPS));
-  int y = _gameInfo.set->getVar(W_HEIGHT);
+  int		y = _gameInfo.set->getVar(W_HEIGHT);
   t_window	win;
   t_mouse	mouse;
 
@@ -445,11 +446,46 @@ void	Menu::textInput(std::string &buf, unsigned int maxlen)
     }
 }
 
-int	Menu::pauseMenu()
+int		Menu::pauseMenu()
 {
-  if (update() == false)
+  double	fps = (1000 / _gameInfo.set->getVar(FPS));
+  int		y = _gameInfo.set->getVar(W_HEIGHT);
+  double	time;
+  t_window	win;
+  t_mouse	mouse;
+  std::string	content;
+
+  _gameInfo.input->getInput(*(_gameInfo.set));
+  (*(_gameInfo.input))[mouse];
+  (*_gameInfo.input)[win];
+  if (_gameInfo.input->isPressed(SDLK_F1))
+    {
+      glDisable(GL_DEPTH_TEST);
+      _console->aff(_win, 1600.0f, 900.0f);
+      glEnable(GL_DEPTH_TEST);
+    }
+  if (win.event == WIN_QUIT)
     return (2);
+  _frames++;
   draw();
+  if (mouse.event == BUTTONUP)
+    for (std::vector<AWidget *>::iterator it = (*_currentPanel).begin(),
+	   endit = (*_currentPanel).end(); it != endit ; ++it)
+      if ((*it)->isClicked(mouse.x, y - mouse.y))
+	{
+	  content = dynamic_cast<ClickTextWidget *>(*it)->getContent();
+	  if (content == "Resume")
+	    return (1);
+	  else if (content == "Quit")
+	    return (2);
+	  else
+	    return (3);
+	}
+  if ((time = _gameInfo.clock->getElapsed()) < fps)
+    {
+      _frames = 0;
+      usleep((fps - time) * 1000);
+    }
   return (0);
 }
 
