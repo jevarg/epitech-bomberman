@@ -12,7 +12,6 @@ enum
     PHEALTH = 30,
     PSTOCK = 40,
     PRANGE = 30,
-    PCHICKEN = 100
   };
 
 class	Box : public AEntity
