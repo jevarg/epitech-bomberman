@@ -32,20 +32,21 @@ public:
 
 private:
   bool nextFrame();
-  void genTexture();
+  void generateTexture();
   bool update(gdl::SdlContext &win, gdl::Clock &clock, Input &input, Settings &set);
   void draw(gdl::AShader &shader, gdl::SdlContext &win, gdl::Clock clock, float x, float y);
 
-  int		    _video;
-  GLuint	    _texture;
-  AVCodec           *_codec;
-  AVFrame           *_frame, *_frameRGB;
-  AVPacket          _packet;
-  Square	    _square;
-  AVDictionary      *_optionsDict;
-  AVCodecContext    *_codecContext;
-  AVFormatContext   *_formatContext;
-  struct SwsContext *_sws;
+  int		_video;
+  GLuint	_texture;
+  AVCodec	*_codec;
+  AVFrame	*_frame;
+  AVFrame	*_frameRGB;
+  AVPacket	_packet;
+  Square	_square;
+  AVDictionary	*_dictionary;
+  AVCodecContext	*_contCodec;
+  AVFormatContext	*_contFormat;
+  struct SwsContext	*_sws;
 };
 
 #endif /* _INTRO_HPP_ */
