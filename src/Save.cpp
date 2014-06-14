@@ -55,6 +55,7 @@ void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
   std::string	buf;
   std::ostringstream	ss;
 
+ std::cout << name << std::endl;
   if (file.is_open() == false)
     throw (Exception("Failed to open save file"));
   ss << settings.getVar(MAP_WIDTH) << " " << settings.getVar(MAP_HEIGHT);

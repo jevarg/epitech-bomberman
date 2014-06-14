@@ -26,10 +26,12 @@ void	SaveWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
     try
       {
 	saveobj.saveGame(*gameInfo.map, *gameInfo.set, GAMES_PATH + _sentence);
+	_sentence = "Sucess";
       }
     catch(const Exception &e)
       {
 	std::cerr << e.what() << std::endl;
+	_sentence = "Error";
       }
   else
     _sentence = "Invalid: Filename.game";

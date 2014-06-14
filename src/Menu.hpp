@@ -16,7 +16,7 @@
 
 # define SCORE_PATH "./.scores"
 # define MAPS_PATH "./Save/Maps/"
-# define GAMES_PATH "./Sve/Games/"
+# define GAMES_PATH "./Save/Games/"
 
 class Menu
 {
