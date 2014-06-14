@@ -20,30 +20,17 @@ Save::~Save()
 {
 }
 
-std::string    	&Save::encrypt(std::string &to_encrypt)
+std::string    	&Save::encrypt(std::string &to_encrypt) const
 {
+  char		Key = 'k';
+
   for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
-    {
-      if ((*it <= '9' && *it >= '0') || *it == ' ')
-	*it -= 25;
-      else
-	throw (Exception("Decrypt error : incorrect savegame file"));
-    }
+    *it ^= Key;
   return (to_encrypt);
 }
 
-std::string    	&Save::decrypt(std::string &to_encrypt)
-{
-  for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
-    {
-      *it += 25;
-      if ((*it > '9' || *it < '0') && *it != ' ')
-	throw (Exception("Decrypt error : incorrect savegame file"));
-    }
-  return (to_encrypt);
-}
-
-void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
+void		Save::saveGame(const Map &map, const Settings &settings,
+			       const std::string &name) const
 {
   v_Contcit	it;
   v_Contcit	end;
@@ -87,7 +74,8 @@ void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
   file.close();
 }
 
-void		Save::loadGame(const std::string &name, t_gameinfo &gameInfo)
+void		Save::loadGame(const std::string &name,
+			       const t_gameinfo &gameInfo) const
 {
   EntityFactory	*fact = EntityFactory::getInstance();
   v_Contcit	end = gameInfo.map->ContEnd();
@@ -112,7 +100,7 @@ void		Save::loadGame(const std::string &name, t_gameinfo &gameInfo)
   gameInfo.map->createContainers();
   for (bool first = true; std::getline(file, buf); first = false)
     {
-      decrypt(buf);
+      encrypt(buf);
       if (std::count(buf.begin(), buf.end(), ' ') != (first ? 1 : 2))
 	throw (Exception("Error : invalid savegame file"));
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
