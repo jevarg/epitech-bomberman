@@ -5,13 +5,13 @@
 Chicken::Chicken(int x, int y, t_gameinfo *gameInfo, bool thread)
   : ACharacter(x, y, CHICKEN, gameInfo, thread), _lua()
 {
-  gameInfo->sound->play("chickenspawn", EFFECT);
+  if (thread)
+    gameInfo->sound->play("chickenspawn", EFFECT);
   _health = 200;
 }
 
 Chicken::~Chicken()
 {
-  std::cout << "DESTROY CHICKEN" << std::endl;
 }
 
 void	Chicken::update()
