@@ -10,7 +10,6 @@ Chicken::Chicken(int x, int y, t_gameinfo *gameInfo, bool thread)
 
 Chicken::~Chicken()
 {
-  std::cout << "DESTROY CHICKEN" << std::endl;
 }
 
 void	Chicken::update()

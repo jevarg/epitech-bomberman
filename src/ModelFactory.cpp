@@ -15,8 +15,6 @@ ModelFactory::ModelFactory(): _texture(), _model()
 
 ModelFactory::~ModelFactory()
 {
-  for(std::map<eType, IObject *>::iterator it= _model.begin(); it != _model.end(); it++)
-    delete (it->second);
   for(std::map<std::string, gdl::Texture*>::iterator it= _texture.begin(); it != _texture.end(); it++)
     delete (it->second);
 }
