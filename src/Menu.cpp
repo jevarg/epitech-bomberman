@@ -23,6 +23,8 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 {
   _frames = 0;
   _multi = false;
+  _player1 = NULL;
+  _player2 = NULL;
   _gameInfo.input = new Input();
   _gameInfo.set = new Settings();
   _gameInfo.sound = new Sound();
@@ -38,6 +40,8 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 
 Menu::~Menu()
 {
+  if (_player1 == NULL || _player2 == NULL)
+    return ;
   saveScore();
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
@@ -189,6 +193,15 @@ bool  Menu::initialize()
   _pausePanel.push_back(new ClickTextWidget(x / 4, y / 3.0f, y / 11.25f, x / 2,
 				      "./assets/Button/button.tga", "Quit"));
 
+
+  _savePanel.push_back(background);
+  _savePanel.push_back(title);
+  _savePanel.push_back(new NavigationWidget(x / 8, y / 11.25f, y / 11.25f, x / 6.15f,
+  					    "./assets/Button/back.tga", &_pausePanel));
+  _savePanel.push_back(new TextImgWidget(x / 4, y / 1.8f, y / 11.25f, x / 2,
+  				      "./assets/Button/button.tga", "Save your Game"));
+  _savePanel.push_back(new InputWidget(x / 4, y / 2.25f, y / 11.25f, x / 2,
+  				      "./assets/input.tga", "Filename.map"));
 
   _screenPanel.push_back(background);
   _screenPanel.push_back(title);
@@ -479,7 +492,10 @@ int		Menu::pauseMenu()
 	  else if (content == "Quit")
 	    return (2);
 	  else
-	    return (3);
+	    {
+	      _currentPanel = &_savePanel;
+	      return (0);
+	    }
 	}
   if ((time = _gameInfo.clock->getElapsed()) < fps)
     {

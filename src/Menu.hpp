@@ -67,6 +67,7 @@ private:
   std::vector<AWidget *> _controlsPanel;
   std::vector<AWidget *> _screenPanel;
   std::vector<AWidget *> _pausePanel;
+  std::vector<AWidget *> _savePanel;
   Player		 *_player1;
   Player		 *_player2;
 };
