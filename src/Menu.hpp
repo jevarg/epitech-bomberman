@@ -45,6 +45,8 @@ private:
   bool	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
   void	handleClock(int &frame, double &time, double fps);
   int	pauseMenu();
+  void	freePanel(AWidget *background, AWidget *title,
+		  AWidget *back, std::vector<AWidget *> &panel);
 
   gdl::SdlContext	_win;
   gdl::BasicShader	_textShader;

@@ -11,6 +11,9 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _shutdown = false;
   _multi = false;
   _frames = 0;
+  _ground = NULL;
+  _skybox = NULL;
+  _console = NULL;
   _fps.initialize();
   _gameInfo->mutex = new Mutex;
   _gameInfo->condvar = new Condvar;
@@ -23,8 +26,20 @@ GameEngine::~GameEngine()
 {
   delete _end_screen[0];
   delete _end_screen[1];
-  delete _gameInfo->mutex;
+
+  if (_ground)
+    delete _ground;
+  if (_skybox)
+    delete _skybox;
+  if (_console)
+    delete _console;
+  _player1->setDestroyAttr();
+  _player2->setDestroyAttr();
+  _gameInfo->condvar->broadcast();
+  sleep(1);
   delete _gameInfo->condvar;
+  delete _gameInfo->save;
+  delete _gameInfo->mutex;
 }
 
 bool GameEngine::initialize()
@@ -297,6 +312,9 @@ bool	GameEngine::loadSave(const std::string &file)
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
+  _players.push_back(_player1);
+  if (_multi)
+    _players.push_back(_player2);
   _gameInfo->sound->play("game", MUSIC);
   return (true);
 }
