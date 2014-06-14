@@ -3,7 +3,7 @@
 #include "Chicken.hpp"
 
 Chicken::Chicken(int x, int y, t_gameinfo *gameInfo, bool thread)
-  : ACharacter(x, y, BOT, gameInfo, thread), _lua()
+  : ACharacter(x, y, CHICKEN, gameInfo, thread), _lua()
 {
   _health = 200;
 }

@@ -128,13 +128,16 @@ void	Box::scaleToPercent(double * const tab, int size) const
     total += tab[i];
   ratio = total / 100.0;
   for (int i = 0; i < size; ++i)
-    tab[i] /= ratio;
+    {
+      std::cout << tab[i] << " /= " << ratio << std::endl;
+      tab[i] /= ratio;
+    }
 }
 
 void	Box::spawnItem()
 {
   // needs to be in the same order as AEntity enum
-  double       	ptab[] = {PSPEED, PHEALTH, PSTOCK, PRANGE};
+  double       	ptab[] = {PCHICKEN, PSPEED, PHEALTH, PSTOCK, PRANGE};
   int		size = sizeof(ptab) / sizeof(double);
   int		randnum;
   double       	start = 0;
@@ -144,10 +147,12 @@ void	Box::spawnItem()
   scaleToPercent(ptab, size);
   for (int i = 0; i < size; ++i)
     {
+      std::cout << "Prob: " << start + ptab[i] << std::endl;
       if (start + ptab[i] > randnum) // means randnum is in the concerned area
 	{
+	  std::cout << "i: " << i << std::endl;
 	  _gameInfo->map->addEntity(facto->getEntity
-				    (static_cast<eType>(SPEEDITEM + i), _x, _y));
+				    (static_cast<eType>(CHICKEN + i), _x, _y));
 	  break ;
 	}
       if (ptab[i] != -1)

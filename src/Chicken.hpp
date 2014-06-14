@@ -12,7 +12,7 @@ public:
   void	update();
   void	pushEntitie(int x, int y, int *cnt, int aggro);
   int	getResultScript(int orient, const char * fileName);
-  virtual AEntity *clone(int, int);
+  AEntity *clone(int, int);
 
 private:
   LuaCommunication _lua;
