@@ -13,10 +13,6 @@ end
 
 function have_elem(entities, x, y, word)
 	for i = 1, #entities do
-			-- print(entities[i]["type"])
-		if (entities[i]["type"] == TYPE_PRIORITY["player"]) then
-			print(X, Y, entities[i]["x"], entities[i]["y"], entities[i]["type"], get_abs_dist(entities, x, y, i) <= AGGRO)
-		end
 		if (entities[i]["type"] == TYPE_PRIORITY[word] and
 			get_abs_dist(entities, x, y, i) <= AGGRO and
 			(entities[i]["x"] ~= x or entities[i]["y"] ~= y)) then
