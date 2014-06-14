@@ -228,7 +228,7 @@ bool  Menu::initialize()
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER2_MODEL);
   fact.addModel(BOT, BOT_MODEL);
-  fact.addModel(CHICKEN, BOMB_MODEL);
+  fact.addModel(CHICKEN, CHICKEN_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
@@ -522,7 +522,6 @@ int		Menu::pauseMenu()
 
 void	Menu::launchGame(const std::string &file, bool load)
 {
-  int	nbIa;
   int	menuState;
   Map map(*(_gameInfo.set));
   _gameInfo.map = &map;

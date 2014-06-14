@@ -62,6 +62,7 @@
 # define CHARACTER2_MODEL "./assets/villager.fbx"
 # define BOT_MODEL "./assets/pigman.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
+# define CHICKEN_MODEL "./assets/chicken.fbx"
 
 # define ABS(x) (((x) < 0) ? (-(x)) : (x))
 
