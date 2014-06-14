@@ -6,7 +6,7 @@ Sound::Sound()
   _enabled = true;
   try
     {
-      if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 4096) == -1)
+      if (Mix_OpenAudio(22050, MIX_DEFAULT_FORMAT, 2, 1024) == -1)
 	throw (Exception("Mix_OpenAudio()"));
       Mix_AllocateChannels(128);
       _musicBox["intro"] = Mix_LoadMUS("./assets/sounds/intro.ogg");
@@ -23,9 +23,12 @@ Sound::Sound()
       _soundBox["click"] = Mix_LoadWAV("./assets/sounds/click.wav");
       _soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav");
       _soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav");
+      _soundBox["chickenhurt"] = Mix_LoadWAV("./assets/sounds/chickenhurt.wav");
+      _soundBox["chickenspawn"] = Mix_LoadWAV("./assets/sounds/chickenspawn.wav");
+      _soundBox["endgame"] = Mix_LoadWAV("./assets/sounds/endgame.wav");
       for (std::map<std::string, Mix_Chunk *>::iterator it = _soundBox.begin(); it != _soundBox.end(); ++it)
 	if (it->second != NULL)
-	  Mix_VolumeChunk(it->second, 16);
+	  Mix_VolumeChunk(it->second, 32);
     }
   catch (Exception &e)
     {
@@ -44,6 +47,9 @@ Sound::Sound()
       _soundBox["click"] = NULL;
       _soundBox["getbomb"] = NULL;
       _soundBox["burp"] = NULL;
+      _soundBox["chickenhurt"] = NULL;
+      _soundBox["chickenspawn"] = NULL;
+      _soundBox["endgame"] = NULL;
     }
 }
 
@@ -71,7 +77,7 @@ void	Sound::toggle()
     }
   else
     {
-      volume = 16;
+      volume = 32;
       Mix_VolumeMusic(128);
       _enabled = true;
     }

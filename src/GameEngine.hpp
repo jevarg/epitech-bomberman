@@ -96,6 +96,7 @@ public:
   void		setPlayer(Player *player1, Player *player2);
   void		setShutdown(bool shutdown);
   bool		loadMap(const std::string &file);
+  void		resetAlreadyPlayed();
 
 private:
   void	mainInput();
@@ -114,6 +115,7 @@ private:
   std::map<eType, gdl::Texture *>	_texture;
   Player			*_player;
   t_gameinfo			*_gameInfo;
+  bool				_already_played;
   bool				_shutdown;
   int				_frames;
   std::vector<Light*>		_lights;

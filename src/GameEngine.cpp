@@ -11,6 +11,7 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _shutdown = false;
   _multi = false;
   _frames = 0;
+  _already_played = false;
   _fps.initialize();
   _gameInfo->mutex = new Mutex;
   _gameInfo->condvar = new Condvar;
@@ -200,9 +201,23 @@ void GameEngine::draw()
 	  }
       _hud->draw(*player, *_gameInfo, _multi);
       if ((*player)->getEnd() == WIN)
-	_end_screen[0]->draw(*_textShader, *_gameInfo->clock);
+	{
+	  _end_screen[0]->draw(*_textShader, *_gameInfo->clock);
+	  if (_already_played == false)
+	    {
+	      _gameInfo->sound->play("endgame", EFFECT);
+	      _already_played = true;
+	    }
+	}
       else if ((*player)->getEnd() == LOSE)
-	_end_screen[1]->draw(*_textShader, *_gameInfo->clock);
+	{
+	  _end_screen[1]->draw(*_textShader, *_gameInfo->clock);
+	  if (_already_played == false)
+	    {
+	      _gameInfo->sound->play("endgame", EFFECT);
+	      _already_played = true;
+	    }
+	}
     }
   glViewport(0, 0, winX, winY);
   glDisable(GL_DEPTH_TEST);
@@ -331,4 +346,9 @@ bool	GameEngine::loadMap(const std::string &file)
     _players.push_back(_player2);
   spawn.spawnEnt((_multi == true ? 2 : 1), 2, *_gameInfo);
   return (true);
+}
+
+void	GameEngine::resetAlreadyPlayed()
+{
+  _already_played = false;
 }

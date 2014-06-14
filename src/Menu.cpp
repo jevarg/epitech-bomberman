@@ -230,6 +230,7 @@ bool		Menu::update()
   t_window	win;
   t_mouse	mouse;
 
+  _gameEngine.resetAlreadyPlayed();
   _gameInfo.input->getInput(*(_gameInfo.set));
   (*(_gameInfo.input))[mouse];
   (*_gameInfo.input)[win];
