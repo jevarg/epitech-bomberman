@@ -23,7 +23,7 @@ Sound::Sound()
       _soundBox["getbomb"] = Mix_LoadWAV("./assets/sounds/getbomb.wav");
       _soundBox["burp"] = Mix_LoadWAV("./assets/sounds/burp.wav");
     }
-  catch (Exception &e)
+  catch (const Exception &e)
     {
       std::cerr << e.what() << std::endl;
       _musicBox["intro"] = NULL;

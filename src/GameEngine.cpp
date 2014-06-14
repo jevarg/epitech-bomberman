@@ -318,7 +318,7 @@ bool	GameEngine::loadMap(const std::string &file)
 	  _gameInfo->set->setVar(MAP_WIDTH, x);
 	  _gameInfo->set->setVar(MAP_HEIGHT, y);
 	}
-      catch (Exception &e)
+      catch (const Exception &e)
 	{
 	  std::cerr << e.what() << std::endl;
 	  return (false);
