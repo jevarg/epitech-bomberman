@@ -42,13 +42,7 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 
 Menu::~Menu()
 {
-  if (_player1 == NULL || _player2 == NULL)
-    return ;
   saveScore();
-  _player1->setDestroyAttr();
-  _player2->setDestroyAttr();
-  _gameInfo.condvar->broadcast();
-  sleep(1);
 }
 
 bool  Menu::initialize()
@@ -231,6 +225,7 @@ bool  Menu::initialize()
   fact.addModel(CHICKEN, CHICKEN_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
+  std::cout << "MUTEX => " << _gameInfo.mutex << std::endl;
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
 
