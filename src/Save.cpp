@@ -1,16 +1,14 @@
 #include <algorithm>
-#include <ios>
 #include <iostream>
 #include <sstream>
-#include <vector>
-#include <string>
-#include <iostream>
 #include <fstream>
-#include "Exception.hpp"
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <unistd.h>
 #include "GameEngine.hpp"
+#include "Menu.hpp"
+#include "Exception.hpp"
 #include "Save.hpp"
-#include "Container.hpp"
-#include "Settings.hpp"
 
 Save::Save()
 {
@@ -20,105 +18,103 @@ Save::~Save()
 {
 }
 
-void		Save::encrypt(std::string &to_encrypt)
+std::string    	&Save::encrypt(std::string &to_encrypt) const
 {
+  char		Key = 'k';
+
   for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
-    {
-      if ((*it <= '9' && *it >= '0') || *it == ' ')
-	*it -= 25;
-      else
-	throw (Exception("Decrypt error : incorrect savegame file"));
-    }
+    *it ^= Key;
+  return (to_encrypt);
 }
 
-void		Save::decrypt(std::string &to_encrypt)
+void		Save::checkDirectory(const std::string &path) const
 {
-  for (std::string::iterator it = to_encrypt.begin(); it != to_encrypt.end(); ++it)
-    {
-      *it += 25;
-      if ((*it > '9' || *it < '0') && *it != ' ')
-	throw (Exception("Decrypt error : incorrect savegame file"));
-    }
+  struct stat	st;
+
+  if (stat(path.c_str(), &st) == -1)
+    mkdir(path.c_str(), 0755);
 }
 
-void		Save::saveGame(Map &map, Settings &settings, const std::string &name)
+void		Save::saveGame(const Map &map, const Settings &settings,
+			       const std::string &name) const
 {
-  std::vector<Container *>::const_iterator	it = map.ContBegin();
-  std::vector<Container *>::const_iterator	end = map.ContEnd();
+  v_Contcit	it;
+  v_Contcit	end;
   v_Entcit	vit;
   v_Entcit	vit_end;
   l_Entcit     	lit;
   l_Entcit     	lit_end;
-  std::ofstream	file(name.c_str());
   std::string	buf;
   std::ostringstream	ss;
 
+  checkDirectory("./Save");
+  checkDirectory(MAPS_PATH);
+  checkDirectory(GAMES_PATH);
+  std::ofstream	file(name.c_str());
   if (file.is_open() == false)
     throw (Exception("Failed to open save file"));
   ss << settings.getVar(MAP_WIDTH) << " " << settings.getVar(MAP_HEIGHT);
   buf = ss.str();
   encrypt(buf);
   file << buf << "\n";
-  buf = "";
-  while (it != end)
+  for (it = map.ContBegin(), end = map.ContEnd();
+       it != end; ++it)
     {
-      vit = (*it)->vecBegin();
-      vit_end = (*it)->vecEnd();
-      while (vit != vit_end)
+      for (vit = (*it)->vecBegin(), vit_end = (*it)->vecEnd();
+	   vit != vit_end; ++vit)
 	{
 	  std::ostringstream	oss;
 	  oss << (*vit)->getXPos() << " " << (*vit)->getYPos() << " "
 	      << static_cast<int>((*vit)->getType());
 	  buf = oss.str();
-	  this->encrypt(buf);
-	  file << buf << "\n";
-	  ++vit;
-	  buf = "";
+	  file << encrypt(buf) << std::endl;
 	}
-      lit = (*it)->listBegin();
-      lit_end = (*it)->listEnd();
-      while (lit != lit_end)
+      for (lit = (*it)->listBegin(), lit_end = (*it)->listEnd();
+	     lit != lit_end; ++lit)
 	{
 	  std::ostringstream	oss;
 	  oss << (*lit)->getXPos() << " " << (*lit)->getYPos() << " "
 	      << static_cast<int>((*lit)->getType());
 	  buf = oss.str();
-	  this->encrypt(buf);
-	  file << buf << "\n";
-	  ++lit;
-	  buf = "";
+	  file << encrypt(buf) << std::endl;
 	}
-      ++it;
     }
   file.close();
 }
 
-void		Save::loadGame(const std::string &name, t_gameinfo &gameInfo)
+void		Save::loadGame(const std::string &name,
+			       t_gameinfo &gameInfo) const
 {
   EntityFactory	*fact = EntityFactory::getInstance();
-  v_Contcit	end = gameInfo.map->ContEnd();
   std::ifstream	file(name.c_str());
   std::string	buf;
+  v_Contcit	end;
   int		x;
   int		y;
   int		type;
 
   if ((file.rdstate() && std::ifstream::failbit) != 0)
     throw (Exception("Error opening " + name));
-  for (v_Contcit it = gameInfo.map->ContBegin();it != end;it++)
+  if (gameInfo.map) // erase old entities
     {
-      AEntity *ent;
+      for (v_Contcit it = gameInfo.map->ContBegin(), end = gameInfo.map->ContEnd();
+	   it != end; it++)
+	{
+	  AEntity *ent;
 
-      while ((ent = (*it)->listFront()) != NULL)
-  	ent->setDestroy();
-      while ((ent = (*it)->vecFront()) != NULL)
-  	ent->setDestroy();
+	  while ((ent = (*it)->listFront()) != NULL)
+	    ent->setDestroy();
+	  while ((ent = (*it)->vecFront()) != NULL)
+	    ent->setDestroy();
+      }
+      while (gameInfo.map->clearElements() != 0);
     }
-  while (gameInfo.map->clearElements() != 0);
+  else
+    gameInfo.map = new Map(*gameInfo.set);
   gameInfo.map->createContainers();
   for (bool first = true; std::getline(file, buf); first = false)
     {
-      decrypt(buf);
+      encrypt(buf);
       if (std::count(buf.begin(), buf.end(), ' ') != (first ? 1 : 2))
 	throw (Exception("Error : invalid savegame file"));
       std::istringstream (buf.substr(0, buf.find_first_of(' ', 0))) >> x;
@@ -133,8 +129,9 @@ void		Save::loadGame(const std::string &name, t_gameinfo &gameInfo)
 	{
 	  buf.erase(0, buf.find_first_of(' ', 0) + 1);
 	  std::istringstream (buf) >> type;
-	  if (type >= BOT || type < 0 || type == FREE)
+	  if (type > BOT || type < 0 || type == FREE)
 	    throw (Exception("Error : invalid savegame file, bad type"));
+	  std::cout << "TYPE => " << static_cast<eType>(type) << std::endl;
 	  gameInfo.map->addEntity(fact->getEntity(static_cast<eType>(type), x, y));
 	}
     }

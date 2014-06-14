@@ -4,9 +4,12 @@
 # include <string>
 # include <map>
 # include <list>
-
+# include <unistd.h>
+# include <SdlContext.hh>
 # include "Settings.hpp"
-# include "GameEngine.hpp"
+# include "Input.hpp"
+# include "Settings.hpp"
+# include "Text.hpp"
 
 class		Console
 {

@@ -30,7 +30,7 @@ Sound::Sound()
 	if (it->second != NULL)
 	  Mix_VolumeChunk(it->second, 32);
     }
-  catch (Exception &e)
+  catch (const Exception &e)
     {
       std::cerr << e.what() << std::endl;
       _musicBox["intro"] = NULL;

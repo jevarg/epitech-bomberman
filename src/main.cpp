@@ -23,7 +23,7 @@ int	main()
       Menu menu;
       menu.launch();
     }
-  catch (Exception &e)
+  catch (const Exception &e)
     {
       std::cerr << e.what() << std::endl;
       return (1);

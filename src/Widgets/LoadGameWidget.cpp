@@ -12,8 +12,17 @@ LoadGameWidget::~LoadGameWidget()
 
 void	LoadGameWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
-  int	x = 0, y = 0;
+  Save	saveobj;
 
   gameInfo.sound->play("click", EFFECT);
-  menu.launchGame(MAPS_PATH + _sentence);
+  try
+    {
+      saveobj.loadGame(GAMES_PATH + _sentence, gameInfo);
+    }
+  catch (const Exception &e)
+    {
+      std::cerr << e.what();
+      return ;
+    }
+  menu.launchGame(GAMES_PATH + _sentence, true);
 }

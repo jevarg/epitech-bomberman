@@ -62,6 +62,7 @@
 # define CHARACTER2_MODEL "./assets/villager.fbx"
 # define BOT_MODEL "./assets/pigman.fbx"
 # define BOMB_MODEL "./assets/tnt.fbx"
+# define CHICKEN_MODEL "./assets/chicken.fbx"
 
 # define ABS(x) (((x) < 0) ? (-(x)) : (x))
 
@@ -97,6 +98,10 @@ public:
   void		setShutdown(bool shutdown);
   bool		loadMap(const std::string &file);
   void		resetAlreadyPlayed();
+  void		setConsole(Console * const console);
+  bool		isShutingDown() const;
+  bool		loadSave(const std::string &file);
+  bool		loadMap(const std::string &file, int ia);
 
 private:
   void	mainInput();
@@ -109,6 +114,7 @@ private:
   gdl::BasicShader		*_textShader;
   Cube				*_ground;
   Cube				*_skybox;
+  Console			*_console;
   unsigned int			_mapX;
   unsigned int			_mapY;
   std::map<eType, IObject *>	_type;

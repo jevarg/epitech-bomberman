@@ -18,6 +18,7 @@ enum	eType
     BOMB,
     FLAME,
     ITEM,
+    CHICKEN,
     SPEEDITEM,
     HEALTHITEM,
     STOCKITEM,
@@ -25,9 +26,9 @@ enum	eType
     CHARACTER1,
     CHARACTER2,
     BOT,
+    CHARACTER,
     GROUND,
-    UNKNOWNENTITY,
-    CHARACTER
+    UNKNOWNENTITY
   };
 
 class Map;

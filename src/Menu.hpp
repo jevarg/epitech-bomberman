@@ -12,10 +12,11 @@
 # include "AWidget.hpp"
 # include "Console.hpp"
 # include "Intro.hpp"
+# include "Chicken.hpp"
 
 # define SCORE_PATH "./.scores"
 # define MAPS_PATH "./Save/Maps/"
-# define GAMES_PATH "./Sve/Games/"
+# define GAMES_PATH "./Save/Games/"
 
 class Menu
 {
@@ -27,7 +28,7 @@ public:
   bool	update();
   void	draw();
   void	launch();
-  void	launchGame(const std::string &file);
+  void	launchGame(const std::string &file, bool load);
   void	setCurrentPanel(std::vector<AWidget *> * const currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen);
   void	getPlayerName(std::string &name, int playerId) const;
@@ -43,6 +44,7 @@ private:
   void	readDir(const std::string &dirname);
   bool	textFillBuf(std::string &buf, unsigned int maxlen, Keycode key);
   void	handleClock(int &frame, double &time, double fps);
+  int	pauseMenu();
 
   gdl::SdlContext	_win;
   gdl::BasicShader	_textShader;
@@ -64,6 +66,8 @@ private:
   std::vector<AWidget *> _optionsPanel;
   std::vector<AWidget *> _controlsPanel;
   std::vector<AWidget *> _screenPanel;
+  std::vector<AWidget *> _pausePanel;
+  std::vector<AWidget *> _savePanel;
   Player		 *_player1;
   Player		 *_player2;
 };

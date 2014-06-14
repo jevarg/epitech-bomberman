@@ -3,12 +3,12 @@
 Intro::Intro()
   : _square()
 {
-  _formatContext = NULL;
-  _codecContext = NULL;
+  _contFormat = NULL;
+  _contCodec = NULL;
   _codec = NULL;
   _frame = 0;
   _frameRGB = 0;
-  _optionsDict = NULL;
+  _dictionary = NULL;
   _sws = NULL;
 }
 
@@ -23,44 +23,44 @@ bool Intro::initialize(const std::string &file)
   int		 bytes;
 
   av_register_all();
-  if (avformat_open_input(&_formatContext, file.c_str(), NULL, NULL) < 0
-      || avformat_find_stream_info(_formatContext, NULL) < 0)
+  if (avformat_open_input(&_contFormat, file.c_str(), NULL, NULL) < 0
+      || avformat_find_stream_info(_contFormat, NULL) < 0)
     {
       std::cerr << "FAILED" << std::endl;
       return (false);
     }
-  for(unsigned char i = 0; i < _formatContext->nb_streams; ++i)
-    if(_formatContext->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO)
+  for(unsigned char i = 0; i < _contFormat->nb_streams; ++i)
+    if(_contFormat->streams[i]->codec->codec_type == AVMEDIA_TYPE_VIDEO)
       {
   	_video = i;
   	break;
       }
-  _codecContext = _formatContext->streams[_video]->codec;
-  if ((_codec = avcodec_find_decoder(_codecContext->codec_id)) == NULL
-      || avcodec_open2(_codecContext, _codec, &_optionsDict) < 0
+  _contCodec = _contFormat->streams[_video]->codec;
+  if ((_codec = avcodec_find_decoder(_contCodec->codec_id)) == NULL
+      || avcodec_open2(_contCodec, _codec, &_dictionary) < 0
       || (_frame = av_frame_alloc()) == NULL
       || (_frameRGB = av_frame_alloc()) == NULL
-      || (bytes = avpicture_get_size(PIX_FMT_RGB24, _codecContext->width, _codecContext->height)) < 0
+      || (bytes = avpicture_get_size(PIX_FMT_RGB24, _contCodec->width, _contCodec->height)) < 0
       || (buff = static_cast<unsigned char *>(av_malloc(bytes * sizeof(unsigned char)))) == NULL
       || (avpicture_fill((AVPicture *)_frameRGB, buff, PIX_FMT_RGB24,
-  			 _codecContext->width, _codecContext->height) < 0))
+  			 _contCodec->width, _contCodec->height) < 0))
     return (false);
-  genTexture();
-  _sws = sws_getCachedContext(_sws, _codecContext->width, _codecContext->height,
-  				  _codecContext->pix_fmt, _codecContext->width,
-  				  _codecContext->height, PIX_FMT_RGB24,
+  generateTexture();
+  _sws = sws_getCachedContext(_sws, _contCodec->width, _contCodec->height,
+  				  _contCodec->pix_fmt, _contCodec->width,
+  				  _contCodec->height, PIX_FMT_RGB24,
   				  SWS_BICUBIC, NULL, NULL, NULL);
   if (_sws == NULL)
     return (false);
   return (true);
 }
 
-void Intro::genTexture()
+void Intro::generateTexture()
 {
   glEnable(GL_TEXTURE_2D);
   glGenTextures(1, &_texture);
   glBindTexture(GL_TEXTURE_2D, _texture);
-  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _codecContext->width, _codecContext->height,
+  glTexImage2D(GL_TEXTURE_2D, 0, GL_RGB, _contCodec->width, _contCodec->height,
 	       0, GL_RGB, GL_UNSIGNED_BYTE, _frameRGB->data[0]);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
   glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
@@ -71,22 +71,22 @@ bool Intro::nextFrame()
 {
   int frameEnd = 0;
 
-  while (av_read_frame(_formatContext, &_packet) >= 0)
+  while (av_read_frame(_contFormat, &_packet) >= 0)
     {
       if (_packet.stream_index == _video)
 	{
-	  avcodec_decode_video2(_codecContext, _frame, &frameEnd, &_packet);
+	  avcodec_decode_video2(_contCodec, _frame, &frameEnd, &_packet);
 	  if (frameEnd)
 	    {
 	      sws_scale (_sws, (uint8_t const * const *)_frame->data,
-			 _frame->linesize, 0, _codecContext->height, _frameRGB->data,
+			 _frame->linesize, 0, _contCodec->height, _frameRGB->data,
 			 _frameRGB->linesize);
 	      glBindTexture( GL_TEXTURE_2D, _texture );
 	      glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR );
 	      glTexParameteri( GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR );
 	      glPixelStorei(GL_UNPACK_ALIGNMENT, 1);
-	      glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _codecContext->width,
-			      _codecContext->height, GL_RGB, GL_UNSIGNED_BYTE, _frameRGB->data[0]);
+	      glTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, _contCodec->width,
+			      _contCodec->height, GL_RGB, GL_UNSIGNED_BYTE, _frameRGB->data[0]);
 	      return (true);
 	    }
 	}

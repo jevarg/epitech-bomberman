@@ -24,14 +24,17 @@ GameEngine::~GameEngine()
 {
   delete _end_screen[0];
   delete _end_screen[1];
-  delete _gameInfo->mutex;
+  _player1->setDestroyAttr();
+  _player2->setDestroyAttr();
+  _gameInfo->condvar->broadcast();
+  sleep(1);
   delete _gameInfo->condvar;
+  delete _gameInfo->save;
+  delete _gameInfo->mutex;
 }
 
 bool GameEngine::initialize()
 {
-  int winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
-
   if (!_end_screen[0]->initialize() || !_end_screen[1]->initialize())
     return (false);
 
@@ -45,12 +48,6 @@ bool GameEngine::initialize()
 
   _end_screen[0]->setSize(420, 94);
   _end_screen[1]->setSize(490, 94);
-
-  _end_screen[0]->setPos(((winX / 2) / (_multi == true ? 2 : 1)) - 210, (winY / 2) - 47);
-  _end_screen[1]->setPos(((winX / 2) / (_multi == true ? 2 : 1)) - 245, (winY / 2) - 47);
-
-  _end_screen[0]->fillGeometry();
-  _end_screen[1]->fillGeometry();
 
   _hud = new HUD(*(_textShader));
 
@@ -70,24 +67,14 @@ void	GameEngine::mainInput()
   t_window	win;
 
   _gameInfo->input->getInput(*(_gameInfo->set));
-  if (((*_gameInfo->input)[win] && win.event == WIN_QUIT) ||
-      _gameInfo->input->isPressed(SDLK_ESCAPE))
+  if (_gameInfo->input->isPressed(SDLK_F1))
     {
-      _shutdown = true;
-      v_Contcit end = _gameInfo->map->ContEnd();
-      for (v_Contcit it = _gameInfo->map->ContBegin();it != end;it++)
-	{
-	  AEntity *ent;
-	  v_Entit its;
-	  l_Entit itm;
-	  while ((ent = (*it)->listFront()) != NULL)
-	    ent->setDestroy();
-	  while ((ent = (*it)->vecFront()) != NULL)
-	    ent->setDestroy();
-	}
-      _gameInfo->condvar->broadcast();
-      return ;
+      glDisable(GL_DEPTH_TEST);
+      _console->aff(*_win, _gameInfo->set->getVar(W_WIDTH), _gameInfo->set->getVar(W_HEIGHT));
+      glEnable(GL_DEPTH_TEST);
     }
+  if (((*_gameInfo->input)[win] && win.event == WIN_QUIT))
+    setShutdown(true);
 }
 
 int		GameEngine::clearElements()
@@ -105,6 +92,8 @@ bool		GameEngine::update()
   int nbPlayer = _gameInfo->map->nbPlayer();
 
   mainInput();
+  if (_gameInfo->input->isPressed(SDLK_ESCAPE) && _shutdown == false)
+    return (false);
   if (_player1->isAlive() && nbPlayer == 1)
     _player1->setEnd(WIN);
   if (_player2->isAlive() && nbPlayer == 1)
@@ -125,22 +114,6 @@ bool		GameEngine::update()
       _frames = 0;
       elapsedTime = 0;
     }
-  // ++frame;
-  // if (frame == 600)
-  //   {
-  //     if (_save.saveGame(*(_gameInfo->map), *(_gameInfo->set), "save") == false)
-  // 	std::cout << "failed to save game" << std::endl;
-  //     else
-  // 	std::cout << "game saved" << std::endl;
-  //   }
-  // if (frame > 600 && frame % 600 == 0)
-  //   {
-  //     if (_save.loadGame(*(_gameInfo->map), *(_gameInfo->set), "save", _gameInfo) == false)
-  // 	std::cout << "failed to load game" << std::endl;
-  //     else
-  // 	std::cout << "loaded game successfully" << std::endl;
-  //   }
-
   if (time < fps)
     usleep((fps - time) * 1000);
   _win->updateClock(*_gameInfo->clock);
@@ -151,6 +124,9 @@ void GameEngine::draw()
 {
   int i = 0;
   float winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
+
+  if (_shutdown)
+    return ;
 
   glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
   for (std::vector<Player *>::const_iterator player = _players.begin();player != _players.end();++player)
@@ -168,7 +144,8 @@ void GameEngine::draw()
       _shader.setUniform("projection", cam.getProjection());
       _shader.setUniform("view", cam.getTransformation());
       _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
-      for (std::vector<Light *>::const_iterator it = _lights.begin();it != _lights.end();it++)
+      for (std::vector<Light *>::const_iterator it = _lights.begin();
+	   it != _lights.end();it++)
 	(*it)->render(_shader);
 
       moveGround((*player));
@@ -301,11 +278,56 @@ void	GameEngine::setPlayer(Player *player1, Player *player2)
 void	GameEngine::setShutdown(bool shutdown)
 {
   _shutdown = shutdown;
+  if (_shutdown == false)
+    return ;
+  v_Contcit end = _gameInfo->map->ContEnd();
+  for (v_Contcit it = _gameInfo->map->ContBegin();it != end;it++)
+    {
+      AEntity *ent;
+      v_Entit its;
+      l_Entit itm;
+      while ((ent = (*it)->listFront()) != NULL)
+	ent->setDestroy();
+      while ((ent = (*it)->vecFront()) != NULL)
+	ent->setDestroy();
+    }
+  _gameInfo->condvar->broadcast();
 }
 
-bool	GameEngine::loadMap(const std::string &file)
+void	GameEngine::setConsole(Console * const console)
+{
+  _console = console;
+}
+
+bool	GameEngine::isShutingDown() const
+{
+  return (_shutdown);
+}
+
+bool	GameEngine::loadSave(const std::string &file)
+{
+  _gameInfo->save->loadGame(file, *_gameInfo);
+  _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
+  _mapX = _gameInfo->set->getVar(MAP_WIDTH);
+  while (!_lights.empty())
+    _lights.pop_back();
+  while (!_players.empty())
+    _players.pop_back();
+
+  _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
+			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
+
+  _players.push_back(_player1);
+  if (_multi)
+    _players.push_back(_player2);
+  _gameInfo->sound->play("game", MUSIC);
+  return (true);
+}
+
+bool	GameEngine::loadMap(const std::string &file, int ia)
 {
   Spawn	spawn(_gameInfo->map);
+  int	winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
 
   if (file != "")
     {
@@ -313,21 +335,22 @@ bool	GameEngine::loadMap(const std::string &file)
 	{
 	  int x = 0, y = 0;
 	  _gameInfo->map->determineMapSize(file, x, y);
-	  _gameInfo->set->setVar(MAP_WIDTH, x);
-	  _gameInfo->set->setVar(MAP_HEIGHT, y);
+	  _gameInfo->map->load("map", *_gameInfo);
+	  _mapX = x;
+	  _mapY = y;
 	}
-      catch (Exception &e)
+      catch (const Exception &e)
 	{
 	  std::cerr << e.what() << std::endl;
 	  return (false);
 	}
-      _gameInfo->map->load("map", *_gameInfo);
     }
   else
-    _gameInfo->map->createMap(*_gameInfo);
-
-  _mapX = _gameInfo->set->getVar(MAP_WIDTH);
-  _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
+    {
+      _gameInfo->map->createMap(*_gameInfo);
+      _mapX = _gameInfo->set->getVar(MAP_WIDTH);
+      _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
+    }
 
   while (!_lights.empty())
     _lights.pop_back();
@@ -341,10 +364,17 @@ bool	GameEngine::loadMap(const std::string &file)
 
   spawn.setSpawnSize(_gameInfo->map->getWidth(), _gameInfo->map->getHeight());
 
+  _end_screen[0]->setPos(((winX / 2) / (_multi == true ? 2 : 1)) - 210, (winY / 2) - 47);
+  _end_screen[1]->setPos(((winX / 2) / (_multi == true ? 2 : 1)) - 245, (winY / 2) - 47);
+
+  _end_screen[0]->fillGeometry();
+  _end_screen[1]->fillGeometry();
+
   _players.push_back(_player1);
   if (_multi)
     _players.push_back(_player2);
-  spawn.spawnEnt((_multi == true ? 2 : 1), 2, *_gameInfo);
+  ia = (ia == 0 && _multi == true) ? 0 : ((ia <= 0) ? 1 : ia);
+  spawn.spawnEnt((_multi == true ? 2 : 1), ia, *_gameInfo);
   return (true);
 }
 

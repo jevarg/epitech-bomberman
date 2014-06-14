@@ -6,7 +6,6 @@ IA::IA(int x, int y, t_gameinfo *gameInfo, bool thread)
   : ACharacter(x, y, BOT, gameInfo, thread), _lua()
 {
   _level = 3;
-  // _passive = passive;
 }
 
 IA::~IA()
@@ -23,7 +22,7 @@ void	IA::update()
   pushEntitie(std::floor(x), std::floor(y), &cnt, aggro[_level - 1]);
   if (cnt != 0)
     {
-      int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient));
+      int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient), "ai/main.lua");
       if (res == DROPBOMB)
 	dropBomb();
       else
@@ -34,10 +33,12 @@ void	IA::update()
 void	IA::danger_in_dir(int i, int j, int x, int y,
 			  int i_x, int i_y, int max_it, int *cnt)
 {
-  for (int k = 0 ; k < max_it ; k++)
+  int	k = 0;
+  while (k < max_it)
     {
       int type = _gameInfo->map->checkMapColision(j, i);
-      if (type == FREE)
+      if (type == FREE || type == ITEM || type == SPEEDITEM ||
+	  type == HEALTHITEM || type == STOCKITEM || type == RANGEITEM)
 	{
 	  _lua.pushIntInt(++(*cnt), FLAME);
 	  _lua.pushIntInt(++(*cnt), y);
@@ -46,6 +47,10 @@ void	IA::danger_in_dir(int i, int j, int x, int y,
 	  y += i_y;
 	  j += i_x;
 	  i += i_y;
+	  if (type == ITEM || type == SPEEDITEM ||
+	      type == HEALTHITEM || type == STOCKITEM || type == RANGEITEM)
+	    return ;
+	  ++k;
 	}
       else
 	return ;
@@ -105,14 +110,14 @@ void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
 
 }
 
-int	IA::getResultScript(int aggro, int orient)
+int	IA::getResultScript(int aggro, int orient, const char *fileName)
 {
   _lua.pushStringInt("orientation", orient);
   _lua.pushStringInt("bomb_range", 4);
   _lua.pushStringInt("level", _level);
   _lua.pushStringInt("aggro", aggro);
   _lua.pushSetGlobal("arg");
-  _lua.executeLua("ai/main.lua");
+  _lua.executeLua(fileName);
   return (_lua.getDatas());
 }
 

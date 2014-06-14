@@ -58,6 +58,7 @@ bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 	    case STOCKITEM:
 	    case RANGEITEM:
 	    case FLAME:
+	    case CHICKEN:
 	      if (_anim == NOTHING)
 	      	{
 		  dynamic_cast<Model *>(_model)->getModel()->setCurrentAnim(0, true);
@@ -82,17 +83,11 @@ bool	ACharacter::move(Map *map, float dirX, float dirY)
   oldCont = map->getContPos(_x, _y);
   newCont = map->getContPos(_x + dirX, _y + dirY);
   if (newCont != oldCont) // means the player crossed from contA to contB
-    {
-      std::cout << "Remove element at old pos" << std::endl;
-      map->removeEntityByPtr(this);
-    }
+    map->removeEntityByPtr(this);
   _y += dirY;
   _x += dirX;
   if (newCont != oldCont) // now add it to contB
-    {
-      std::cout << "Add it at new pos" << std::endl;
-      map->addEntity(this);
-    }
+    map->addEntity(this);
   return (true);
 }
 

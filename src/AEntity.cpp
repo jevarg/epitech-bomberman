@@ -1,3 +1,4 @@
+#include "GameEngine.hpp"
 #include "Map.hpp"
 #include "AEntity.hpp"
 

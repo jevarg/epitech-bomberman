@@ -38,5 +38,5 @@ bool	LoadWidget::isClicked(int x, int y)
 void	LoadWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
   gameInfo.sound->play("click", EFFECT);
-  menu.launchGame(MAPS_PATH + _sentence);
+  menu.launchGame(MAPS_PATH + _sentence, false);
 }

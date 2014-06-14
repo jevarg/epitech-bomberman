@@ -4,6 +4,7 @@
 # include <glm/glm.hpp>
 
 # include <Clock.hh>
+# include "LuaCommunication.hpp"
 # include "ALivingEntity.hpp"
 # include "AEntity.hpp"
 # include "Input.hpp"
