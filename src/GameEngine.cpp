@@ -11,6 +11,9 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _shutdown = false;
   _multi = false;
   _frames = 0;
+  _ground = NULL;
+  _skybox = NULL;
+  _console = NULL;
   _fps.initialize();
   _gameInfo->mutex = new Mutex;
   _gameInfo->condvar = new Condvar;
@@ -23,6 +26,13 @@ GameEngine::~GameEngine()
 {
   delete _end_screen[0];
   delete _end_screen[1];
+
+  if (_ground)
+    delete _ground;
+  if (_skybox)
+    delete _skybox;
+  if (_console)
+    delete _console;
   _player1->setDestroyAttr();
   _player2->setDestroyAttr();
   _gameInfo->condvar->broadcast();
