@@ -24,5 +24,5 @@ void	LoadGameWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
       std::cerr << e.what();
       return ;
     }
-  menu.launchGame(GAMES_PATH + _sentence);
+  menu.launchGame(GAMES_PATH + _sentence, true);
 }

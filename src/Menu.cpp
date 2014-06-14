@@ -273,7 +273,7 @@ bool		Menu::update()
   _win.updateClock(*(_gameInfo.clock));
   if ((*(_gameInfo.input))[LAUNCHGAME])
     {
-      launchGame("");
+      launchGame("", false);
       _gameInfo.sound->play("menu", MUSIC);
     }
   if (_gameInfo.input->isPressed(SDLK_F1))
@@ -520,7 +520,7 @@ int		Menu::pauseMenu()
   return (0);
 }
 
-void	Menu::launchGame(const std::string &file)
+void	Menu::launchGame(const std::string &file, bool load)
 {
   int	nbIa;
   int	menuState;
@@ -540,8 +540,14 @@ void	Menu::launchGame(const std::string &file)
   std::cout << "Nb ia: " << nbIa << std::endl;
   std::cout << name[0] << std::endl;
   std::cout << name[1] << std::endl;
-  if (!_gameEngine.loadMap(file))
-    return ;
+  if (load == true)
+    {
+      if (!_gameEngine.loadSave(file))
+	return ;
+    }
+  else
+    if (!_gameEngine.loadMap(file))
+      return ;
   while (1)
     {
       while ((done = _gameEngine.update()))

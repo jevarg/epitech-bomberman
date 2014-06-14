@@ -98,6 +98,7 @@ public:
   void		setConsole(Console * const console);
   bool		isShutingDown() const;
   bool		loadMap(const std::string &file);
+  bool		loadSave(const std::string &file);
 
 private:
   void	mainInput();

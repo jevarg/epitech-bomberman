@@ -305,6 +305,23 @@ bool	GameEngine::isShutingDown() const
   return (_shutdown);
 }
 
+bool	GameEngine::loadSave(const std::string &file)
+{
+  _gameInfo->save->loadGame(file, *_gameInfo);
+  _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
+  _mapX = _gameInfo->set->getVar(MAP_WIDTH);
+  while (!_lights.empty())
+    _lights.pop_back();
+  while (!_players.empty())
+    _players.pop_back();
+
+  _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
+			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
+
+  _gameInfo->sound->play("game", MUSIC);
+  return (true);
+}
+
 bool	GameEngine::loadMap(const std::string &file)
 {
   Spawn	spawn(_gameInfo->map);
