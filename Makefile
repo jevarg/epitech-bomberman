@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat Jun 14 07:22:08 2014 luc sinet
+## Last update Sun Jun 15 15:13:52 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -80,18 +80,19 @@ SRC		=	main.cpp \
 			$(WIDGETDIR)/FullScreenWidget.cpp \
 			$(WIDGETDIR)/ClickTextWidget.cpp \
 			$(WIDGETDIR)/SaveWidget.cpp \
+			$(WIDGETDIR)/SoundWidget.cpp \
 			Intro.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3 -p
+CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3
 CXXFLAGS	+=	$(shell pkg-config --cflags libswscale libavcodec libavformat libavutil)
 
 LDFLAGS		+=	$(shell pkg-config --libs libswscale libavcodec libavformat libavutil)
 LDFLAGS		+=	-L$(LIBGDLDIR)/libs/
-LDFLAGS		+=	-lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2_mixer -lSDL2 -lpthread -lm -ldl -p -lrt
+LDFLAGS		+=	-lgdl_gl -lGL -lGLEW -lfbxsdk -llua -lSDL2_mixer -lSDL2 -lpthread -lm -ldl -lrt
 
 dummy		:=	$(shell test -d $(OBJDIR) || mkdir $(OBJDIR)) \
 			$(shell test -d $(SRCDIR) || mkdir $(SRCDIR)) \

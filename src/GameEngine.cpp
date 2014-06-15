@@ -147,7 +147,6 @@ void GameEngine::draw()
       unsigned int x = (*player)->getXPos(), y = (*player)->getYPos();
       unsigned int depth_view = _gameInfo->set->getVar(R_DEPTHVIEW);
       Camera &cam = (*player)->getCam();
-      const std::vector<Container *>	&cont = _gameInfo->map->getCont();
 
       cam.lookAt();
       _shader.bind();
@@ -158,11 +157,12 @@ void GameEngine::draw()
 	   it != _lights.end();it++)
 	(*it)->render(_shader);
 
-      moveGround((*player));
+      moveGround(*player, _mapX, _mapY);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+      _skybox->setPos(glm::vec3(x, 0.0, y));
       _skybox->draw(_shader, *_gameInfo->clock);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
@@ -240,33 +240,38 @@ void	GameEngine::displayScore()
     }
 }
 
-void	GameEngine::moveGround(Player *player)
+void	GameEngine::moveGround(Player *player, float mapX, float mapY)
 {
   int x = player->getXPos(), y = player->getYPos();
   int depth_view = _gameInfo->set->getVar(R_DEPTHVIEW);
   float groundX = x, groundY = y, sizeX = depth_view * 2, sizeY = depth_view * 2;
 
+  if (sizeX > mapX)
+    sizeX  = mapX;
+  if (sizeY > mapY)
+    sizeY = mapY;
+  sizeX += 1;
   sizeY += 1;
   groundY += 0.5;
-  if (groundX - depth_view < 0)
+  if (groundX - sizeX / 2 < 0)
     {
-      sizeX -= ABS(groundX - depth_view);
+      sizeX -= ABS(groundX - sizeX / 2);
       groundX = sizeX / 2;
     }
-  else if (groundX + depth_view > _gameInfo->map->getWidth())
+  else if (groundX + sizeX / 2 > _mapX)
     {
-      sizeX -= (groundX + depth_view - _gameInfo->map->getWidth());
-      groundX = _gameInfo->map->getWidth() - sizeX / 2;
+      sizeX -= (groundX + sizeX / 2 - _mapX);
+      groundX = _mapX - sizeX / 2;
     }
-  if (groundY - depth_view < 0)
+  if (groundY - sizeY / 2 < 0)
     {
-      sizeY -= ABS(groundY - depth_view);
+      sizeY -= ABS(groundY - sizeY / 2);
       groundY = sizeY / 2;
     }
-  else if (groundY + depth_view > _gameInfo->map->getHeight())
+  else if (groundY + sizeY / 2 > _mapY)
     {
-      sizeY -= (groundY + depth_view - _gameInfo->map->getHeight());
-      groundY = _gameInfo->map->getHeight() - sizeY / 2;
+      sizeY -= (groundY + sizeY / 2 - _mapY);
+      groundY = _mapY - sizeY / 2;
     }
   groundX -= 0.5;
   groundY -= 0.5;
@@ -309,14 +314,22 @@ void	GameEngine::setConsole(Console * const console)
   _console = console;
 }
 
-bool	GameEngine::isShutingDown() const
+bool	GameEngine::isShutedDown() const
 {
   return (_shutdown);
 }
 
 bool	GameEngine::loadSave(const std::string &file)
 {
-  _gameInfo->save->loadGame(file, *_gameInfo);
+  try
+    {
+      _gameInfo->save->loadGame(file, *_gameInfo);
+    }
+  catch (const Exception &e)
+    {
+      std::cerr << e.what();
+      return (false);
+    }
   _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
   _mapX = _gameInfo->set->getVar(MAP_WIDTH);
   while (!_lights.empty())
@@ -345,7 +358,7 @@ bool	GameEngine::loadMap(const std::string &file, int ia)
 	{
 	  int x = 0, y = 0;
 	  _gameInfo->map->determineMapSize(file, x, y);
-	  _gameInfo->map->load("map", *_gameInfo);
+	  _gameInfo->map->load(file, *_gameInfo);
 	  _mapX = x;
 	  _mapY = y;
 	}
@@ -361,7 +374,6 @@ bool	GameEngine::loadMap(const std::string &file, int ia)
       _mapX = _gameInfo->set->getVar(MAP_WIDTH);
       _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
     }
-
   while (!_lights.empty())
     _lights.pop_back();
   while (!_players.empty())
@@ -384,8 +396,17 @@ bool	GameEngine::loadMap(const std::string &file, int ia)
   if (_multi)
     _players.push_back(_player2);
   ia = (ia == 0 && _multi == true) ? 0 : ((ia <= 0) ? 1 : ia);
-  spawn.spawnEnt((_multi == true ? 2 : 1), ia, *_gameInfo);
-  return (true);
+  try
+    {
+      spawn.spawnEnt((_multi == true ? 2 : 1), ia, *_gameInfo);
+    }
+  catch (const Exception &e)
+    {
+      setShutdown(true);
+      std::cerr << e.what() << std::endl;
+      return (false);
+    }
+ return (true);
 }
 
 void	GameEngine::resetAlreadyPlayed()

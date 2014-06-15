@@ -114,12 +114,6 @@ int	ACharacter::getScore() const
   return (_score);
 }
 
-void	*handle_character_thread(void *arg)
-{
-  (void) arg;
-  return (NULL);
-}
-
 int	ACharacter::getSpeed() const
 {
   return (_speed);

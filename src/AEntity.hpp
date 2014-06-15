@@ -13,22 +13,22 @@ typedef struct s_gameinfo       t_gameinfo;
 enum	eType
   {
     WALL = 0,
-    FREE,
-    BOX,
-    BOMB,
-    FLAME,
-    ITEM,
-    CHICKEN,
-    SPEEDITEM,
-    HEALTHITEM,
-    STOCKITEM,
-    RANGEITEM,
-    CHARACTER1,
-    CHARACTER2,
-    BOT,
-    CHARACTER,
-    GROUND,
-    UNKNOWNENTITY
+    FREE = 1,
+    BOX = 2,
+    BOMB = 3,
+    FLAME = 4,
+    ITEM = 5,
+    CHICKEN = 6,
+    SPEEDITEM = 7,
+    HEALTHITEM = 8,
+    STOCKITEM = 9,
+    RANGEITEM = 10,
+    CHARACTER1 = 11,
+    CHARACTER2 = 12,
+    BOT = 13,
+    CHARACTER = 14,
+    GROUND = 15,
+    UNKNOWNENTITY = 16
   };
 
 class Map;

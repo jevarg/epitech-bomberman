@@ -42,5 +42,5 @@ void	FullScreenWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
 {
   gameInfo.set->setVar(R_FULLSCREEN, _sentence == "FullScreen Off");
   init(gameInfo.set);
-  menu.setFullScreen(gameInfo.set);
+  //  menu.setFullScreen(gameInfo.set);
 }

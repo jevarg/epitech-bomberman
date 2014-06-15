@@ -99,7 +99,7 @@ public:
   bool		loadMap(const std::string &file);
   void		resetAlreadyPlayed();
   void		setConsole(Console * const console);
-  bool		isShutingDown() const;
+  bool		isShutedDown() const;
   bool		loadSave(const std::string &file);
   bool		loadMap(const std::string &file, int ia);
 
@@ -107,7 +107,7 @@ private:
   void	mainInput();
   int	clearElements();
   void	displayScore();
-  void	moveGround(Player *player);
+  void	moveGround(Player *player, float mapX, float mapY);
 
   gdl::SdlContext		*_win;
   gdl::BasicShader		_shader;

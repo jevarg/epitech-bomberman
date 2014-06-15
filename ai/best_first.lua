@@ -3,7 +3,7 @@ function get_abs_dist(entities, x, y, i)
 end
 
 function determine_way(map, cur_x, cur_y)
-	if (map[cur_y][cur_x] == "B") then print("je return boooooooomb"); return ENUM_ACTION["bomb"] end
+	if (map[cur_y][cur_x] == "B") then return ENUM_ACTION["bomb"] end
 	if (cur_x > X) then return ENUM_ACTION["right"] end
 	if (cur_x < X) then return ENUM_ACTION["left"] end
 	if (cur_y > Y) then return ENUM_ACTION["back"] end
@@ -39,12 +39,12 @@ end
 
 function best_first(map, map_nb, entities)
 	local cur_x, cur_y = X, Y
-	print("best first")
+	-- print("best first")
 	if (have_elem(entities, cur_x, cur_y, "box") == 1 or
 		have_elem(entities, cur_x, cur_y, "item") == 1 or
 		have_elem(entities, cur_x, cur_y, "player") == 1)then
 			travel_map(map_nb, cur_x, cur_y)
-			display_map(map_nb)
+			-- display_map(map_nb)
 			local nx, ny = take_shortest_priority(map, map_nb, entities)
 			if (cur_x == nx and cur_y == ny) then
 				return ENUM_ACTION["bomb"]

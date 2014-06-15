@@ -9,9 +9,8 @@ Item::~Item()
 {
 }
 
-void	Item::setAttr(ACharacter *ch) const
+void	Item::setAttr(ACharacter */*ch*/) const
 {
-  (void)ch;
 }
 
 AItem	*Item::clone(int x, int y)
