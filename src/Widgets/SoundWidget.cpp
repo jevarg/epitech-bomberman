@@ -41,7 +41,7 @@ void	SoundWidget::init(const Settings * const set)
 void	SoundWidget::onClick(t_gameinfo &gameInfo, Menu &/*menu*/)
 {
   gameInfo.set->setVar(S_MUTE, _sentence == "Sound On");
+
   init(gameInfo.set);
   gameInfo.sound->toggle();
-  //  menu.setFullScreen(gameInfo.set);
 }
