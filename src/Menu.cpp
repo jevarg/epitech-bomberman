@@ -187,7 +187,7 @@ bool  Menu::initialize()
   _optionsPanel.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/controls.tga", &_controlsPanel));
   _optionsPanel.push_back(new SoundWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
-					    "./assets/Button/button.tga", ""));
+					  "./assets/Button/button.tga", ""));
   // _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
   // 					       "./assets/Button/resolution.tga", &_screenPanel));
 
