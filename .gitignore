@@ -5,8 +5,12 @@
 *.tmp
 *.old
 *.save
+<<<<<<< HEAD
 *.cbp
 *.layout
 out
 bomberman
 .scores
+=======
+bomberman
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473

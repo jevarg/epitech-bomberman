@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #version 120
 
 uniform	mat4 projection;
@@ -62,3 +63,21 @@ void main(void)
   /* Color Fog = vec4(0.7, 0.7, 0.7, 1.0) => grey */
   gl_FragColor = mix(vec4(color.xyz, fOutColor.w), vec4(0.7, 0.7, 0.7, fOutColor.w), factor);
 }
+=======
+#version 120
+
+uniform	mat4 projection;
+uniform	mat4 view;
+uniform	mat4 model;
+
+uniform sampler2D fTexture0;
+
+varying vec4 fColor;
+varying vec4 fNormal;
+varying vec2 fUv;
+
+void main(void)
+{
+	gl_FragColor = texture2D(fTexture0, fUv);
+}
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473

@@ -2,6 +2,7 @@
 #include <cstring>
 #include <iostream>
 #include <ctime>
+<<<<<<< HEAD
 #include <cmath>
 #include "Map.hpp"
 #include "Box.hpp"
@@ -12,6 +13,17 @@ Map::Map(Settings &set)
   _mapY = set.getVar(MAP_WIDTH);
   _density = set.getVar(MAP_DENSITY);	// expressed in %
   _linear = set.getVar(MAP_LINEAR);
+=======
+#include "Map.hpp"
+
+Map::Map(Settings &set)
+{
+  _mapX = 50;
+  _mapY = 50;
+  _density = set.getVar(MAP_DENSITY);	// expressed in %
+  _linear = set.getVar(MAP_LINEAR);
+  std::cout << _density << " " << _linear << std::endl;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 Map::~Map()
@@ -34,6 +46,7 @@ bool	Map::checkValidPath(int x, int y) const
   return (counter == 2 ? false : true);
 }
 
+<<<<<<< HEAD
 void		Map::load(const std::string &name,
 			  t_gameinfo &gameInfo)
 {
@@ -153,6 +166,8 @@ void		Map::save(const std::string &name)
   file.close();
 }
 
+=======
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 short	Map::getDir(bool *rtab, short cuBlock) const
 {
   short		dir = 0;
@@ -241,6 +256,7 @@ void	Map::genBigMaze()
 void	Map::display()
 {
   int	totalsize = _mapX * _mapY;
+<<<<<<< HEAD
   eType	t;
 
   for (int i = 0; i < totalsize; ++i)
@@ -257,6 +273,14 @@ void	Map::display()
 	std::cout << "?";
       if (i != 0 && i % _mapX == _mapX - 1)
 	std::cout << std::endl;
+=======
+
+  for (int i = 0; i < totalsize; ++i)
+    {
+      if (i != 0 && i % (_mapX ) == 0)
+	std::cout << std::endl;
+      std::cout << (_map[i] == WALL ? "x" : (_map[i] == BOX) ? "B" : " ");
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
     }
   std::cout << std::endl;
 }
@@ -295,6 +319,7 @@ void	Map::fillBox()
     }
 }
 
+<<<<<<< HEAD
 /*
 ** The entity added at 0,0 is symbolic, in fact it is just usefull
 ** for getters returning a pointer to the entity. Because of the way we check colisions
@@ -316,6 +341,21 @@ void	Map::fillContainers(t_gameinfo &_gameInfo)
 	    addEntity(new Entity(i % _mapX, i /_mapX, _map[i], &_gameInfo));
 	  else
 	    addEntity(new Box(i % _mapX, i /_mapX, &_gameInfo));
+=======
+void	Map::fillContainers()
+{
+  unsigned int	i;
+  t_entity	*ent;
+  unsigned int 	totalsize = (_mapX - 1) * _mapY;
+
+  for (i = _mapX; i < totalsize; ++i)
+    {
+      if (_map[i] != FREE && i % _mapX != 0 &&
+	  (i + 1) % _mapX != 0) // means there is a block / It's the border
+	{
+	  ent = new t_entity(i % _mapX, i /_mapX, _map[i]);
+	  addEntitie(ent);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 	}
     }
   _map.clear();	// erase the temps vector
@@ -328,6 +368,7 @@ void	Map::removeEntity(int x, int y)
   _cont[pos]->removeContBlock(x, y);
 }
 
+<<<<<<< HEAD
 void	Map::removeEntityByPtr(AEntity *ptr)
 {
   unsigned int	pos = getContPos(ptr->getXPos(), ptr->getYPos());
@@ -340,22 +381,37 @@ void	Map::removeEntityByPtr(AEntity *ptr)
 */
 
 void	Map::createMap(t_gameinfo &gameInfo)
+=======
+void	Map::createMap()
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 {
   int	posx;
   int	posy;
   int	totalsize = _mapX * _mapY;
 
+<<<<<<< HEAD
+=======
+  std::srand(std::time(NULL));
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   for (int i = 0; i < totalsize; ++i)
     _map.push_back(WALL);
   posx = 2 + std::rand() % (_mapX - 3);
   posy = 2 + std::rand() % (_mapY - 3);
+<<<<<<< HEAD
+=======
+  std::cout << "Starting at " << posx << " " << posy << std::endl;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   if (_mapX * _mapY > MAXSIZE)
     genBigMaze();
   else
     genSmallMaze(posx, posy, 4);
   fillBox();
+<<<<<<< HEAD
   createContainers();
   fillContainers(gameInfo);
+=======
+  fillContainers();
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   display();
 }
 
@@ -369,17 +425,26 @@ unsigned int	Map::getContPos(int x, int y) const
   return (ratioy * (_mapX / SQUARESIZE) + ratiox);
 }
 
+<<<<<<< HEAD
 void	Map::addEntity(AEntity * const ent)
+=======
+void	Map::addEntitie(t_entity *ent)
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 {
   unsigned int	pos;
   Container	*cont;
 
+<<<<<<< HEAD
   pos = getContPos(ent->getXPos(), ent->getYPos());
+=======
+  pos = getContPos(ent->_x, ent->_y);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   while (_cont.size() <= pos)
     {
       cont = new Container;
       _cont.push_back(cont);
     }
+<<<<<<< HEAD
   _cont[pos]->stockEntity(ent);
 }
 
@@ -425,10 +490,16 @@ void	Map::createContainers()
 ** It happens if the mapped zone has no block in a zonesize > SQUARESIZE.
 */
 
+=======
+  _cont[pos]->stockEntitie(ent);
+}
+
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 eType	Map::checkMapColision(int x, int y) const
 {
   unsigned int	pos = getContPos(x, y);
 
+<<<<<<< HEAD
   if (y <= 0 || y >= _mapY - 1 || x  <= 0 || x >= _mapX - 1)
     return (WALL);
   else if (pos >= _cont.size())
@@ -453,6 +524,11 @@ bool	Map::checkFullMapColision(int x, int y, std::vector<AEntity *> &vec) const
 	  vec.push_back(ent);
       }
   return (!vec.empty());
+=======
+  if (y == 0 || y == _mapY - 1 || x  == 0 || (x + 1) % _mapX == 0)
+    return (WALL);
+  return (_cont[pos]->checkContColision(x, y));
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 unsigned int	Map::getWidth() const
@@ -474,6 +550,7 @@ v_Contcit	Map::ContEnd() const
 {
   return (_cont.end());
 }
+<<<<<<< HEAD
 
 AEntity		*Map::getEntity(int x, int y) const
 {
@@ -560,3 +637,5 @@ const std::vector<Container *>	&Map::getCont() const
 {
   return (_cont);
 }
+=======
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473

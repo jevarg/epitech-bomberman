@@ -4,8 +4,11 @@
 # include <glm/glm.hpp>
 # include <glm/gtc/matrix_transform.hpp>
 # include <vector>
+<<<<<<< HEAD
 # include <map>
 # include <deque>
+=======
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 # include <unistd.h>
 # include <Game.hh>
 # include <BasicShader.hh>
@@ -17,6 +20,7 @@
 # include "Camera.hpp"
 # include "IObject.hpp"
 # include "Model.hpp"
+<<<<<<< HEAD
 # include "Save.hpp"
 # include "Container.hpp"
 # include "AEntity.hpp"
@@ -44,10 +48,24 @@
 # include "Box.hpp"
 # include "IA.hpp"
 # include "Hud.hpp"
+=======
+# include "AEntitie.hpp"
+# include "Save.hpp"
+# include "Container.hpp"
+# include "Map.hpp"
+# include "Settings.hpp"
+# include "Input.hpp"
+
+# define CFPS 60.0f
+# define CFOV 60.0f
+# define DEF_SIZE_X 800.0f
+# define DEF_SIZE_Y 600.0f
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 
 # define WALL_TEXTURE "./assets/wall.tga"
 # define SKY_TEXTURE "./assets/skybox.tga"
 # define BOX_TEXTURE "./assets/box.tga"
+<<<<<<< HEAD
 # define FLAME_TEXTURE "./assets/flames.tga"
 # define GROUND_TEXTURE "./assets/ground.tga"
 
@@ -87,12 +105,21 @@ class GameEngine : public gdl::Game
 {
 public:
   GameEngine(gdl::SdlContext *win, gdl::BasicShader *shader, t_gameinfo *gameInfo);
+=======
+# define GROUND_TEXTURE "./assets/ground.tga"
+
+class GameEngine : public gdl::Game
+{
+public:
+  GameEngine(Settings &set, Input &input);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   ~GameEngine();
 
   virtual bool	initialize();
   virtual bool	update();
   virtual void	draw();
 
+<<<<<<< HEAD
   void		setMulti(bool multi);
   void		setPlayer(Player *player1, Player *player2);
   void		setShutdown(bool shutdown);
@@ -133,6 +160,27 @@ private:
   std::map<std::string, int>	_score;
   Text				_fps;
   bool				_multi;
+=======
+private:
+  void	createDisplayMap();
+  void	createDisplayBorder();
+
+  gdl::SdlContext		_win;
+  gdl::Clock			_clock;
+  gdl::BasicShader		_shader;
+  Save				_save;
+  std::vector<IObject *>	_obj;
+  Camera			_cam;
+  int				_mapX;
+  int				_mapY;
+  Cube				_skybox;
+  Model				_model;
+  Map				_map;
+  Settings			&_set;
+  Input				&_input;
+  std::map<eType, IObject *>	_type;
+  std::map<eType, gdl::Texture *>	_texture;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 };
 
 #endif /* _GAMEENGINE_HPP_ */

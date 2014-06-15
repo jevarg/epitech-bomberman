@@ -1,6 +1,7 @@
 #ifndef _INPUT_H_
 # define _INPUT_H_
 
+<<<<<<< HEAD
 # include <SDL.h>
 # include <list>
 # include <algorithm>
@@ -42,6 +43,9 @@ typedef struct	s_window
 
 typedef std::list<SDL_Keycode>::const_iterator	l_Keycit;
 typedef std::list<SDL_Keycode>::iterator       	l_Keyit;
+=======
+# include "Settings.hpp"
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 
 class Input
 {
@@ -50,6 +54,7 @@ public:
   ~Input();
 
   void	getInput(const Settings &set);
+<<<<<<< HEAD
   bool	isPressed(Keycode key);
   const l_Keycit	getPressedBeg() const;
   const l_Keycit	getPressedEnd() const;
@@ -71,6 +76,14 @@ private:
   Keycode			_key;
   t_mouse			_mouse;
   t_window			_window;
+=======
+  bool	operator[](eAction act);
+  bool	operator[](keyCode key);
+
+private:
+  std::vector<bool>		_actionState;
+  std::map<keyCode, bool>	_boundKey;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 };
 
 #endif /* _INPUT_H_ */

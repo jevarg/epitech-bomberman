@@ -1,13 +1,17 @@
 #ifndef _SETTINGS_H_
 # define _SETTINGS_H_
 
+<<<<<<< HEAD
 # include <SDL.h>
 # include <string>
+=======
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 # include <iostream>
 # include <sstream>
 # include <fstream>
 # include <vector>
 # include <map>
+<<<<<<< HEAD
 # include "Exception.hpp"
 
 # define DEFAULT_FILE "default.cfg"
@@ -23,6 +27,15 @@ typedef std::vector<std::string>::const_iterator v_instCit;
 typedef std::vector<std::string>::iterator v_instit;
 typedef std::vector<t_cvar *>::iterator v_cvarit;
 typedef std::map<std::string, Keycode>::const_iterator m_keyCit;
+=======
+
+# define DEFAULT_FILE "default.cfg"
+# define UNBIND 0
+
+typedef std::vector<std::string>::const_iterator v_instCit;
+typedef std::vector<std::string>::iterator v_instit;
+typedef int keyCode;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 
 enum	eAction
   {
@@ -30,9 +43,13 @@ enum	eAction
     BACK,
     LEFT,
     RIGHT,
+<<<<<<< HEAD
     DROPBOMB,
     ACTIVATE,
     LAUNCHGAME,
+=======
+    ACTIVATE,
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
     UNKNOWN
   };
 
@@ -46,6 +63,7 @@ enum	cvar
     FOV,
     W_HEIGHT,
     W_WIDTH,
+<<<<<<< HEAD
     MAP_HEIGHT,
     MAP_WIDTH,
     MAP_DENSITY,
@@ -72,16 +90,28 @@ typedef	struct	s_cvar
 }		t_cvar;
 
 class	Settings
+=======
+    MAP_DENSITY,
+    MAP_LINEAR,
+  };
+
+class Settings
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 {
 public:
   Settings();
   ~Settings();
 
+<<<<<<< HEAD
   bool	loadFile(const std::string &);
+=======
+  void	loadFile(const std::string &);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 
   bool	cvarExist(cvar var) const;
   int	getVar(cvar var) const;
   void	setVar(cvar var, int value);
+<<<<<<< HEAD
   eAction	getActionFromKey(Keycode key) const;
   int	getKeyFromAct(eAction act, std::vector<Keycode> &) const;
   void	setKey(Keycode key, eAction act);
@@ -92,10 +122,18 @@ public:
 
   bool	addKey(const std::string tab[3]);
   bool	addCvar(const std::string tab[3]);
+=======
+  eAction	getActionFromKey(keyCode key) const;
+  int	getKeyFromAct(eAction act, std::vector<keyCode> &) const;
+  void	setKey(keyCode key, eAction act);
+
+  int	toNumber(const std::string &) const;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 
 private:
   bool	readFile(std::vector<std::string> &inst, const std::string &);
   void	parsInst(const std::vector<std::string> &inst);
+<<<<<<< HEAD
   void	initCvar();
   Keycode	getKeyFromCode(const std::string &) const;
 
@@ -106,6 +144,16 @@ private:
   std::map<cvar, int>		_cvarMap;
 
   std::map<std::string, Keycode>	_speKeys;
+=======
+  void	addKey(const std::string tab[3]);
+  void	addCvar(const std::string tab[3]);
+
+  std::vector<std::string>	_actionList;
+  std::map<keyCode, eAction>	_keyMap;
+
+  std::vector<std::string>     	_cvarList;
+  std::map<cvar, int>		_cvarMap;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 };
 
 #endif /* _SETTINGS_H_ */

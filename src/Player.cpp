@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "GameEngine.hpp"
 #include "Player.hpp"
 
@@ -7,12 +8,20 @@ Player::Player(int x, int y, t_gameinfo *gameInfo, eType type, bool multi, bool 
   _camera.translate(glm::vec3(x, 5.0, 10.0));
   _camera.setPointView(glm::vec3(x, 0.0, y));
   _multi = multi;
+=======
+#include "Player.hpp"
+
+Player::Player(Camera camera, glm::vec4 color, Model model)
+  : ACharacter(color, model), _camera(camera)
+{
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 Player::~Player()
 {
 }
 
+<<<<<<< HEAD
 /*
 ** The single version checks using the action
 ** That means binds can be used;
@@ -131,4 +140,8 @@ void Player::setMulti(bool multi)
 {
   _multi = multi;
   _camera.setPlayer(multi, _gameInfo);
+=======
+void	Player::update(gdl::Clock const &, gdl::Input &)
+{
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }

@@ -8,6 +8,7 @@ class ATransformation
 {
 public:
   ATransformation();
+<<<<<<< HEAD
   virtual ~ATransformation() = 0;
 
   void translate(glm::vec3 const &v);
@@ -18,6 +19,11 @@ public:
   void setRotation(glm::vec3 const& rot);
 
   const glm::vec3 &getPos() const;
+=======
+  void translate(glm::vec3 const &v);
+  void rotate(glm::vec3 const& axis, float angle);
+  void scale(glm::vec3 const& scale);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   const glm::mat4 getTransformation() const;
 
 protected:

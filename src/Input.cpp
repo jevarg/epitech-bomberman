@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include <cstring>
 #include <cctype>
 #include "Input.hpp"
@@ -9,10 +10,22 @@ Input::Input() : _mutex()
   std::memset(&_mouse, 0, sizeof(_mouse));
   std::memset(&_window, 0, sizeof(_window));
   _key = 0;
+=======
+#include <SDL.h>
+#include "Input.hpp"
+
+Input::Input()
+{
+  for (unsigned int i = FORWARD; i < UNKNOWN; ++i)
+    _actionState.push_back(false);
+  _boundKey.insert(std::pair<keyCode, bool>(SDLK_BACKSPACE, false));
+  _boundKey.insert(std::pair<keyCode, bool>(SDLK_ESCAPE, false));
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 Input::~Input()
 {
+<<<<<<< HEAD
 
 }
 
@@ -125,11 +138,14 @@ void	Input::windowEvent(const SDL_Event &event)
       _window.y = event.window.data2;
     break ;
     }*/
+=======
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 void	Input::getInput(const Settings &set)
 {
   SDL_Event	event;
+<<<<<<< HEAD
 
   if (_mouse.event != BUTTONDOWN)
     _mouse.event = NONE;
@@ -151,15 +167,42 @@ void	Input::getInput(const Settings &set)
 	case SDL_QUIT:
 	  windowEvent(event);
 	  break ;
+=======
+  SDL_Keycode	keyPressed;
+  std::map<keyCode, bool>::iterator it;
+  std::map<keyCode, bool>::iterator end;
+  eAction	act;
+
+  if (SDL_PollEvent(&event))
+    {
+      if (event.type == SDL_KEYDOWN)
+	{
+	  keyPressed = event.key.keysym.sym;
+	  if ((act = set.getActionFromKey(keyPressed)) != UNKNOWN)
+	    _actionState[act] = true;
+	  for (it = _boundKey.begin(), end = _boundKey.end(); it != end; ++it)
+	    {
+	      if (it->first == keyPressed)
+		{
+		  it->second = true;
+		  break ;
+		}
+	    }
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 	}
     }
 }
 
+<<<<<<< HEAD
 bool	Input::operator[](eAction act) const
+=======
+bool	Input::operator[](eAction act)
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 {
   return (_actionState[static_cast<int>(act)]);
 }
 
+<<<<<<< HEAD
 bool	Input::operator[](t_mouse &mouse) const
 {
   mouse = _mouse;
@@ -198,4 +241,13 @@ const l_Keycit	Input::getPressedEnd() const
 void	Input::operator[](SDL_Keycode * const key) const
 {
   *key = _key;
+=======
+bool	Input::operator[](keyCode key)
+{
+  std::map<keyCode, bool>::const_iterator	it;
+
+  if ((it = _boundKey.find(key)) == _boundKey.end())
+    return (false);
+  return (it->second);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }

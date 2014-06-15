@@ -1,5 +1,10 @@
+<<<<<<< HEAD
 #include <iterator>
 #include "Settings.hpp"
+=======
+#include "Settings.hpp"
+#include <iterator>
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 
 Settings::Settings()
 {
@@ -7,6 +12,7 @@ Settings::Settings()
   _actionList.push_back("back");
   _actionList.push_back("left");
   _actionList.push_back("right");
+<<<<<<< HEAD
   _actionList.push_back("dropBomb");
   _actionList.push_back("activate");
   _actionList.push_back("launchgame");
@@ -81,6 +87,16 @@ Settings::Settings()
   _speKeys["RALT"] = SDLK_RALT;
 
   initCvar();
+=======
+  _actionList.push_back("activate");
+
+  _cvarList.push_back("com_maxFps");
+  _cvarList.push_back("cg_fov");
+  _cvarList.push_back("r_windowHeight");
+  _cvarList.push_back("r_windowWidth");
+  _cvarList.push_back("s_mapDensity");
+  _cvarList.push_back("s_mapLinear");
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 Settings::~Settings()
@@ -96,6 +112,7 @@ int	Settings::toNumber(const std::string &str) const
   return (num);
 }
 
+<<<<<<< HEAD
 bool	Settings::isAscii(const std::string &str) const
 {
   return (str.size() == 1);
@@ -118,10 +135,17 @@ bool	Settings::addCvar(const std::string tab[3])
 {
   v_cvarit	listit;
   v_cvarit	listend = _cvarList.end();
+=======
+void	Settings::addCvar(const std::string tab[3])
+{
+  v_instit	listit;
+  v_instit	listend = _cvarList.end();
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   int		cvarValue = toNumber(tab[2]);
 
   for (listit = _cvarList.begin(); listit != listend; ++listit)
     {
+<<<<<<< HEAD
       if ((*listit)->name == tab[1])
 	{
 	  if (cvarValue > (*listit)->max_value || cvarValue < (*listit)->min_value)
@@ -163,11 +187,29 @@ bool		Settings::addKey(const std::string tab[3])
   v_instit	listit;
   v_instit	listend = _actionList.end();
   int		boundkey;
+=======
+      if (*listit == tab[1])
+	{
+	  _cvarMap.insert(std::pair<cvar, int>
+			  (static_cast<cvar>(std::distance(_cvarList.begin(), listit)),
+			   cvarValue));
+	  break ;
+	}
+    }
+
+}
+
+void	Settings::addKey(const std::string tab[3])
+{
+  v_instit	listit;
+  v_instit	listend = _actionList.end();
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 
   for (listit = _actionList.begin(); listit != listend; ++listit)
     {
       if (*listit == tab[2])
 	{
+<<<<<<< HEAD
 	  if (isAscii(tab[1]))
 	    _keyMap.insert(std::pair<Keycode, eAction>
 			   (tab[1].at(0), static_cast<eAction>
@@ -180,6 +222,14 @@ bool		Settings::addKey(const std::string tab[3])
 	}
     }
   return (false);
+=======
+	  _keyMap.insert(std::pair<keyCode, eAction>
+			 (tab[1].at(0), static_cast<eAction>
+			  (std::distance(_actionList.begin(), listit))));
+	  break ;
+	}
+    }
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 void	Settings::parsInst(const std::vector<std::string> &inst)
@@ -197,7 +247,11 @@ void	Settings::parsInst(const std::vector<std::string> &inst)
 	    std::cerr << "Missing arguments for " << tab[0] << std::endl;
 	    break ;
 	  }
+<<<<<<< HEAD
       if (tab[0] == "bind")
+=======
+      if (tab[0] == "bind" && tab[1].size() == 1)
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 	addKey(tab);
       else if (tab[0] == "set")
 	addCvar(tab);
@@ -211,6 +265,10 @@ bool	Settings::readFile(std::vector<std::string> &inst,
   std::ifstream file(filename.c_str());
   std::string	line;
 
+<<<<<<< HEAD
+=======
+  std::cout << "dfrth" << std::endl;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   if (file.is_open())
     {
       while (std::getline(file, line))
@@ -226,6 +284,7 @@ bool	Settings::readFile(std::vector<std::string> &inst,
   return (false);
 }
 
+<<<<<<< HEAD
 bool	Settings::loadFile(const std::string &filename)
 {
   std::vector<std::string>	inst;
@@ -235,6 +294,29 @@ bool	Settings::loadFile(const std::string &filename)
   else
     return (false);
   return (true);
+=======
+void	Settings::loadFile(const std::string &filename)
+{
+  std::vector<std::string>	inst;
+
+  if (readFile(inst, filename))
+    parsInst(inst);
+
+  std::map<keyCode, eAction>::iterator kit;
+  std::map<cvar, int>::iterator cit;
+
+  for (kit = _keyMap.begin(); kit != _keyMap.end(); ++kit)
+    {
+      std::cout << kit->first << " => " << kit->second << " => "
+		<<  _actionList[(int)kit->second] << std::endl;
+    }
+
+  for (cit = _cvarMap.begin(); cit != _cvarMap.end(); ++cit)
+    {
+      std::cout << _cvarList[(int)cit->first] << ": "<< cit->first <<
+	" => " << cit->second << std::endl;
+    }
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 bool	Settings::cvarExist(cvar var) const
@@ -252,7 +334,11 @@ int	Settings::getVar(cvar var) const
   std::map<cvar, int>::const_iterator	it;
 
   if ((it = _cvarMap.find(var)) == _cvarMap.end())
+<<<<<<< HEAD
     throw(Exception("No such cvar"));
+=======
+    return (0);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   return (it->second);
 }
 
@@ -261,9 +347,15 @@ void	Settings::setVar(cvar var, int value)
   _cvarMap[var] = value;
 }
 
+<<<<<<< HEAD
 eAction	Settings::getActionFromKey(Keycode key) const
 {
   std::map<Keycode, eAction>::const_iterator   it;
+=======
+eAction	Settings::getActionFromKey(keyCode key) const
+{
+  std::map<keyCode, eAction>::const_iterator   it;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 
   if ((it = _keyMap.find(key)) == _keyMap.end())
     return (UNKNOWN);
@@ -275,10 +367,17 @@ eAction	Settings::getActionFromKey(Keycode key) const
 ** A vector must be used considering we handle multibinding
 */
 
+<<<<<<< HEAD
 int	Settings::getKeyFromAct(eAction act, std::vector<Keycode> &keySet) const
 {
   std::map<Keycode, eAction>::const_iterator   it;
   std::map<Keycode, eAction>::const_iterator   end;
+=======
+int	Settings::getKeyFromAct(eAction act, std::vector<keyCode> &keySet) const
+{
+  std::map<keyCode, eAction>::const_iterator   it;
+  std::map<keyCode, eAction>::const_iterator   end;
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
   int	nbKey = 0;
 
   for (it = _keyMap.begin(), end = _keyMap.end(); it != end; ++it)
@@ -292,7 +391,11 @@ int	Settings::getKeyFromAct(eAction act, std::vector<Keycode> &keySet) const
   return (nbKey);
 }
 
+<<<<<<< HEAD
 void	Settings::setKey(Keycode key, eAction act)
+=======
+void	Settings::setKey(keyCode key, eAction act)
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 {
   _keyMap[key] = act;
 }

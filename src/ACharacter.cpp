@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "GameEngine.hpp"
 #include "Map.hpp"
 #include "Input.hpp"
@@ -20,12 +21,21 @@ ACharacter::ACharacter(int x, int y, eType type, t_gameinfo *gameInfo, bool thre
   _model->translate(glm::vec3(0.0, -0.5, 0.0));
   _model->scale(glm::vec3(0.5, 0.5, 0.5));
   _end = 0;
+=======
+#include "ACharacter.hpp"
+
+ACharacter::ACharacter(glm::vec4 color, Model model)
+  : AEntitie(0, 0, CHARACTER), _color(color), _model(model), _health(1), _isAlive(true),
+    _bombStock(1), _bombType(NORMAL), _speed(5), _range(5), _score(0)
+{
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 ACharacter::~ACharacter()
 {
 }
 
+<<<<<<< HEAD
 bool	ACharacter::updatePosition(Map *map, eAction action, gdl::Clock *clock)
 {
   eAction	tab[4] = {FORWARD, BACK, LEFT, RIGHT};
@@ -222,4 +232,57 @@ char ACharacter::getEnd() const
 void ACharacter::setEnd(char end)
 {
   _end = end;
+=======
+void	ACharacter::moveUp()
+{
+
+}
+
+void	ACharacter::moveDown()
+{
+
+}
+
+void	ACharacter::moveLeft()
+{
+
+}
+
+void	ACharacter::moveRight()
+{
+
+}
+
+void	ACharacter::hit()
+{
+  --_health;
+  if (_health == 0)
+    _isAlive = false;
+}
+
+bool	ACharacter::initialize()
+{
+  return (true);
+}
+
+void	ACharacter::update(gdl::Clock const &, gdl::Input &)
+{
+
+}
+
+void	ACharacter::draw(gdl::AShader &shader, gdl::Clock const &clock)
+{
+  (void) shader;
+  (void) clock;
+}
+
+int	ACharacter::getScore() const
+{
+  return (_score);
+}
+
+bool	ACharacter::isAlive() const
+{
+  return (_isAlive);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }

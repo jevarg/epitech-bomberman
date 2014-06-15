@@ -1,6 +1,7 @@
 #ifndef FLAME_HPP_
 # define FLAME_HPP_
 
+<<<<<<< HEAD
 # include "ALivingEntity.hpp"
 # include "ACharacter.hpp"
 # include "ABomb.hpp"
@@ -36,6 +37,18 @@ public:
 
   int	getRange() const;
   eDir	getDirection() const;
+=======
+# include "AEntitie.hpp"
+# include "ACharacter.hpp"
+
+class	Flame : public AEntitie
+{
+
+public:
+  Flame();
+  ~Flame();
+  void	hurtCharacter(ACharacter *character);
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 };
 
 #endif /* !FLAME_HPP_ */

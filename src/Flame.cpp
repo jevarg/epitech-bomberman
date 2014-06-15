@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 #include "GameEngine.hpp"
 #include "Flame.hpp"
 #include "ABomb.hpp"
@@ -20,10 +21,18 @@ Flame::Flame(int x, int y, int power, int range, eDir direction, t_gameinfo *gam
     * (_gameInfo->set->getVar(FPS) / 1000.0); // first nb = delay in ms
   if (_nextFlame < 1)
     _nextFlame = 1;
+=======
+#include "Flame.hpp"
+
+Flame::Flame()
+  : AEntitie(0, 0, FLAME)
+{ 
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
 
 Flame::~Flame()
 {
+<<<<<<< HEAD
   if (_bomb)
     _bomb->setRange(_bomb->getRange() - 1);
 }
@@ -115,4 +124,11 @@ void	Flame::increaseScore(eType type) const
     *_bomb->getCharacter() += BOX_SCORE;
   else if (type == CHARACTER1 || type == CHARACTER2 || type == BOT)
     *_bomb->getCharacter() += PLAYER_SCORE;
+=======
+}
+
+void	Flame::hurtCharacter(ACharacter *character)
+{
+  character->hit();
+>>>>>>> 35c0cf39dea90a7423e4e792261ed64446d55473
 }
