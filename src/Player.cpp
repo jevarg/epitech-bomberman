@@ -132,3 +132,18 @@ void Player::setMulti(bool multi)
   _multi = multi;
   _camera.setPlayer(multi, _gameInfo);
 }
+
+void Player::setName(const std::string &name)
+{
+  _name = name;
+}
+
+const std::string &Player::getName() const
+{
+  return (_name);
+}
+
+int Player::getScore() const
+{
+  return (_score);
+}

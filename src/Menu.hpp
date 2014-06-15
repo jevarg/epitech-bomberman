@@ -4,6 +4,7 @@
 # include <Game.hh>
 # include <SdlContext.hh>
 # include <vector>
+# include <algorithm>
 # include "Settings.hpp"
 # include "Input.hpp"
 # include "GameEngine.hpp"

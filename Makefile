@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sun Jun 15 13:57:50 2014 luc sinet
+## Last update Sun Jun 15 15:13:52 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -80,6 +80,7 @@ SRC		=	main.cpp \
 			$(WIDGETDIR)/FullScreenWidget.cpp \
 			$(WIDGETDIR)/ClickTextWidget.cpp \
 			$(WIDGETDIR)/SaveWidget.cpp \
+			$(WIDGETDIR)/SoundWidget.cpp \
 			Intro.cpp
 
 OBJDIR		=	obj/

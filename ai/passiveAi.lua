@@ -10,6 +10,7 @@ dofile("ai/shortest_priority.lua")
 function launch_passive()
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
+	if (map == nil) then return -1 end
 	-- display_map(map)
  	local cur_x, cur_y = random_movement(map)
 	return determine_way(map, cur_x, cur_y)

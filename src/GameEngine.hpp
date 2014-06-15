@@ -67,6 +67,12 @@
 
 # define ABS(x) (((x) < 0) ? (-(x)) : (x))
 
+typedef struct s_score
+{
+  std::vector<std::string> name;
+  std::vector<int> score;
+}	       t_score;
+
 typedef struct	s_gameinfo
 {
   s_gameinfo(gdl::Clock *pclock, Map *pmap, Settings *pset, Input *pinput, Sound *psound, Save *psave) :
@@ -81,7 +87,7 @@ typedef struct	s_gameinfo
   Mutex		*mutex;
   Condvar	*condvar;
   Save		*save;
-  std::map<std::string, int> score;
+  t_score	score;
 }		t_gameinfo;
 
 class GameEngine : public gdl::Game
@@ -109,6 +115,7 @@ private:
   int	clearElements();
   void	displayScore();
   void	moveGround(Player *player, float mapX, float mapY);
+  void	fillScore(const std::string &name, int score);
 
   gdl::SdlContext		*_win;
   gdl::BasicShader		_shader;

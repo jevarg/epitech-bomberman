@@ -49,9 +49,9 @@ end
 function create_map(entities, aggro)
 	local map = {}
 
-	for i = 1, aggro * 2 + 2 do
+	for i = 1, aggro * 3 + 2 do
 		table.insert(map, {})
-		for j = 1, aggro * 2 + 2 do
+		for j = 1, aggro * 3 + 2 do
 			table.insert(map[i], " ")
 		end
 	end
@@ -71,6 +71,7 @@ function create_map(entities, aggro)
 		if (entities[i]["type"] == TYPE_PRIORITY["item"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "I" end
 		if (entities[i]["type"] == TYPE_PRIORITY["danger"]) then
+			if (map[0] == nil) then	return nil end
 			map[entities[i]["y"]][entities[i]["x"]] = "D" end
 	end
 	MAP_XMAX, MAP_YMAX = set_pos_map(map)

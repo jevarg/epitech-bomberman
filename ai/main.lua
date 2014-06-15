@@ -59,6 +59,7 @@ function take_decision(map, map_nb, entities)
 		local item = check_elem_at(map_nb, X, Y, "I", 1)
 		if (check_elem_at(map_nb, X, Y, "P", 1) ~= -1 or
 			check_elem_at(map_nb, X, Y, "B", 1) ~= -1) then
+			-- print("JENVOI UNE BOOOMBE ! parceque P OU B")
 			return ENUM_ACTION["bomb"]
 		elseif (item ~= -1) then
 			return item
@@ -71,7 +72,9 @@ function artificial_intelligence()
 	set_priority(LEVEL)
 	local entities = get_entities()
 	local map = create_map(entities, AGGRO)
+	if (map == nil) then return -1 end
 	local map_nb = create_map(entities, AGGRO)
+	if (map_nb == nil) then return -1 end
 	-- print("MAP AFTER RECONSTITUTION")
 	-- display_map(map_nb)
 	local action = take_decision(map, fill_dangerous_fields(map_nb), entities)

@@ -57,7 +57,8 @@ enum	cvar
     R_DEPTHVIEW,
     R_DRAWFOG,
     R_SKYBOX,
-    R_CRAZYCHICKEN
+    R_CRAZYCHICKEN,
+    S_MUTE
   };
 
 typedef	struct	s_cvar

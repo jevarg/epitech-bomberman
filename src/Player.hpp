@@ -16,11 +16,15 @@ public:
   void	update();
   Camera &getCam();
   AEntity *clone(int x, int y);
-  void setMulti(bool multi);
+  void  setMulti(bool multi);
+  void	setName(const std::string &name);
+  const std::string &getName() const;
+  int getScore() const;
 
 private:
   Camera	_camera;
   bool		_multi;
+  std::string	_name;
 };
 
 #endif /* _PLAYER_HPP_ */
