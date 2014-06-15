@@ -147,7 +147,6 @@ void GameEngine::draw()
       unsigned int x = (*player)->getXPos(), y = (*player)->getYPos();
       unsigned int depth_view = _gameInfo->set->getVar(R_DEPTHVIEW);
       Camera &cam = (*player)->getCam();
-      const std::vector<Container *>	&cont = _gameInfo->map->getCont();
 
       cam.lookAt();
       _shader.bind();
@@ -385,8 +384,17 @@ bool	GameEngine::loadMap(const std::string &file, int ia)
   if (_multi)
     _players.push_back(_player2);
   ia = (ia == 0 && _multi == true) ? 0 : ((ia <= 0) ? 1 : ia);
-  spawn.spawnEnt((_multi == true ? 2 : 1), ia, *_gameInfo);
-  return (true);
+  try
+    {
+      spawn.spawnEnt((_multi == true ? 2 : 1), ia, *_gameInfo);
+    }
+  catch (const Exception &e)
+    {
+      setShutdown(true);
+      std::cerr << e.what() << std::endl;
+      return (false);
+    }
+ return (true);
 }
 
 void	GameEngine::resetAlreadyPlayed()

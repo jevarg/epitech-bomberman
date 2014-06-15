@@ -51,7 +51,6 @@ bool	Spawn::putPlayer(int x, int y, t_spawn &spawn)
     {
       tx = x - (radius + 1);
       ty = y + (radius + 1);
-      std::cout << "radius: " << radius <<  "tx : " << tx << " ty : " << ty << std::endl;
       dirX = 1;
       dirY = 0;
       do
@@ -88,10 +87,7 @@ bool	Spawn::putPlayer(int x, int y, t_spawn &spawn)
   if (stype == FREE)
     spawnCharacter(spawn, tx, ty);
   else
-    {
-      std::cerr << "No place for player" << std::endl;
-      return (false);
-    }
+    throw (Exception("No place for player"));
   return (true);
 }
 

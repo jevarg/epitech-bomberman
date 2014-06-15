@@ -300,11 +300,6 @@ bool		Menu::update()
 	  break;
 	}
   _win.updateClock(*(_gameInfo.clock));
-  if ((*(_gameInfo.input))[LAUNCHGAME])
-    {
-      launchGame("", false);
-      _gameInfo.sound->play("menu", MUSIC);
-    }
   if (_gameInfo.input->isPressed(SDLK_F1))
     {
       glDisable(GL_DEPTH_TEST);
