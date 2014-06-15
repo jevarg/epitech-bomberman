@@ -23,7 +23,6 @@ void	IA::update()
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient), "ai/main.lua");
-      // std::cout << "script returned " << res << std::endl;
       if (res == DROPBOMB)
 	dropBomb();
       else
