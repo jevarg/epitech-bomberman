@@ -131,6 +131,7 @@ void		Save::loadGame(const std::string &name,
 	  std::istringstream (buf) >> type;
 	  if (type > BOT || type < 0 || type == FREE)
 	    throw (Exception("Error : invalid savegame file, bad type"));
+	  std::cout << "TYPE => " << static_cast<eType>(type) << std::endl;
 	  gameInfo.map->addEntity(fact->getEntity(static_cast<eType>(type), x, y));
 	}
     }

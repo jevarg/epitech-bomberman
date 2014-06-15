@@ -11,6 +11,10 @@ GameEngine::GameEngine(gdl::SdlContext *win, gdl::BasicShader *textShader, t_gam
   _shutdown = false;
   _multi = false;
   _frames = 0;
+  _ground = NULL;
+  _skybox = NULL;
+  _console = NULL;
+  _already_played = false;
   _fps.initialize();
   _gameInfo->mutex = new Mutex;
   _gameInfo->condvar = new Condvar;
@@ -23,8 +27,20 @@ GameEngine::~GameEngine()
 {
   delete _end_screen[0];
   delete _end_screen[1];
-  delete _gameInfo->mutex;
+
+  if (_ground)
+    delete _ground;
+  if (_skybox)
+    delete _skybox;
+  if (_console)
+    delete _console;
+  _player1->setDestroyAttr();
+  _player2->setDestroyAttr();
+  _gameInfo->condvar->broadcast();
+  sleep(1);
   delete _gameInfo->condvar;
+  delete _gameInfo->save;
+  delete _gameInfo->mutex;
 }
 
 bool GameEngine::initialize()
@@ -172,9 +188,23 @@ void GameEngine::draw()
 	  }
       _hud->draw(*player, *_gameInfo, _multi);
       if ((*player)->getEnd() == WIN)
-	_end_screen[0]->draw(*_textShader, *_gameInfo->clock);
+	{
+	  _end_screen[0]->draw(*_textShader, *_gameInfo->clock);
+	  if (_already_played == false)
+	    {
+	      _gameInfo->sound->play("endgame", EFFECT);
+	      _already_played = true;
+	    }
+	}
       else if ((*player)->getEnd() == LOSE)
-	_end_screen[1]->draw(*_textShader, *_gameInfo->clock);
+	{
+	  _end_screen[1]->draw(*_textShader, *_gameInfo->clock);
+	  if (_already_played == false)
+	    {
+	      _gameInfo->sound->play("endgame", EFFECT);
+	      _already_played = true;
+	    }
+	}
     }
   glViewport(0, 0, winX, winY);
   glDisable(GL_DEPTH_TEST);
@@ -297,6 +327,9 @@ bool	GameEngine::loadSave(const std::string &file)
   _lights.push_back(new Light(_lights.size(), SUN, glm::vec3(1.0, 1.0, 1.0),
 			      glm::vec3(_mapX / 2, 10, _mapY / 2), 1.0));
 
+  _players.push_back(_player1);
+  if (_multi)
+    _players.push_back(_player2);
   _gameInfo->sound->play("game", MUSIC);
   return (true);
 }
@@ -353,4 +386,9 @@ bool	GameEngine::loadMap(const std::string &file, int ia)
   ia = (ia == 0 && _multi == true) ? 0 : ((ia <= 0) ? 1 : ia);
   spawn.spawnEnt((_multi == true ? 2 : 1), ia, *_gameInfo);
   return (true);
+}
+
+void	GameEngine::resetAlreadyPlayed()
+{
+  _already_played = false;
 }

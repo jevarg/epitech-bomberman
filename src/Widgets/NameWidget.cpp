@@ -16,7 +16,7 @@ NameWidget::~NameWidget()
 {
 }
 
-void	NameWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
+void	NameWidget::onClick(t_gameinfo &, Menu &menu)
 {
   menu.textInput(_sentence, 20);
 }

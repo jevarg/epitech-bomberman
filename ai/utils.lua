@@ -28,7 +28,7 @@ function get_entities()
 		[7] = TYPE_PRIORITY["item"],
 		[8] = TYPE_PRIORITY["item"],
 		[9] = TYPE_PRIORITY["item"],
-		[10] = TYPE_PRIORITY["player"],
+		[10] = TYPE_PRIORITY["item"],
 		[11] = TYPE_PRIORITY["player"],
 		[12] = TYPE_PRIORITY["player"],
 		[13] = TYPE_PRIORITY["player"],

@@ -42,13 +42,41 @@ Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, N
 
 Menu::~Menu()
 {
+  AWidget	*background;
+  AWidget	*title;
+  AWidget	*back;
+
+  background = *_newGamePanelSolo.begin();
+  title = *(_newGamePanelSolo.begin() + 1);
+  back = *(_newGamePanelSolo.begin() + 2);
+  delete background;
+  delete title;
+  delete back;
+  freePanel(background, title, back, _newGamePanelSolo);
+  freePanel(background, title, back, _mainPanel);
+  freePanel(background, title, back, _newGamePanelMulti);
+  freePanel(background, title, back, _loadGamePanel);
+  freePanel(background, title, back, _importMapPanel);
+  freePanel(background, title, back, _optionsPanel);
+  freePanel(background, title, back, _controlsPanel);
+  freePanel(background, title, back, _screenPanel);
+  freePanel(background, title, back, _pausePanel);
   if (_player1 == NULL || _player2 == NULL)
     return ;
   saveScore();
-  _player1->setDestroyAttr();
-  _player2->setDestroyAttr();
-  _gameInfo.condvar->broadcast();
-  sleep(1);
+}
+
+void	Menu::freePanel(AWidget *background, AWidget *title,
+			AWidget *back, std::vector<AWidget *> &panel)
+{
+  std::vector<AWidget *>::iterator	it;
+  std::vector<AWidget *>::iterator	end;
+
+  for (it = panel.begin(), end = panel.end(); it != end; ++it)
+    {
+      if (*it != back && *it != title && *it != background)
+	delete (*it);
+    }
 }
 
 bool  Menu::initialize()
@@ -259,6 +287,7 @@ bool		Menu::update()
   t_window	win;
   t_mouse	mouse;
 
+  _gameEngine.resetAlreadyPlayed();
   _gameInfo.input->getInput(*(_gameInfo.set));
   (*(_gameInfo.input))[mouse];
   (*_gameInfo.input)[win];

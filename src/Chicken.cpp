@@ -5,12 +5,12 @@
 Chicken::Chicken(int x, int y, t_gameinfo *gameInfo, bool thread)
   : ACharacter(x, y, CHICKEN, gameInfo, thread), _lua()
 {
+  gameInfo->sound->play("chickenspawn", EFFECT);
   _health = 200;
 }
 
 Chicken::~Chicken()
 {
-  std::cout << "DESTROY CHICKEN" << std::endl;
 }
 
 void	Chicken::update()
@@ -66,4 +66,9 @@ int	Chicken::getResultScript(int orient, const char *fileName)
 AEntity *Chicken::clone(int x, int y)
 {
   return (new Chicken(x, y, _gameInfo));
+}
+
+void	Chicken::takeDamages(int)
+{
+  _gameInfo->sound->play("chickenhurt", EFFECT);
 }
