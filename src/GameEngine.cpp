@@ -34,8 +34,10 @@ GameEngine::~GameEngine()
     delete _skybox;
   if (_console)
     delete _console;
-  _player1->setDestroyAttr();
-  _player2->setDestroyAttr();
+  if (_player1)
+    _player1->setDestroyAttr();
+  if (_player2)
+    _player2->setDestroyAttr();
   _gameInfo->condvar->broadcast();
   sleep(1);
   delete _gameInfo->condvar;

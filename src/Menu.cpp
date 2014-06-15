@@ -247,7 +247,6 @@ bool  Menu::initialize()
 				      "./assets/Button/button.tga", "800x600"));
 
   _cube.initialize();
-  try {
   fact.addModel(WALL, new Cube(_cube), WALL_TEXTURE);
   fact.addModel(BOX, new Cube(_cube), BOX_TEXTURE);
   fact.addModel(FLAME, new Cube(_cube), FLAME_TEXTURE);
@@ -260,11 +259,6 @@ bool  Menu::initialize()
   fact.addModel(BOT, BOT_MODEL);
   fact.addModel(CHICKEN, _gameInfo.set->getVar(R_CRAZYCHICKEN) ? CRAZYCHICKEN_MODEL : CHICKEN_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
-}
-catch (Exception const &e) {
-  std::cerr << e.what() << std::endl;
-  return (false);
-}
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
