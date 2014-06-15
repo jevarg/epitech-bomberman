@@ -14,12 +14,6 @@ int	main()
   std::srand(seed);
   try
     {
-      // Console	console(set);
-      // std::string	ret;
-      // console.parseCmd(std::string (av[1]), ret);
-      // std::cout << "ret : " << ret << std::endl;
-      // return (0);
-
       Menu menu;
       menu.launch();
     }
