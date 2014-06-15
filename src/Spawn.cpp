@@ -110,7 +110,7 @@ void	Spawn::setStart(t_spawn &spawn, int pack) const
   if ((spawn.totalPlayer / spawn.packSize) % 2 != 0)
     spawn.angle = spawn.angleStep / 2;
   else
-    spawn.angle = 0;
+    spawn.angle = std::rand() % 360;
   spawn.angleStep = 360 / pack;
 }
 
@@ -122,7 +122,7 @@ void	Spawn::initSpawn(t_spawn &spawn, int nbPlayer, int nbIa) const
   spawn.totalPlayer = nbPlayer + nbIa;
   spawn.toPlace = spawn.totalPlayer;
   spawn.packSize = minside / 2;
-  spawn.angle = 0;
+  spawn.angle = std::rand() % 360;
   spawn.angleStep = spawn.totalPlayer / spawn.packSize;
   spawn.centerX = _mapX / 2;
   spawn.centerY = _mapY / 2;
