@@ -66,7 +66,7 @@ Sound::~Sound()
 }
 
 void	Sound::toggle()
-{
+{ 
   int	volume;
 
   if (_enabled == true)
@@ -109,6 +109,8 @@ bool	Sound::play(const std::string &to_play, int type)
 
 void    Sound::set(bool state)
 {
+  int	volume;
+
   if (state == true)
     {
       volume = 32;
