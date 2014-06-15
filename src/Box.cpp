@@ -134,7 +134,7 @@ void	Box::scaleToPercent(double * const tab, int size) const
 void	Box::spawnItem()
 {
   // needs to be in the same order as AEntity enum
-  double       	ptab[] = {PCHICKEN, PSPEED, PHEALTH, PSTOCK, PRANGE};
+  double       	ptab[] = {PCHICKEN, PSPEED, PHEALTH, PSTOCK, PRANGE, PEMPTY};
   int		size = sizeof(ptab) / sizeof(double);
   int		randnum;
   double       	start = 0;
@@ -146,6 +146,8 @@ void	Box::spawnItem()
     {
       if (start + ptab[i] > randnum) // means randnum is in the concerned area
 	{
+	  if (i == size - 1)
+	    return ;
 	  _gameInfo->map->addEntity(facto->getEntity
 				    (static_cast<eType>(CHICKEN + i), _x, _y));
 	  break ;
