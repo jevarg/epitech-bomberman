@@ -32,15 +32,15 @@ void	SoundWidget::init(const Settings * const set)
       _sentence = "";
       return ;
     }
-  if (val == 0)
-    _sentence = "Sound On";
-  else
+  if (val == 1)
     _sentence = "Sound Off";
+  else
+    _sentence = "Sound On";
 }
 
 void	SoundWidget::onClick(t_gameinfo &gameInfo, Menu &/*menu*/)
 {
-  gameInfo.set->setVar(S_MUTE, _sentence == "Sound Off");
+  gameInfo.set->setVar(S_MUTE, _sentence == "Sound On");
   init(gameInfo.set);
   gameInfo.sound->toggle();
   //  menu.setFullScreen(gameInfo.set);
