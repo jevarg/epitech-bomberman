@@ -38,7 +38,7 @@ void	FullScreenWidget::init(const Settings * const set)
     _sentence = "FullScreen Off";
 }
 
-void	FullScreenWidget::onClick(t_gameinfo &gameInfo, Menu &menu)
+void	FullScreenWidget::onClick(t_gameinfo &gameInfo, Menu &/*menu*/)
 {
   gameInfo.set->setVar(R_FULLSCREEN, _sentence == "FullScreen Off");
   init(gameInfo.set);
