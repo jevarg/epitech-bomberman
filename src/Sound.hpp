@@ -19,6 +19,7 @@ public:
   ~Sound();
   bool	play(const std::string &, int type);
   void	toggle();
+  void	set(bool state);
 
 private:
   std::map<std::string, Mix_Music *>	_musicBox;

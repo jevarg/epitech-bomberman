@@ -107,6 +107,10 @@ eDir	Flame::getDirection() const
 
 void	Flame::increaseScore(eType type) const
 {
+  ACharacter *character;
+
+  if (_bomb == NULL || (character = _bomb->getCharacter()) == NULL)
+    return ;
   if (type == BOX)
     *_bomb->getCharacter() += BOX_SCORE;
   else if (type == CHARACTER1 || type == CHARACTER2 || type == BOT)

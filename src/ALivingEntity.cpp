@@ -63,7 +63,7 @@ void	ALivingEntity::aliveLoop()
 	  if ((_timeDeath =- 1) <= 0)
 	    destroy();
 	}
-      else if (_toDestroy)
+      if (_toDestroy)
 	destroy();
     }
 }

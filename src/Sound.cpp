@@ -66,7 +66,7 @@ Sound::~Sound()
 }
 
 void	Sound::toggle()
-{
+{ 
   int	volume;
 
   if (_enabled == true)
@@ -105,4 +105,25 @@ bool	Sound::play(const std::string &to_play, int type)
 	}
     }
   return (false);
+}
+
+void    Sound::set(bool state)
+{
+  int	volume;
+
+  if (state == true)
+    {
+      volume = 32;
+      Mix_VolumeMusic(128);
+      _enabled = true;
+    }
+  else
+    {
+      volume = 0;
+      Mix_VolumeMusic(0);
+      _enabled = false;
+    }
+  for (std::map<std::string, Mix_Chunk *>::iterator it = _soundBox.begin(); it != _soundBox.end(); ++it)
+    if (it->second != NULL)
+      Mix_VolumeChunk(it->second, volume);
 }

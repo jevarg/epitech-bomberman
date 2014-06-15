@@ -189,16 +189,12 @@ bool	Console::set(const std::string &arg, std::string &ret, int nbr_space)
   return (true);
 }
 
-bool	Console::help(const std::string &arg, std::string &ret, int nbr_space)
+bool	Console::help(const std::string &/*arg*/, std::string &ret, int /*nbr_space*/)
 {
-  (void)arg;
-  (void)nbr_space;
-
   ret = "You can configure manually some features and options about the game.\n";
   ret += "You can bind a cvar using this syntax : \"bind cvar value\".\n";
   ret += "You can set a key using this syntax : \"set key action\".\n";
   ret += "You can import a config file using this syntax : \"import filename\".";
-  std::cout << "outputting help" << std::endl;
   return (true);
 }
 

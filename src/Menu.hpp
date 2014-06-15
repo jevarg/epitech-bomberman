@@ -29,7 +29,7 @@ public:
   bool	update();
   void	draw();
   void	launch();
-  void	launchGame(const std::string &file, bool load);
+  void	launchGame(const std::string &file, int load);
   void	setCurrentPanel(std::vector<AWidget *> * const currentPanel);
   void	textInput(std::string &buf, unsigned int maxlen);
   void	getPlayerName(std::string &name, int playerId) const;

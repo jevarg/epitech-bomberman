@@ -5,7 +5,7 @@
 ## Login   <dellam_a@epitech.net>
 ##
 ## Started on  Sun Mar  9 03:35:24 2014 Adrien
-## Last update Sat Jun 14 23:53:44 2014 
+## Last update Sun Jun 15 15:13:52 2014 luc sinet
 ##
 
 NAME		=	bomberman
@@ -80,13 +80,14 @@ SRC		=	main.cpp \
 			$(WIDGETDIR)/FullScreenWidget.cpp \
 			$(WIDGETDIR)/ClickTextWidget.cpp \
 			$(WIDGETDIR)/SaveWidget.cpp \
+			$(WIDGETDIR)/SoundWidget.cpp \
 			Intro.cpp
 
 OBJDIR		=	obj/
 SRCDIR		=	src/
 OBJS		=	$(addprefix $(OBJDIR), $(SRC:.cpp=.o))
 
-CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native
+CXXFLAGS	+=	-Wextra -Wall -W -O2 -march=native -g3
 CXXFLAGS	+=	$(shell pkg-config --cflags libswscale libavcodec libavformat libavutil)
 
 LDFLAGS		+=	$(shell pkg-config --libs libswscale libavcodec libavformat libavutil)

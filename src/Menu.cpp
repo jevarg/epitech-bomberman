@@ -18,6 +18,7 @@
 #include "FullScreenWidget.hpp"
 #include "ClickTextWidget.hpp"
 #include "SaveWidget.hpp"
+#include "SoundWidget.hpp"
 
 Menu::Menu(): _win(), _textShader(), _done(false), _gameInfo(NULL, NULL, NULL, NULL, NULL, NULL),
 	      _gameEngine(&_win, &_textShader, &_gameInfo)
@@ -183,6 +184,8 @@ bool  Menu::initialize()
 					    "./assets/Button/button.tga", ""));
   _optionsPanel.push_back(new NavigationWidget(x / 4, y / 2.5f, y / 11.25f, x / 2,
 					       "./assets/Button/controls.tga", &_controlsPanel));
+  _optionsPanel.push_back(new SoundWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
+					  "./assets/Button/button.tga", ""));
   // _optionsPanel.push_back(new NavigationWidget(x / 4, y / 3.35f, y / 11.25f, x / 2,
   // 					       "./assets/Button/resolution.tga", &_screenPanel));
 
@@ -298,11 +301,6 @@ bool		Menu::update()
 	  break;
 	}
   _win.updateClock(*(_gameInfo.clock));
-  if ((*(_gameInfo.input))[LAUNCHGAME])
-    {
-      launchGame("", false);
-      _gameInfo.sound->play("menu", MUSIC);
-    }
   if (_gameInfo.input->isPressed(SDLK_F1))
     {
       glDisable(GL_DEPTH_TEST);
@@ -547,7 +545,7 @@ int		Menu::pauseMenu()
   return (0);
 }
 
-void	Menu::launchGame(const std::string &file, bool load)
+void	Menu::launchGame(const std::string &file, int load)
 {
   int	menuState;
   Map map(*(_gameInfo.set));
@@ -564,19 +562,21 @@ void	Menu::launchGame(const std::string &file, bool load)
   _player2->setMulti(_multi);
   _player1->setName(name[0]);
   _player2->setName(name[1]);
-  if (load == true)
+  if (load == 1)
     {
       if (!_gameEngine.loadSave(file))
 	return ;
     }
-  else
+  else if (load == 0)
+    {
     if (!_gameEngine.loadMap(file, getNbIa()))
       return ;
+    }
   while (1)
     {
       while ((done = _gameEngine.update()))
 	_gameEngine.draw();
-      if (_gameEngine.isShutingDown()) // Only when it has finished to shutdown
+      if (_gameEngine.isShutedDown()) // Only when it has finished to shutdown
 	{
 	  setCurrentPanel(&_mainPanel);
 	  break ;
