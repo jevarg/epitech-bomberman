@@ -4,6 +4,8 @@ uniform	mat4 projection;
 uniform	mat4 view;
 uniform	mat4 model;
 
+uniform int isFog;
+
 uniform sampler2D fTexture0;
 
 varying vec3 fPosition;
@@ -60,5 +62,9 @@ void main(void)
   vec3 color = getLight(fOutColor.xyz, fNormal);
 
   /* Color Fog = vec4(0.7, 0.7, 0.7, 1.0) => grey */
-  gl_FragColor = mix(vec4(color.xyz, fOutColor.w), vec4(0.7, 0.7, 0.7, fOutColor.w), factor);
+  if (isFog == 1)
+    gl_FragColor = mix(vec4(color.xyz, fOutColor.w),
+		       vec4(0.7, 0.7, 0.7, fOutColor.w), factor);
+  else
+    gl_FragColor = vec4(color.xyz, fOutColor.w);
 }
