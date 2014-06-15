@@ -5,6 +5,7 @@ uniform	mat4 view;
 uniform	mat4 model;
 
 uniform int isFog;
+uniform int isLight;
 
 uniform sampler2D fTexture0;
 
@@ -58,8 +59,11 @@ void main(void)
   float density = 0.09;
 
   vec4 fOutColor = texture2D(fTexture0, fUv);
+  vec3 color = vec3(fOutColor.xyz);
   float factor = getFog(abs(fEyePos.z / fEyePos.w), density);
-  vec3 color = getLight(fOutColor.xyz, fNormal);
+
+  if (isLight == 1)
+    color = getLight(fOutColor.xyz, fNormal);
 
   /* Color Fog = vec4(0.7, 0.7, 0.7, 1.0) => grey */
   if (isFog == 1)

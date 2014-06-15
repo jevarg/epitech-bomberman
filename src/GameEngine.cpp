@@ -160,6 +160,7 @@ void GameEngine::draw()
       _shader.setUniform("view", cam.getTransformation());
       _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
       _shader.setUniform("isFog", _gameInfo->set->getVar(R_DRAWFOG));
+      _shader.setUniform("isLight", _gameInfo->set->getVar(R_DRAWLIGHT));
       for (std::vector<Light *>::const_iterator it = _lights.begin();
 	   it != _lights.end();it++)
 	(*it)->render(_shader);
