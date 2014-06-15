@@ -56,7 +56,8 @@ enum	cvar
     FIRETIME,
     R_DEPTHVIEW,
     R_DRAWFOG,
-    R_SKYBOX
+    R_SKYBOX,
+    R_CRAZYCHICKEN
   };
 
 typedef	struct	s_cvar

@@ -253,11 +253,13 @@ bool  Menu::initialize()
   fact.addModel(HEALTHITEM, HEALTHITEM_MODEL);
   fact.addModel(STOCKITEM, STOCKITEM_MODEL);
   fact.addModel(RANGEITEM, RANGEITEM_MODEL);
-  fact.addModel(CHARACTER1, CHARACTER_MODEL);
+  fact.addModel(CHARACTER1, CHICKEN_MODEL);
   fact.addModel(CHARACTER2, CHARACTER2_MODEL);
   fact.addModel(BOT, BOT_MODEL);
-  fact.addModel(CHICKEN, CHICKEN_MODEL);
+  fact.addModel(CHICKEN, _gameInfo.set->getVar(R_CRAZYCHICKEN) ? CRAZYCHICKEN_MODEL : CHICKEN_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
+
+  std::cout << "CRAZYCHICKEN_MODEL: " << _gameInfo.set->getVar(R_CRAZYCHICKEN) << std::endl;
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);
   _player2 = new Player(0, 0, &_gameInfo, CHARACTER2);
