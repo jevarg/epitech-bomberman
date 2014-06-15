@@ -41,8 +41,8 @@ void	LuaCommunication::executeLua(const char *name)
   if ((_status = luaL_loadfile(_luaState, name)) == LUA_OK)
     if ((err = lua_pcall(_luaState, 0, LUA_MULTRET, 0)) != LUA_OK)
       {
-	// std::cout << "very hard problem : " << err << std::endl;
-	// std::cout << lua_tostring(_luaState, -1) << std::endl;
+	std::cout << "very hard problem : " << err << std::endl;
+	std::cout << lua_tostring(_luaState, -1) << std::endl;
 	lua_pop(_luaState, 1);
       }
 }
