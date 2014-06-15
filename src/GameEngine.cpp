@@ -104,10 +104,16 @@ bool		GameEngine::update()
   mainInput();
   if (_gameInfo->input->isPressed(SDLK_ESCAPE) && _shutdown == false)
     return (false);
-  if (_player1->isAlive() && nbPlayer == 1)
-    _player1->setEnd(WIN);
-  if (_player2->isAlive() && nbPlayer == 1)
-    _player2->setEnd(WIN);
+  if (_player1->isAlive() && nbPlayer == 1 && _player1->getEnd() == 0)
+    {
+      _player1->setEnd(WIN);
+      fillScore(_player1->getName(), _player1->getScore());
+    }
+  if (_player2->isAlive() && nbPlayer == 1 && _player2->getEnd() == 0 && _multi)
+    {
+      _player2->setEnd(WIN);
+      fillScore(_player2->getName(), _player2->getScore());
+    }
   (*_gameInfo->input)[mouse];
   _gameInfo->condvar->broadcast();
   if (clearElements() == 0 && _shutdown)
@@ -214,7 +220,7 @@ void GameEngine::draw()
   _textShader->setUniform("view", glm::mat4(1));
   _textShader->setUniform("winX", winX);
   _textShader->setUniform("winY", winY);
-  if (_player1->getEnd() != 0 && _player2->getEnd() != 0)
+  if (_player1->getEnd() != 0 && (!_multi || _player2->getEnd() != 0))
     displayScore();
   _fps.draw(*_textShader, *_gameInfo->clock);
   glEnable(GL_DEPTH_TEST);
@@ -225,19 +231,18 @@ void	GameEngine::displayScore()
 {
   float winX = _gameInfo->set->getVar(W_WIDTH), winY = _gameInfo->set->getVar(W_HEIGHT);
   Text score;
-  int  i = 0;
 
   score.initialize();
-  score.setText("Scores", (winX - 75) / 2, winY - 250, 50);
+  score.setText("Scores", winX / 2 - 75, winY - 250, 50);
   score.draw(*_textShader, *_gameInfo->clock);
-  for (std::map<std::string, int>::const_iterator it = _gameInfo->score.begin();it != _gameInfo->score.end();it++)
+  for (unsigned int i = 0;i < _gameInfo->score.score.size();i++)
     {
       std::stringstream ss("");
 
-      ss << it->first << " => " << it->second << " Point" << std::endl;
-      score.setText(ss.str(), (winX / 2) - 150, winY - ((_gameInfo->score.size() - i) * 50 + 300), 40);
+      ss <<  _gameInfo->score.name[i] << " => " <<  _gameInfo->score.score[i] << " Point" << std::endl;
+      score.setText(ss.str(), (winX / 2) - 150,
+		    (winY - ((i * 50) + 300)), 40);
       score.draw(*_textShader, *_gameInfo->clock);
-      ++i;
     }
 }
 
@@ -392,4 +397,39 @@ bool	GameEngine::loadMap(const std::string &file, int ia)
 void	GameEngine::resetAlreadyPlayed()
 {
   _already_played = false;
+}
+
+void	GameEngine::fillScore(const std::string &name, int score)
+{
+  std::vector<std::string>::iterator it1 = _gameInfo->score.name.begin();
+  std::vector<int>::iterator it2 = _gameInfo->score.score.begin();
+
+  if (_gameInfo->score.name.empty())
+    {
+      _gameInfo->score.name.push_back(name);
+      _gameInfo->score.score.push_back(score);
+    }
+  else
+    {
+      for (unsigned int i = 0;i < _gameInfo->score.name.size();++i)
+	{
+	  if (_gameInfo->score.score[i] < score)
+	    {
+	      _gameInfo->score.name.insert(it1, name);
+	      _gameInfo->score.score.insert(it2, score);
+	      break;
+	    }
+	  ++it1;
+	  ++it2;
+	  if (it1 == _gameInfo->score.name.end())
+	    {
+	      _gameInfo->score.name.insert(it1, name);
+	      _gameInfo->score.score.insert(it2, score);
+	    }
+	}
+    }
+  while (_gameInfo->score.score.size() > 5)
+      _gameInfo->score.score.pop_back();
+  while (_gameInfo->score.name.size() > 5)
+    _gameInfo->score.name.pop_back();
 }

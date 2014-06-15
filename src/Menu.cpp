@@ -61,8 +61,6 @@ Menu::~Menu()
   freePanel(background, title, back, _controlsPanel);
   freePanel(background, title, back, _screenPanel);
   freePanel(background, title, back, _pausePanel);
-  if (_player1 == NULL || _player2 == NULL)
-    return ;
   saveScore();
 }
 
@@ -557,15 +555,15 @@ void	Menu::launchGame(const std::string &file, bool load)
   bool	done = true;
   std::string name[2];
 
+  getPlayerName(name[0], 1);
+  getPlayerName(name[1], 2);
   _gameEngine.setShutdown(false);
   _gameEngine.setMulti(_multi);
   _gameEngine.setConsole(_console);
   _player1->setMulti(_multi);
   _player2->setMulti(_multi);
-  getPlayerName(name[0], 1);
-  getPlayerName(name[1], 2);
-  std::cout << name[0] << std::endl;
-  std::cout << name[1] << std::endl;
+  _player1->setName(name[0]);
+  _player2->setName(name[1]);
   if (load == true)
     {
       if (!_gameEngine.loadSave(file))
@@ -633,13 +631,27 @@ void	Menu::loadScore()
 
       while (getline(file, line))
 	{
+	  for (std::string::iterator it = line.begin();it != line.end();++it)
+	    (*it) ^= 25;
+	  std::reverse(line.begin(), line.end());
 	  std::stringstream ss(line);
+	  std::string str_score;
 	  std::string name;
 	  int score;
 
-	  ss >> name >> score;
+	  ss >> str_score;
+	  name = ss.str();
+	  std::reverse(name.begin(), name.end());
+	  std::reverse(str_score.begin(), str_score.end());
+	  ss.clear();
+	  ss.str(str_score);
+	  ss >> score;
+	  name = name.substr(0, name.find_last_of(' '));
 	  if (name != "")
-	    _gameInfo.score[name] = score;
+	    {
+	      _gameInfo.score.name.push_back(name);
+	      _gameInfo.score.score.push_back(score);
+	    }
 	}
     }
 }
@@ -648,8 +660,16 @@ void	Menu::saveScore()
 {
   std::ofstream file(SCORE_PATH, std::ios::out | std::ios::trunc);
 
-  for (std::map<std::string, int>::const_iterator it = _gameInfo.score.begin();it != _gameInfo.score.end();it++)
-    file << it->first << " " << it->second << std::endl;
+  for (unsigned int i = 0;i < _gameInfo.score.score.size();++i)
+    {
+      std::stringstream ss("");
+
+      ss << _gameInfo.score.name[i] << " " << _gameInfo.score.score[i];
+      std::string line(ss.str());
+      for (std::string::iterator it = line.begin();it != line.end();++it)
+	(*it) ^= 25;
+      file << line << std::endl;
+    }
 }
 
 void	Menu::readDir(const std::string &dirname)
