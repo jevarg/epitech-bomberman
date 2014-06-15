@@ -544,7 +544,7 @@ int		Menu::pauseMenu()
   return (0);
 }
 
-void	Menu::launchGame(const std::string &file, bool load)
+void	Menu::launchGame(const std::string &file, int load)
 {
   int	menuState;
   Map map(*(_gameInfo.set));
@@ -559,21 +559,21 @@ void	Menu::launchGame(const std::string &file, bool load)
   _player2->setMulti(_multi);
   getPlayerName(name[0], 1);
   getPlayerName(name[1], 2);
-  std::cout << name[0] << std::endl;
-  std::cout << name[1] << std::endl;
-  if (load == true)
+  if (load == 1)
     {
       if (!_gameEngine.loadSave(file))
 	return ;
     }
-  else
+  else if (load == 0)
+    {
     if (!_gameEngine.loadMap(file, getNbIa()))
       return ;
+    }
   while (1)
     {
       while ((done = _gameEngine.update()))
 	_gameEngine.draw();
-      if (_gameEngine.isShutingDown()) // Only when it has finished to shutdown
+      if (_gameEngine.isShutedDown()) // Only when it has finished to shutdown
 	{
 	  setCurrentPanel(&_mainPanel);
 	  break ;
@@ -592,8 +592,8 @@ void	Menu::launch()
 
   if (!initialize())
     return ;
-  if (intro.initialize("./Ressources/Video/intro.mp4"))
-    intro.play(_gameInfo, _win, _textShader);
+  // if (intro.initialize("./Ressources/Video/intro.mp4"))
+  //   intro.play(_gameInfo, _win, _textShader);
   while (!_done)
     {
       if (update() == false)

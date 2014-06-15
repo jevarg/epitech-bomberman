@@ -309,14 +309,22 @@ void	GameEngine::setConsole(Console * const console)
   _console = console;
 }
 
-bool	GameEngine::isShutingDown() const
+bool	GameEngine::isShutedDown() const
 {
   return (_shutdown);
 }
 
 bool	GameEngine::loadSave(const std::string &file)
 {
-  _gameInfo->save->loadGame(file, *_gameInfo);
+  try
+    {
+      _gameInfo->save->loadGame(file, *_gameInfo);
+    }
+  catch (const Exception &e)
+    {
+      std::cerr << e.what();
+      return (false);
+    }
   _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
   _mapX = _gameInfo->set->getVar(MAP_WIDTH);
   while (!_lights.empty())
@@ -345,7 +353,7 @@ bool	GameEngine::loadMap(const std::string &file, int ia)
 	{
 	  int x = 0, y = 0;
 	  _gameInfo->map->determineMapSize(file, x, y);
-	  _gameInfo->map->load("map", *_gameInfo);
+	  _gameInfo->map->load(file, *_gameInfo);
 	  _mapX = x;
 	  _mapY = y;
 	}
@@ -361,7 +369,6 @@ bool	GameEngine::loadMap(const std::string &file, int ia)
       _mapX = _gameInfo->set->getVar(MAP_WIDTH);
       _mapY = _gameInfo->set->getVar(MAP_HEIGHT);
     }
-
   while (!_lights.empty())
     _lights.pop_back();
   while (!_players.empty())
