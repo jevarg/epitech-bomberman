@@ -71,9 +71,7 @@ function create_map(entities, aggro)
 		if (entities[i]["type"] == TYPE_PRIORITY["item"]) then
 			map[entities[i]["y"]][entities[i]["x"]] = "I" end
 		if (entities[i]["type"] == TYPE_PRIORITY["danger"]) then
-			if (map[0] == nil) then
-				break;
-			end
+			if (map[0] == nil) then	break end
 			map[entities[i]["y"]][entities[i]["x"]] = "D" end
 	end
 	MAP_XMAX, MAP_YMAX = set_pos_map(map)
