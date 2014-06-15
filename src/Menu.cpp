@@ -257,7 +257,7 @@ bool  Menu::initialize()
   fact.addModel(CHARACTER1, CHARACTER_MODEL);
   fact.addModel(CHARACTER2, CHARACTER2_MODEL);
   fact.addModel(BOT, BOT_MODEL);
-  fact.addModel(CHICKEN, CHICKEN_MODEL);
+  fact.addModel(CHICKEN, _gameInfo.set->getVar(R_CRAZYCHICKEN) ? CRAZYCHICKEN_MODEL : CHICKEN_MODEL);
   fact.addModel(BOMB, BOMB_MODEL);
 
   _player1 = new Player(0, 0, &_gameInfo, CHARACTER1);

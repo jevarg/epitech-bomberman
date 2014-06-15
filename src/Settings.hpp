@@ -57,6 +57,7 @@ enum	cvar
     R_DEPTHVIEW,
     R_DRAWFOG,
     R_SKYBOX,
+    R_CRAZYCHICKEN,
     S_MUTE
   };
 

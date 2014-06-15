@@ -159,6 +159,7 @@ void GameEngine::draw()
       _shader.setUniform("projection", cam.getProjection());
       _shader.setUniform("view", cam.getTransformation());
       _shader.setUniform("nbLight", static_cast<int>(_lights.size()));
+      _shader.setUniform("isFog", _gameInfo->set->getVar(R_DRAWFOG));
       for (std::vector<Light *>::const_iterator it = _lights.begin();
 	   it != _lights.end();it++)
 	(*it)->render(_shader);
@@ -168,8 +169,11 @@ void GameEngine::draw()
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
-      _skybox->setPos(glm::vec3(x, 0.0, y));
-      _skybox->draw(_shader, *_gameInfo->clock);
+      if (_gameInfo->set->getVar(R_SKYBOX))
+	{
+	  _skybox->setPos(glm::vec3(x, 0.0, y));
+	  _skybox->draw(_shader, *_gameInfo->clock);
+	}
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
