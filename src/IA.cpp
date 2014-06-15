@@ -23,6 +23,7 @@ void	IA::update()
   if (cnt != 0)
     {
       int res = getResultScript(aggro[_level - 1], static_cast<int>(_orient), "ai/main.lua");
+      // std::cout << "script returned " << res << std::endl;
       if (res == DROPBOMB)
 	dropBomb();
       else
@@ -34,7 +35,7 @@ void	IA::danger_in_dir(int i, int j, int x, int y,
 			  int i_x, int i_y, int max_it, int *cnt)
 {
   int	k = 0;
-  while (k < max_it)
+  while (k < max_it + 1)
     {
       int type = _gameInfo->map->checkMapColision(j, i);
       if (type == FREE || type == ITEM || type == SPEEDITEM ||
@@ -72,7 +73,7 @@ void	IA::put_abstract_flame(Flame *ff, int i, int j,
       danger_in_dir(i, j + 1, c2 - 1, c1, -1, 0, ff->getRange(), cnt);
     }
   else
-    danger_in_dir(i, j, c2, c1, dir_x[dir], dir_y[dir], ff->getRange(), cnt);
+    danger_in_dir(i, j, c2, c1, dir_x[dir], dir_y[dir], ff->getRange() + 1, cnt);
 }
 
 void	IA::pushEntitie(int x, int y, int *cnt, int aggro)
