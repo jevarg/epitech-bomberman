@@ -157,7 +157,7 @@ void GameEngine::draw()
 	   it != _lights.end();it++)
 	(*it)->render(_shader);
 
-      moveGround((*player));
+      moveGround(*player, _mapX, _mapY);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
       glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
@@ -240,33 +240,38 @@ void	GameEngine::displayScore()
     }
 }
 
-void	GameEngine::moveGround(Player *player)
+void	GameEngine::moveGround(Player *player, float mapX, float mapY)
 {
   int x = player->getXPos(), y = player->getYPos();
   int depth_view = _gameInfo->set->getVar(R_DEPTHVIEW);
   float groundX = x, groundY = y, sizeX = depth_view * 2, sizeY = depth_view * 2;
 
+  if (sizeX > mapX)
+    sizeX  = mapX;
+  if (sizeY > mapY)
+    sizeY = mapY;
+  sizeX += 1;
   sizeY += 1;
   groundY += 0.5;
-  if (groundX - depth_view < 0)
+  if (groundX - sizeX / 2 < 0)
     {
-      sizeX -= ABS(groundX - depth_view);
+      sizeX -= ABS(groundX - sizeX / 2);
       groundX = sizeX / 2;
     }
-  else if (groundX + depth_view > _gameInfo->map->getWidth())
+  else if (groundX + sizeX / 2 > _mapX)
     {
-      sizeX -= (groundX + depth_view - _gameInfo->map->getWidth());
-      groundX = _gameInfo->map->getWidth() - sizeX / 2;
+      sizeX -= (groundX + sizeX / 2 - _mapX);
+      groundX = _mapX - sizeX / 2;
     }
-  if (groundY - depth_view < 0)
+  if (groundY - sizeY / 2 < 0)
     {
-      sizeY -= ABS(groundY - depth_view);
+      sizeY -= ABS(groundY - sizeY / 2);
       groundY = sizeY / 2;
     }
-  else if (groundY + depth_view > _gameInfo->map->getHeight())
+  else if (groundY + sizeY / 2 > _mapY)
     {
-      sizeY -= (groundY + depth_view - _gameInfo->map->getHeight());
-      groundY = _gameInfo->map->getHeight() - sizeY / 2;
+      sizeY -= (groundY + sizeY / 2 - _mapY);
+      groundY = _mapY - sizeY / 2;
     }
   groundX -= 0.5;
   groundY -= 0.5;

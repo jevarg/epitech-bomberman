@@ -107,7 +107,7 @@ private:
   void	mainInput();
   int	clearElements();
   void	displayScore();
-  void	moveGround(Player *player);
+  void	moveGround(Player *player, float mapX, float mapY);
 
   gdl::SdlContext		*_win;
   gdl::BasicShader		_shader;
