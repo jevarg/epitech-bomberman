@@ -78,6 +78,7 @@ protected:
   int		_timeDeath;
   int		_time;
   IObject	*_model;
+
 };
 
 void	*handle_character_thread(void *arg);

@@ -592,8 +592,8 @@ void	Menu::launch()
 
   if (!initialize())
     return ;
-  // if (intro.initialize("./Ressources/Video/intro.mp4"))
-  //   intro.play(_gameInfo, _win, _textShader);
+  if (intro.initialize("./Ressources/Video/intro.mp4"))
+    intro.play(_gameInfo, _win, _textShader);
   while (!_done)
     {
       if (update() == false)

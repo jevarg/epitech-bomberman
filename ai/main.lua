@@ -27,6 +27,22 @@ function check_elem_at(map, cur_x, cur_y, w, n)
 	return -1
 end
 
+function check_useless_mov(map, cur_x, cur_y)
+	local way = determine_way(map, cur_x, cur_y) + 1
+	if (way >= 1 and way <= 4) then
+		local i_x1 = {1, -1, 0, 0}
+		local i_x2 = {-1, 1, 0, 0}
+		local i_y1 = {0, 0, 1, -1}
+		local i_y2 = {0, 0, -1, 1}
+
+		if (map[cur_y + i_y1[way]][cur_x + i_x1[way]] == "D" and
+			map[cur_y + i_y2[way]][cur_x + i_x2[way]] == "D") then
+			return 1
+		end
+	end
+	return 0
+end
+
 function take_decision(map, map_nb, entities)
 	-- print("IN TAKE DECISION MAP AFTER fill_dangerous_fields")
 	-- display_map(map_nb)
@@ -37,7 +53,7 @@ function take_decision(map, map_nb, entities)
 		if (arg["bomb"] == 1) then map[Y][X] = "O" end
 		local block = {0, 0, 0, 0}
 		local cur_x, cur_y = run_out_danger(map_nb, X, Y, block)
-		-- print(X, Y, cur_x, cur_y)
+		if (check_useless_mov(map_nb, cur_x, cur_y) == 1) then return -1 end
 		return determine_way(map, cur_x, cur_y)
 	else
 		local item = check_elem_at(map_nb, X, Y, "I", 1)
